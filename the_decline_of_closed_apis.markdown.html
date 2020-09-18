@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html lang="en" class="has-navbar-fixed-top">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>The SrcRr</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="The SrcRr Tech Blog" />
+    <meta name="author" content="Jordan Hewitt - The SrcRr" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+    article {
+        padding: 5pt;
+        top: 30pt;
+    }
+    article p {
+        margin: 10pt;
+    }
+    article h1, article h2, article h3, article h4 {
+        margin: 5pt 10pt;
+    }
+    article h1 {
+        font-size: 200%;
+    }
+    article h2 {
+        font-size: 150%;
+        font-style: italic;
+    }
+    article h3 {
+        font-size: 125%;
+        font-weight: bold;
+    }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="./static/styles.css"
+      rel="stylesheet"
+    />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div> <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">The SrcRr</div>
+
+  <div class="navbar-menu floating">
+    
+    <a href="index.html#intro" class="navbar-item"
+      >Intro</a
+    >
+    
+    <a href="index.html#intro" class="navbar-item"
+      >Intro</a
+    >
+    
+    <a href="index.html#software" class="navbar-item"
+      >Software</a
+    >
+    
+    <a href="index.html#video" class="navbar-item"
+      >Video</a
+    >
+    
+    <a href="index.html#blog" class="navbar-item"
+      >Blog</a
+    >
+    
+    <a href="index.html#photography" class="navbar-item"
+      >Photography</a
+    >
+    
+    <a href="index.html#satire" class="navbar-item"
+      >Satire</a
+    >
+    
+    <a href="index.html#graphic" class="navbar-item"
+      >Graphic</a
+    >
+    
+    <a href="index.html#music" class="navbar-item"
+      >Music</a
+    >
+    
+    <a href="index.html#contact" class="navbar-item"
+      >Contact</a
+    >
+    
+  </div>
+
+  <a
+    role="button"
+    class="navbar-burger burger"
+    aria-label="menu"
+    aria-expanded="false"
+    data-target="navbarBasicExample"
+  >
+  <i class="material-icons md-48">menu</i>
+  </a>
+</nav> </div>
+    <div class="container">
+        
+<h1></h1>
+<article>
+<p><img alt="APIStratBanner" src="images/apistrat2017/small-DSC04667.png" /></p>
+<h1>What I Learned at APISTRAT 2017</h1>
+<p>This last week from October 31st to November 2nd, I had the amazing
+opportunity to brush up against some great innovators at some of the
+leading-edge companies. This event was the Open API Strategy conference, or
+"apistrat." (pronounced as "app-pee-strat" to frequenters).</p>
+<p>This is a big deal. Unless you've lived under a rock since 2000 (and sorry if
+you have; I can help you reintegrate into society) then you'll have noticed a
+shift away from desktop-centric apps and a move toward a cloud architecture.
+People now expect most of their data to not be on their own system. How does
+one transport information from the client to the server? API's of course!</p>
+<p>Unfortunately, due to a variety of reasons, many groups are still stuck in
+the stone age, chiseling out their own APIs from old 90's tech in order to
+forge a resemblance of a wheel.</p>
+<p>On a personal note, this is where Netflix went horribly wrong. They only
+released an API (<a href="https://techcrunch.com/2014/11/16/netflix-api/">for a short
+time</a>) to allow access to
+their list of content. But that wasn't the worst part. They also buckled down
+their content and only allowed streaming to be done on Windows, using
+Silverlight, which was already on the decline. If Netflix had simply provided
+an API for streaming, Linux users wouldn't have had to wait until 2016 to get
+some semblance of a streaming service.</p>
+<p>But I digress.</p>
+<p>This was my first year at an apistrat conference--and my first year at <em>any</em>
+open source conference--so I didn't quite know what to expect.</p>
+<p>I was expecting mainly a geek-fest. However, I was surprised to find people
+from various industries and departments attended: some who have not touched
+code in their life, and some who knew how to code from birth.</p>
+<p>The first day was composed of workshops, of which we had a choice of two. I
+decided on a workshop put on by Sean Matthews
+(<a href="https://www.linkedin.com/profile/view?id=AAoAAAebMZ8B43R0HU3iKrL-ngf9A9f70xNNOno&amp;authType=name&amp;authToken=7BBn&amp;trk=api*a104762*s113330*">LinkedIn</a>), co-founder of <a href="https://lefthookdigital.com/discover">Left Digital
+Hook</a>, a company that helps others
+incorporate APIs into their products. During the workshop we were introduced
+to a technology called <a href="https://zapier.com/">Zapier</a>, a platform that,
+essentially, makes connecting to points with an API easy.</p>
+<p>Sean walked through an example of using Zapier to connect Slack to the
+company's database. When a Slack user types "New Task", Zapier is triggered to
+get the text of the slack message, parse it, create a new task, and return in
+to the user.</p>
+<p>Left Digital Hook was developed because of market pressure, Sean says. Open
+Source APIs were beginning to catch on, and so he felt advising companies on
+the merits of open source technologies was the way to go. He's advised at
+least 30 companies, including Citrix.</p>
+<p>Currently Sean has huge plans involving the API tester app
+<a href="https://getpostman.com">Postman</a>. His vision for the app is to make it more
+collaborative, in much the way <a href="http://programmableweb.com">programmableweb</a>
+is, by allowing developers to post public APIs to the site.</p>
+<p>The second workshop I attended was titled "API-first Redesign of a Legacy
+Application," led by <a href="https://www.linkedin.com/profile/view?id=AAoAAABgzUgBRYKcRiQaDjlhke4f5xweUwM-8l4&amp;authType=name&amp;authToken=O7Sl&amp;trk=api*a104762*s113330*">Chris Busse</a>
+of <a href="http://apivista.com/">APIVista</a>. This workshop dealt with APIs in a
+friendlier way than a full-on "How to API" course, but was not any less
+relevant. Chris did an excellent job encouraging the class participants to
+reconstruct old ideas into new API framework.</p>
+<p><img alt="Chris Busse" src="images/apistrat2017/small-DSC04684.png" /></p>
+<p>The example he used was the old "lemonade stand" game, a meme that,
+unfortunately, predated me. He led us through individual and group activities
+to rethink how to program the lemonade stand game in terms of REST calls. The
+result was a collaborative and fun activity to help people become better rest
+programmers.</p>
+<p>The second and last days were whirlwinds of talks.</p>
+<p>The morning was opened by keynote talks--fueled by coffee, of course. The
+talks were given by people from some of the biggest names in tech: Yina Arena,
+from Microsoft, and Sarah Novotny, from Google.</p>
+<p><img alt="Sarah Novotny" src="images/apistrat2017/small-DSC04788.png" /></p>
+<p>Personally, I find myself surprised these days by how--er, open--Microsoft is
+to adopt open source technologies. As a primarily open source developer,
+Microsoft has always been a thorn: unwilling to work with open source. In
+recent years, however, the tide began to turn, and I was surprised by the
+humility and honesty that Yina conveyed from a stained software company.
+Leaders like Yina, who take the initiative to change their company dynamics,
+are hard to come by, so the talk was rather refreshing.</p>
+<p>After a morning break (and filling up my IV drip with more coffee) the morning
+talks resumed. I did not have any specific track in mind, so I ended up
+picking whatever talk suited my fancy. I also wanted to stretch myself, by
+attending talks by technologies that I didn't use and had no interest in. No
+matter what talk, I attended, however, I began to see how people were adopting
+this development strategy.</p>
+<p>The most interesting talks were ones given by the smaller companies, who have
+yet to have a name for themselves. I'd never heard of BioBright before
+APIStrat, but found Ryan Harrison's desire to change the field of science and
+research infectious.</p>
+<p><img alt="Ryan Harrison" src="images/apistrat2017/small-DSC04934.png" /></p>
+<p>Documentation for APIs (and documentation in general) is something I find is
+looked over, both for me and for other developers, so I attended talks that
+spoke on these subjects. One of the most interesting was by Ash Hathaway, a
+proud Texan, who brought to light why words matter in documentation.</p>
+<p>During the second day I did have an opportunity to talk to a self-proclaimed
+"API Evangelist" (if not <em>the</em> API Evangelist), Kin Lane. I was not fortunate
+enough to attend any of his talks, but I did get to talk with him in person
+during a break.</p>
+<p><img alt="Kin Lane" src="images/apistrat2017/small-DSC04869.png" /></p>
+<p>Kin gets most of his income from hustling, doing anything from writing,
+consulting, and photography. He started getting interested in APIs after
+seeing fighting from companies like Twitter, and worked with the Department of
+Veteran Affairs to get APIs introduced. What he finds awesome about APIStrat
+is the variety of people that attend, both developers and non-developers.</p>
+<p>The final day was similar to the first, with short talks given by various
+people in all sectors of jobs.</p>
+<p>Two talks stood out to me: one done by Shelby Switzer of Healthify. Shelby is
+one of those developers who hasn't waited around for the market to change, but
+has forged ahead with changing the market. Her talk (on convincing companies
+to adopt open APIs) balanced "why don't they get it?" with a helpful approach
+to encouraging clients to adopt open APIs.</p>
+<p>The other was by Randall Hunt on building AI-Powered APIs. Long-gone are the days
+when people thought of Amazon as just an Online retailer. Now they harness the
+power of open APIs and big data to make smart technology. The talk delved into how
+Amazon incorporates massive amounts of big data to automate tasks such as drone
+delivery and robot packaging.</p>
+<h2>Conclusion</h2>
+<p>Overall, the APIStrat conference was very encouraging. The entire technology world is catching
+on to the fact that open source is not only beneficial financially, but it's also a way to encourage
+user trust and trust among developers.</p>
+<p>The conference also converted me: no more am I an API fanboy...now I'm an API evangelist.</p>
+</article>
+
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        // Check for click events on the navbar burger icon
+        $(".navbar-burger").click(function () {
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+          $(".navbar-burger").toggleClass("is-active");
+          $(".navbar-menu").toggleClass("is-active");
+        });
+      });
+    </script>
+  </body>
+</html>

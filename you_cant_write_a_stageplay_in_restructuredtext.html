@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html lang="en" class="has-navbar-fixed-top">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>The SrcRr</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="The SrcRr Tech Blog" />
+    <meta name="author" content="Jordan Hewitt - The SrcRr" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+    article {
+        padding: 5pt;
+        top: 30pt;
+    }
+    article p {
+        margin: 10pt;
+    }
+    article h1, article h2, article h3, article h4 {
+        margin: 5pt 10pt;
+    }
+    article h1 {
+        font-size: 200%;
+    }
+    article h2 {
+        font-size: 150%;
+        font-style: italic;
+    }
+    article h3 {
+        font-size: 125%;
+        font-weight: bold;
+    }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="./static/styles.css"
+      rel="stylesheet"
+    />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div> <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">The SrcRr</div>
+
+  <div class="navbar-menu floating">
+    
+    <a href="index.html#intro" class="navbar-item"
+      >Intro</a
+    >
+    
+    <a href="index.html#intro" class="navbar-item"
+      >Intro</a
+    >
+    
+    <a href="index.html#software" class="navbar-item"
+      >Software</a
+    >
+    
+    <a href="index.html#video" class="navbar-item"
+      >Video</a
+    >
+    
+    <a href="index.html#blog" class="navbar-item"
+      >Blog</a
+    >
+    
+    <a href="index.html#photography" class="navbar-item"
+      >Photography</a
+    >
+    
+    <a href="index.html#satire" class="navbar-item"
+      >Satire</a
+    >
+    
+    <a href="index.html#graphic" class="navbar-item"
+      >Graphic</a
+    >
+    
+    <a href="index.html#music" class="navbar-item"
+      >Music</a
+    >
+    
+    <a href="index.html#contact" class="navbar-item"
+      >Contact</a
+    >
+    
+  </div>
+
+  <a
+    role="button"
+    class="navbar-burger burger"
+    aria-label="menu"
+    aria-expanded="false"
+    data-target="navbarBasicExample"
+  >
+  <i class="material-icons md-48">menu</i>
+  </a>
+</nav> </div>
+    <div class="container">
+        
+<h1></h1>
+<article>
+<h1>You <s>Can't</s> <sup>Can</sup> Write a Stage Play in ReStructuredText! (Part</h1>
+<h1>1 )</h1>
+<p>In this blog I'll talk about my journey in writing a StagePlay in
+ReStructuredText, a popular Markup text format. In this first part I'll talk
+about why this is important and the conversions I used in between standard
+stageplay format.</p>
+<h2>Let Me Explain</h2>
+<p>I love markup languages. I like the simplicity of being able to seperate content
+and formatting, so that if I don't like the color of something I can go into
+the CSS and change the color, without hunting through an ODT document to change
+every. Darn. Instance.</p>
+<p>I also enjoy writing fiction in my free time and have recently written a
+stageplay. What does this have to do with ReStructuredText, you ask?</p>
+<p>Like many developers I discovered markup languages via contributions to open
+source projects. I then began to use ReStructuredText in my own projects and
+in corporate environments. While others would send me clunky word documents, I'd
+send them a streamlined PDF converted from text, or, if they wanted, a word
+document, written just as easily as a PDF.</p>
+<p>Long story short, I fell in love with ReStructuredText. Could I apply the same
+technique to publishing fiction as well?</p>
+<h2>Formatting is Important</h2>
+<p>Many editors and publishers require specific formats for authors' work. On the
+lenient end are publishers that simply want something not printed on rainbow
+paper; on the strict end are publishers that will send work back if the margins
+are a milimeter off.</p>
+<p>Many authors have <a href="http://txt2tags.org/writing-book.html">written their books</a>
+[using MarkDown]
+(http://ianhocking.com/2013/06/22/writing-a-novel-using-markdown/).
+This works great. Novels are simple enough you just need chapter headings,
+maybe a few dividers, and you're good to go.</p>
+<p>But plays a bit more complex. They require scene specifiers, act specifiers,
+character tags, lines, stage direction &hellip;</p>
+<p>If you haven't fallen asleep yet then you're probably putting yourself in my
+shoes, overwhelmed by the work to be done.</p>
+<blockquote>
+<p>As an aside, I did a little research to see if there's a special markup format
+for writing a stageplay. There is the open source syntax called
+<a href="https://fountain.io">Fountain</a> for screenplays, but screenlpays and stageplays
+are entirely different formats. I also ran across
+<a href="http://downplay.net/">DownPlay</a>, and got really excited, until I realized that
+it was specifically written for <a href="https://ulyssesapp.com/">Ulysses</a>, a Mac-only
+text editor.</p>
+</blockquote>
+<p>In any case, onto my journey.</p>
+<h2>Step 1 - What is a Standard Stageplay Format?</h2>
+<p>Well, depends on your audience, or the person to whom you're submitting. For
+my play, I used
+<a href="https://ptfaculty.gordonstate.edu/lking/CPF_play_formatting2.pdf">this PDF</a>
+for reference. I then listed out all the properties of a stageplay that need
+formatting.</p>
+<ul>
+<li>Formatting:<ul>
+<li>Page: 8.5" x 11"</li>
+<li>Font: Courier 12 point.</li>
+</ul>
+</li>
+<li>Intro Pages:<ul>
+<li>Title Page (with appropriate margins).<ul>
+<li>Play Title</li>
+<li>Description of play (e.g. "A Play in Two Acts")</li>
+<li>"by"</li>
+<li>Author's Name</li>
+<li>Copyright information and Author's information at bottom</li>
+</ul>
+</li>
+<li>Personae Page<ul>
+<li>"Cast of Characters" Title</li>
+<li>A table of character names and descriptions</li>
+<li>Scene and Time descriptions, if there's room</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The Play Itself (where the &#128664; meets the &#128739;)<ul>
+<li>Correct page formatting with page numbering in the top right.</li>
+<li>Act and Scene Designations</li>
+<li><code>SETTING:</code> and <code>AT RISE:</code> delegations in a tabular format</li>
+<li>Character tags</li>
+<li>Character dialogue</li>
+<li>Stage direction</li>
+<li>End of act/scene delgations</li>
+</ul>
+</li>
+</ul>
+<h2>Step 2 - ReStucturedText Equivalences</h2>
+<p>Here's the part that took a little experimenting. Essentially, there should be
+either a ReStructuredText syntax rule or ReStructuredText directive that
+correlates to one of the properties. This is a general rule, because some of
+the properties should be dealt with during the <code>pandoc</code> phase where conversion
+occurs.</p>
+<p>Here is what I came up with:</p>
+<table>
+    <tr>
+        <th>Stage play property</th>
+        <th>ReStructuredText equivalent</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>Title</td>  <td>ReStructuredText title</td>
+        <td>
+            <code><pre>=======
+My Play
+=======</code>
+        </td>
+    </tr>
+    <tr>
+        <td>Subtitle</td>
+        <td rowspan="4">ReStructuredText subtitle</td>
+        <td rowspan="4"><pre>----------------
+A Play in 2 Acts
+----------------
+----------------
+by
+----------------
+----------------
+Author
+----------------</pre>
+        </td>
+    </tr>
+    <tr>
+        <td>Description</td>
+    </tr>
+    <tr>
+        <td>"by"</td>
+    </tr>
+    <tr>
+        <td>Author's Name</td>
+    </tr>
+    <tr>
+        <td>Personae Page</td>
+        <td>- Title is a ReStructuredText title<br/>
+            - Characters are listed in tabular format with the character's
+              name as the first colun, and the description as the second
+              column.<br/>
+             <i>(hint: this is where the <code>..list-table</code>
+                directive comes in handy)</i>
+        </td>
+        <td><pre>..list-table::
+    * - Fred
+      - Our main character
+    * - Jasmine
+      - Fred's best friend.</pre>
+        </td>
+    </tr>
+    <tr>
+        <td>Act Designations</td>
+        <td>Header 1 (underlined with `=`)</td>
+        <td><pre>Act I
+-----</pre></td>
+    </tr>
+    <tr>
+        <td>Scene Designations</td>
+        <td>Header 2 (underlined with `-`)</td>
+        <td><pre>Scene 1
+-------</pre></td>
+    </tr>
+    <tr>
+        <td>`SETTING` &amp; `AT RISE`</td>
+        <td>Table</td>
+        <td><pre>..list-table::
+    * - SETTING:
+      - Some time in some random location
+    * - AT RISE:
+      - Chaos happens.</pre></td>
+    </tr>
+    <tr>
+        <td>Stage Direction</td>
+        <td>default text (no indentation or start character)</td>
+        <td><pre>Character does something very interesting.</pre></td>
+    </tr>
+    <tr>
+        <td>Character line</td>
+        <td>Definition</td>
+        <td><pre>CHARACTER
+    This is the character's dialogue.</pre></td>
+    </tr>
+</table>
+
+<p>Some of these I skipped, with the intention of adding them post-production,
+most notably the author information on the title page.</p>
+<h2>Up Next &hellip;</h2>
+<p>Whew! That was the hard part. In the next post I'll talk about how to convert
+the ReStructuredText into a document with the correct formatting.</p>
+</article>
+
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        // Check for click events on the navbar burger icon
+        $(".navbar-burger").click(function () {
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+          $(".navbar-burger").toggleClass("is-active");
+          $(".navbar-menu").toggleClass("is-active");
+        });
+      });
+    </script>
+  </body>
+</html>
