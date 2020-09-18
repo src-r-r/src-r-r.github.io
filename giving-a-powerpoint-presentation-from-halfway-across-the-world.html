@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
 
-    <title>The SrcRr</title>
+    <title>The SrcRr - WebSockets: How to Give a Slide Presentation from Halfway Across The World</title>
     <meta charset="utf-8" />
     <meta name="description" content="The SrcRr Tech Blog" />
     <meta name="author" content="Jordan Hewitt - The SrcRr" />
@@ -110,7 +110,7 @@
 </nav> </div>
     <div class="container">
         
-<h1></h1>
+<h1 class="title">WebSockets: How to Give a Slide Presentation from Halfway Across The World</h1>
 <article>
 <h1>Church Song Lyrics</h1>
 <p>Before I delve into a code, let me explain a bit about the example problem.</p>
@@ -124,12 +124,13 @@ is one awesome open source application I've used, but there are some really grea
 commercial versions as well.</p>
 <p>But most of these involve a person having to sit in a central location to control the
 screen.</p>
-<p>I thought one day, what if the person running the lyrics can sit anywhere. Maybe
+<p>I thought one day.. "What if the person running the lyrics can sit anywhere?" Maybe
 they're ill with the flu and they need to stay home but they're the only one who can
 run it. Or they want to sit with their family.</p>
 <p>So, can we design a system that listens for commands (perhaps given by a REST request)
 then hands that command off to an application to display?</p>
-<p>So, very briefly, it would look like this:</p>
+<p>Yes we can!</p>
+<p>Very briefly it would look like this:</p>
 <p><img alt="diagram 1" src="./static/images/websocket-presentation/overhead-websocket-diagram.png" /></p>
 <h2>On a Web Page</h2>
 <p>Another "requirement" -- let's use the browser as the application container.
@@ -141,7 +142,7 @@ Can this work? What's needed for a church presentation?</p>
 </ol>
 <p>Obviously, #3 is covered on day 1 for any web development course. What about #1?
 Is it possible to get full screen in the web browser?</p>
-<p>If you've ever used Netflix or YouTube, you know the answer is yes. But what part in
+<p>If you've ever used Netflix or YouTube (and who hasn't?), you know the answer is yes. But what part in
 the stack controls this?</p>
 <p>A quick search of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API">Mozilla Web API</a> reveals that it's part of the JavaScript API. Not only that,
 but most of the functions <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API#specifications">are supported by most major browsers</a>.</p>
@@ -173,8 +174,7 @@ sake of simplicity we'll use one line per slide.</p>
 </div>
 <p>Since we're having to listen to actions, let's put the lyrics in a class to have easy
 control over them.</p>
-<div><div class="highlight"><pre><span></span><span class="kd">let</span> <span class="nx">PLEASE_STOP_HERE</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-<span class="nx">type</span> <span class="nx">Show</span> <span class="o">=</span> <span class="nx">any</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+<div><div class="highlight"><pre><span></span><span class="nx">type</span> <span class="nx">Show</span> <span class="o">=</span> <span class="nx">any</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
 <span class="kr">class</span> <span class="nx">PresentationController</span> <span class="p">{</span>
   <span class="kr">public</span> <span class="nx">LYRICS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;Mary had a little lamb&quot;</span><span class="p">,</span>
@@ -374,10 +374,6 @@ even simpler than for <code>app</code>:</p>
     <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
         <span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">&quot;ws://127.0.0.1:3000/lyrics&quot;</span><span class="p">;</span>
         <span class="kd">let</span> <span class="nx">aWebSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
-        <span class="kd">function</span> <span class="nx">reconnect</span><span class="p">()</span> <span class="p">{</span>
-          <span class="nx">aWebSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">aWebSocket</span><span class="p">);</span>
-        <span class="p">}</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">aWebSocket</span><span class="p">);</span>
         <span class="nx">aWebSocket</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">$ev</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
             <span class="kd">let</span> <span class="nx">lyrics</span> <span class="o">=</span> <span class="nx">$ev</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
@@ -392,10 +388,6 @@ even simpler than for <code>app</code>:</p>
             <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">show</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">show</span><span class="p">.</span><span class="nx">css</span><span class="p">)</span>
               <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;slideshow-styling&quot;</span><span class="p">).</span><span class="nx">innerText</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">show</span><span class="p">.</span><span class="nx">css</span><span class="p">;</span>
         <span class="p">});</span>
-        <span class="nx">aWebSocket</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;close&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">$ev</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="s2">&quot;Reconnecting...&quot;</span><span class="p">);</span>
-          <span class="nx">reconnect</span><span class="p">();</span>
-        <span class="p">})</span>
     <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
@@ -409,9 +401,10 @@ connection will be lost. Just reload the webpage.</p>
 <p>The awesome thing is that this can be done using <code>CURL</code> (or Insomina, or any other
 REST client)</p>
 <p>For example the following URL will display the first slide on the client:</p>
-<div><div class="highlight"><pre><span></span>curl http://127.0.0.1:3001/first
-</pre></div>
-</div>
+<p>```bash</p>
+<h1>Remember, we're listening on port 3001 for the REST request!</h1>
+<p>curl http://127.0.0.1:3001/first
+```</p>
 <p><img alt="first" src="./static/images/websocket-presentation/first.png" /></p>
 <p>Consequently, we'll go to the next slide with the following command:</p>
 <div><div class="highlight"><pre><span></span>curl http://127.0.0.1:3001/next
