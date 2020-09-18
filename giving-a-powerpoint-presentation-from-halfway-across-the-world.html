@@ -64,10 +64,6 @@
       >Intro</a
     >
     
-    <a href="index.html#intro" class="navbar-item"
-      >Intro</a
-    >
-    
     <a href="index.html#software" class="navbar-item"
       >Software</a
     >
@@ -134,7 +130,7 @@ run it. Or they want to sit with their family.</p>
 <p>So, can we design a system that listens for commands (perhaps given by a REST request)
 then hands that command off to an application to display?</p>
 <p>So, very briefly, it would look like this:</p>
-<p><img alt="diagram 1" src="../../images/websocket-presentation/overhead-websocket-diagram.png" /></p>
+<p><img alt="diagram 1" src="./static/images/websocket-presentation/overhead-websocket-diagram.png" /></p>
 <h2>On a Web Page</h2>
 <p>Another "requirement" -- let's use the browser as the application container.
 Can this work? What's needed for a church presentation?</p>
@@ -409,8 +405,31 @@ even simpler than for <code>app</code>:</p>
 <p>The one thing extraneous I did was add styling to commands. But that's optional.</p>
 <p>Another note is that if the server is reloaded (e.g. due to a change) the WebSocket
 connection will be lost. Just reload the webpage.</p>
+<h1>Controlling The Presentation.</h1>
+<p>The awesome thing is that this can be done using <code>CURL</code> (or Insomina, or any other
+REST client)</p>
+<p>For example the following URL will display the first slide on the client:</p>
+<div><div class="highlight"><pre><span></span>curl http://127.0.0.1:3001/first
+</pre></div>
+</div>
+<p><img alt="first" src="./static/images/websocket-presentation/first.png" /></p>
+<p>Consequently, we'll go to the next slide with the following command:</p>
+<div><div class="highlight"><pre><span></span>curl http://127.0.0.1:3001/next
+</pre></div>
+</div>
+<p><img alt="first" src="./static/images/websocket-presentation/next.png" /></p>
+<p>How awesome is that! The webpage obeys our command without us touching it!</p>
+<h1>Conclusion</h1>
+<p>WebSockets allow the programmer to send data from a server to a client. In this example,
+we got to see how it can be used for a remote worship service.</p>
+<p>The server had 2 Express applications running, connected by Redis Simple Message Queue.
+When a command came in, it was put on the queue for the WSGI app, then popped off the queue
+for the WebScoket ASGI app.</p>
+<p>At this point the web page listening (or any client listening) to the WebSocket was able to
+receive a message from the server. JavaScript on the client web page then handled the display
+of the lyrics for the current slide.</p>
 <h1>Full Server Code</h1>
-<p>Finally, the full source code to the server is here:</p>
+<p>For those interested, here is the full server source code:</p>
 <div><div class="highlight"><pre><span></span><span class="c1">// import express, { Request } from &quot;express&quot;;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Application</span><span class="p">,</span> <span class="nx">WithWebsocketMethod</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;express-ws&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">NextFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;connect&quot;</span><span class="p">;</span>
