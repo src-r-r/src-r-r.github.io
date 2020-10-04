@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The Source-r-r
+    </title>
+    <link rel="alternate" href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangrously | Serve Ethically | Think Technically">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="content-wrap">
+        <div class="logo">
+          <h1><a href="http://localhost:8080">The Source-r-r</a></h1>
+          <p class="description">Live Dangrously | Serve Ethically | Think Technically</p>
+        </div>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article intro">
+          <header>
+            <p class="date"><span>11. November 2017</span></p>
+            <h2><a href="/articles/Escargo:-The-Zero-Configuration-Email-API/">Escargo: The Zero-Configuration Email API</a></h2>
+          </header>
+          <section class="content"><h1 id="don-t-re-invent-the-wheel">Don’t Re-Invent the<span class="widont">&nbsp;</span>Wheel</h1>
+<p><img src="https://openclipart.org/image/300px/svg_to_png/155149/pre-historic-wheel-cartoon.png" alt="wheel"></p>
+<p>One of the principles of <span class="caps">REST</span> APIs is the ability to reuse common parts,
+starting from the ground up. Then, if one of those parts is broken, just go in,
+fix that part, and you’re good to<span class="widont">&nbsp;</span>go.</p>
+<p>Which is why I was a bit baffled recently when I was starting on a project and
+looked for some plug-and-play method for creating users. After all, in today’s
+social-driven world, any kind of content management system is bound to have a
+basic username/password (or, better yet, email/password)<span class="widont">&nbsp;</span>foundation.</p>
+<p>However, my search came up<span class="widont">&nbsp;</span>empty.</p>
+<p><em><span class="caps">NOTE</span>: Yeah, I realize “escargo” should be “escargot.” Later on I may change<span class="widont">&nbsp;</span>it.</em></p>
+<h1 id="starting-small">Starting Small</h1>
+<p><img src="https://openclipart.org/image/300px/svg_to_png/248466/pyramid.png" alt="pyramid"></p>
+<p>So I decided to start my own project called <strong>Refactor</strong>, which is a set of
+projects with common functionalities (in the form of microservices) to build a
+<span class="caps">CMS</span> from the ground<span class="widont">&nbsp;</span>up.</p>
+<p>I started with a user system (which is coming soon), but then realized that
+part of a user management system was email. There are various situations in
+which a <span class="caps">CMS</span> needs to email a<span class="widont">&nbsp;</span>user:</p>
+<ul>
+<li>Verification of new user<span class="widont">&nbsp;</span>accounts.</li>
+<li>Password reset/reminder (preferably a <strong>reset</strong> since the database is not
+supposed to know a<span class="widont">&nbsp;</span>password).</li>
+<li>Marketing, advertising, notifications,<span class="widont">&nbsp;</span>etc.</li>
+</ul>
+<p>Obviously, as ubiquitous as email is these days most languages have some
+semblance of an email library. But the fact that libraries exist to do this
+only constitutes automated emails from scratch with the framework. This breaks
+a tenant of <span class="caps">REST</span> <span class="caps">API</span><span class="widont">&nbsp;</span>methodology.</p>
+<h1 id="introducing-escargo-t-">Introducing: Escargo[t]</h1>
+<p><img src="https://openclipart.org/image/300px/svg_to_png/166284/escargot-decroissance.png" alt="escargot"></p>
+<p>Hence, I created Escargo, the zero-configuration <span class="caps">REST</span> <span class="caps">API</span> for email. Literally
+all one needs on his system is <a href="https://www.vagrantup.com/">Vagrant</a> (and
+git, for now) and he’ll be able to get a <span class="caps">REST</span> <span class="caps">API</span> up and running for<span class="widont">&nbsp;</span>email.</p>
+<p>The power here is that there’s absolutely <strong>no configuration and no setup</strong>.
+The microservice is up instantly and the user can send an email<span class="widont">&nbsp;</span>easily.</p>
+
+            <p class="more"><a href="/articles/Escargo:-The-Zero-Configuration-Email-API/">more</a></p>
+          </section>
+        </article>
+        <article class="article intro">
+          <header>
+            <p class="date"><span>11. November 2017</span></p>
+            <h2><a href="/articles/basic-parts-of-an-api-request/">Basic Parts of an API Request</a></h2>
+          </header>
+          <section class="content"><h1 id="basic-parts-of-an-api-request">Basic Parts of an <span class="caps">API</span><span class="widont">&nbsp;</span>Request</h1>
+<p>Sometimes understanding URLs and requests can be intimidating. If you’re wanting
+to get into <span class="caps">API</span> programming (e.g. <span class="caps">REST</span>, <span class="caps">SOAP</span>, web [which isn’t considered
+part of the family, but follows the same procedures]) it helps to understand
+basic components of an <span class="caps">API</span><span class="widont">&nbsp;</span>request.</p>
+<p>The two major parts developers care about<span class="widont">&nbsp;</span>are:</p>
+<ul>
+<li>Request <span class="caps">URL</span></li>
+<li>Reqeust Body</li>
+</ul>
+<p>I’ll be using a post office analogy. Because post offices are great ancient
+American relics (yes, that was sarcasm). The equivalences for these for the
+post office analogy<span class="widont">&nbsp;</span>are:</p>
+<table>
+    <tr>
+        <td>
+            Request <span class="caps">URL</span>
+        </td>
+        <td>
+             Shipping Address
+         </td>
+     </tr>
+     <tr>
+         <td>
+             Request Body
+         </td>
+         <td>
+              Letter
+          </td>
+      </tr>
+ </table>
+
+<p>Obviously, there are nuances with each service, but those are the 2 major
+components. Now, lets’ dive into each<span class="widont">&nbsp;</span>component.</p>
+
+            <p class="more"><a href="/articles/basic-parts-of-an-api-request/">more</a></p>
+          </section>
+        </article>
+        <article class="article intro">
+          <header>
+            <p class="date"><span>11. November 2017</span></p>
+            <h2><a href="/articles/javascript-programming-for-non-javascript-programmers/">JavaScript Programming for Non-JavaScript Programmers</a></h2>
+          </header>
+          <section class="content"><p>No technology has divided the programming community more than JavsScript, mainly
+because it’s the been de-facto standard for web pages since around 2012, or
+possibly earlier. Developers either love it or hate it. I’m in the camp that
+says let’s do without it. But that’s for another<span class="widont">&nbsp;</span>post.</p>
+<p>From my experience understanding JavaScript can be a challenge if you spend the
+majority of your time in a non-JavaScript<span class="widont">&nbsp;</span>environment.</p>
+<h1 id="ur-doing-it-rong">ur doing it<span class="widont">&nbsp;</span>rong</h1>
+<p>Basically, early on my projects began like this. You might have had similar<span class="widont">&nbsp;</span>experiences.</p>
+<p>Most tutorials start you out in javascript with just the straight-up code, as
+shown<span class="widont">&nbsp;</span>below.</p>
+<pre><code>&lt;html&gt;
+    &lt;head&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            document.write.println(&quot;Hello World!&quot;);
+        &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre><p>This works. Great. If you’re anything like me you probably thought, “This is
+great! Now I know how to write<span class="widont">&nbsp;</span>JavaScript!”</p>
+<p>Then I looked on Google for neat JavaScript-y things to do like changing text
+on when a button is pressed. So, copy, paste the<span class="widont">&nbsp;</span>code!</p>
+<pre><code>&lt;html&gt;
+    &lt;head&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            var button = document.getElementById(&#39;pressme&#39;);
+            button.addEventListener(&#39;click&#39;, function () {
+                alert(&#39;hello, world!&#39;);
+            });
+        &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;button id=&quot;pressme&quot;&gt;Press me!&lt;/button&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre><p>Reading this, this makes sense. You’re telling the JavaScript engine to look in
+the document object (or <span class="caps">DOM</span>) for a button (which <em>does</em> exist) and then tell
+javascript to pop up an alert when the page is loaded!<span class="widont">&nbsp;</span>Simple!</p>
+<p>JavaScript veterans are shaking their heads now. Here’s why this won’t<span class="widont">&nbsp;</span>work.</p>
+<h1 id="a-lt-dr-explanation-of-why-this-happens">A <span class="caps">LT</span>;<span class="caps">DR</span> Explanation of Why This<span class="widont">&nbsp;</span>Happens</h1>
+<p>When the page loads in a browser, the browser engine loads the page and parses
+the content linearly. After, just saying that, you can see the problem: the
+browser engine can’t see the button<span class="widont">&nbsp;</span>yet!</p>
+<p>In fact, if you look in the console, you’ll see the error message<span class="widont">&nbsp;</span>displayed.</p>
+<p>We can get around this in 2 ways. The first way is simply to move the script
+portion to below the<span class="widont">&nbsp;</span>body.</p>
+<pre><code>&lt;html&gt;
+    &lt;head&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;button id=&quot;pressme&quot;&gt;Press me!&lt;/button&gt;
+    &lt;/body&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        var button = document.getElementById(&#39;pressme&#39;);
+        button.addEventListener(&#39;click&#39;, function () {
+            alert(&#39;hello, world!&#39;);
+        });
+    &lt;/script&gt;
+&lt;/html&gt;</code></pre><p>This is fairly standard, especially if you want to include external scripts and
+scripts from a <span class="caps">CDN</span>, since the browser engine can load the direct content of the
+page before waiting eons for a request from an external<span class="widont">&nbsp;</span><span class="caps">CDN</span>.</p>
+<p>Or, there’s a more JavaScript-y way to do it. The document object exists once
+we hit the <code>&lt;script&gt;</code> tag, so we can add a <strong>listener</strong> to the<span class="widont">&nbsp;</span><span class="caps">DOM</span>.</p>
+<pre><code>&lt;html&gt;
+    &lt;head&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            document.addEventListener(&#39;DOMContentLoaded&#39;, function (e) {
+                var button = document.getElementById(&#39;pressme&#39;);
+                button.addEventListener(&#39;click&#39;, function () {
+                    alert(&#39;hello!&#39;);
+                });
+            });
+        &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;button id=&quot;pressme&quot;&gt;Press me!&lt;/button&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre><p>Notice we need to use the <code>DomContentLoaded</code> event or else the code will not
+find the button. In this case the JavaScript engine waits until all the content
+of the page is loaded (essentially doing the same thing as adding the script
+to the bottom–except that just the code inside the event handler is
+executed). Because the <span class="caps">DOM</span> content is loaded, that means the button exists, and
+the button can now use a click event<span class="widont">&nbsp;</span>listener.</p>
+<h1 id="the-point-rocket-vs-roadie">The Point: Rocket vs.<span class="widont">&nbsp;</span>Roadie</h1>
+<p>I’ve been realizing the way I thought about JavaScript was all wrong, mainly
+because JavaScript is mainly taught to web<span class="widont">&nbsp;</span>develeopers.</p>
+<p>Most langauges you can think of as a rocket ship. You hit the <strong><span class="caps">EXECUTE</span></strong> button
+and things start happening. Once the program executes, everything that goes
+on is already there, and you’re already aware of what the input is and output
+should<span class="widont">&nbsp;</span>be.</p>
+<p><img src="https://src-r-r.github.io/images/js-for-no-js/apollo-launch.jpg" alt="Rocket Launch"></p>
+<p>Even when writing plug-ins this is true. Plug-in <span class="caps">API</span> usually tells you the
+expected input and<span class="widont">&nbsp;</span>output.</p>
+<p>However, writing JavaScript code, you need think like a roadie for a<span class="widont">&nbsp;</span>band.</p>
+<p><img src="https://src-r-r.github.io/images/js-for-no-js/roadie.jpg" alt="Rocket Launch"></p>
+<p>The band is the main event. The roadie is there, waiting for the next order
+order form the band. However, the roadie has to wait for the band’s instruction.
+Doesn’t matter if the roadie is the fast and efficient. Starting a stage
+tear-down during the climactic song set will ruin the performance and the
+roadie will be<span class="widont">&nbsp;</span>fired.</p>
+<p>But, once the band asks the roadie to do something (moving equipment, testing
+the batteries on mics, handing out water), he knows exactly what to do and can
+do it without the band’s<span class="widont">&nbsp;</span>instructions.</p>
+<p>The same analogy applies to JavaScript. With JavaScript programming you need
+to <em>wait</em> for things to happen. Especially when adding on differnet JavaScript
+framworks like Vue or Angular, the complexity increases, so the programmer
+must not expect that once you hit a button that button is considered<span class="widont">&nbsp;</span>hit.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Even now some aspects of JavaScript confuse or surprise me. For a language that
+appeared as an afterthought it has become the backbone of the web. So, for
+programmers who are used to Java or C++ or some other framework, you, like me,
+might be a little confused as to what goes on under the hood. But, hopefully,
+I was able to explain what goes on in a more visual<span class="widont">&nbsp;</span>way.</p>
+
+          </section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">&laquo; Newer</a><a href="/page/3/">Next page &raquo;</a>
+        </div>
+        <section class="about"><p>Wintersmith is made by <a href="http://johan-nordberg.com">Johan Nordberg</a> and licensed under the <a href="http://opensource.org/licenses/MIT">MIT-license</a>.
+This footer text can be edited in about.md</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur.</p>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est laborum.</p>
+
+        </section>
+        <section class="copy">
+          <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

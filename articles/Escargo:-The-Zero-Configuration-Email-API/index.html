@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Escargo: The Zero-Configuration Email API - The Source-r-r
+    </title>
+    <link rel="alternate" href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangrously | Serve Ethically | Think Technically">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Escargo: The Zero-Configuration Email API</h1>
+        <p class="author">Written by <span class="author"></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><h1 id="don-t-re-invent-the-wheel">Don’t Re-Invent the<span class="widont">&nbsp;</span>Wheel</h1>
+<p><img src="https://openclipart.org/image/300px/svg_to_png/155149/pre-historic-wheel-cartoon.png" alt="wheel"></p>
+<p>One of the principles of <span class="caps">REST</span> APIs is the ability to reuse common parts,
+starting from the ground up. Then, if one of those parts is broken, just go in,
+fix that part, and you’re good to<span class="widont">&nbsp;</span>go.</p>
+<p>Which is why I was a bit baffled recently when I was starting on a project and
+looked for some plug-and-play method for creating users. After all, in today’s
+social-driven world, any kind of content management system is bound to have a
+basic username/password (or, better yet, email/password)<span class="widont">&nbsp;</span>foundation.</p>
+<p>However, my search came up<span class="widont">&nbsp;</span>empty.</p>
+<p><em><span class="caps">NOTE</span>: Yeah, I realize “escargo” should be “escargot.” Later on I may change<span class="widont">&nbsp;</span>it.</em></p>
+<h1 id="starting-small">Starting Small</h1>
+<p><img src="https://openclipart.org/image/300px/svg_to_png/248466/pyramid.png" alt="pyramid"></p>
+<p>So I decided to start my own project called <strong>Refactor</strong>, which is a set of
+projects with common functionalities (in the form of microservices) to build a
+<span class="caps">CMS</span> from the ground<span class="widont">&nbsp;</span>up.</p>
+<p>I started with a user system (which is coming soon), but then realized that
+part of a user management system was email. There are various situations in
+which a <span class="caps">CMS</span> needs to email a<span class="widont">&nbsp;</span>user:</p>
+<ul>
+<li>Verification of new user<span class="widont">&nbsp;</span>accounts.</li>
+<li>Password reset/reminder (preferably a <strong>reset</strong> since the database is not
+supposed to know a<span class="widont">&nbsp;</span>password).</li>
+<li>Marketing, advertising, notifications,<span class="widont">&nbsp;</span>etc.</li>
+</ul>
+<p>Obviously, as ubiquitous as email is these days most languages have some
+semblance of an email library. But the fact that libraries exist to do this
+only constitutes automated emails from scratch with the framework. This breaks
+a tenant of <span class="caps">REST</span> <span class="caps">API</span><span class="widont">&nbsp;</span>methodology.</p>
+<h1 id="introducing-escargo-t-">Introducing: Escargo[t]</h1>
+<p><img src="https://openclipart.org/image/300px/svg_to_png/166284/escargot-decroissance.png" alt="escargot"></p>
+<p>Hence, I created Escargo, the zero-configuration <span class="caps">REST</span> <span class="caps">API</span> for email. Literally
+all one needs on his system is <a href="https://www.vagrantup.com/">Vagrant</a> (and
+git, for now) and he’ll be able to get a <span class="caps">REST</span> <span class="caps">API</span> up and running for<span class="widont">&nbsp;</span>email.</p>
+<p>The power here is that there’s absolutely <strong>no configuration and no setup</strong>.
+The microservice is up instantly and the user can send an email<span class="widont">&nbsp;</span>easily.</p>
+<h2 id="wait-no-configuration-">Wait? No configuration?</h2>
+<p>That’s right. Well, almost right. The configuration needs to be passed in to the
+<span class="caps">POST</span> body. For<span class="widont">&nbsp;</span>example:</p>
+<pre><code>{
+    &quot;connection&quot;: {
+        &quot;conn_type&quot;: &quot;smtp&quot;,
+        &quot;host&quot;: &quot;mail.example.com&quot;,
+        &quot;port&quot;: 587
+    },
+    &quot;options&quot;: {
+        &quot;debug_level&quot;: 2,
+        &quot;login&quot;: {
+            &quot;user&quot;: &quot;noreply@example.com&quot;,
+            &quot;password&quot;: &quot;super-secret-pa55word&quot;
+        },
+        &quot;starttls&quot;: {}
+    },
+    &quot;sending&quot;: {
+        &quot;from&quot;: &quot;noreply@example.com&quot;,
+        &quot;to&quot;: &quot;some-user@gmail.com&quot;,
+        &quot;subject&quot;: &quot;Hello from Escargo!&quot;,
+        &quot;message&quot;: {
+            &quot;text_body&quot;: &quot;This is a test of Escargo, the 0-config Email API&quot;
+        }
+    }
+}</code></pre><p>I essentially just translated Python’s
+<a href="https://docs.python.org/3/library/smtplib.html">smtplib</a>
+to a function that was ready for a <span class="caps">JSON</span> structure. There’s only one endpoint to
+the service (<code>POST /</code>), that takes a body describing the type of connection,
+any options associated with the email, and anything you want to send with the
+email (<span class="caps">HTML</span> data, images,<span class="widont">&nbsp;</span>etc.)</p>
+<p>Documentation on the project can be read
+<a href="https://github.com/src-r-r/escargo">on the project’s GitHub<span class="widont">&nbsp;</span>Page</a></p>
+<h1 id="this-isn-t-the-end">This Isn’t The<span class="widont">&nbsp;</span>End</h1>
+<p>This is only the base of the pyramid. I’ll be coming up with more microservices
+to add to the <strong>Refraction</strong><span class="widont">&nbsp;</span>project.</p>
+<p>And if you have an open source project you think should be added, email me and
+I’ll be sure to add<span class="widont">&nbsp;</span>it.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">&laquo; Full blog</a></div>
+        <section class="about"><p>Wintersmith is made by <a href="http://johan-nordberg.com">Johan Nordberg</a> and licensed under the <a href="http://opensource.org/licenses/MIT">MIT-license</a>.
+This footer text can be edited in about.md</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur.</p>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est laborum.</p>
+
+        </section>
+        <section class="copy">
+          <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

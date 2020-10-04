@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>You Can't Write a Stage Play in ReStructuredText! (Part 1) - The Source-r-r
+    </title>
+    <link rel="alternate" href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangrously | Serve Ethically | Think Technically">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>You Can't Write a Stage Play in ReStructuredText! (Part 1)</h1>
+        <p class="author">Written by <span class="author"></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><h1 id="you-s-can-t-s-sup-can-sup-write-a-stage-play-in-restructuredtext-part">You <s>Can’t</s> <sup>Can</sup> Write a Stage Play in ReStructuredText!<span class="widont">&nbsp;</span>(Part</h1>
+<h1 id="1-">1 )</h1>
+<p>In this blog I’ll talk about my journey in writing a StagePlay in
+ReStructuredText, a popular Markup text format. In this first part I’ll talk
+about why this is important and the conversions I used in between standard
+stageplay<span class="widont">&nbsp;</span>format.</p>
+<h2 id="let-me-explain">Let Me Explain</h2>
+<p>I love markup languages. I like the simplicity of being able to seperate content
+and formatting, so that if I don’t like the color of something I can go into
+the <span class="caps">CSS</span> and change the color, without hunting through an <span class="caps">ODT</span> document to change
+every. Darn.<span class="widont">&nbsp;</span>Instance.</p>
+<p>I also enjoy writing fiction in my free time and have recently written a
+stageplay. What does this have to do with ReStructuredText, you<span class="widont">&nbsp;</span>ask?</p>
+<p>Like many developers I discovered markup languages via contributions to open
+source projects. I then began to use ReStructuredText in my own projects and
+in corporate environments. While others would send me clunky word documents, I’d
+send them a streamlined <span class="caps">PDF</span> converted from text, or, if they wanted, a word
+document, written just as easily as a<span class="widont">&nbsp;</span><span class="caps">PDF</span>.</p>
+<p>Long story short, I fell in love with ReStructuredText. Could I apply the same
+technique to publishing fiction as<span class="widont">&nbsp;</span>well?</p>
+<h2 id="formatting-is-important">Formatting is Important</h2>
+<p>Many editors and publishers require specific formats for authors’ work. On the
+lenient end are publishers that simply want something not printed on rainbow
+paper; on the strict end are publishers that will send work back if the margins
+are a milimeter<span class="widont">&nbsp;</span>off.</p>
+<p>Many authors have <a href="http://txt2tags.org/writing-book.html">written their books</a>
+[using MarkDown]
+(<a href="http://ianhocking.com/2013/06/22/writing-a-novel-using-markdown/">http://ianhocking.com/2013/06/22/writing-a-novel-using-markdown/</a>).
+This works great. Novels are simple enough you just need chapter headings,
+maybe a few dividers, and you’re good to<span class="widont">&nbsp;</span>go.</p>
+<p>But plays a bit more complex. They require scene specifiers, act specifiers,
+character tags, lines, stage direction<span class="widont">&nbsp;</span>&hellip;</p>
+<p>If you haven’t fallen asleep yet then you’re probably putting yourself in my
+shoes, overwhelmed by the work to be<span class="widont">&nbsp;</span>done.</p>
+<blockquote>
+<p>As an aside, I did a little research to see if there’s a special markup format
+for writing a stageplay. There is the open source syntax called
+<a href="https://fountain.io">Fountain</a> for screenplays, but screenlpays and stageplays
+are entirely different formats. I also ran across
+<a href="http://downplay.net/">DownPlay</a>, and got really excited, until I realized that
+it was specifically written for <a href="https://ulyssesapp.com/">Ulysses</a>, a Mac-only
+text<span class="widont">&nbsp;</span>editor.</p>
+</blockquote>
+<p>In any case, onto my<span class="widont">&nbsp;</span>journey.</p>
+<h2 id="step-1-what-is-a-standard-stageplay-format-">Step 1 - What is a Standard Stageplay<span class="widont">&nbsp;</span>Format?</h2>
+<p>Well, depends on your audience, or the person to whom you’re submitting. For
+my play, I used
+<a href="https://ptfaculty.gordonstate.edu/lking/CPF_play_formatting2.pdf">this <span class="caps">PDF</span></a>
+for reference. I then listed out all the properties of a stageplay that need<span class="widont">&nbsp;</span>formatting.</p>
+<ul>
+<li>Formatting:<ul>
+<li>Page: 8.5” x<span class="widont">&nbsp;</span>11”</li>
+<li>Font: Courier 12<span class="widont">&nbsp;</span>point.</li>
+</ul>
+</li>
+<li>Intro Pages:<ul>
+<li>Title Page (with appropriate margins).<ul>
+<li>Play Title</li>
+<li>Description of play (e.g. “A Play in Two<span class="widont">&nbsp;</span>Acts”)</li>
+<li>“by”</li>
+<li>Author’s Name</li>
+<li>Copyright information and Author’s information at<span class="widont">&nbsp;</span>bottom</li>
+</ul>
+</li>
+<li>Personae Page<ul>
+<li>“Cast of Characters”<span class="widont">&nbsp;</span>Title</li>
+<li>A table of character names and<span class="widont">&nbsp;</span>descriptions</li>
+<li>Scene and Time descriptions, if there’s<span class="widont">&nbsp;</span>room</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The Play Itself (where the &#128664; meets the &#128739;)<ul>
+<li>Correct page formatting with page numbering in the top<span class="widont">&nbsp;</span>right.</li>
+<li>Act and Scene<span class="widont">&nbsp;</span>Designations</li>
+<li><code>SETTING:</code> and <code>AT RISE:</code> delegations in a tabular<span class="widont">&nbsp;</span>format</li>
+<li>Character tags</li>
+<li>Character dialogue</li>
+<li>Stage direction</li>
+<li>End of act/scene<span class="widont">&nbsp;</span>delgations</li>
+</ul>
+</li>
+</ul>
+<h2 id="step-2-restucturedtext-equivalences">Step 2 - ReStucturedText<span class="widont">&nbsp;</span>Equivalences</h2>
+<p>Here’s the part that took a little experimenting. Essentially, there should be
+either a ReStructuredText syntax rule or ReStructuredText directive that
+correlates to one of the properties. This is a general rule, because some of
+the properties should be dealt with during the <code>pandoc</code> phase where conversion<span class="widont">&nbsp;</span>occurs.</p>
+<p>Here is what I came up<span class="widont">&nbsp;</span>with:</p>
+<table>
+    <tr>
+        <th>Stage play property</th>
+        <th>ReStructuredText equivalent</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>Title</td>  <td>ReStructuredText title</td>
+        <td>
+            <code><pre>=======
+My Play
+=======</code>
+        </td>
+    </tr>
+    <tr>
+        <td>Subtitle</td>
+        <td rowspan="4">ReStructuredText subtitle</td>
+        <td rowspan="4"><pre>----------------
+A Play in 2 Acts
+----------------
+----------------
+by
+----------------
+----------------
+Author
+----------------</pre>
+        </td>
+    </tr>
+    <tr>
+        <td>Description</td>
+    </tr>
+    <tr>
+        <td>"by"</td>
+    </tr>
+    <tr>
+        <td>Author's Name</td>
+    </tr>
+    <tr>
+        <td>Personae Page</td>
+        <td>- Title is a ReStructuredText title<br/>
+            - Characters are listed in tabular format with the character's
+              name as the first colun, and the description as the second
+              column.<br/>
+             <i>(hint: this is where the <code>..list-table</code>
+                directive comes in handy)</i>
+        </td>
+        <td><pre>..list-table::
+    * - Fred
+      - Our main character
+    * - Jasmine
+      - Fred's best friend.</pre>
+        </td>
+    </tr>
+    <tr>
+        <td>Act Designations</td>
+        <td>Header 1 (underlined with `=`)</td>
+        <td><pre>Act I
+-----</pre></td>
+    </tr>
+    <tr>
+        <td>Scene Designations</td>
+        <td>Header 2 (underlined with `-`)</td>
+        <td><pre>Scene 1
+-------</pre></td>
+    </tr>
+    <tr>
+        <td>`<span class="caps">SETTING</span>` <span class="amp">&amp;</span> `<span class="caps">AT</span> <span class="caps">RISE</span>`</td>
+        <td>Table</td>
+        <td><pre>..list-table::
+    * - SETTING:
+      - Some time in some random location
+    * - AT RISE:
+      - Chaos happens.</pre></td>
+    </tr>
+    <tr>
+        <td>Stage Direction</td>
+        <td>default text (no indentation or start character)</td>
+        <td><pre>Character does something very interesting.</pre></td>
+    </tr>
+    <tr>
+        <td>Character line</td>
+        <td>Definition</td>
+        <td><pre>CHARACTER
+    This is the character's dialogue.</pre></td>
+    </tr>
+</table>
+
+<p>Some of these I skipped, with the intention of adding them post-production,
+most notably the author information on the title<span class="widont">&nbsp;</span>page.</p>
+<h2 id="up-next-">Up Next &hellip;</h2>
+<p>Whew! That was the hard part. In the next post I’ll talk about how to convert
+the ReStructuredText into a document with the correct<span class="widont">&nbsp;</span>formatting.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">&laquo; Full blog</a></div>
+        <section class="about"><p>Wintersmith is made by <a href="http://johan-nordberg.com">Johan Nordberg</a> and licensed under the <a href="http://opensource.org/licenses/MIT">MIT-license</a>.
+This footer text can be edited in about.md</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur.</p>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est laborum.</p>
+
+        </section>
+        <section class="copy">
+          <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

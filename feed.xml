@@ -1,0 +1,1599 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Source-r-r</title>
+    <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"></atom:link>
+    <link>http://localhost:8080</link>
+    <description>Live Dangrously | Serve Ethically | Think Technically</description>
+    <pubDate>Sun, 04 Oct 2020 17:00:00 -0700</pubDate>
+    <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
+    <language>en</language>
+    <item>
+      <title>Justfile takes the pain out of reading files in Python</title>
+      <link>http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</link>
+      <pubDate>Sun, 04 Oct 2020 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</guid>
+      <author></author>
+      <description>&lt;h1 id=&quot;full-disclosure-&quot;&gt;Full Disclosure…&lt;/h1&gt;
+&lt;p&gt;Full disclosure, this is my library. I just figured I’d promote it
+while showing examples of file i/o in Python.&lt;/p&gt;
+&lt;h1 id=&quot;the-boring-painful-hair-pulling-excruciating-way&quot;&gt;The Boring/Painful/Hair-pulling/Excruciating Way&lt;/h1&gt;
+&lt;p&gt;This is how official Python tutorial says to read a file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt; open(&lt;span class=&quot;string&quot;&gt;'workfile'&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; f:
+    read_data = f.read()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you’re new to programming this probably looks like a bunch of
+gobbledy-gook. If you’re
+a veteran you may find this annoying but still
+understand what’s happening and you understand the
+reasoning behind it&lt;/p&gt;
+&lt;p&gt;Oh, but wait…we want to add error checking if the file doesn’t exist.
+Or if we can’t open it.&lt;/p&gt;
+&lt;p&gt;Let’s add some more code.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;:
+    &lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt; open(&lt;span class=&quot;string&quot;&gt;'workfile'&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; f:
+        read_data = f.read()
+catch FileNotFoundError &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; e:
+    print(&lt;span class=&quot;string&quot;&gt;&quot;not found&quot;&lt;/span&gt;);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Okay, whew! At least that’s over. Just imagine if we had to write to
+a file. Ah, what the heck! Let’s do it.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt; open(&lt;span class=&quot;string&quot;&gt;'workfile'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'w+'&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; f:
+    f.write(&lt;span class=&quot;string&quot;&gt;&quot;hello world&quot;&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Not too bad. But we still have some errors to contend with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The path to the file doesn’t exist.&lt;/li&gt;
+&lt;li&gt;The file already exists&lt;/li&gt;
+&lt;li&gt;We don’t have permission to write a file there.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Okay, that’s no problem, right? We just have to add about 10 more lines
+of code. No biggie!&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; os
+OUTFILE = &lt;span class=&quot;string&quot;&gt;&quot;/home/disgruntledprogrammer/somedir/somefile.txt&quot;&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; os.path.exists(os.path.dirname(OUTFILE)):
+    os.makedirs(os.path.dirname(OUTFILE))
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; os.path.exists(OUTFILE):
+    &lt;span class=&quot;keyword&quot;&gt;raise&lt;/span&gt; RuntimeError(&lt;span class=&quot;string&quot;&gt;&quot;file exists&quot;&lt;/span&gt;)
+&lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt; open(OUTFILE, &lt;span class=&quot;string&quot;&gt;'w+'&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; f:
+    f.write(&lt;span class=&quot;string&quot;&gt;&quot;hello world&quot;&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then your boss comes to you and asks you to read a config file and
+write out data to an XML file. Then in a fit of rage you grab your
+entire workstation march over to the window and throw it out onto the
+street 3 floors below. While this action doesn’t result in physical
+injury the company fines you
+$10,300 for destruction of property. But by the time they fine you
+you’re already on the run,
+living out of your van with an unregistered license plate, selling
+potato chips on the black market and using burner phones to call your
+mom to tell her you’re alright but you can’t make it for Christmas this
+year. But that’s a story for another time.&lt;/p&gt;
+&lt;p&gt;As you can see all we’re trying to do is write to a file, yet we have a
+lot of overhead to make it work.&lt;/p&gt;
+&lt;h1 id=&quot;enter-justfile&quot;&gt;Enter &lt;code&gt;justfile&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;I realized one day, why can’t I “just write” to a file, or “just read” 
+to it without having to wory about all these edge cases?&lt;/p&gt;
+&lt;p&gt;So that’s why I created &lt;code&gt;justfile&lt;/code&gt;. It’s a library that allows you
+to simply read and write without worrying about error checking.&lt;/p&gt;
+&lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+&lt;p&gt;You can install include justfile in your projects the way you would
+any other python package:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;pip install justfile&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;reading&quot;&gt;Reading&lt;/h2&gt;
+&lt;p&gt;Here’s an example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; read
+print(read(&lt;span class=&quot;string&quot;&gt;&quot;file-does-exist&quot;&lt;/span&gt;))
+&lt;span class=&quot;comment&quot;&gt;# Hello, World!&lt;/span&gt;
+print(read(&lt;span class=&quot;string&quot;&gt;&quot;file-does-not-exist&quot;&lt;/span&gt;))
+&lt;span class=&quot;comment&quot;&gt;# None&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;“&lt;code&gt;None&lt;/code&gt;?” you say. “But that breaks all programming conventions!”&lt;/p&gt;
+&lt;p&gt;Don’t worry, Exception fan, I hear you.&lt;/p&gt;
+&lt;p&gt;So if you’re the type that wants there to be an error thrown if
+somethong goes wrong, I’ve got you covered!&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; read
+print(read(&lt;span class=&quot;string&quot;&gt;'file'&lt;/span&gt;, complain=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;))                         
+&lt;span class=&quot;comment&quot;&gt;# ---------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# JustFileException                         Traceback (most recent call last)&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# &amp;lt;ipython-input-5-6ded5f7518eb&amp;gt; in &amp;lt;module&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# ----&amp;gt; 1 print(read('file', complain=True))&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# ~/.local/lib/python3.8/site-packages/justfile/io.py in read(path, mode, complain, default_content)&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#      25                 if not complain:&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#      26                         return default_content&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# ---&amp;gt; 27                 raise e&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#      28 &lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#      29 def write(path, content, mode=&quot;w+&quot;, create_dirs=True, complain=False):&lt;/span&gt;
+
+&lt;span class=&quot;comment&quot;&gt;# ~/.local/lib/python3.8/site-packages/justfile/io.py in read(path, mode, complain, default_content)&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#      17         try:&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#      18                 if not os.path.exists(path):&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# ---&amp;gt; 19                         raise JustFileException(f&quot;{path} does not exist.&quot;)&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#      20                 if not os.path.exists(path):&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;#      21                         return None&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# &lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# JustFileException: file does not exist.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Bear with me here, though. There is an advantage to keeping
+&lt;code&gt;complain=False&lt;/code&gt;. This allows you better control over how not having
+the file is handled.&lt;/p&gt;
+&lt;p&gt;For example, by providing a default config:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; read
+CONFIG = parse_yaml(read(&lt;span class=&quot;string&quot;&gt;&quot;config.yaml&quot;&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot;
+x: 1
+y: 4&quot;&quot;&quot;&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Or warning the user that a file is missing:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; read
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; read(&lt;span class=&quot;string&quot;&gt;&quot;config.yaml&quot;&lt;/span&gt;):
+    print(&lt;span class=&quot;string&quot;&gt;&quot;Config is missing&quot;&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;writing-appending&quot;&gt;Writing &amp;amp; Appending&lt;/h2&gt;
+&lt;p&gt;Writing to a file is just as simple.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; read, write
+write(&lt;span class=&quot;string&quot;&gt;&quot;somefile.txt&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;Hello, World!&quot;&lt;/span&gt;)
+print(read(&lt;span class=&quot;string&quot;&gt;&quot;somefile.txt&quot;&lt;/span&gt;))
+&lt;span class=&quot;comment&quot;&gt;# Hello, World!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;No directory? No problem?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; read, write
+write(&lt;span class=&quot;string&quot;&gt;&quot;./path/to/some/somefile.txt&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;Hello, World!&quot;&lt;/span&gt;)
+print(read(&lt;span class=&quot;string&quot;&gt;&quot;./path/to/some/somefile.txt&quot;&lt;/span&gt;))
+&lt;span class=&quot;comment&quot;&gt;# Hello, World!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Unless you don’t want to create directories for some reason…&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; read, write
+write(&lt;span class=&quot;string&quot;&gt;&quot;./path/to/some/somefile.txt&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;Hello, World!&quot;&lt;/span&gt;, create_dirs=&lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;)
+print(read(&lt;span class=&quot;string&quot;&gt;&quot;./path/to/some/somefile.txt&quot;&lt;/span&gt;))
+&lt;span class=&quot;comment&quot;&gt;# None&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And remember, you can always complain…&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; read, write
+write(&lt;span class=&quot;string&quot;&gt;&quot;./path/to/some/somefile.txt&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;Hello, World!&quot;&lt;/span&gt;, create_dirs=&lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;, complain=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+
+&lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot;
+FileNotFoundError                         Traceback (most recent call last)
+&amp;lt;ipython-input-12-7a87c377d6d8&amp;gt; in &amp;lt;module&amp;gt;
+----&amp;gt; 1 write(&quot;./path/to/some/somefile.txt&quot;, &quot;Hello, World!&quot;, create_dirs=False, complain=True)
+
+~/.local/lib/python3.8/site-packages/justfile/io.py in write(path, content, mode, create_dirs, complain)
+     51         except Exception as e:
+     52                 if complain:
+---&amp;gt; 53                         raise e
+     54                 return False
+     55 
+
+~/.local/lib/python3.8/site-packages/justfile/io.py in write(path, content, mode, create_dirs, complain)
+     46                 if not os.path.exists(d) and len(d) and create_dirs:
+     47                         os.makedirs(d)
+---&amp;gt; 48                 with open(path, mode) as f:
+     49                         f.write(content)
+     50                         return True
+
+FileNotFoundError: [Errno 2] No such file or directory: './path/to/some/somefile.txt'
+&quot;&quot;&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Keep in mind this overwrites a file. What if you want to append to
+a file?&lt;/p&gt;
+&lt;p&gt;There’s also an &lt;code&gt;append&lt;/code&gt; function for just that purpose!&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; justfile.io &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; (read, write, append)
+write(&lt;span class=&quot;string&quot;&gt;&quot;file.txt&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;Hello, World!&quot;&lt;/span&gt;)
+append(&lt;span class=&quot;string&quot;&gt;&quot;file.txt&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot; This is Sparta!&quot;&lt;/span&gt;)
+print(read(&lt;span class=&quot;string&quot;&gt;&quot;file.txt&quot;&lt;/span&gt;))
+&lt;span class=&quot;comment&quot;&gt;# &quot;Hello, World! This is Sparta!&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;As you can see, reading and writing files in python doesn’t have to
+cause a complete mental breakdown. Using the &lt;code&gt;justfile&lt;/code&gt; library can
+help with file i/o and handle a lot of the edge cases that are messy.&lt;/p&gt;
+&lt;p&gt;Note that I wouldn’t use &lt;code&gt;justfile&lt;/code&gt; for &lt;em&gt;every&lt;/em&gt; instance of file i/o.
+For example, it won’t handle chunking data very well, and it expects
+you to pass it a &lt;em&gt;path&lt;/em&gt; instead of a file handle (so using &lt;code&gt;sys.stdout&lt;/code&gt;
+wouldn’t work for instance).&lt;/p&gt;
+&lt;p&gt;But for the vast majority of cases reading plain text, it’s just the
+ticket!&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>WebSockets: How to Give a Slide Presentation from Halfway Across The World</title>
+      <link>http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</link>
+      <pubDate>Mon, 14 Sep 2020 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</guid>
+      <author></author>
+      <description>&lt;h1 id=&quot;church-song-lyrics&quot;&gt;Church Song Lyrics&lt;/h1&gt;
+&lt;p&gt;Before I delve into a code, let me explain a bit about the example problem.&lt;/p&gt;
+&lt;p&gt;I used to run the overhead at my church. For those not familar with church,
+during worship service it’s common for the current song to be displayed on a large
+display screen for people to join the worship team, kind of like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://fthmb.tqn.com/By6QhFoVDLXh49uX7N7-5DV3aR8=/768x0/filters:no_upscale()/Praise-and-Worship-58b5c8ba5f9b586046caf1fa.jpg&quot; alt=&quot;Overhead&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Most churches use PowerPoint for this. If a church is technically-adept enough,
+they’ll often use a special church presentation software. &lt;a href=&quot;https://openlp.org/&quot;&gt;OpenLP&lt;/a&gt;
+is one awesome open source application I’ve used, but there are some really great
+commercial versions as well.&lt;/p&gt;
+&lt;p&gt;But most of these involve a person having to sit in a central location to control the
+screen.&lt;/p&gt;
+&lt;p&gt;I thought one day.. “What if the person running the lyrics can sit anywhere?” Maybe
+they’re ill with the flu and they need to stay home but they’re the only one who can
+run it. Or they want to sit with their family.&lt;/p&gt;
+&lt;p&gt;So, can we design a system that listens for commands (perhaps given by a REST request)
+then hands that command off to an application to display?&lt;/p&gt;
+&lt;p&gt;Yes we can!&lt;/p&gt;
+&lt;p&gt;Very briefly it would look like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/overhead-websocket-diagram.png&quot; alt=&quot;diagram 1&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;on-a-web-page&quot;&gt;On a Web Page&lt;/h2&gt;
+&lt;p&gt;Another “requirement” – let’s use the browser as the application container.
+Can this work? What’s needed for a church presentation?&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Full screen (nobody wants to see the URL bar during worship).&lt;/li&gt;
+&lt;li&gt;Respond immediately to navigation (e.g. next slide when user presses the arrow key).&lt;/li&gt;
+&lt;li&gt;Styling (although, it’s common now to use standard white-on-black)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Obviously, #3 is covered on day 1 for any web development course. What about #1?
+Is it possible to get full screen in the web browser?&lt;/p&gt;
+&lt;p&gt;If you’ve ever used Netflix or YouTube (and who hasn’t?), you know the answer is yes. But what part in
+the stack controls this?&lt;/p&gt;
+&lt;p&gt;A quick search of the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API&quot;&gt;Mozilla Web API&lt;/a&gt; reveals that it’s part of the JavaScript API. Not only that,
+but most of the functions &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API#specifications&quot;&gt;are supported by most major browsers&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;While implementing full-screen would be a fun exercise, though, I want to focus on &lt;strong&gt;#2 - navigation&lt;/strong&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;the-example-song&quot;&gt;The Example Song&lt;/h1&gt;
+&lt;p&gt;For our demonstration we’ll use the lyrics from an old-time classic _Mary Had a Little
+Lamb_:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Mary had a little lamb.&lt;/p&gt;
+&lt;p&gt;It’s fleece was white a snow&lt;/p&gt;
+&lt;p&gt;And everywhere that Mary whent&lt;/p&gt;
+&lt;p&gt;The lamb was sure to go&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Typically for worship presentatations there are multiple lines per slide, but for the
+sake of simplicity we’ll use one line per slide.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;LYRICS = [
+  &lt;span class=&quot;string&quot;&gt;&quot;Mary had a little lamb&quot;&lt;/span&gt;,
+  &lt;span class=&quot;string&quot;&gt;&quot;It's fleece was white as snow&quot;&lt;/span&gt;,
+  &lt;span class=&quot;string&quot;&gt;&quot;And everywhere that Mary went&quot;&lt;/span&gt;,
+  &lt;span class=&quot;string&quot;&gt;&quot;The lamb was sure to go&quot;&lt;/span&gt;,
+];&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We’ll also assign the following commands for the following actions:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;quot;f&amp;quot;             =&amp;gt;  Go to first slide.
+&amp;lt;arrow_down&amp;gt;    =&amp;gt;  Go to next slide.
+&amp;lt;arrow_up&amp;gt;      =&amp;gt;  Go to previous slide.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Since we’re having to listen to actions, let’s put the lyrics in a class to have easy
+control over them.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;
+&lt;span class=&quot;keyword&quot;&gt;type&lt;/span&gt; Show = &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt; | &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;;
+
+&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; PresentationController {
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; LYRICS = [
+    &lt;span class=&quot;string&quot;&gt;&quot;Mary had a little lamb&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;It's fleece was white as snow&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;And everywhere that mary went&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;The lamb was sure to go&quot;&lt;/span&gt;,
+  ];
+
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;constructor&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; show: Show&lt;/span&gt;) {}
+
+  &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; current() {
+    &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; lyr = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.LYRICS[&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i];
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Slide(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.show, lyr);
+  }
+
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; next() {
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i &amp;lt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.LYRICS.length - &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i += &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.current();
+  }
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; previous() {
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i &amp;gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i -= &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.current();
+  }
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; first() {
+    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.current();
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;show&lt;/code&gt; argument we’ll fill in later. &lt;/p&gt;
+&lt;h1 id=&quot;using-websockets&quot;&gt;Using WebSockets&lt;/h1&gt;
+&lt;p&gt;WebSockets allow a client script to wait and receive commands from a server. You can
+think of it as like a server all its own, but running in the client space.&lt;/p&gt;
+&lt;p&gt;More documenation &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API&quot;&gt;is available here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;front-end-fe-server-s-and-client-c-&quot;&gt;Front-End (FE), Server (S), and Client (C)&lt;/h2&gt;
+&lt;h3 id=&quot;front-end&quot;&gt;Front-end&lt;/h3&gt;
+&lt;p&gt;For our application, the JavaScript code for the web pages will open a connection with
+the server and wait for commands form a remote client.&lt;/p&gt;
+&lt;h3 id=&quot;server&quot;&gt;Server&lt;/h3&gt;
+&lt;p&gt;The server will need a request framework to listen for connections. The server
+framework can be whatever you want it to be but for our purposes we’ll be using
+Node.js, so the Express library will be used.&lt;/p&gt;
+&lt;h3 id=&quot;client&quot;&gt;Client&lt;/h3&gt;
+&lt;p&gt;We’ll worry about this last, since REST will be used for the transport layer. We can
+send the command over curl if needed, as long as it agrees with the Server’s schema.&lt;/p&gt;
+&lt;h2 id=&quot;design-of-the-sever-&quot;&gt;Design of the Sever.&lt;/h2&gt;
+&lt;p&gt;We need to think of this in reverse. We essentially don’t care what the FE is sending
+us (yes, in a production application we need to worry about logging in, errors, and
+more–remember, start simple). We’re only concerned with what the C is sending us, and
+then we’ll send that to the FE.&lt;/p&gt;
+&lt;h3 id=&quot;how-not-to-design-it&quot;&gt;How &lt;strong&gt;Not&lt;/strong&gt; to Design It&lt;/h3&gt;
+&lt;p&gt;During the first itereration, I thought, all right, simple enough…create an express
+application to listen both for WebSockets and HTTP requests…&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;
+&lt;span class=&quot;comment&quot;&gt;// Pseudocode....&lt;/span&gt;
+
+&lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; ws WebSocket = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; WebSocket();
+
+app.get(&lt;span class=&quot;string&quot;&gt;&quot;/:action&quot;&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;
+  req: Request,
+  res: Response,
+  next: NextFunction
+&lt;/span&gt;) &lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; lyrics = getNext(request.params[&lt;span class=&quot;string&quot;&gt;'action'&lt;/span&gt;]);
+    ws.send(lyrics)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Unfortunately, this does not work as expected. Why?&lt;/p&gt;
+&lt;p&gt;Simple. We’re just listening for HTTP requests and not WebSocket connections. So the
+connection will never be open.&lt;/p&gt;
+&lt;p&gt;Which means we need &lt;strong&gt;2&lt;/strong&gt; apps running.&lt;/p&gt;
+&lt;h3 id=&quot;2-applications&quot;&gt;2 Applications&lt;/h3&gt;
+&lt;p&gt;The first app (&lt;code&gt;recv&lt;/code&gt;) will listen for commands from the C. The second app (&lt;code&gt;app&lt;/code&gt;) will
+determine what lyrics to display based on the key press.&lt;/p&gt;
+&lt;h3 id=&quot;what-about-communication-&quot;&gt;What About Communication?&lt;/h3&gt;
+&lt;p&gt;You might notice that there’s no way &lt;code&gt;recv&lt;/code&gt; can communicate with &lt;code&gt;app&lt;/code&gt;. Here’s a 
+diagram for what’s going on&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(remote client)
+      |
+      |
+      V
+    [recv]          [app]
+                      |
+                      |
+                      V
+                  (front-end)&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We need something to connect the two services.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(remote client)
+      |
+      |
+      V
+    [recv] &amp;lt;- (?) -&amp;gt; [app]
+                      |
+                      |
+                      V
+                  (front-end)&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Enter Redis!&lt;/p&gt;
+&lt;p&gt;Redis is an in-memory database and is used frequently for inter-process communication.&lt;/p&gt;
+&lt;p&gt;The psuedocode will look like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;(these are performed asynchronously)
+    recv:
+        1. wait for a command from the client
+        2. put the command on the queue
+    app:
+        1. wait for a command from the queue
+        2. get the command from the queue
+        3. remove the command from the queue
+        4. get the lyrics based on the command
+        5. send the lyrics to the websocket.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There’s no need to create your own queue framework, either. Libraries exist that
+include this functionality. For this project, RedisSMQ (Simple Message Queue) is used.&lt;/p&gt;
+&lt;p&gt;While in a production environment it’s best to hook this into the app startup, we’ll
+simply add it directly into the script:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; rsmq = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; RedisSMQ({ host: &lt;span class=&quot;string&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;, port: &lt;span class=&quot;number&quot;&gt;6379&lt;/span&gt;, ns: &lt;span class=&quot;string&quot;&gt;&quot;rsmq&quot;&lt;/span&gt; });&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;app-send-commands-to-the-websocket&quot;&gt;&lt;code&gt;app&lt;/code&gt;: Send Commands To the WebSocket&lt;/h3&gt;
+&lt;p&gt;This is pretty straightforward from a coding standpoint save for one caveat:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;tick&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;ws : &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;, request: Request, next: NextFunction&lt;/span&gt;) &lt;/span&gt;{
+
+  &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; msg = &lt;span class=&quot;keyword&quot;&gt;await&lt;/span&gt; rsmq.popMessageAsync({ qname: &lt;span class=&quot;string&quot;&gt;&quot;lyrics&quot;&lt;/span&gt; }) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; {id: &lt;span class=&quot;built_in&quot;&gt;number&lt;/span&gt;, message; &lt;span class=&quot;built_in&quot;&gt;string&lt;/span&gt;};
+
+  &lt;span class=&quot;comment&quot;&gt;// ** The caveat&lt;/span&gt;
+  usleep(&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;);
+
+  &lt;span class=&quot;comment&quot;&gt;// Don't error out if we don't have a code yet.&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!msg.id) &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; next();
+
+  &lt;span class=&quot;comment&quot;&gt;// debugging :)&lt;/span&gt;
+  &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(msg);
+
+  &lt;span class=&quot;comment&quot;&gt;// Send lyrics to the client&lt;/span&gt;
+  &lt;span class=&quot;comment&quot;&gt;// `lyr` is the LyricsController instance.&lt;/span&gt;
+  &lt;span class=&quot;comment&quot;&gt;// lyr[msg.message] is actually a function, so we're getting&lt;/span&gt;
+  &lt;span class=&quot;comment&quot;&gt;// the pure function name from the message.&lt;/span&gt;
+  &lt;span class=&quot;comment&quot;&gt;// Obviously for production you'd want to do error checking,&lt;/span&gt;
+  &lt;span class=&quot;comment&quot;&gt;// but we're feeling lazy today. :)&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;await&lt;/span&gt; ws.send(&lt;span class=&quot;built_in&quot;&gt;JSON&lt;/span&gt;.stringify(lyr[msg.message]()));
+  next();
+}
+
+&lt;span class=&quot;comment&quot;&gt;// A general listen function.&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;listen&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;ws: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;, request: Request, next: NextFunction&lt;/span&gt;) &lt;/span&gt;{
+  &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;) {
+    &lt;span class=&quot;keyword&quot;&gt;await&lt;/span&gt; tick(ws, request, next);
+  }
+}
+
+&lt;span class=&quot;comment&quot;&gt;// This is what the FE code will connect to&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;// e.g. http://localhost:3000/lyrics&lt;/span&gt;
+app.ws(&lt;span class=&quot;string&quot;&gt;&quot;/lyrics&quot;&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;
+  ws: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;,
+  request: Request,
+  next: NextFunction
+&lt;/span&gt;) &lt;/span&gt;{
+  listen(ws, request, next);
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now for &lt;strong&gt;the caveat&lt;/strong&gt;. We need to add a time to sleep in order for &lt;code&gt;recv&lt;/code&gt; to wait
+for the queue to clear. Otherwise, if &lt;code&gt;next&lt;/code&gt; is the command given, &lt;code&gt;recv&lt;/code&gt; will keep
+getting &lt;code&gt;next&lt;/code&gt;, &lt;code&gt;next&lt;/code&gt;, &lt;code&gt;next&lt;/code&gt;, … until the command is popped.&lt;/p&gt;
+&lt;p&gt;Ideally a mutex would be used to prevent this from happening, but for now we’ll
+use a timer and sleep for 10 microseconds (I found this value worked after some experimenting).&lt;/p&gt;
+&lt;h3 id=&quot;waiting-for-commands-from-the-client&quot;&gt;Waiting for Commands from the Client&lt;/h3&gt;
+&lt;p&gt;We still need to add paths for express to listent to the client. This is
+even simpler than for &lt;code&gt;app&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;recv.get(&lt;span class=&quot;string&quot;&gt;&quot;/:action&quot;&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;
+  req: Request,
+  res: Response,
+  next: NextFunction
+&lt;/span&gt;) &lt;/span&gt;{
+  &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; action = req.params[&lt;span class=&quot;string&quot;&gt;&quot;action&quot;&lt;/span&gt;];
+  rsmq.sendMessage({ qname: &lt;span class=&quot;string&quot;&gt;&quot;lyrics&quot;&lt;/span&gt;, message: action }, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;
+    err: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;,
+    resp: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;
+  &lt;/span&gt;) &lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (err) res.status(&lt;span class=&quot;number&quot;&gt;500&lt;/span&gt;).json({ error: err });
+    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; res.status(&lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;).send(&lt;span class=&quot;string&quot;&gt;`The command was &lt;span class=&quot;subst&quot;&gt;${action}&lt;/span&gt;\n`&lt;/span&gt;);
+    next();
+  });
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;waiting-on-the-fe&quot;&gt;Waiting on the FE&lt;/h2&gt;
+&lt;p&gt;I’ll just show you the code for the page. It’s pretty straightforward:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&lt;span class=&quot;meta&quot;&gt;&amp;lt;!DOCTYPE &lt;span class=&quot;meta-keyword&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;lang&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;en&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;head&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;meta&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;charset&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;utf-8&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;title&lt;/span&gt;&amp;gt;&lt;/span&gt;Worship Presentation Example&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;title&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;meta&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;content&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;The Church Application&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;meta&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;author&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;content&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;SitePoint&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;style&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;slideshow-styling&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;style&lt;/span&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;rel&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;href&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;css/styles.css?v=1.0&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;head&lt;/span&gt;&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;body&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;main&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;lyrics&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;p&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
+        &lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; url = &lt;span class=&quot;string&quot;&gt;&quot;ws://127.0.0.1:3000/lyrics&quot;&lt;/span&gt;;
+        &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; aWebSocket = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; WebSocket(url);
+        &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(aWebSocket);
+        aWebSocket.addEventListener(&lt;span class=&quot;string&quot;&gt;&quot;message&quot;&lt;/span&gt;, ($ev) =&amp;gt; {
+            &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; lyrics = $ev.data;
+            &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(lyrics);
+            &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; target = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;lyrics&quot;&lt;/span&gt;);
+            &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; data = &lt;span class=&quot;built_in&quot;&gt;JSON&lt;/span&gt;.parse(lyrics);
+            &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(data.lyrics)
+
+            &lt;span class=&quot;comment&quot;&gt;// This displays the lyrics. Anything previously rendered&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;// will be removed.&lt;/span&gt;
+            &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;lyrics&quot;&lt;/span&gt;).innerText = data.lyrics;
+
+            &lt;span class=&quot;comment&quot;&gt;// We'll apply any styling here.&lt;/span&gt;
+            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (data.show &amp;amp;&amp;amp; data.show.css)
+              &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;slideshow-styling&quot;&lt;/span&gt;).innerText = data.show.css;
+        });
+    &lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;body&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;a-few-notes&quot;&gt;A Few Notes&lt;/h3&gt;
+&lt;p&gt;The one thing extraneous I did was add styling to commands. But that’s optional.&lt;/p&gt;
+&lt;p&gt;Another note is that if the server is reloaded (e.g. due to a change) the WebSocket
+connection will be lost. Just reload the webpage.&lt;/p&gt;
+&lt;h1 id=&quot;controlling-the-presentation-&quot;&gt;Controlling The Presentation.&lt;/h1&gt;
+&lt;p&gt;The awesome thing is that this can be done using &lt;code&gt;CURL&lt;/code&gt; (or Insomina, or any other
+REST client)&lt;/p&gt;
+&lt;p&gt;For example the following URL will display the first slide on the client:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# Remember, we're listening on port 3001 for the REST request!&lt;/span&gt;
+curl http://127.0.0.1:3001/first&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/first.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Consequently, we’ll go to the next slide with the following command:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;curl http://127.0.0.1:3001/next&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/next.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
+&lt;p&gt;How awesome is that! The webpage obeys our command without us touching it!&lt;/p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;WebSockets allow the programmer to send data from a server to a client. In this example,
+we got to see how it can be used for a remote worship service.&lt;/p&gt;
+&lt;p&gt;The server had 2 Express applications running, connected by Redis Simple Message Queue.
+When a command came in, it was put on the queue for the WSGI app, then popped off the queue
+for the WebScoket ASGI app.&lt;/p&gt;
+&lt;p&gt;At this point the web page listening (or any client listening) to the WebSocket was able to
+receive a message from the server. JavaScript on the client web page then handled the display
+of the lyrics for the current slide.&lt;/p&gt;
+&lt;h1 id=&quot;full-server-code&quot;&gt;Full Server Code&lt;/h1&gt;
+&lt;p&gt;For those interested, here is the full server source code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// import express, { Request } from &quot;express&quot;;&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; { Application, WithWebsocketMethod } &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;express-ws&quot;&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; { NextFunction } &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;connect&quot;&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; express = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;express&quot;&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; { Request } &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;express-serve-static-core&quot;&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; { Response, json } &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;express&quot;&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; { createClient } &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;redis&quot;&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; { usleep } &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;usleep&quot;&lt;/span&gt;;
+&lt;span class=&quot;comment&quot;&gt;// const RedisSMQ = require(&quot;rsmq&quot;);&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; RedisSMQ &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;rsmq&quot;&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; WebSocket = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;ws&quot;&lt;/span&gt;);
+
+&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; app = (express() &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; unknown) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; Application;
+&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; recv = (express() &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; unknown) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; Application;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; expressWs = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;express-ws&quot;&lt;/span&gt;)(app);
+
+&lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; r = createClient();
+
+&lt;span class=&quot;keyword&quot;&gt;enum&lt;/span&gt; TransitionType {
+  FADE = &lt;span class=&quot;string&quot;&gt;&quot;fade&quot;&lt;/span&gt;,
+}
+
+&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; Transition {
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;constructor&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;transitionType : TransitionType, duration : &lt;span class=&quot;built_in&quot;&gt;number&lt;/span&gt;&lt;/span&gt;){} 
+}
+
+&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; Show {
+  &lt;span class=&quot;keyword&quot;&gt;constructor&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; css : &lt;span class=&quot;built_in&quot;&gt;string&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; transition : Transition | &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;&lt;/span&gt;) {}
+}
+
+&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; Slide {
+  &lt;span class=&quot;keyword&quot;&gt;constructor&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; show : Show, &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; lyrics : &lt;span class=&quot;built_in&quot;&gt;string&lt;/span&gt;&lt;/span&gt;) {}
+}
+
+&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; PresentationController {
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; LYRICS = [
+    &lt;span class=&quot;string&quot;&gt;&quot;Mary had a little lamb&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;It's fleece was white as snow&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;And everywhere that mary went&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;The lamb was sure to go&quot;&lt;/span&gt;,
+  ];
+
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;constructor&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; show: Show&lt;/span&gt;) {}
+
+  &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; current() {
+    &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; lyr = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.LYRICS[&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i];
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Slide(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.show, lyr);
+  }
+
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; next() {
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i &amp;lt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.LYRICS.length - &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i += &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.current();
+  }
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; previous() {
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i &amp;gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i -= &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.current();
+  }
+  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; first() {
+    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.current();
+  }
+}
+
+&lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; rsmq = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; RedisSMQ({ host: &lt;span class=&quot;string&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;, port: &lt;span class=&quot;number&quot;&gt;6379&lt;/span&gt;, ns: &lt;span class=&quot;string&quot;&gt;&quot;rsmq&quot;&lt;/span&gt; });
+
+&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; lyr = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; PresentationController(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Show(&lt;span class=&quot;string&quot;&gt;&quot;#main{background-color:'green'; color: white;} p {color: white;}&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;));
+rsmq.createQueue({ qname: &lt;span class=&quot;string&quot;&gt;&quot;lyrics&quot;&lt;/span&gt; }, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;err: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;, response: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;&lt;/span&gt;) &lt;/span&gt;{
+  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (err) {
+    &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.error(err);
+  }
+});
+
+recv.get(&lt;span class=&quot;string&quot;&gt;&quot;/:action&quot;&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;
+  req: Request,
+  res: Response,
+  next: NextFunction
+&lt;/span&gt;) &lt;/span&gt;{
+  &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; action = req.params[&lt;span class=&quot;string&quot;&gt;&quot;action&quot;&lt;/span&gt;];
+  rsmq.sendMessage({ qname: &lt;span class=&quot;string&quot;&gt;&quot;lyrics&quot;&lt;/span&gt;, message: action }, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;
+    err: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;,
+    resp: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;
+  &lt;/span&gt;) &lt;/span&gt;{
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (err) res.status(&lt;span class=&quot;number&quot;&gt;500&lt;/span&gt;).json({ error: err });
+    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; res.status(&lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;).send(&lt;span class=&quot;string&quot;&gt;`The command was &lt;span class=&quot;subst&quot;&gt;${action}&lt;/span&gt;\n`&lt;/span&gt;);
+    next();
+  });
+});
+
+&lt;span class=&quot;keyword&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;tick&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;ws : &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;, request: Request, next: NextFunction&lt;/span&gt;) &lt;/span&gt;{
+
+  &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; msg = &lt;span class=&quot;keyword&quot;&gt;await&lt;/span&gt; rsmq.popMessageAsync({ qname: &lt;span class=&quot;string&quot;&gt;&quot;lyrics&quot;&lt;/span&gt; }) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; {id: &lt;span class=&quot;built_in&quot;&gt;number&lt;/span&gt;, message; &lt;span class=&quot;built_in&quot;&gt;string&lt;/span&gt;};
+  usleep(&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;);
+  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!msg.id) &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; next();
+  &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(msg);
+  &lt;span class=&quot;comment&quot;&gt;// SEND LYRICS TO THE CLIENT&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;await&lt;/span&gt; ws.send(&lt;span class=&quot;built_in&quot;&gt;JSON&lt;/span&gt;.stringify(lyr[msg.message]()));
+  next();
+}
+
+&lt;span class=&quot;keyword&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;listen&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;ws: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;, request: Request, next: NextFunction&lt;/span&gt;) &lt;/span&gt;{
+  &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;) {
+    &lt;span class=&quot;keyword&quot;&gt;await&lt;/span&gt; tick(ws, request, next);
+  }
+}
+
+app.ws(&lt;span class=&quot;string&quot;&gt;&quot;/lyrics&quot;&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;
+  ws: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;,
+  request: Request,
+  next: NextFunction
+&lt;/span&gt;) &lt;/span&gt;{
+  listen(ws, request, next);
+});
+
+app.listen(&lt;span class=&quot;number&quot;&gt;3000&lt;/span&gt;);
+recv.listen(&lt;span class=&quot;number&quot;&gt;3001&lt;/span&gt;);
+&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(&lt;span class=&quot;string&quot;&gt;&quot;App is listening on localhost:3000&quot;&lt;/span&gt;);
+
+&lt;span class=&quot;keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt; app;&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Responsive Web Design in Django (Without JavaScript!)</title>
+      <link>http://localhost:8080/articles/responsive-web-design-in-django-without-javascript/</link>
+      <pubDate>Mon, 15 Oct 2018 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/responsive-web-design-in-django-without-javascript/</guid>
+      <author></author>
+      <description>&lt;h2 id=&quot;the-case-for-non-js-responsive-web-design&quot;&gt;The Case for Non-JS Responsive Web Design&lt;/h2&gt;
+&lt;p&gt;I would argue JavaScript is becoming more common with which to build websites,
+but seems as though it’s already ruled the web as the #1 framework. As an avid
+&lt;a href=&quot;https://noscript.net/&quot;&gt;NoScript&lt;/a&gt; user, 90% of the web is broken because
+most websites are designed to require JavaScript to load content.&lt;/p&gt;
+&lt;p&gt;Many web devs have &lt;a href=&quot;https://lstu.fr/zZwZqTS6&quot;&gt;come out&lt;/a&gt;
+&lt;a href=&quot;https://lstu.fr/CMZWvTVU&quot;&gt;declaring how bad javascript is&lt;/a&gt; with many
+claiming it’s &lt;a href=&quot;https://lstu.fr/qd0dgLRB&quot;&gt;ruining&lt;/a&gt;
+&lt;a href=&quot;https://lstu.fr/s5Dze7cK&quot;&gt;the web&lt;/a&gt;. I’m not here to join the JavaScript bashing
+party. Instead, I’d like to show you how to incorporate repsonsive web design
+in your Django site without the need for JavaScript.&lt;/p&gt;
+&lt;h2 id=&quot;choosing-a-css-only-design-framwork&quot;&gt;Choosing a CSS-Only Design Framwork&lt;/h2&gt;
+&lt;p&gt;There aren’t a lot, but a few exist&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://purecss.io/&quot;&gt;PureCSS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://mildrenben.github.io/surface/&quot;&gt;Surface&lt;/a&gt;. (Android enthusiasts will
+like this one! &amp;#128513;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.blueprintcss.org/&quot;&gt;BlurePrint&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://960.gs/&quot;&gt;960 Grid System&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://lstu.fr/spectrecss&quot;&gt;Spectre&lt;/a&gt; &lt;strong&gt;(I’m using this one for the article)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I’m sure there are more if you &lt;a href=&quot;https://lstu.fr/ddg-css-no-js&quot;&gt;poke around the web&lt;/a&gt;.
+I had planned on referring back to a &lt;a href=&quot;https://lstu.fr/so-css-no-js&quot;&gt;StackOverflow&lt;/a&gt;
+question, but it was removed. There’s a &lt;a href=&quot;https://lstu.fr/so-css-no-js-2&quot;&gt;similar one&lt;/a&gt;
+if you’re desperate for StackOverflow.&lt;/p&gt;
+&lt;p&gt;So, now that you’ve chosen a framwork, you’re set to go!&lt;/p&gt;
+&lt;p&gt;Not so fast, buddy! There’s a problem.&lt;/p&gt;
+&lt;h2 id=&quot;the-small-issue&quot;&gt;The Small Issue&lt;/h2&gt;
+&lt;p&gt;Notice a lot of these repsonsive frameworks are written using SASS or LESS,
+a derivative of CSS and &lt;strong&gt;primarily compiled with Node.JS&lt;/strong&gt;. By default Django
+does not have a SASS compiler.&lt;/p&gt;
+&lt;p&gt;But all is not lost!&lt;/p&gt;
+&lt;p&gt;Someone on Github was kind enough to provide
+&lt;a href=&quot;https://lstu.fr/SBQNt-aX&quot;&gt;a sass processor for Django&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;using-django-sass-processor-with-spectre&quot;&gt;Using Django-Sass-Processor With Spectre&lt;/h2&gt;
+&lt;p style=&quot;background: #efefef; padding: 5pt; color: #121212;&quot;&gt;
+For the lazy (I'm one of them, too), I provided &lt;a href=&quot;https://github.com/src-r-r/SassExample&quot;&gt;an example&lt;/a&gt; on my GitHub.
+&lt;/p&gt;
+
+&lt;p&gt;While most CSS framworks will be similar in setup, I’ll be using Spectre as
+the example CSS framework.&lt;/p&gt;
+&lt;p&gt;Use your preferred method to &lt;a href=&quot;https://docs.djangoproject.com/en/2.1/intro/install/&quot;&gt;get a Django project set up&lt;/a&gt;.
+Or you can use one you already have set up. The only directory we’ll touch is
+&lt;code&gt;static&lt;/code&gt;, and we’ll only be modifying some of the templates.&lt;/p&gt;
+&lt;p&gt;We’ll also want to install the &lt;code&gt;django-sass-processor&lt;/code&gt; package. Install it any
+way you want (I prefer pip):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ pip install django-sass-processor libsass django-compressor&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For the sake of simplicity, here is the initial directory structure:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SassExample/
+├── manage.py
+└── SassExample
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+
+1 directory, 5 files&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Download the &lt;a href=&quot;https://github.com/picturepan2/spectre/releases&quot;&gt;latest release of the Spectre source code&lt;/a&gt;
+(or whatever framwork you’re using). The Spectre installation instructions are
+a bit confusing as they provide a lot of options, but for our purposes the
+source code is what we want.&lt;/p&gt;
+&lt;p&gt;Create a directory &lt;code&gt;static/spectre&lt;/code&gt; under your project root (or under your app
+root if you prefer to have the framwork modular). Extract the Spectre source
+code into the &lt;code&gt;static/spectre&lt;/code&gt; directory (that way we’ll keep it seperate from
+other static files).&lt;/p&gt;
+&lt;p class=&quot;important&quot; style=&quot;border: 1px solid orange; padding: 5px; font-style: italic;&quot;&gt;
+**IMPORTANT:** Only copy the `src` directory of Spectre. &lt;br/&gt;
+So you'll eseentially extract `&lt;spectre-[version]&gt;.tar.gz/src` to
+`Project/Project/static/` and rename it to `spectre`.
+&lt;/p&gt;
+
+&lt;p&gt;Our directory structure is now (shortened for brevity):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SassExample
+├── manage.py
+└── SassExample
+    ├── __init__.py
+    ├── settings.py
+    ├── static
+    │   └── spectre
+    │       ├── _accordions.scss
+        ...
+    │       ├── icons
+    │       │   ├── _icons-action.scss
+            ...
+    │       ├── mixins
+    │       │   ├── _avatar.scss
+            ...
+    │       │   └── _transition.scss
+    │       ├── _mixins.scss
+            ...
+    │       ├── _typography.scss
+    │       ├── utilities
+            ...
+    │       │   └── _text.scss
+    │       ├── _utilities.scss
+    │       └── _variables.scss
+    ├── urls.py
+    └── wsgi.py
+
+6 directories, 78 files&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;building-off-the-framwork-s-sass-file&quot;&gt;Building off the Framwork’s SASS File&lt;/h2&gt;
+&lt;p&gt;Now we’re ready to include our own SASS file.&lt;/p&gt;
+&lt;p&gt;If you’re including this in an &lt;strong&gt;already-existing project&lt;/strong&gt;
+you’re basically done for anything new you need to include. Of course, your
+entry CSS file will need to be converted to a SASS file (or you need to
+create a new one)&lt;/p&gt;
+&lt;p&gt;If this is a &lt;strong&gt;new project&lt;/strong&gt;, we need to include a few more things:&lt;/p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;An entry point SASS file&lt;/li&gt;
+&lt;li&gt;A basic view to show our beautiful site! &amp;#127801;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Like I stated, if you have an existing project most of this is created.&lt;/p&gt;
+&lt;p&gt;&lt;a name='local-why'&gt;&lt;/a&gt;
+However, (and this is &lt;strong&gt;important&lt;/strong&gt;) make sure to include the entry point css
+file in the directory &lt;code&gt;static/spectre/&lt;/code&gt;. You’ll see why later.&lt;/p&gt;
+&lt;p&gt;In the example code I’ve provided something quick and dirty. I didn’t extend
+from a base template or do anything fancy.&lt;/p&gt;
+&lt;p&gt;So now the directory structure should look something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SassExample/
+├── manage.py
+└── SassExample
+    ├── __init__.py
+    ├── settings.py
+    ├── static
+    │   └── spectre
+    │   │   └── sassexample.scss
+        ...
+    ├── templates
+    │   └── index.html
+    ├── urls.py
+    └── wsgi.py
+
+8 directories, 80 files&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;As per the directions on
+&lt;a href=&quot;https://github.com/jrief/django-sass-processor#configuration&quot;&gt;&lt;code&gt;django-sass-processor&lt;/code&gt; configuration&lt;/a&gt;, don’t forget
+to&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Include &lt;code&gt;&amp;#39;django_sass_processor&amp;#39;&lt;/code&gt; in &lt;code&gt;INSTALLED_APPS&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Load &lt;code&gt;sass_tags&lt;/code&gt; as well as &lt;code&gt;static&lt;/code&gt; in the template.&lt;/li&gt;
+&lt;li&gt;Ensure the &lt;code&gt;STATIC*&lt;/code&gt; variables in settings are set correctly.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In index.scss, make sure to link &lt;code&gt;spectre.css&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Define variables to override default ones
+$primary-color: darkgreen;
+
+// Import full Spectre source code
+@import &amp;quot;spectre&amp;quot;;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a name='local-because'&gt;&lt;/a&gt;
+As I showed &lt;a href=&quot;#local-why&quot;&gt;earlier&lt;/a&gt; the &lt;code&gt;@import &amp;quot;spectre&amp;quot;&lt;/code&gt; will look for the
+spectre module in the current directory. If you don’t include the entry SCSS
+file in the &lt;code&gt;static/spectre&lt;/code&gt; directory Django will not find it.&lt;/p&gt;
+&lt;p&gt;In your main template, include this entry-point SCSS file:&lt;/p&gt;
+&lt;p&gt;{% raw %}
+    {% load static sass_tags %}
+    &lt;!-- don't forget to include the `load` line HERE. See below --&gt;
+    &lt;!doctype html&gt;
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;title&gt;Django SASS Example!&lt;/title&gt;
+            &lt;!-- link to the SASS Example index CSS file --&gt;
+            &lt;link rel=&quot;stylesheet&quot; href=&quot;{% sass_src 'sassexample/index.scss' %}&quot;&gt;
+            &lt;!-- optionally include spectre icons for the artistically-inclined --&gt;
+            &lt;link rel=&quot;stylesheet&quot; href=&quot;{% static 'spectre/spectre-icons.css' %}&quot;&gt;
+        &lt;/head&gt;
+        …
+    &lt;/html&gt;
+{% endraw %}&lt;/p&gt;
+&lt;p&gt;Once you think you have everything settled, run&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ./manage.py compilescss
+$ ./manage.py collectstatic --noinput&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;to compile everything.&lt;/p&gt;
+&lt;p&gt;If all goes according to plan, you should have a responsive JavaScript-less
+site ready to run!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ./manage.py runserver&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And looks like we have a result:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/images/responsive-design/final-render.png&quot; alt=&quot;Example Site&quot;&gt;&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Escargo: The Zero-Configuration Email API</title>
+      <link>http://localhost:8080/articles/Escargo:-The-Zero-Configuration-Email-API/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/Escargo:-The-Zero-Configuration-Email-API/</guid>
+      <author></author>
+      <description>&lt;h1 id=&quot;don-t-re-invent-the-wheel&quot;&gt;Don’t Re-Invent the Wheel&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/155149/pre-historic-wheel-cartoon.png&quot; alt=&quot;wheel&quot;&gt;&lt;/p&gt;
+&lt;p&gt;One of the principles of REST APIs is the ability to reuse common parts,
+starting from the ground up. Then, if one of those parts is broken, just go in,
+fix that part, and you’re good to go.&lt;/p&gt;
+&lt;p&gt;Which is why I was a bit baffled recently when I was starting on a project and
+looked for some plug-and-play method for creating users. After all, in today’s
+social-driven world, any kind of content management system is bound to have a
+basic username/password (or, better yet, email/password) foundation.&lt;/p&gt;
+&lt;p&gt;However, my search came up empty.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;NOTE: Yeah, I realize “escargo” should be “escargot.” Later on I may change
+it.&lt;/em&gt;&lt;/p&gt;
+&lt;h1 id=&quot;starting-small&quot;&gt;Starting Small&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/248466/pyramid.png&quot; alt=&quot;pyramid&quot;&gt;&lt;/p&gt;
+&lt;p&gt;So I decided to start my own project called &lt;strong&gt;Refactor&lt;/strong&gt;, which is a set of
+projects with common functionalities (in the form of microservices) to build a
+CMS from the ground up.&lt;/p&gt;
+&lt;p&gt;I started with a user system (which is coming soon), but then realized that
+part of a user management system was email. There are various situations in
+which a CMS needs to email a user:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Verification of new user accounts.&lt;/li&gt;
+&lt;li&gt;Password reset/reminder (preferably a &lt;strong&gt;reset&lt;/strong&gt; since the database is not
+supposed to know a password).&lt;/li&gt;
+&lt;li&gt;Marketing, advertising, notifications, etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Obviously, as ubiquitous as email is these days most languages have some
+semblance of an email library. But the fact that libraries exist to do this
+only constitutes automated emails from scratch with the framework. This breaks
+a tenant of REST API methodology.&lt;/p&gt;
+&lt;h1 id=&quot;introducing-escargo-t-&quot;&gt;Introducing: Escargo[t]&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/166284/escargot-decroissance.png&quot; alt=&quot;escargot&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Hence, I created Escargo, the zero-configuration REST API for email. Literally
+all one needs on his system is &lt;a href=&quot;https://www.vagrantup.com/&quot;&gt;Vagrant&lt;/a&gt; (and
+git, for now) and he’ll be able to get a REST API up and running for email.&lt;/p&gt;
+&lt;p&gt;The power here is that there’s absolutely &lt;strong&gt;no configuration and no setup&lt;/strong&gt;.
+The microservice is up instantly and the user can send an email easily.&lt;/p&gt;
+&lt;h2 id=&quot;wait-no-configuration-&quot;&gt;Wait? No configuration?&lt;/h2&gt;
+&lt;p&gt;That’s right. Well, almost right. The configuration needs to be passed in to the
+POST body. For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;connection&amp;quot;: {
+        &amp;quot;conn_type&amp;quot;: &amp;quot;smtp&amp;quot;,
+        &amp;quot;host&amp;quot;: &amp;quot;mail.example.com&amp;quot;,
+        &amp;quot;port&amp;quot;: 587
+    },
+    &amp;quot;options&amp;quot;: {
+        &amp;quot;debug_level&amp;quot;: 2,
+        &amp;quot;login&amp;quot;: {
+            &amp;quot;user&amp;quot;: &amp;quot;noreply@example.com&amp;quot;,
+            &amp;quot;password&amp;quot;: &amp;quot;super-secret-pa55word&amp;quot;
+        },
+        &amp;quot;starttls&amp;quot;: {}
+    },
+    &amp;quot;sending&amp;quot;: {
+        &amp;quot;from&amp;quot;: &amp;quot;noreply@example.com&amp;quot;,
+        &amp;quot;to&amp;quot;: &amp;quot;some-user@gmail.com&amp;quot;,
+        &amp;quot;subject&amp;quot;: &amp;quot;Hello from Escargo!&amp;quot;,
+        &amp;quot;message&amp;quot;: {
+            &amp;quot;text_body&amp;quot;: &amp;quot;This is a test of Escargo, the 0-config Email API&amp;quot;
+        }
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I essentially just translated Python’s
+&lt;a href=&quot;https://docs.python.org/3/library/smtplib.html&quot;&gt;smtplib&lt;/a&gt;
+to a function that was ready for a JSON structure. There’s only one endpoint to
+the service (&lt;code&gt;POST /&lt;/code&gt;), that takes a body describing the type of connection,
+any options associated with the email, and anything you want to send with the
+email (HTML data, images, etc.)&lt;/p&gt;
+&lt;p&gt;Documentation on the project can be read
+&lt;a href=&quot;https://github.com/src-r-r/escargo&quot;&gt;on the project’s GitHub Page&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;this-isn-t-the-end&quot;&gt;This Isn’t The End&lt;/h1&gt;
+&lt;p&gt;This is only the base of the pyramid. I’ll be coming up with more microservices
+to add to the &lt;strong&gt;Refraction&lt;/strong&gt; project.&lt;/p&gt;
+&lt;p&gt;And if you have an open source project you think should be added, email me and
+I’ll be sure to add it.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Basic Parts of an API Request</title>
+      <link>http://localhost:8080/articles/basic-parts-of-an-api-request/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/basic-parts-of-an-api-request/</guid>
+      <author></author>
+      <description>&lt;h1 id=&quot;basic-parts-of-an-api-request&quot;&gt;Basic Parts of an API Request&lt;/h1&gt;
+&lt;p&gt;Sometimes understanding URLs and requests can be intimidating. If you’re wanting
+to get into API programming (e.g. REST, SOAP, web [which isn’t considered
+part of the family, but follows the same procedures]) it helps to understand
+basic components of an API request.&lt;/p&gt;
+&lt;p&gt;The two major parts developers care about are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Request URL&lt;/li&gt;
+&lt;li&gt;Reqeust Body&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I’ll be using a post office analogy. Because post offices are great ancient
+American relics (yes, that was sarcasm). The equivalences for these for the
+post office analogy are:&lt;/p&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;
+            Request URL
+        &lt;/td&gt;
+        &lt;td&gt;
+             Shipping Address
+         &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+         &lt;td&gt;
+             Request Body
+         &lt;/td&gt;
+         &lt;td&gt;
+              Letter
+          &lt;/td&gt;
+      &lt;/tr&gt;
+ &lt;/table&gt;
+
+&lt;p&gt;Obviously, there are nuances with each service, but those are the 2 major
+components. Now, lets’ dive into each component.&lt;/p&gt;
+&lt;h2 id=&quot;request-url-telling-the-postman-where-and-how-to-send-it&quot;&gt;Request URL: Telling the Postman Where and How to Send It&lt;/h2&gt;
+&lt;p&gt;If you’re used the web at all, you’re used to a web address:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://somethingerrather.com/here/i/am/&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;http&lt;/code&gt; is the protocol. It’s basically like putting your letter in the mailbox.
+The post office understands that anything in the mailbox should be collected.
+If you try to deliver all the mail to the cashier at your local convenience
+store, they wouldn’t know what to do with it (and your identity would probably
+be stolen).&lt;/p&gt;
+&lt;p&gt;REST APIs typically use standard http protocol.&lt;/p&gt;
+&lt;p&gt;But how does your web browser know where to get the content? In an attempt to
+not complicate the answer, your browser sends the URL to a cental server (like
+a post office) that routes the &lt;strong&gt;domain&lt;/strong&gt; (the &lt;code&gt;sometherrather.com&lt;/code&gt; part) to
+the server registered for the domain.&lt;/p&gt;
+&lt;p&gt;Sometimes a protocol may have a port number associated with it:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://someserver.com:2020&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;2020&lt;/code&gt; is the port number. This is not typical for public APIs and is usually
+used for internal devleopment.&lt;/p&gt;
+&lt;p&gt;The registered server takes care of the &lt;code&gt;/here/i/am&lt;/code&gt; part (commonly referred to
+as the “path”) that services are most iterested in. So from here on out we’ll
+ignore the domain.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;tl;dr: The request URL tells the API client the “where” of the request.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;paths&quot;&gt;Paths&lt;/h2&gt;
+&lt;p&gt;Paths are handled by the server that hosts the API.&lt;/p&gt;
+&lt;p&gt;In the post office example, this is like the administrator of a business that
+recieves the letter.&lt;/p&gt;
+&lt;p&gt;As a standard, a path is preceded by a slash (‘/‘).&lt;/p&gt;
+&lt;h2 id=&quot;paramters&quot;&gt;Paramters&lt;/h2&gt;
+&lt;p&gt;Remember when I showed you the URL above?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://somethingerrather.com/here/i/am/&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;There’s another part that’s sometimes used: the query parameters. Query
+parameters are key and value pairs that provide details to whatever service
+consumes the path.&lt;/p&gt;
+&lt;p&gt;It’s denoted starting with question mark (‘?’):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://somethingerrather.com/here/i/am/name=frank&amp;amp;greeting=hello&amp;amp;repeat=3&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The part after the ‘?’ is the query: &lt;code&gt;?name=frank&amp;amp;greeting=hello&amp;amp;repeat=3&lt;/code&gt;.
+Hard to read? You betcha! Even developers like to use libraries that split
+the query into something easy to comprehent. Simply put, this is the query:&lt;/p&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;
+            key
+        &lt;/th&gt;
+        &lt;th&gt;
+             value
+         &lt;/th&gt;
+     &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;
+            name
+        &lt;/td&gt;
+        &lt;td&gt;
+             frank
+         &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+         &lt;td&gt;
+             greeting
+         &lt;/td&gt;
+         &lt;td&gt;
+              hello
+          &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;
+              repeat
+          &lt;/td&gt;
+          &lt;td&gt;
+               3
+           &lt;/td&gt;
+       &lt;/tr&gt;
+ &lt;/table&gt;
+
+&lt;p&gt;Now the API service knows what to do!&lt;/p&gt;
+&lt;p&gt;For the post office analogy this is like providing additional shipping
+information like adding an &lt;strong&gt;ATTN:&lt;/strong&gt; to the address or a
+&lt;strong&gt;[FRAGILE: HANDLE WITH CARE]&lt;/strong&gt; sticker to the side.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;tl;dr: Paramters tell &lt;em&gt;how&lt;/em&gt; to deliver something.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;the-body-the-letter-within-the-parcel&quot;&gt;The Body: The Letter Within the Parcel&lt;/h2&gt;
+&lt;p&gt;While getting envelopes around the holidays is always exciting (I’m always up
+for getting $10 bills) it can always be disappointing if you open up an
+envelope and see nothing.&lt;/p&gt;
+&lt;p&gt;Yes, the envelope can tell you a lot. An envelope from your utility company
+that says &lt;strong&gt;PAST DUE&lt;/strong&gt; can indicate something should be done pretty soon.&lt;/p&gt;
+&lt;p&gt;So it’s pretty common for a REST API to contain a body as well. REST bodies are
+usually in JSON format, since JSON allows for free-flow strucutre and is easily
+parseable.&lt;/p&gt;
+&lt;p&gt;However, JSON is not required. You can send virtually anything from numbers to
+complex graphs, and even your kitchen sink (that last one’s not recommended)!&lt;/p&gt;
+&lt;p&gt;Here’s one example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;REQUEST:
+    POST https://example.com/resource/add
+
+BODY:
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;Jane Doe&amp;quot;,
+        &amp;quot;gender&amp;quot;: &amp;quot;f&amp;quot;,
+        &amp;quot;account&amp;quot;: 1234
+    }&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;sideline-request-methods&quot;&gt;Sideline: Request Methods&lt;/h3&gt;
+&lt;p&gt;Notice the “POST” request method. There are other HTTP methods as well and
+are equivalent to the type of delivery within the postal service.&lt;/p&gt;
+&lt;p&gt;For example, once upon a time in America, whenever someone would want to
+subscribe to a magazine (another ancient relic, but bear with me), they would
+need to send in a registration form. We can call this a “PUT” request. Each
+month the magazine comes out, the reader goes out to the mailbox and gets his
+magazine. This can be considered a “GET” request. Same transport, but a
+different method of sending an retrieving mail.&lt;/p&gt;
+&lt;h3 id=&quot;back-to-the-body&quot;&gt;Back to the Body&lt;/h3&gt;
+&lt;p&gt;The body is typically only implemented in POST-like request methods. While
+HTTP (as far as I know) doesn’t forbid a body with ‘GET’ requests it’s bad
+table manners to include a body, so a lot of libraries strip the body if
+a client tries to do a ‘GET’ request with a body.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;lt;dr: The body is the thing you want delivered.&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;In this post I (hopefully) provided a brief overview of how APIs work. Before
+you run off to grab more coffee, here’s an overview comparison of APIs vs.
+the post office analogy.&lt;/p&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;/td&gt;
+        &lt;th&gt;
+             Post Office
+         &lt;/th&gt;
+         &lt;th&gt;
+             Example
+         &lt;/th&gt;
+         &lt;th&gt;
+             API
+         &lt;/th&gt;
+         &lt;th&gt;
+             Example
+         &lt;/th&gt;
+     &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td rowspan=&quot;5&quot;&gt;URL&lt;/td&gt;
+        &lt;td&gt;
+            container for the mail
+        &lt;/td&gt;
+        &lt;td&gt;
+            Mailbox
+        &lt;/td&gt;
+        &lt;td&gt;
+             Protocol
+         &lt;/td&gt;
+        &lt;td&gt;
+            `http`
+        &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+        &lt;td&gt;
+            method of delivery
+        &lt;/td&gt;
+        &lt;td&gt;
+            Sending, pickup, &amp;hellip;
+        &lt;/td&gt;
+        &lt;td&gt;
+             HTTP Method
+         &lt;/td&gt;
+        &lt;td&gt;
+            GET, POST, PUT, PATCH, DELETE, &amp;hellip;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;
+              Where to send the mail
+          &lt;/td&gt;
+          &lt;td&gt;
+              1234 N Example St., &amp;hellip;
+          &lt;/td&gt;
+          &lt;td&gt;
+               domain
+           &lt;/td&gt;
+          &lt;td&gt;
+              `www.example.com`
+          &lt;/td&gt;
+       &lt;/tr&gt;
+       &lt;tr&gt;
+           &lt;td&gt;
+               Where to go after delivery
+           &lt;/td&gt;
+           &lt;td&gt;
+               ATTN: Person at company
+           &lt;/td&gt;
+           &lt;td&gt;
+                Path
+            &lt;/td&gt;
+           &lt;td&gt;
+               `/resource/get/1`
+           &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                How to handle the delivery
+            &lt;/td&gt;
+            &lt;td&gt;
+                FRAGILE: HANDLE WITH CARE!
+            &lt;/td&gt;
+            &lt;td&gt;
+                 Query Paramters
+             &lt;/td&gt;
+            &lt;td&gt;
+                `name=henry&amp;number=1234`
+            &lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+            &lt;td&gt;Body&lt;/td&gt;
+            &lt;td&gt;Contents of the letter&lt;/td&gt;
+            &lt;td&gt;Dear Sir, In my opinion &amp;hellip;&lt;/td&gt;
+            &lt;td&gt;Body&lt;/td&gt;
+            &lt;td&gt;`{&quot;name&quot;: &quot;Henry&quot;, &quot;number&quot;: 1234, ...}`&lt;/td&gt;
+         &lt;/tr&gt;
+ &lt;/table&gt;
+</description>
+    </item>
+    <item>
+      <title>JavaScript Programming for Non-JavaScript Programmers</title>
+      <link>http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</guid>
+      <author></author>
+      <description>&lt;p&gt;No technology has divided the programming community more than JavsScript, mainly
+because it’s the been de-facto standard for web pages since around 2012, or
+possibly earlier. Developers either love it or hate it. I’m in the camp that
+says let’s do without it. But that’s for another post.&lt;/p&gt;
+&lt;p&gt;From my experience understanding JavaScript can be a challenge if you spend the
+majority of your time in a non-JavaScript environment.&lt;/p&gt;
+&lt;h1 id=&quot;ur-doing-it-rong&quot;&gt;ur doing it rong&lt;/h1&gt;
+&lt;p&gt;Basically, early on my projects began like this. You might have had similar
+experiences.&lt;/p&gt;
+&lt;p&gt;Most tutorials start you out in javascript with just the straight-up code, as
+shown below.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+            document.write.println(&amp;quot;Hello World!&amp;quot;);
+        &amp;lt;/script&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+    &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This works. Great. If you’re anything like me you probably thought, “This is
+great! Now I know how to write JavaScript!”&lt;/p&gt;
+&lt;p&gt;Then I looked on Google for neat JavaScript-y things to do like changing text
+on when a button is pressed. So, copy, paste the code!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+            var button = document.getElementById(&amp;#39;pressme&amp;#39;);
+            button.addEventListener(&amp;#39;click&amp;#39;, function () {
+                alert(&amp;#39;hello, world!&amp;#39;);
+            });
+        &amp;lt;/script&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
+    &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Reading this, this makes sense. You’re telling the JavaScript engine to look in
+the document object (or DOM) for a button (which &lt;em&gt;does&lt;/em&gt; exist) and then tell
+javascript to pop up an alert when the page is loaded! Simple!&lt;/p&gt;
+&lt;p&gt;JavaScript veterans are shaking their heads now. Here’s why this won’t work.&lt;/p&gt;
+&lt;h1 id=&quot;a-lt-dr-explanation-of-why-this-happens&quot;&gt;A LT;DR Explanation of Why This Happens&lt;/h1&gt;
+&lt;p&gt;When the page loads in a browser, the browser engine loads the page and parses
+the content linearly. After, just saying that, you can see the problem: the
+browser engine can’t see the button yet!&lt;/p&gt;
+&lt;p&gt;In fact, if you look in the console, you’ll see the error message displayed.&lt;/p&gt;
+&lt;p&gt;We can get around this in 2 ways. The first way is simply to move the script
+portion to below the body.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
+    &amp;lt;/body&amp;gt;
+    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+        var button = document.getElementById(&amp;#39;pressme&amp;#39;);
+        button.addEventListener(&amp;#39;click&amp;#39;, function () {
+            alert(&amp;#39;hello, world!&amp;#39;);
+        });
+    &amp;lt;/script&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is fairly standard, especially if you want to include external scripts and
+scripts from a CDN, since the browser engine can load the direct content of the
+page before waiting eons for a request from an external CDN.&lt;/p&gt;
+&lt;p&gt;Or, there’s a more JavaScript-y way to do it. The document object exists once
+we hit the &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tag, so we can add a &lt;strong&gt;listener&lt;/strong&gt; to the DOM.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+            document.addEventListener(&amp;#39;DOMContentLoaded&amp;#39;, function (e) {
+                var button = document.getElementById(&amp;#39;pressme&amp;#39;);
+                button.addEventListener(&amp;#39;click&amp;#39;, function () {
+                    alert(&amp;#39;hello!&amp;#39;);
+                });
+            });
+        &amp;lt;/script&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
+    &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice we need to use the &lt;code&gt;DomContentLoaded&lt;/code&gt; event or else the code will not
+find the button. In this case the JavaScript engine waits until all the content
+of the page is loaded (essentially doing the same thing as adding the script
+to the bottom–except that just the code inside the event handler is
+executed). Because the DOM content is loaded, that means the button exists, and
+the button can now use a click event listener.&lt;/p&gt;
+&lt;h1 id=&quot;the-point-rocket-vs-roadie&quot;&gt;The Point: Rocket vs. Roadie&lt;/h1&gt;
+&lt;p&gt;I’ve been realizing the way I thought about JavaScript was all wrong, mainly
+because JavaScript is mainly taught to web develeopers.&lt;/p&gt;
+&lt;p&gt;Most langauges you can think of as a rocket ship. You hit the &lt;strong&gt;EXECUTE&lt;/strong&gt; button
+and things start happening. Once the program executes, everything that goes
+on is already there, and you’re already aware of what the input is and output
+should be.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/images/js-for-no-js/apollo-launch.jpg&quot; alt=&quot;Rocket Launch&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Even when writing plug-ins this is true. Plug-in API usually tells you the
+expected input and output.&lt;/p&gt;
+&lt;p&gt;However, writing JavaScript code, you need think like a roadie for a band.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/images/js-for-no-js/roadie.jpg&quot; alt=&quot;Rocket Launch&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The band is the main event. The roadie is there, waiting for the next order
+order form the band. However, the roadie has to wait for the band’s instruction.
+Doesn’t matter if the roadie is the fast and efficient. Starting a stage
+tear-down during the climactic song set will ruin the performance and the
+roadie will be fired.&lt;/p&gt;
+&lt;p&gt;But, once the band asks the roadie to do something (moving equipment, testing
+the batteries on mics, handing out water), he knows exactly what to do and can
+do it without the band’s instructions.&lt;/p&gt;
+&lt;p&gt;The same analogy applies to JavaScript. With JavaScript programming you need
+to &lt;em&gt;wait&lt;/em&gt; for things to happen. Especially when adding on differnet JavaScript
+framworks like Vue or Angular, the complexity increases, so the programmer
+must not expect that once you hit a button that button is considered hit.&lt;/p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;Even now some aspects of JavaScript confuse or surprise me. For a language that
+appeared as an afterthought it has become the backbone of the web. So, for
+programmers who are used to Java or C++ or some other framework, you, like me,
+might be a little confused as to what goes on under the hood. But, hopefully,
+I was able to explain what goes on in a more visual way.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>My Latest Project - LinkList Firefox Extension</title>
+      <link>http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</guid>
+      <author></author>
+      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
+&lt;p&gt;We are a species whose brains like limited information.
+[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
+after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
+proven that when given a lot of information our brains are overwhelmed. This
+has driven content designers of websites to display selected bits of
+information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
+every user profile on Reddit while reading an article, but they do provide
+links to user profiles who have commented on the article.&lt;/p&gt;
+&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
+for.&lt;/p&gt;
+&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
+yet), cover links with other elements. If you use a JavaScript blocker (which I
+recommend to everyone, for both security and privacy), you know what I’m
+talking about.&lt;/p&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;My solution is a Firefox extension called
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
+For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
+provides a text field to allow you to search for a given link.&lt;/p&gt;
+&lt;p&gt;I created this because of my frustration with searching for a job. At a local
+company page I’d look for the “Careers” or “Jobs” page which may or may not be
+at the footer. Instead of wasting 3 seconds scrolling to the bottom and
+another 3 seconds scanning the footer links I can simply look in the sidebar
+and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>You Can't Write a Stage Play in ReStructuredText! (Part 1)</title>
+      <link>http://localhost:8080/articles/you_cant_write_a_stageplay_in_restructuredtext/</link>
+      <pubDate>Fri, 03 Nov 2017 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/you_cant_write_a_stageplay_in_restructuredtext/</guid>
+      <author></author>
+      <description>&lt;h1 id=&quot;you-s-can-t-s-sup-can-sup-write-a-stage-play-in-restructuredtext-part&quot;&gt;You &lt;s&gt;Can’t&lt;/s&gt; &lt;sup&gt;Can&lt;/sup&gt; Write a Stage Play in ReStructuredText! (Part&lt;/h1&gt;
+&lt;h1 id=&quot;1-&quot;&gt;1 )&lt;/h1&gt;
+&lt;p&gt;In this blog I’ll talk about my journey in writing a StagePlay in
+ReStructuredText, a popular Markup text format. In this first part I’ll talk
+about why this is important and the conversions I used in between standard
+stageplay format.&lt;/p&gt;
+&lt;h2 id=&quot;let-me-explain&quot;&gt;Let Me Explain&lt;/h2&gt;
+&lt;p&gt;I love markup languages. I like the simplicity of being able to seperate content
+and formatting, so that if I don’t like the color of something I can go into
+the CSS and change the color, without hunting through an ODT document to change
+every. Darn. Instance.&lt;/p&gt;
+&lt;p&gt;I also enjoy writing fiction in my free time and have recently written a
+stageplay. What does this have to do with ReStructuredText, you ask?&lt;/p&gt;
+&lt;p&gt;Like many developers I discovered markup languages via contributions to open
+source projects. I then began to use ReStructuredText in my own projects and
+in corporate environments. While others would send me clunky word documents, I’d
+send them a streamlined PDF converted from text, or, if they wanted, a word
+document, written just as easily as a PDF.&lt;/p&gt;
+&lt;p&gt;Long story short, I fell in love with ReStructuredText. Could I apply the same
+technique to publishing fiction as well?&lt;/p&gt;
+&lt;h2 id=&quot;formatting-is-important&quot;&gt;Formatting is Important&lt;/h2&gt;
+&lt;p&gt;Many editors and publishers require specific formats for authors’ work. On the
+lenient end are publishers that simply want something not printed on rainbow
+paper; on the strict end are publishers that will send work back if the margins
+are a milimeter off.&lt;/p&gt;
+&lt;p&gt;Many authors have &lt;a href=&quot;http://txt2tags.org/writing-book.html&quot;&gt;written their books&lt;/a&gt;
+[using MarkDown]
+(&lt;a href=&quot;http://ianhocking.com/2013/06/22/writing-a-novel-using-markdown/&quot;&gt;http://ianhocking.com/2013/06/22/writing-a-novel-using-markdown/&lt;/a&gt;).
+This works great. Novels are simple enough you just need chapter headings,
+maybe a few dividers, and you’re good to go.&lt;/p&gt;
+&lt;p&gt;But plays a bit more complex. They require scene specifiers, act specifiers,
+character tags, lines, stage direction &amp;hellip;&lt;/p&gt;
+&lt;p&gt;If you haven’t fallen asleep yet then you’re probably putting yourself in my
+shoes, overwhelmed by the work to be done.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;As an aside, I did a little research to see if there’s a special markup format
+for writing a stageplay. There is the open source syntax called
+&lt;a href=&quot;https://fountain.io&quot;&gt;Fountain&lt;/a&gt; for screenplays, but screenlpays and stageplays
+are entirely different formats. I also ran across
+&lt;a href=&quot;http://downplay.net/&quot;&gt;DownPlay&lt;/a&gt;, and got really excited, until I realized that
+it was specifically written for &lt;a href=&quot;https://ulyssesapp.com/&quot;&gt;Ulysses&lt;/a&gt;, a Mac-only
+text editor.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In any case, onto my journey.&lt;/p&gt;
+&lt;h2 id=&quot;step-1-what-is-a-standard-stageplay-format-&quot;&gt;Step 1 - What is a Standard Stageplay Format?&lt;/h2&gt;
+&lt;p&gt;Well, depends on your audience, or the person to whom you’re submitting. For
+my play, I used
+&lt;a href=&quot;https://ptfaculty.gordonstate.edu/lking/CPF_play_formatting2.pdf&quot;&gt;this PDF&lt;/a&gt;
+for reference. I then listed out all the properties of a stageplay that need
+formatting.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Formatting:&lt;ul&gt;
+&lt;li&gt;Page: 8.5” x 11”&lt;/li&gt;
+&lt;li&gt;Font: Courier 12 point.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Intro Pages:&lt;ul&gt;
+&lt;li&gt;Title Page (with appropriate margins).&lt;ul&gt;
+&lt;li&gt;Play Title&lt;/li&gt;
+&lt;li&gt;Description of play (e.g. “A Play in Two Acts”)&lt;/li&gt;
+&lt;li&gt;“by”&lt;/li&gt;
+&lt;li&gt;Author’s Name&lt;/li&gt;
+&lt;li&gt;Copyright information and Author’s information at bottom&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Personae Page&lt;ul&gt;
+&lt;li&gt;“Cast of Characters” Title&lt;/li&gt;
+&lt;li&gt;A table of character names and descriptions&lt;/li&gt;
+&lt;li&gt;Scene and Time descriptions, if there’s room&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The Play Itself (where the &amp;#128664; meets the &amp;#128739;)&lt;ul&gt;
+&lt;li&gt;Correct page formatting with page numbering in the top right.&lt;/li&gt;
+&lt;li&gt;Act and Scene Designations&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SETTING:&lt;/code&gt; and &lt;code&gt;AT RISE:&lt;/code&gt; delegations in a tabular format&lt;/li&gt;
+&lt;li&gt;Character tags&lt;/li&gt;
+&lt;li&gt;Character dialogue&lt;/li&gt;
+&lt;li&gt;Stage direction&lt;/li&gt;
+&lt;li&gt;End of act/scene delgations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;step-2-restucturedtext-equivalences&quot;&gt;Step 2 - ReStucturedText Equivalences&lt;/h2&gt;
+&lt;p&gt;Here’s the part that took a little experimenting. Essentially, there should be
+either a ReStructuredText syntax rule or ReStructuredText directive that
+correlates to one of the properties. This is a general rule, because some of
+the properties should be dealt with during the &lt;code&gt;pandoc&lt;/code&gt; phase where conversion
+occurs.&lt;/p&gt;
+&lt;p&gt;Here is what I came up with:&lt;/p&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Stage play property&lt;/th&gt;
+        &lt;th&gt;ReStructuredText equivalent&lt;/th&gt;
+        &lt;th&gt;Example&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Title&lt;/td&gt;  &lt;td&gt;ReStructuredText title&lt;/td&gt;
+        &lt;td&gt;
+            &lt;code&gt;&lt;pre&gt;=======
+My Play
+=======&lt;/code&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Subtitle&lt;/td&gt;
+        &lt;td rowspan=&quot;4&quot;&gt;ReStructuredText subtitle&lt;/td&gt;
+        &lt;td rowspan=&quot;4&quot;&gt;&lt;pre&gt;----------------
+A Play in 2 Acts
+----------------
+----------------
+by
+----------------
+----------------
+Author
+----------------&lt;/pre&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Description&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&quot;by&quot;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Author's Name&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Personae Page&lt;/td&gt;
+        &lt;td&gt;- Title is a ReStructuredText title&lt;br/&gt;
+            - Characters are listed in tabular format with the character's
+              name as the first colun, and the description as the second
+              column.&lt;br/&gt;
+             &lt;i&gt;(hint: this is where the &lt;code&gt;..list-table&lt;/code&gt;
+                directive comes in handy)&lt;/i&gt;
+        &lt;/td&gt;
+        &lt;td&gt;&lt;pre&gt;..list-table::
+    * - Fred
+      - Our main character
+    * - Jasmine
+      - Fred's best friend.&lt;/pre&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Act Designations&lt;/td&gt;
+        &lt;td&gt;Header 1 (underlined with `=`)&lt;/td&gt;
+        &lt;td&gt;&lt;pre&gt;Act I
+-----&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Scene Designations&lt;/td&gt;
+        &lt;td&gt;Header 2 (underlined with `-`)&lt;/td&gt;
+        &lt;td&gt;&lt;pre&gt;Scene 1
+-------&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;`SETTING` &amp;amp; `AT RISE`&lt;/td&gt;
+        &lt;td&gt;Table&lt;/td&gt;
+        &lt;td&gt;&lt;pre&gt;..list-table::
+    * - SETTING:
+      - Some time in some random location
+    * - AT RISE:
+      - Chaos happens.&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Stage Direction&lt;/td&gt;
+        &lt;td&gt;default text (no indentation or start character)&lt;/td&gt;
+        &lt;td&gt;&lt;pre&gt;Character does something very interesting.&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Character line&lt;/td&gt;
+        &lt;td&gt;Definition&lt;/td&gt;
+        &lt;td&gt;&lt;pre&gt;CHARACTER
+    This is the character's dialogue.&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Some of these I skipped, with the intention of adding them post-production,
+most notably the author information on the title page.&lt;/p&gt;
+&lt;h2 id=&quot;up-next-&quot;&gt;Up Next &amp;hellip;&lt;/h2&gt;
+&lt;p&gt;Whew! That was the hard part. In the next post I’ll talk about how to convert
+the ReStructuredText into a document with the correct formatting.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>The Decline of Closed-Source APIs - Apistrat 2017</title>
+      <link>http://localhost:8080/articles/the_decline_of_closed_apis/</link>
+      <pubDate>Thu, 02 Nov 2017 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/the_decline_of_closed_apis/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04667.png&quot; alt=&quot;APIStratBanner&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;what-i-learned-at-apistrat-2017&quot;&gt;What I Learned at APISTRAT 2017&lt;/h1&gt;
+&lt;p&gt;This last week from October 31st to November 2nd, I had the amazing
+opportunity to brush up against some great innovators at some of the
+leading-edge companies. This event was the Open API Strategy conference, or
+“apistrat.” (pronounced as “app-pee-strat” to frequenters).&lt;/p&gt;
+&lt;p&gt;This is a big deal. Unless you’ve lived under a rock since 2000 (and sorry if
+you have; I can help you reintegrate into society) then you’ll have noticed a
+shift away from desktop-centric apps and a move toward a cloud architecture.
+People now expect most of their data to not be on their own system. How does
+one transport information from the client to the server? API’s of course!&lt;/p&gt;
+&lt;p&gt;Unfortunately, due to a variety of reasons, many groups are still stuck in
+the stone age, chiseling out their own APIs from old 90’s tech in order to
+forge a resemblance of a wheel.&lt;/p&gt;
+&lt;p&gt;On a personal note, this is where Netflix went horribly wrong. They only
+released an API (&lt;a href=&quot;https://techcrunch.com/2014/11/16/netflix-api/&quot;&gt;for a short
+time&lt;/a&gt;) to allow access to
+their list of content. But that wasn’t the worst part. They also buckled down
+their content and only allowed streaming to be done on Windows, using
+Silverlight, which was already on the decline. If Netflix had simply provided
+an API for streaming, Linux users wouldn’t have had to wait until 2016 to get
+some semblance of a streaming service.&lt;/p&gt;
+&lt;p&gt;But I digress.&lt;/p&gt;
+&lt;p&gt;This was my first year at an apistrat conference–and my first year at &lt;em&gt;any&lt;/em&gt;
+open source conference–so I didn’t quite know what to expect.&lt;/p&gt;
+&lt;p&gt;I was expecting mainly a geek-fest. However, I was surprised to find people
+from various industries and departments attended: some who have not touched
+code in their life, and some who knew how to code from birth.&lt;/p&gt;
+&lt;p&gt;The first day was composed of workshops, of which we had a choice of two. I
+decided on a workshop put on by Sean Matthews
+(&lt;a href=&quot;https://www.linkedin.com/profile/view?id=AAoAAAebMZ8B43R0HU3iKrL-ngf9A9f70xNNOno&amp;amp;authType=name&amp;amp;authToken=7BBn&amp;amp;trk=api*a104762*s113330*&quot;&gt;LinkedIn&lt;/a&gt;), co-founder of &lt;a href=&quot;https://lefthookdigital.com/discover&quot;&gt;Left Digital
+Hook&lt;/a&gt;, a company that helps others
+incorporate APIs into their products. During the workshop we were introduced
+to a technology called &lt;a href=&quot;https://zapier.com/&quot;&gt;Zapier&lt;/a&gt;, a platform that,
+essentially, makes connecting to points with an API easy.&lt;/p&gt;
+&lt;p&gt;Sean walked through an example of using Zapier to connect Slack to the
+company’s database. When a Slack user types “New Task”, Zapier is triggered to
+get the text of the slack message, parse it, create a new task, and return in
+to the user.&lt;/p&gt;
+&lt;p&gt;Left Digital Hook was developed because of market pressure, Sean says. Open
+Source APIs were beginning to catch on, and so he felt advising companies on
+the merits of open source technologies was the way to go. He’s advised at
+least 30 companies, including Citrix.&lt;/p&gt;
+&lt;p&gt;Currently Sean has huge plans involving the API tester app
+&lt;a href=&quot;https://getpostman.com&quot;&gt;Postman&lt;/a&gt;. His vision for the app is to make it more
+collaborative, in much the way &lt;a href=&quot;http://programmableweb.com&quot;&gt;programmableweb&lt;/a&gt;
+is, by allowing developers to post public APIs to the site.&lt;/p&gt;
+&lt;p&gt;The second workshop I attended was titled “API-first Redesign of a Legacy
+Application,” led by &lt;a href=&quot;https://www.linkedin.com/profile/view?id=AAoAAABgzUgBRYKcRiQaDjlhke4f5xweUwM-8l4&amp;amp;authType=name&amp;amp;authToken=O7Sl&amp;amp;trk=api*a104762*s113330*&quot;&gt;Chris Busse&lt;/a&gt;
+of &lt;a href=&quot;http://apivista.com/&quot;&gt;APIVista&lt;/a&gt;. This workshop dealt with APIs in a
+friendlier way than a full-on “How to API” course, but was not any less
+relevant. Chris did an excellent job encouraging the class participants to
+reconstruct old ideas into new API framework.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04684.png&quot; alt=&quot;Chris Busse&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The example he used was the old “lemonade stand” game, a meme that,
+unfortunately, predated me. He led us through individual and group activities
+to rethink how to program the lemonade stand game in terms of REST calls. The
+result was a collaborative and fun activity to help people become better rest
+programmers.&lt;/p&gt;
+&lt;p&gt;The second and last days were whirlwinds of talks.&lt;/p&gt;
+&lt;p&gt;The morning was opened by keynote talks–fueled by coffee, of course. The
+talks were given by people from some of the biggest names in tech: Yina Arena,
+from Microsoft, and Sarah Novotny, from Google.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04788.png&quot; alt=&quot;Sarah Novotny&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Personally, I find myself surprised these days by how–er, open–Microsoft is
+to adopt open source technologies. As a primarily open source developer,
+Microsoft has always been a thorn: unwilling to work with open source. In
+recent years, however, the tide began to turn, and I was surprised by the
+humility and honesty that Yina conveyed from a stained software company.
+Leaders like Yina, who take the initiative to change their company dynamics,
+are hard to come by, so the talk was rather refreshing.&lt;/p&gt;
+&lt;p&gt;After a morning break (and filling up my IV drip with more coffee) the morning
+talks resumed. I did not have any specific track in mind, so I ended up
+picking whatever talk suited my fancy. I also wanted to stretch myself, by
+attending talks by technologies that I didn’t use and had no interest in. No
+matter what talk, I attended, however, I began to see how people were adopting
+this development strategy.&lt;/p&gt;
+&lt;p&gt;The most interesting talks were ones given by the smaller companies, who have
+yet to have a name for themselves. I’d never heard of BioBright before
+APIStrat, but found Ryan Harrison’s desire to change the field of science and
+research infectious.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04934.png&quot; alt=&quot;Ryan Harrison&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Documentation for APIs (and documentation in general) is something I find is
+looked over, both for me and for other developers, so I attended talks that
+spoke on these subjects. One of the most interesting was by Ash Hathaway, a
+proud Texan, who brought to light why words matter in documentation.&lt;/p&gt;
+&lt;p&gt;During the second day I did have an opportunity to talk to a self-proclaimed
+“API Evangelist” (if not &lt;em&gt;the&lt;/em&gt; API Evangelist), Kin Lane. I was not fortunate
+enough to attend any of his talks, but I did get to talk with him in person
+during a break.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04869.png&quot; alt=&quot;Kin Lane&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Kin gets most of his income from hustling, doing anything from writing,
+consulting, and photography. He started getting interested in APIs after
+seeing fighting from companies like Twitter, and worked with the Department of
+Veteran Affairs to get APIs introduced. What he finds awesome about APIStrat
+is the variety of people that attend, both developers and non-developers.&lt;/p&gt;
+&lt;p&gt;The final day was similar to the first, with short talks given by various
+people in all sectors of jobs.&lt;/p&gt;
+&lt;p&gt;Two talks stood out to me: one done by Shelby Switzer of Healthify. Shelby is
+one of those developers who hasn’t waited around for the market to change, but
+has forged ahead with changing the market. Her talk (on convincing companies
+to adopt open APIs) balanced “why don’t they get it?” with a helpful approach
+to encouraging clients to adopt open APIs.&lt;/p&gt;
+&lt;p&gt;The other was by Randall Hunt on building AI-Powered APIs. Long-gone are the days
+when people thought of Amazon as just an Online retailer. Now they harness the
+power of open APIs and big data to make smart technology. The talk delved into how
+Amazon incorporates massive amounts of big data to automate tasks such as drone
+delivery and robot packaging.&lt;/p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Overall, the APIStrat conference was very encouraging. The entire technology world is catching
+on to the fact that open source is not only beneficial financially, but it’s also a way to encourage
+user trust and trust among developers.&lt;/p&gt;
+&lt;p&gt;The conference also converted me: no more am I an API fanboy…now I’m an API evangelist.&lt;/p&gt;
+</description>
+    </item>
+  </channel>
+</rss>

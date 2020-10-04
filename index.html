@@ -1,500 +1,152 @@
 <!DOCTYPE html>
-
-<html lang="en" class="has-navbar-fixed-top">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-
-    <title>The SrcRr</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="The SrcRr Tech Blog" />
-    <meta name="author" content="Jordan Hewitt - The SrcRr" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-    article {
-        padding: 5pt;
-        top: 30pt;
-    }
-    article p {
-        margin: 10pt;
-    }
-    article h1, article h2, article h3, article h4 {
-        margin: 5pt 10pt;
-    }
-    article h1 {
-        font-size: 200%;
-    }
-    article h2 {
-        font-size: 150%;
-        font-style: italic;
-    }
-    article h3 {
-        font-size: 125%;
-        font-weight: bold;
-    }
-    </style>
-
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
-    />
-
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link
-      href="./static/styles.css"
-      rel="stylesheet"
-    />
-
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-    <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The Source-r-r
+    </title>
+    <link rel="alternate" href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangrously | Serve Ethically | Think Technically">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
   </head>
-
   <body>
-    <div> <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">The SrcRr</div>
-
-  <div class="navbar-menu floating">
-    
-    <a href="index.html#intro" class="navbar-item"
-      >Intro</a
-    >
-    
-    <a href="index.html#software" class="navbar-item"
-      >Software</a
-    >
-    
-    <a href="index.html#video" class="navbar-item"
-      >Video</a
-    >
-    
-    <a href="index.html#blog" class="navbar-item"
-      >Blog</a
-    >
-    
-    <a href="index.html#photography" class="navbar-item"
-      >Photography</a
-    >
-    
-    <a href="index.html#satire" class="navbar-item"
-      >Satire</a
-    >
-    
-    <a href="index.html#graphic" class="navbar-item"
-      >Graphic</a
-    >
-    
-    <a href="index.html#music" class="navbar-item"
-      >Music</a
-    >
-    
-    <a href="index.html#contact" class="navbar-item"
-      >Contact</a
-    >
-    
-  </div>
-
-  <a
-    role="button"
-    class="navbar-burger burger"
-    aria-label="menu"
-    aria-expanded="false"
-    data-target="navbarBasicExample"
-  >
-  <i class="material-icons md-48">menu</i>
-  </a>
-</nav> </div>
-    <div class="container">
-        
-    
-    <section class="section"><a name="intro"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">double_arrow</i>
-        
-        Intro
-        </h1>
-        <div class="hero-body">
-            <p>Hi, I'm Jordan, also known as <strong>The SrcRr</strong></p>
-<p>A few non-specific facts about me:</p>
+    <header class="header">
+      <div class="content-wrap">
+        <div class="logo">
+          <h1><a href="http://localhost:8080">The Source-r-r</a></h1>
+          <p class="description">Live Dangrously | Serve Ethically | Think Technically</p>
+        </div>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article intro">
+          <header>
+            <p class="date"><span>05. October 2020</span></p>
+            <h2><a href="/articles/taking_the_pain_out_of_files_in_python/">Justfile takes the pain out of reading files in Python</a></h2>
+          </header>
+          <section class="content"><h1 id="full-disclosure-">Full Disclosure…</h1>
+<p>Full disclosure, this is my library. I just figured I’d promote it
+while showing examples of file i/o in<span class="widont">&nbsp;</span>Python.</p>
+<h1 id="the-boring-painful-hair-pulling-excruciating-way">The Boring/Painful/Hair-pulling/Excruciating Way</h1>
+<p>This is how official Python tutorial says to read a<span class="widont">&nbsp;</span>file:</p>
+<pre><code class="language-python"><span class="keyword">with</span> open(<span class="string">'workfile'</span>) <span class="keyword">as</span> f:
+    read_data = f.read()</code></pre>
+<p>If you’re new to programming this probably looks like a bunch of
+gobbledy-gook. If you’re
+a veteran you may find this annoying but still
+understand what’s happening and you understand the
+reasoning behind<span class="widont">&nbsp;</span>it</p>
+<p>Oh, but wait…we want to add error checking if the file doesn’t exist.
+Or if we can’t open<span class="widont">&nbsp;</span>it.</p>
+<p>Let’s add some more<span class="widont">&nbsp;</span>code.</p>
+<pre><code class="language-python"><span class="keyword">try</span>:
+    <span class="keyword">with</span> open(<span class="string">'workfile'</span>) <span class="keyword">as</span> f:
+        read_data = f.read()
+catch FileNotFoundError <span class="keyword">as</span> e:
+    print(<span class="string">"not found"</span>);</code></pre>
+<p>Okay, whew! At least that’s over. Just imagine if we had to write to
+a file. Ah, what the heck! Let’s do<span class="widont">&nbsp;</span>it.</p>
+<pre><code class="language-python"><span class="keyword">with</span> open(<span class="string">'workfile'</span>, <span class="string">'w+'</span>) <span class="keyword">as</span> f:
+    f.write(<span class="string">"hello world"</span>)</code></pre>
+<p>Not too bad. But we still have some errors to contend<span class="widont">&nbsp;</span>with:</p>
 <ul>
-<li>Northwest Native</li>
-<li>I possess a <strong>Bachelor of Science</strong> in <strong>Computer Science</strong></li>
-<li>I think as a hobby.</li>
-<li>Always looking for opportunities for humor.</li>
-<li>I'm active and love to work out.</li>
-<li>But I also love food, so I'm in a constant state of conflict.</li>
+<li>The path to the file doesn’t<span class="widont">&nbsp;</span>exist.</li>
+<li>The file already<span class="widont">&nbsp;</span>exists</li>
+<li>We don’t have permission to write a file<span class="widont">&nbsp;</span>there.</li>
 </ul>
-<p>As a proud multipotentialite (that's a person that's skilled in more than
-one area) I like to use my talents for providing services to others. That's why
-I've decided to showcase various products and services I hope you'll find
-useful.</p>
+<p>Okay, that’s no problem, right? We just have to add about 10 more lines
+of code. No<span class="widont">&nbsp;</span>biggie!</p>
+<pre><code class="language-python"><span class="keyword">import</span> os
+<span class="caps">OUTFILE</span> = <span class="string">"/home/disgruntledprogrammer/somedir/somefile.txt"</span>
+<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(os.path.dirname(<span class="caps">OUTFILE</span>)):
+    os.makedirs(os.path.dirname(<span class="caps">OUTFILE</span>))
+<span class="keyword">if</span> os.path.exists(<span class="caps">OUTFILE</span>):
+    <span class="keyword">raise</span> RuntimeError(<span class="string">"file exists"</span>)
+<span class="keyword">with</span> open(<span class="caps">OUTFILE</span>, <span class="string">'w+'</span>) <span class="keyword">as</span> f:
+    f.write(<span class="string">"hello world"</span>)</code></pre>
+<p>And then your boss comes to you and asks you to read a config file and
+write out data to an <span class="caps">XML</span> file. Then in a fit of rage you grab your
+entire workstation march over to the window and throw it out onto the
+street 3 floors below. While this action doesn’t result in physical
+injury the company fines you
+$10,300 for destruction of property. But by the time they fine you
+you’re already on the run,
+living out of your van with an unregistered license plate, selling
+potato chips on the black market and using burner phones to call your
+mom to tell her you’re alright but you can’t make it for Christmas this
+year. But that’s a story for another<span class="widont">&nbsp;</span>time.</p>
+<p>As you can see all we’re trying to do is write to a file, yet we have a
+lot of overhead to make it<span class="widont">&nbsp;</span>work.</p>
+<h1 id="enter-justfile">Enter <code>justfile</code></h1>
+<p>I realized one day, why can’t I “just write” to a file, or “just read” 
+to it without having to wory about all these edge<span class="widont">&nbsp;</span>cases?</p>
+<p>So that’s why I created <code>justfile</code>. It’s a library that allows you
+to simply read and write without worrying about error<span class="widont">&nbsp;</span>checking.</p>
+
+            <p class="more"><a href="/articles/taking_the_pain_out_of_files_in_python/">more</a></p>
+          </section>
+        </article>
+        <article class="article intro">
+          <header>
+            <p class="date"><span>15. September 2020</span></p>
+            <h2><a href="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/">WebSockets: How to Give a Slide Presentation from Halfway Across The World</a></h2>
+          </header>
+          <section class="content"><h1 id="church-song-lyrics">Church Song Lyrics</h1>
+<p>Before I delve into a code, let me explain a bit about the example<span class="widont">&nbsp;</span>problem.</p>
+<p>I used to run the overhead at my church. For those not familar with church,
+during worship service it’s common for the current song to be displayed on a large
+display screen for people to join the worship team, kind of like<span class="widont">&nbsp;</span>this:</p>
+<p><img src="https://fthmb.tqn.com/By6QhFoVDLXh49uX7N7-5DV3aR8=/768x0/filters:no_upscale()/Praise-and-Worship-58b5c8ba5f9b586046caf1fa.jpg" alt="Overhead"></p>
+<p>Most churches use PowerPoint for this. If a church is technically-adept enough,
+they’ll often use a special church presentation software. <a href="https://openlp.org/">OpenLP</a>
+is one awesome open source application I’ve used, but there are some really great
+commercial versions as<span class="widont">&nbsp;</span>well.</p>
+<p>But most of these involve a person having to sit in a central location to control the<span class="widont">&nbsp;</span>screen.</p>
+<p>I thought one day.. “What if the person running the lyrics can sit anywhere?” Maybe
+they’re ill with the flu and they need to stay home but they’re the only one who can
+run it. Or they want to sit with their<span class="widont">&nbsp;</span>family.</p>
+<p>So, can we design a system that listens for commands (perhaps given by a <span class="caps">REST</span> request)
+then hands that command off to an application to<span class="widont">&nbsp;</span>display?</p>
+<p>Yes we can!</p>
+<p>Very briefly it would look like<span class="widont">&nbsp;</span>this:</p>
+<p><img src="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/overhead-websocket-diagram.png" alt="diagram 1"></p>
+
+            <p class="more"><a href="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/">more</a></p>
+          </section>
+        </article>
+        <article class="article intro">
+          <header>
+            <p class="date"><span>16. October 2018</span></p>
+            <h2><a href="/articles/responsive-web-design-in-django-without-javascript/">Responsive Web Design in Django (Without JavaScript!)</a></h2>
+          </header>
+          <section class="content">
+            <p class="more"><a href="/articles/responsive-web-design-in-django-without-javascript/">more</a></p>
+          </section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/archive.html">&laquo; Archives</a><a href="/page/2/">Next page &raquo;</a>
         </div>
-    </div>
-    </section>
-    
-    <section class="section"><a name="software"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">build</i>
-        
-        Software
-        </h1>
-        <div class="hero-body">
-            <p>The first time I took a programming class in high school, it was on a whim. Ever
-since then I've been honing the art of software development in order to provide
-quality results for clients.</p>
-<p>A quick run-down of my experience:</p>
-<ul>
-<li>Application/Full Stack development</li>
-<li>BASH Scripting</li>
-<li>Python</li>
-<li>Automation / AI</li>
-</ul>
-<h3>Latest <u>GitLab</u> Feeds</h3>
+        <section class="about"><p>Wintersmith is made by <a href="http://johan-nordberg.com">Johan Nordberg</a> and licensed under the <a href="http://opensource.org/licenses/MIT">MIT-license</a>.
+This footer text can be edited in about.md</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur.</p>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est laborum.</p>
 
-<div id="gitlab-feed" class="feed-container">
-</div>
-
-<h3>Latest <u>GitHub</u> Feeds</h3>
-
-<div id="github-feed">
-</div>
-
-<noscript>
-
-</noscript>
-        </div>
-    </div>
-    </section>
-    
-    <section class="section"><a name="video"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">video_library</i>
-        
-        Moving Pictures
-        </h1>
-        <div class="hero-body">
-            <div id="bitchute-feed" class="container row">
-</div>
-        </div>
-    </div>
-    </section>
-    
-    <section class="section"><a name="blog"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">create</i>
-        
-        Blog
-        </h1>
-        <div class="hero-body">
-            <p>As I'm beginning to freelance I'll try to write more articles.</p>
-<p>The majority of topics covered will be technology-related, but I'm a firm
-believer in the fact that any practice should incorporate other practices,
-so you might find articles that don't seem related to technology.</p>
-<p>In any case, my goal for the blog is to be informative, and helpful,
-and to provide a unique experience that you wouldn't get from any ol' geek.</p>
-<p><built-in method count of list object at 0x7f8b7cd62240></p>
-<p>
-<div class="card">
-    <div class="card-content">
-        <h4 class="card-title">WebSockets: How to Give a Slide Presentation from Halfway Across The World</h4>
-        <h5 class="card-subtitle">2020-09-15</h4>
-        <p class="summary">Church Song Lyrics
-Before I delve into a code, let me explain a bit about the example problem.
-I used to run the overhead at my church. For those not familar with church,
-during worship service it's common for the current song to be displayed on a...</h4>
-        <p class="right-align">
-            <a href="giving-a-powerpoint-presentation-from-halfway-across-the-world.html" class="btn">
-                <span>Read More</span>
-                <i class="material-icons">send</i>
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h4 class="card-title">Responsive Web Design in Django (Without JavaScript!)</h4>
-        <h5 class="card-subtitle">2018-10-16</h4>
-        <p class="summary">The Case for Non-JS Responsive Web Design
-I would argue JavaScript is becoming more common with which to build websites,
-but seems as though it's already ruled the web as the #1 framework. As an avid
-NoScript user, 90% of the web is broken...</h4>
-        <p class="right-align">
-            <a href="responsive-web-design-in-django-without-javascript.html" class="btn">
-                <span>Read More</span>
-                <i class="material-icons">send</i>
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h4 class="card-title">JavaScript Programming for Non-JavaScript Programmers</h4>
-        <h5 class="card-subtitle">2017-11-11</h4>
-        <p class="summary">No technology has divided the programming community more than JavsScript, mainly
-because it's the been de-facto standard for web pages since around 2012, or
-possibly earlier. Developers either love it or hate it. I'm in the camp that
-says let's do...</h4>
-        <p class="right-align">
-            <a href="javascript-programming-for-non-javascript-programmers.html" class="btn">
-                <span>Read More</span>
-                <i class="material-icons">send</i>
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h4 class="card-title">My Latest Project - LinkList Firefox Extension</h4>
-        <h5 class="card-subtitle">2017-11-11</h4>
-        <p class="summary">The Problem With Our Brains (and the Web)
-We are a species whose brains like limited information.
-[Study] (https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload)
-after study has
-proven that when given a lot of...</h4>
-        <p class="right-align">
-            <a href="my_latest_project_linklist_firefox_extension.html" class="btn">
-                <span>Read More</span>
-                <i class="material-icons">send</i>
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h4 class="card-title">Escargo: The Zero-Configuration Email API</h4>
-        <h5 class="card-subtitle">2017-11-11</h4>
-        <p class="summary">Don't Re-Invent the Wheel
-
-One of the principles of REST APIs is the ability to reuse common parts,
-starting from the ground up. Then, if one of those parts is broken, just go in,
-fix that part, and you're good to go.
-Which is why I was a bit baffled...</h4>
-        <p class="right-align">
-            <a href="Escargo:-The-Zero-Configuration-Email-API.html" class="btn">
-                <span>Read More</span>
-                <i class="material-icons">send</i>
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h4 class="card-title">Basic Parts of an API Request</h4>
-        <h5 class="card-subtitle">2017-11-11</h4>
-        <p class="summary">title: Basic Parts of an API Request
-Basic Parts of an API Request
-Sometimes understanding URLs and requests can be intimidating. If you're wanting
-to get into API programming (e.g. REST, SOAP, web [which isn't considered
-part of the family, but...</h4>
-        <p class="right-align">
-            <a href="basic-parts-of-an-api-request.html" class="btn">
-                <span>Read More</span>
-                <i class="material-icons">send</i>
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h4 class="card-title">You Can't Write a Stage Play in ReStructuredText! (Part 1)</h4>
-        <h5 class="card-subtitle">2017-11-04</h4>
-        <p class="summary">You Can't Can Write a Stage Play in ReStructuredText! (Part
-1 )
-In this blog I'll talk about my journey in writing a StagePlay in
-ReStructuredText, a popular Markup text format. In this first part I'll talk
-about why this is important and the...</h4>
-        <p class="right-align">
-            <a href="you_cant_write_a_stageplay_in_restructuredtext.html" class="btn">
-                <span>Read More</span>
-                <i class="material-icons">send</i>
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h4 class="card-title">The Decline of Closed-Source APIs - Apistrat 2017</h4>
-        <h5 class="card-subtitle">2017-11-03</h4>
-        <p class="summary">
-What I Learned at APISTRAT 2017
-This last week from October 31st to November 2nd, I had the amazing
-opportunity to brush up against some great innovators at some of the
-leading-edge companies. This event was the Open API Strategy conference,...</h4>
-        <p class="right-align">
-            <a href="the_decline_of_closed_apis.html" class="btn">
-                <span>Read More</span>
-                <i class="material-icons">send</i>
-            </a>
-        </p>
-    </div>
-</div>
-</p>
-        </div>
-    </div>
-    </section>
-    
-    <section class="section"><a name="photography"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">camera</i>
-        
-        Writing With Light
-        </h1>
-        <div class="hero-body">
-            <p>Ever since I was a teenager I've always enjoyed storytelling through a single
-image.</p>
-<p>Photography is a unique activity that involves physics, chemistry, technology,
-and even psychology to produce a shared emotional response.</p>
-<p>Below are samples of my work. To view the full images, please go to
-<a href="https://writelight.website/?category=6">writelight.website</a></p>
-<div class="srcrr-carousel">
-    
-</div>
-
-<div id='srcrr-photography-nav-arrow-bank' class="center-align"></div>
-
-<div class="srcrr-image-info-wrapper">
-    
-</div>
-        </div>
-    </div>
-    </section>
-    
-    <section class="section"><a name="satire"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">sentiment_very_satisfied</i>
-        
-        Satire
-        </h1>
-        <div class="hero-body">
-            <p>I believe other fellow geeks take themselves too seriously.</p>
-<p>Instead of <em>ooh</em>-ing and <em>aah</em>-ing at the latest and greatest thing, why not
-make fun of it instead?</p>
-<p>That's why I decided to start my own satire site: <strong>The Modern Modem</strong>
-You can visit it here:</p>
-<p class="center-align">
-    <a href="https://themodernmodem.wordpress.com"
-       class="btn">The Modern Modem</a>
-</p>
-
-<p><strong>DISCLAIMER: Please note that reading and understanding the articles requires a strong sense
-of humor and the uncanny ability to not get easily offended.</strong></p>
-<div id="themodernmodem-feed" class="feed-container">
-</div>
-
-<noscript>
-
-</noscript>
-        </div>
-    </div>
-    </section>
-    
-    <section class="section"><a name="graphic"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">photo_album</i>
-        
-        Graphics & Logos
-        </h1>
-        <div class="hero-body">
-            <p>Below are some of the logos and images I made myself.</p>
-<h3>The SrcRr</h3>
-<p><img alt="The SrcRr" src="/static/images/srcrr/srcrr.png" /></p>
-<h3>Soulourus</h3>
-<p><img alt="Soulourus" src="/static/images/srcrr/soulourous.png" /></p>
-        </div>
-    </div>
-    </section>
-    
-    <section class="section"><a name="music"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">music_note</i>
-        
-        Music
-        </h1>
-        <div class="hero-body">
-            <p>I've also been experimenting with music lately.</p>
-<p>As of now, I don't prefer any particular style. I'm sure that's going
-to change since I've never heard of an artist who is "unstyled."</p>
-<p><img alt="solourus" src="/static/images/srcrr/soulourous.png" /></p>
-<p>If you're interested in hearing my music, you can hear it (and donate, if
-you feel so included) at <a href="https://solourous.bandcamp.com">https://solourous.bandcamp.com</a>.</p>
-        </div>
-    </div>
-    </section>
-    
-    <section class="section"><a name="contact"></a>
-    <div class="container">
-        <h1 class="title">
-        
-        <i class="material-icons">contact_mail</i>
-        
-        Send a Smoke Signal
-        </h1>
-        <div class="hero-body">
-            <p>If you are interested in using any of these services I'd love to help you.</p>
-<p>I can be reached in the following ways:</p>
-<table>
-    <tr>
-        <th>Email</th>
-        <td>
-            <a href="mailto:hireme@jordanhewitt.pro" class="btn">
-                <i class="material-icons">
-                    email
-                </i>
-                hireme@jordanhewitt.pro
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <th>Telegram</th>
-        <td>
-            <a href="https://www.t.me/srcrr" class="btn">
-                @srcrr
-            </a>
-        </td>
-    </tr>
-</table>
-        </div>
-    </div>
-    </section>
-    
-
-    </div>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        // Check for click events on the navbar burger icon
-        $(".navbar-burger").click(function () {
-          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-          $(".navbar-burger").toggleClass("is-active");
-          $(".navbar-menu").toggleClass("is-active");
-        });
-      });
-    </script>
+        </section>
+        <section class="copy">
+          <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+        </section>
+      </div>
+    </footer>
   </body>
 </html>

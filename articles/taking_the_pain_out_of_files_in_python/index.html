@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Justfile takes the pain out of reading files in Python - The Source-r-r
+    </title>
+    <link rel="alternate" href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangrously | Serve Ethically | Think Technically">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Justfile takes the pain out of reading files in Python</h1>
+        <p class="author">Written by <span class="author"></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><h1 id="full-disclosure-">Full Disclosure…</h1>
+<p>Full disclosure, this is my library. I just figured I’d promote it
+while showing examples of file i/o in<span class="widont">&nbsp;</span>Python.</p>
+<h1 id="the-boring-painful-hair-pulling-excruciating-way">The Boring/Painful/Hair-pulling/Excruciating Way</h1>
+<p>This is how official Python tutorial says to read a<span class="widont">&nbsp;</span>file:</p>
+<pre><code class="language-python"><span class="keyword">with</span> open(<span class="string">'workfile'</span>) <span class="keyword">as</span> f:
+    read_data = f.read()</code></pre>
+<p>If you’re new to programming this probably looks like a bunch of
+gobbledy-gook. If you’re
+a veteran you may find this annoying but still
+understand what’s happening and you understand the
+reasoning behind<span class="widont">&nbsp;</span>it</p>
+<p>Oh, but wait…we want to add error checking if the file doesn’t exist.
+Or if we can’t open<span class="widont">&nbsp;</span>it.</p>
+<p>Let’s add some more<span class="widont">&nbsp;</span>code.</p>
+<pre><code class="language-python"><span class="keyword">try</span>:
+    <span class="keyword">with</span> open(<span class="string">'workfile'</span>) <span class="keyword">as</span> f:
+        read_data = f.read()
+catch FileNotFoundError <span class="keyword">as</span> e:
+    print(<span class="string">"not found"</span>);</code></pre>
+<p>Okay, whew! At least that’s over. Just imagine if we had to write to
+a file. Ah, what the heck! Let’s do<span class="widont">&nbsp;</span>it.</p>
+<pre><code class="language-python"><span class="keyword">with</span> open(<span class="string">'workfile'</span>, <span class="string">'w+'</span>) <span class="keyword">as</span> f:
+    f.write(<span class="string">"hello world"</span>)</code></pre>
+<p>Not too bad. But we still have some errors to contend<span class="widont">&nbsp;</span>with:</p>
+<ul>
+<li>The path to the file doesn’t<span class="widont">&nbsp;</span>exist.</li>
+<li>The file already<span class="widont">&nbsp;</span>exists</li>
+<li>We don’t have permission to write a file<span class="widont">&nbsp;</span>there.</li>
+</ul>
+<p>Okay, that’s no problem, right? We just have to add about 10 more lines
+of code. No<span class="widont">&nbsp;</span>biggie!</p>
+<pre><code class="language-python"><span class="keyword">import</span> os
+<span class="caps">OUTFILE</span> = <span class="string">"/home/disgruntledprogrammer/somedir/somefile.txt"</span>
+<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(os.path.dirname(<span class="caps">OUTFILE</span>)):
+    os.makedirs(os.path.dirname(<span class="caps">OUTFILE</span>))
+<span class="keyword">if</span> os.path.exists(<span class="caps">OUTFILE</span>):
+    <span class="keyword">raise</span> RuntimeError(<span class="string">"file exists"</span>)
+<span class="keyword">with</span> open(<span class="caps">OUTFILE</span>, <span class="string">'w+'</span>) <span class="keyword">as</span> f:
+    f.write(<span class="string">"hello world"</span>)</code></pre>
+<p>And then your boss comes to you and asks you to read a config file and
+write out data to an <span class="caps">XML</span> file. Then in a fit of rage you grab your
+entire workstation march over to the window and throw it out onto the
+street 3 floors below. While this action doesn’t result in physical
+injury the company fines you
+$10,300 for destruction of property. But by the time they fine you
+you’re already on the run,
+living out of your van with an unregistered license plate, selling
+potato chips on the black market and using burner phones to call your
+mom to tell her you’re alright but you can’t make it for Christmas this
+year. But that’s a story for another<span class="widont">&nbsp;</span>time.</p>
+<p>As you can see all we’re trying to do is write to a file, yet we have a
+lot of overhead to make it<span class="widont">&nbsp;</span>work.</p>
+<h1 id="enter-justfile">Enter <code>justfile</code></h1>
+<p>I realized one day, why can’t I “just write” to a file, or “just read” 
+to it without having to wory about all these edge<span class="widont">&nbsp;</span>cases?</p>
+<p>So that’s why I created <code>justfile</code>. It’s a library that allows you
+to simply read and write without worrying about error<span class="widont">&nbsp;</span>checking.</p>
+<h2 id="installation">Installation</h2>
+<p>You can install include justfile in your projects the way you would
+any other python<span class="widont">&nbsp;</span>package:</p>
+<pre><code class="language-bash">pip install justfile</code></pre>
+<h2 id="reading">Reading</h2>
+<p>Here’s an example:</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> read
+print(read(<span class="string">"file-does-exist"</span>))
+<span class="comment"># Hello, World!</span>
+print(read(<span class="string">"file-does-not-exist"</span>))
+<span class="comment"># None</span></code></pre>
+<p>“<code>None</code>?” you say. “But that breaks all programming<span class="widont">&nbsp;</span>conventions!”</p>
+<p>Don’t worry, Exception fan, I hear<span class="widont">&nbsp;</span>you.</p>
+<p>So if you’re the type that wants there to be an error thrown if
+somethong goes wrong, I’ve got you<span class="widont">&nbsp;</span>covered!</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> read
+print(read(<span class="string">'file'</span>, complain=<span class="literal">True</span>))                         
+<span class="comment"># ---------------------------------------------------------------------------</span>
+<span class="comment"># JustFileException                         Traceback (most recent call last)</span>
+<span class="comment"># &lt;ipython-input-5-6ded5f7518eb&gt; in &lt;module&gt;</span>
+<span class="comment"># ----&gt; 1 print(read('file', complain=True))</span>
+<span class="comment">#</span>
+<span class="comment"># ~/.local/lib/python3.8/site-packages/justfile/io.py in read(path, mode, complain, default_content)</span>
+<span class="comment">#      25                 if not complain:</span>
+<span class="comment">#      26                         return default_content</span>
+<span class="comment"># ---&gt; 27                 raise e</span>
+<span class="comment">#      28 </span>
+<span class="comment">#      29 def write(path, content, mode="w+", create_dirs=True, complain=False):</span>
+
+<span class="comment"># ~/.local/lib/python3.8/site-packages/justfile/io.py in read(path, mode, complain, default_content)</span>
+<span class="comment">#      17         try:</span>
+<span class="comment">#      18                 if not os.path.exists(path):</span>
+<span class="comment"># ---&gt; 19                         raise JustFileException(f"{path} does not exist.")</span>
+<span class="comment">#      20                 if not os.path.exists(path):</span>
+<span class="comment">#      21                         return None</span>
+<span class="comment"># </span>
+<span class="comment"># JustFileException: file does not exist.</span></code></pre>
+<p>Bear with me here, though. There is an advantage to keeping
+<code>complain=False</code>. This allows you better control over how not having
+the file is<span class="widont">&nbsp;</span>handled.</p>
+<p>For example, by providing a default<span class="widont">&nbsp;</span>config:</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> read
+<span class="caps">CONFIG</span> = parse_yaml(read(<span class="string">"config.yaml"</span>) <span class="keyword">or</span> <span class="string">"""
+x: 1
+y: 4"""</span>)</code></pre>
+<p>Or warning the user that a file is<span class="widont">&nbsp;</span>missing:</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> read
+<span class="keyword">if</span> <span class="keyword">not</span> read(<span class="string">"config.yaml"</span>):
+    print(<span class="string">"Config is missing"</span>)</code></pre>
+<h2 id="writing-appending">Writing <span class="amp">&amp;</span> Appending</h2>
+<p>Writing to a file is just as<span class="widont">&nbsp;</span>simple.</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> read, write
+write(<span class="string">"somefile.txt"</span>, <span class="string">"Hello, World!"</span>)
+print(read(<span class="string">"somefile.txt"</span>))
+<span class="comment"># Hello, World!</span></code></pre>
+<p>No directory? No<span class="widont">&nbsp;</span>problem?</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> read, write
+write(<span class="string">"./path/to/some/somefile.txt"</span>, <span class="string">"Hello, World!"</span>)
+print(read(<span class="string">"./path/to/some/somefile.txt"</span>))
+<span class="comment"># Hello, World!</span></code></pre>
+<p>Unless you don’t want to create directories for some<span class="widont">&nbsp;</span>reason…</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> read, write
+write(<span class="string">"./path/to/some/somefile.txt"</span>, <span class="string">"Hello, World!"</span>, create_dirs=<span class="literal">False</span>)
+print(read(<span class="string">"./path/to/some/somefile.txt"</span>))
+<span class="comment"># None</span></code></pre>
+<p>And remember, you can always<span class="widont">&nbsp;</span>complain…</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> read, write
+write(<span class="string">"./path/to/some/somefile.txt"</span>, <span class="string">"Hello, World!"</span>, create_dirs=<span class="literal">False</span>, complain=<span class="literal">True</span>)
+
+<span class="string">"""
+FileNotFoundError                         Traceback (most recent call last)
+&lt;ipython-input-12-7a87c377d6d8&gt; in &lt;module&gt;
+----&gt; 1 write("./path/to/some/somefile.txt", "Hello, World!", create_dirs=False, complain=True)
+
+~/.local/lib/python3.8/site-packages/justfile/io.py in write(path, content, mode, create_dirs, complain)
+     51         except Exception as e:
+     52                 if complain:
+---&gt; 53                         raise e
+     54                 return False
+     55 
+
+~/.local/lib/python3.8/site-packages/justfile/io.py in write(path, content, mode, create_dirs, complain)
+     46                 if not os.path.exists(d) and len(d) and create_dirs:
+     47                         os.makedirs(d)
+---&gt; 48                 with open(path, mode) as f:
+     49                         f.write(content)
+     50                         return True
+
+FileNotFoundError: [Errno 2] No such file or directory: './path/to/some/somefile.txt'
+"""</span></code></pre>
+<p>Keep in mind this overwrites a file. What if you want to append to
+a<span class="widont">&nbsp;</span>file?</p>
+<p>There’s also an <code>append</code> function for just that<span class="widont">&nbsp;</span>purpose!</p>
+<pre><code class="language-python"><span class="keyword">from</span> justfile.io <span class="keyword">import</span> (read, write, append)
+write(<span class="string">"file.txt"</span>, <span class="string">"Hello, World!"</span>)
+append(<span class="string">"file.txt"</span>, <span class="string">" This is Sparta!"</span>)
+print(read(<span class="string">"file.txt"</span>))
+<span class="comment"># "Hello, World! This is Sparta!"</span></code></pre>
+<h1 id="conclusion">Conclusion</h1>
+<p>As you can see, reading and writing files in python doesn’t have to
+cause a complete mental breakdown. Using the <code>justfile</code> library can
+help with file i/o and handle a lot of the edge cases that are<span class="widont">&nbsp;</span>messy.</p>
+<p>Note that I wouldn’t use <code>justfile</code> for <em>every</em> instance of file i/o.
+For example, it won’t handle chunking data very well, and it expects
+you to pass it a <em>path</em> instead of a file handle (so using <code>sys.stdout</code>
+wouldn’t work for<span class="widont">&nbsp;</span>instance).</p>
+<p>But for the vast majority of cases reading plain text, it’s just the<span class="widont">&nbsp;</span>ticket!</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">&laquo; Full blog</a></div>
+        <section class="about"><p>Wintersmith is made by <a href="http://johan-nordberg.com">Johan Nordberg</a> and licensed under the <a href="http://opensource.org/licenses/MIT">MIT-license</a>.
+This footer text can be edited in about.md</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur.</p>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est laborum.</p>
+
+        </section>
+        <section class="copy">
+          <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

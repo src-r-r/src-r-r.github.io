@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>WebSockets: How to Give a Slide Presentation from Halfway Across The World - The Source-r-r
+    </title>
+    <link rel="alternate" href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangrously | Serve Ethically | Think Technically">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>WebSockets: How to Give a Slide Presentation from Halfway Across The World</h1>
+        <p class="author">Written by <span class="author"></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><h1 id="church-song-lyrics">Church Song Lyrics</h1>
+<p>Before I delve into a code, let me explain a bit about the example<span class="widont">&nbsp;</span>problem.</p>
+<p>I used to run the overhead at my church. For those not familar with church,
+during worship service it’s common for the current song to be displayed on a large
+display screen for people to join the worship team, kind of like<span class="widont">&nbsp;</span>this:</p>
+<p><img src="https://fthmb.tqn.com/By6QhFoVDLXh49uX7N7-5DV3aR8=/768x0/filters:no_upscale()/Praise-and-Worship-58b5c8ba5f9b586046caf1fa.jpg" alt="Overhead"></p>
+<p>Most churches use PowerPoint for this. If a church is technically-adept enough,
+they’ll often use a special church presentation software. <a href="https://openlp.org/">OpenLP</a>
+is one awesome open source application I’ve used, but there are some really great
+commercial versions as<span class="widont">&nbsp;</span>well.</p>
+<p>But most of these involve a person having to sit in a central location to control the<span class="widont">&nbsp;</span>screen.</p>
+<p>I thought one day.. “What if the person running the lyrics can sit anywhere?” Maybe
+they’re ill with the flu and they need to stay home but they’re the only one who can
+run it. Or they want to sit with their<span class="widont">&nbsp;</span>family.</p>
+<p>So, can we design a system that listens for commands (perhaps given by a <span class="caps">REST</span> request)
+then hands that command off to an application to<span class="widont">&nbsp;</span>display?</p>
+<p>Yes we can!</p>
+<p>Very briefly it would look like<span class="widont">&nbsp;</span>this:</p>
+<p><img src="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/overhead-websocket-diagram.png" alt="diagram 1"></p>
+<h2 id="on-a-web-page">On a Web<span class="widont">&nbsp;</span>Page</h2>
+<p>Another “requirement” – let’s use the browser as the application container.
+Can this work? What’s needed for a church<span class="widont">&nbsp;</span>presentation?</p>
+<ol>
+<li>Full screen (nobody wants to see the <span class="caps">URL</span> bar during<span class="widont">&nbsp;</span>worship).</li>
+<li>Respond immediately to navigation (e.g. next slide when user presses the arrow<span class="widont">&nbsp;</span>key).</li>
+<li>Styling (although, it’s common now to use standard<span class="widont">&nbsp;</span>white-on-black)</li>
+</ol>
+<p>Obviously, #3 is covered on day 1 for any web development course. What about #1?
+Is it possible to get full screen in the web<span class="widont">&nbsp;</span>browser?</p>
+<p>If you’ve ever used Netflix or YouTube (and who hasn’t?), you know the answer is yes. But what part in
+the stack controls<span class="widont">&nbsp;</span>this?</p>
+<p>A quick search of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API">Mozilla Web <span class="caps">API</span></a> reveals that it’s part of the JavaScript <span class="caps">API</span>. Not only that,
+but most of the functions <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API#specifications">are supported by most major<span class="widont">&nbsp;</span>browsers</a>.</p>
+<p>While implementing full-screen would be a fun exercise, though, I want to focus on <strong>#2 -<span class="widont">&nbsp;</span>navigation</strong>.</p>
+<h1 id="the-example-song">The Example Song</h1>
+<p>For our demonstration we’ll use the lyrics from an old-time classic _Mary Had a Little<span class="widont">&nbsp;</span>Lamb_:</p>
+<blockquote>
+<p>Mary had a little<span class="widont">&nbsp;</span>lamb.</p>
+<p>It’s fleece was white a<span class="widont">&nbsp;</span>snow</p>
+<p>And everywhere that Mary<span class="widont">&nbsp;</span>whent</p>
+<p>The lamb was sure to<span class="widont">&nbsp;</span>go</p>
+</blockquote>
+<p>Typically for worship presentatations there are multiple lines per slide, but for the
+sake of simplicity we’ll use one line per<span class="widont">&nbsp;</span>slide.</p>
+<pre><code class="language-ts">LYRICS = [
+  <span class="string">"Mary had a little lamb"</span>,
+  <span class="string">"It's fleece was white as snow"</span>,
+  <span class="string">"And everywhere that Mary went"</span>,
+  <span class="string">"The lamb was sure to go"</span>,
+];</code></pre>
+<p>We’ll also assign the following commands for the following<span class="widont">&nbsp;</span>actions:</p>
+<pre><code class="language-text">&quot;f&quot;             =&gt;  Go to first slide.
+&lt;arrow_down&gt;    =&gt;  Go to next slide.
+&lt;arrow_up&gt;      =&gt;  Go to previous slide.</code></pre>
+<p>Since we’re having to listen to actions, let’s put the lyrics in a class to have easy
+control over<span class="widont">&nbsp;</span>them.</p>
+<pre><code class="language-ts">
+<span class="keyword">type</span> Show = <span class="built_in">any</span> | <span class="literal">null</span>;
+
+<span class="keyword">class</span> PresentationController {
+  <span class="keyword">public</span> <span class="caps">LYRICS</span> = [
+    <span class="string">"Mary had a little lamb"</span>,
+    <span class="string">"It's fleece was white as snow"</span>,
+    <span class="string">"And everywhere that mary went"</span>,
+    <span class="string">"The lamb was sure to go"</span>,
+  ];
+
+  <span class="keyword">public</span> <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> show: Show</span>) {}
+
+  <span class="keyword">private</span> i = <span class="number">0</span>;
+
+  <span class="keyword">public</span> current() {
+    <span class="keyword">let</span> lyr = <span class="keyword">this</span>.<span class="caps">LYRICS</span>[<span class="keyword">this</span>.i];
+    <span class="keyword">return</span> <span class="keyword">new</span> Slide(<span class="keyword">this</span>.show, lyr);
+  }
+
+  <span class="keyword">public</span> next() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.i &lt; <span class="keyword">this</span>.<span class="caps">LYRICS</span>.length - <span class="number">1</span>) <span class="keyword">this</span>.i += <span class="number">1</span>;
+    <span class="keyword">return</span> <span class="keyword">this</span>.current();
+  }
+  <span class="keyword">public</span> previous() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.i &gt; <span class="number">0</span>) <span class="keyword">this</span>.i -= <span class="number">1</span>;
+    <span class="keyword">return</span> <span class="keyword">this</span>.current();
+  }
+  <span class="keyword">public</span> first() {
+    <span class="keyword">this</span>.i = <span class="number">0</span>;
+    <span class="keyword">return</span> <span class="keyword">this</span>.current();
+  }
+}
+</code></pre>
+<p>The <code>show</code> argument we’ll fill in<span class="widont">&nbsp;</span>later. </p>
+<h1 id="using-websockets">Using WebSockets</h1>
+<p>WebSockets allow a client script to wait and receive commands from a server. You can
+think of it as like a server all its own, but running in the client<span class="widont">&nbsp;</span>space.</p>
+<p>More documenation <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">is available<span class="widont">&nbsp;</span>here</a>.</p>
+<h2 id="front-end-fe-server-s-and-client-c-">Front-End (<span class="caps">FE</span>), Server (S), and Client<span class="widont">&nbsp;</span>(C)</h2>
+<h3 id="front-end">Front-end</h3>
+<p>For our application, the JavaScript code for the web pages will open a connection with
+the server and wait for commands form a remote<span class="widont">&nbsp;</span>client.</p>
+<h3 id="server">Server</h3>
+<p>The server will need a request framework to listen for connections. The server
+framework can be whatever you want it to be but for our purposes we’ll be using
+Node.js, so the Express library will be<span class="widont">&nbsp;</span>used.</p>
+<h3 id="client">Client</h3>
+<p>We’ll worry about this last, since <span class="caps">REST</span> will be used for the transport layer. We can
+send the command over curl if needed, as long as it agrees with the Server’s<span class="widont">&nbsp;</span>schema.</p>
+<h2 id="design-of-the-sever-">Design of the<span class="widont">&nbsp;</span>Sever.</h2>
+<p>We need to think of this in reverse. We essentially don’t care what the <span class="caps">FE</span> is sending
+us (yes, in a production application we need to worry about logging in, errors, and
+more–remember, start simple). We’re only concerned with what the C is sending us, and
+then we’ll send that to the<span class="widont">&nbsp;</span><span class="caps">FE</span>.</p>
+<h3 id="how-not-to-design-it">How <strong>Not</strong> to Design<span class="widont">&nbsp;</span>It</h3>
+<p>During the first itereration, I thought, all right, simple enough…create an express
+application to listen both for WebSockets and <span class="caps">HTTP</span><span class="widont">&nbsp;</span>requests…</p>
+<pre><code class="language-ts">
+<span class="comment">// Pseudocode....</span>
+
+<span class="keyword">const</span> ws WebSocket = <span class="keyword">new</span> WebSocket();
+
+app.get(<span class="string">"/:action"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">
+  req: Request,
+  res: Response,
+  next: NextFunction
+</span>) </span>{
+    <span class="keyword">let</span> lyrics = getNext(request.params[<span class="string">'action'</span>]);
+    ws.send(lyrics)
+}
+</code></pre>
+<p>Unfortunately, this does not work as expected.<span class="widont">&nbsp;</span>Why?</p>
+<p>Simple. We’re just listening for <span class="caps">HTTP</span> requests and not WebSocket connections. So the
+connection will never be<span class="widont">&nbsp;</span>open.</p>
+<p>Which means we need <strong>2</strong> apps<span class="widont">&nbsp;</span>running.</p>
+<h3 id="2-applications">2 Applications</h3>
+<p>The first app (<code>recv</code>) will listen for commands from the C. The second app (<code>app</code>) will
+determine what lyrics to display based on the key<span class="widont">&nbsp;</span>press.</p>
+<h3 id="what-about-communication-">What About Communication?</h3>
+<p>You might notice that there’s no way <code>recv</code> can communicate with <code>app</code>. Here’s a 
+diagram for what’s going<span class="widont">&nbsp;</span>on</p>
+<pre><code>(remote client)
+      |
+      |
+      V
+    [recv]          [app]
+                      |
+                      |
+                      V
+                  (front-end)</code></pre><p>We need something to connect the two<span class="widont">&nbsp;</span>services.</p>
+<pre><code>(remote client)
+      |
+      |
+      V
+    [recv] &lt;- (?) -&gt; [app]
+                      |
+                      |
+                      V
+                  (front-end)</code></pre><p>Enter Redis!</p>
+<p>Redis is an in-memory database and is used frequently for inter-process<span class="widont">&nbsp;</span>communication.</p>
+<p>The psuedocode will look like<span class="widont">&nbsp;</span>this:</p>
+<pre><code class="language-text">(these are performed asynchronously)
+    recv:
+        1. wait for a command from the client
+        2. put the command on the queue
+    app:
+        1. wait for a command from the queue
+        2. get the command from the queue
+        3. remove the command from the queue
+        4. get the lyrics based on the command
+        5. send the lyrics to the websocket.</code></pre>
+<p>There’s no need to create your own queue framework, either. Libraries exist that
+include this functionality. For this project, RedisSMQ (Simple Message Queue) is<span class="widont">&nbsp;</span>used.</p>
+<p>While in a production environment it’s best to hook this into the app startup, we’ll
+simply add it directly into the<span class="widont">&nbsp;</span>script:</p>
+<pre><code class="language-ts"><span class="keyword">const</span> rsmq = <span class="keyword">new</span> RedisSMQ({ host: <span class="string">"127.0.0.1"</span>, port: <span class="number">6379</span>, ns: <span class="string">"rsmq"</span> });</code></pre>
+<h3 id="app-send-commands-to-the-websocket"><code>app</code>: Send Commands To the<span class="widont">&nbsp;</span>WebSocket</h3>
+<p>This is pretty straightforward from a coding standpoint save for one<span class="widont">&nbsp;</span>caveat:</p>
+<pre><code class="language-ts"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">tick</span>(<span class="params">ws : <span class="built_in">any</span>, request: Request, next: NextFunction</span>) </span>{
+
+  <span class="keyword">let</span> msg = <span class="keyword">await</span> rsmq.popMessageAsync({ qname: <span class="string">"lyrics"</span> }) <span class="keyword">as</span> {id: <span class="built_in">number</span>, message; <span class="built_in">string</span>};
+
+  <span class="comment">// ** The caveat</span>
+  usleep(<span class="number">10</span>);
+
+  <span class="comment">// Don't error out if we don't have a code yet.</span>
+  <span class="keyword">if</span> (!msg.id) <span class="keyword">return</span> next();
+
+  <span class="comment">// debugging :)</span>
+  <span class="built_in">console</span>.log(msg);
+
+  <span class="comment">// Send lyrics to the client</span>
+  <span class="comment">// `lyr` is the LyricsController instance.</span>
+  <span class="comment">// lyr[msg.message] is actually a function, so we're getting</span>
+  <span class="comment">// the pure function name from the message.</span>
+  <span class="comment">// Obviously for production you'd want to do error checking,</span>
+  <span class="comment">// but we're feeling lazy today. :)</span>
+  <span class="keyword">await</span> ws.send(<span class="built_in"><span class="caps">JSON</span></span>.stringify(lyr[msg.message]()));
+  next();
+}
+
+<span class="comment">// A general listen function.</span>
+<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">listen</span>(<span class="params">ws: <span class="built_in">any</span>, request: Request, next: NextFunction</span>) </span>{
+  <span class="keyword">while</span> (<span class="number">1</span>) {
+    <span class="keyword">await</span> tick(ws, request, next);
+  }
+}
+
+<span class="comment">// This is what the <span class="caps">FE</span> code will connect to</span>
+<span class="comment">// e.g. http://localhost:3000/lyrics</span>
+app.ws(<span class="string">"/lyrics"</span>, <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params">
+  ws: <span class="built_in">any</span>,
+  request: Request,
+  next: NextFunction
+</span>) </span>{
+  listen(ws, request, next);
+});</code></pre>
+<p>Now for <strong>the caveat</strong>. We need to add a time to sleep in order for <code>recv</code> to wait
+for the queue to clear. Otherwise, if <code>next</code> is the command given, <code>recv</code> will keep
+getting <code>next</code>, <code>next</code>, <code>next</code>, … until the command is<span class="widont">&nbsp;</span>popped.</p>
+<p>Ideally a mutex would be used to prevent this from happening, but for now we’ll
+use a timer and sleep for 10 microseconds (I found this value worked after some<span class="widont">&nbsp;</span>experimenting).</p>
+<h3 id="waiting-for-commands-from-the-client">Waiting for Commands from the<span class="widont">&nbsp;</span>Client</h3>
+<p>We still need to add paths for express to listent to the client. This is
+even simpler than for <code>app</code>:</p>
+<pre><code class="language-ts">recv.get(<span class="string">"/:action"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">
+  req: Request,
+  res: Response,
+  next: NextFunction
+</span>) </span>{
+  <span class="keyword">let</span> action = req.params[<span class="string">"action"</span>];
+  rsmq.sendMessage({ qname: <span class="string">"lyrics"</span>, message: action }, <span class="function"><span class="keyword">function</span> (<span class="params">
+    err: <span class="built_in">any</span>,
+    resp: <span class="built_in">any</span>
+  </span>) </span>{
+    <span class="keyword">if</span> (err) res.status(<span class="number">500</span>).json({ error: err });
+    <span class="keyword">else</span> res.status(<span class="number">200</span>).send(<span class="string">`The command was <span class="subst">${action}</span>\n`</span>);
+    next();
+  });
+});</code></pre>
+<h2 id="waiting-on-the-fe">Waiting on the<span class="widont">&nbsp;</span><span class="caps">FE</span></h2>
+<p>I’ll just show you the code for the page. It’s pretty<span class="widont">&nbsp;</span>straightforward:</p>
+<pre><code class="language-html"><span class="meta">&lt;!<span class="caps">DOCTYPE</span> <span class="meta-keyword">html</span>&gt;</span>
+
+<span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>
+  <span class="tag">&lt;<span class="name">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span>
+
+    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Worship Presentation Example<span class="tag">&lt;/<span class="name">title</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">content</span>=<span class="string">"The Church Application"</span> /&gt;</span>
+    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"author"</span> <span class="attr">content</span>=<span class="string">"SitePoint"</span> /&gt;</span>
+
+    <span class="tag">&lt;<span class="name">style</span> <span class="attr">id</span>=<span class="string">"slideshow-styling"</span>&gt;</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"css/styles.css?v=1.0"</span> /&gt;</span>
+  <span class="tag">&lt;/<span class="name">head</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="name">body</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"main"</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">"lyrics"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span>
+    <span class="tag">&lt;/<span class="name">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript">
+        <span class="keyword">const</span> url = <span class="string">"ws://127.0.0.1:3000/lyrics"</span>;
+        <span class="keyword">let</span> aWebSocket = <span class="keyword">new</span> WebSocket(url);
+        <span class="built_in">console</span>.log(aWebSocket);
+        aWebSocket.addEventListener(<span class="string">"message"</span>, ($ev) =&gt; {
+            <span class="keyword">let</span> lyrics = $ev.data;
+            <span class="built_in">console</span>.log(lyrics);
+            <span class="keyword">let</span> target = <span class="built_in">document</span>.getElementById(<span class="string">"lyrics"</span>);
+            <span class="keyword">let</span> data = <span class="built_in"><span class="caps">JSON</span></span>.parse(lyrics);
+            <span class="built_in">console</span>.log(data.lyrics)
+
+            <span class="comment">// This displays the lyrics. Anything previously rendered</span>
+            <span class="comment">// will be removed.</span>
+            <span class="built_in">document</span>.getElementById(<span class="string">"lyrics"</span>).innerText = data.lyrics;
+
+            <span class="comment">// We'll apply any styling here.</span>
+            <span class="keyword">if</span> (data.show &amp;&amp; data.show.css)
+              <span class="built_in">document</span>.getElementById(<span class="string">"slideshow-styling"</span>).innerText = data.show.css;
+        });
+    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+  <span class="tag">&lt;/<span class="name">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="name">html</span>&gt;</span></code></pre>
+<h3 id="a-few-notes">A Few Notes</h3>
+<p>The one thing extraneous I did was add styling to commands. But that’s<span class="widont">&nbsp;</span>optional.</p>
+<p>Another note is that if the server is reloaded (e.g. due to a change) the WebSocket
+connection will be lost. Just reload the<span class="widont">&nbsp;</span>webpage.</p>
+<h1 id="controlling-the-presentation-">Controlling The Presentation.</h1>
+<p>The awesome thing is that this can be done using <code>CURL</code> (or Insomina, or any other
+<span class="caps">REST</span><span class="widont">&nbsp;</span>client)</p>
+<p>For example the following <span class="caps">URL</span> will display the first slide on the<span class="widont">&nbsp;</span>client:</p>
+<pre><code class="language-bash"><span class="comment"># Remember, we're listening on port 3001 for the <span class="caps">REST</span> request!</span>
+curl http://127.0.0.1:3001/first</code></pre>
+<p><img src="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/first.png" alt="first"></p>
+<p>Consequently, we’ll go to the next slide with the following<span class="widont">&nbsp;</span>command:</p>
+<pre><code class="language-bash">curl http://127.0.0.1:3001/next</code></pre>
+<p><img src="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/next.png" alt="first"></p>
+<p>How awesome is that! The webpage obeys our command without us touching<span class="widont">&nbsp;</span>it!</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>WebSockets allow the programmer to send data from a server to a client. In this example,
+we got to see how it can be used for a remote worship<span class="widont">&nbsp;</span>service.</p>
+<p>The server had 2 Express applications running, connected by Redis Simple Message Queue.
+When a command came in, it was put on the queue for the <span class="caps">WSGI</span> app, then popped off the queue
+for the WebScoket <span class="caps">ASGI</span><span class="widont">&nbsp;</span>app.</p>
+<p>At this point the web page listening (or any client listening) to the WebSocket was able to
+receive a message from the server. JavaScript on the client web page then handled the display
+of the lyrics for the current<span class="widont">&nbsp;</span>slide.</p>
+<h1 id="full-server-code">Full Server Code</h1>
+<p>For those interested, here is the full server source<span class="widont">&nbsp;</span>code:</p>
+<pre><code class="language-ts"><span class="comment">// import express, { Request } from "express";</span>
+<span class="keyword">import</span> { Application, WithWebsocketMethod } <span class="keyword">from</span> <span class="string">"express-ws"</span>;
+<span class="keyword">import</span> { NextFunction } <span class="keyword">from</span> <span class="string">"connect"</span>;
+<span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);
+<span class="keyword">import</span> { Request } <span class="keyword">from</span> <span class="string">"express-serve-static-core"</span>;
+<span class="keyword">import</span> { Response, json } <span class="keyword">from</span> <span class="string">"express"</span>;
+<span class="keyword">import</span> { createClient } <span class="keyword">from</span> <span class="string">"redis"</span>;
+<span class="keyword">import</span> { usleep } <span class="keyword">from</span> <span class="string">"usleep"</span>;
+<span class="comment">// const RedisSMQ = require("rsmq");</span>
+<span class="keyword">import</span> RedisSMQ <span class="keyword">from</span> <span class="string">"rsmq"</span>;
+<span class="keyword">const</span> WebSocket = <span class="built_in">require</span>(<span class="string">"ws"</span>);
+
+<span class="keyword">let</span> app = (express() <span class="keyword">as</span> unknown) <span class="keyword">as</span> Application;
+<span class="keyword">let</span> recv = (express() <span class="keyword">as</span> unknown) <span class="keyword">as</span> Application;
+<span class="keyword">var</span> expressWs = <span class="built_in">require</span>(<span class="string">"express-ws"</span>)(app);
+
+<span class="keyword">const</span> r = createClient();
+
+<span class="keyword">enum</span> TransitionType {
+  <span class="caps">FADE</span> = <span class="string">"fade"</span>,
+}
+
+<span class="keyword">class</span> Transition {
+  <span class="keyword">public</span> <span class="keyword">constructor</span>(<span class="params">transitionType : TransitionType, duration : <span class="built_in">number</span></span>){} 
+}
+
+<span class="keyword">class</span> Show {
+  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> css : <span class="built_in">string</span>, <span class="keyword">public</span> transition : Transition | <span class="literal">null</span></span>) {}
+}
+
+<span class="keyword">class</span> Slide {
+  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> show : Show, <span class="keyword">public</span> lyrics : <span class="built_in">string</span></span>) {}
+}
+
+<span class="keyword">class</span> PresentationController {
+  <span class="keyword">public</span> <span class="caps">LYRICS</span> = [
+    <span class="string">"Mary had a little lamb"</span>,
+    <span class="string">"It's fleece was white as snow"</span>,
+    <span class="string">"And everywhere that mary went"</span>,
+    <span class="string">"The lamb was sure to go"</span>,
+  ];
+
+  <span class="keyword">public</span> <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> show: Show</span>) {}
+
+  <span class="keyword">private</span> i = <span class="number">0</span>;
+
+  <span class="keyword">public</span> current() {
+    <span class="keyword">let</span> lyr = <span class="keyword">this</span>.<span class="caps">LYRICS</span>[<span class="keyword">this</span>.i];
+    <span class="keyword">return</span> <span class="keyword">new</span> Slide(<span class="keyword">this</span>.show, lyr);
+  }
+
+  <span class="keyword">public</span> next() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.i &lt; <span class="keyword">this</span>.<span class="caps">LYRICS</span>.length - <span class="number">1</span>) <span class="keyword">this</span>.i += <span class="number">1</span>;
+    <span class="keyword">return</span> <span class="keyword">this</span>.current();
+  }
+  <span class="keyword">public</span> previous() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.i &gt; <span class="number">0</span>) <span class="keyword">this</span>.i -= <span class="number">1</span>;
+    <span class="keyword">return</span> <span class="keyword">this</span>.current();
+  }
+  <span class="keyword">public</span> first() {
+    <span class="keyword">this</span>.i = <span class="number">0</span>;
+    <span class="keyword">return</span> <span class="keyword">this</span>.current();
+  }
+}
+
+<span class="keyword">const</span> rsmq = <span class="keyword">new</span> RedisSMQ({ host: <span class="string">"127.0.0.1"</span>, port: <span class="number">6379</span>, ns: <span class="string">"rsmq"</span> });
+
+<span class="keyword">let</span> lyr = <span class="keyword">new</span> PresentationController(<span class="keyword">new</span> Show(<span class="string">"#main{background-color:'green'; color: white;} p {color: white;}"</span>, <span class="literal">null</span>));
+rsmq.createQueue({ qname: <span class="string">"lyrics"</span> }, <span class="function"><span class="keyword">function</span> (<span class="params">err: <span class="built_in">any</span>, response: <span class="built_in">any</span></span>) </span>{
+  <span class="keyword">if</span> (err) {
+    <span class="built_in">console</span>.error(err);
+  }
+});
+
+recv.get(<span class="string">"/:action"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">
+  req: Request,
+  res: Response,
+  next: NextFunction
+</span>) </span>{
+  <span class="keyword">let</span> action = req.params[<span class="string">"action"</span>];
+  rsmq.sendMessage({ qname: <span class="string">"lyrics"</span>, message: action }, <span class="function"><span class="keyword">function</span> (<span class="params">
+    err: <span class="built_in">any</span>,
+    resp: <span class="built_in">any</span>
+  </span>) </span>{
+    <span class="keyword">if</span> (err) res.status(<span class="number">500</span>).json({ error: err });
+    <span class="keyword">else</span> res.status(<span class="number">200</span>).send(<span class="string">`The command was <span class="subst">${action}</span>\n`</span>);
+    next();
+  });
+});
+
+<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">tick</span>(<span class="params">ws : <span class="built_in">any</span>, request: Request, next: NextFunction</span>) </span>{
+
+  <span class="keyword">let</span> msg = <span class="keyword">await</span> rsmq.popMessageAsync({ qname: <span class="string">"lyrics"</span> }) <span class="keyword">as</span> {id: <span class="built_in">number</span>, message; <span class="built_in">string</span>};
+  usleep(<span class="number">10</span>);
+  <span class="keyword">if</span> (!msg.id) <span class="keyword">return</span> next();
+  <span class="built_in">console</span>.log(msg);
+  <span class="comment">// <span class="caps">SEND</span> <span class="caps">LYRICS</span> <span class="caps">TO</span> <span class="caps">THE</span> <span class="caps">CLIENT</span></span>
+  <span class="keyword">await</span> ws.send(<span class="built_in"><span class="caps">JSON</span></span>.stringify(lyr[msg.message]()));
+  next();
+}
+
+<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">listen</span>(<span class="params">ws: <span class="built_in">any</span>, request: Request, next: NextFunction</span>) </span>{
+  <span class="keyword">while</span> (<span class="number">1</span>) {
+    <span class="keyword">await</span> tick(ws, request, next);
+  }
+}
+
+app.ws(<span class="string">"/lyrics"</span>, <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params">
+  ws: <span class="built_in">any</span>,
+  request: Request,
+  next: NextFunction
+</span>) </span>{
+  listen(ws, request, next);
+});
+
+app.listen(<span class="number">3000</span>);
+recv.listen(<span class="number">3001</span>);
+<span class="built_in">console</span>.log(<span class="string">"App is listening on localhost:3000"</span>);
+
+<span class="keyword">export</span> <span class="keyword">default</span> app;</code></pre>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">&laquo; Full blog</a></div>
+        <section class="about"><p>Wintersmith is made by <a href="http://johan-nordberg.com">Johan Nordberg</a> and licensed under the <a href="http://opensource.org/licenses/MIT">MIT-license</a>.
+This footer text can be edited in about.md</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur.</p>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est laborum.</p>
+
+        </section>
+        <section class="copy">
+          <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

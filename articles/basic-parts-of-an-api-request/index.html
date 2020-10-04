@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Basic Parts of an API Request - The Source-r-r
+    </title>
+    <link rel="alternate" href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangrously | Serve Ethically | Think Technically">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Basic Parts of an API Request</h1>
+        <p class="author">Written by <span class="author"></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><h1 id="basic-parts-of-an-api-request">Basic Parts of an <span class="caps">API</span><span class="widont">&nbsp;</span>Request</h1>
+<p>Sometimes understanding URLs and requests can be intimidating. If you’re wanting
+to get into <span class="caps">API</span> programming (e.g. <span class="caps">REST</span>, <span class="caps">SOAP</span>, web [which isn’t considered
+part of the family, but follows the same procedures]) it helps to understand
+basic components of an <span class="caps">API</span><span class="widont">&nbsp;</span>request.</p>
+<p>The two major parts developers care about<span class="widont">&nbsp;</span>are:</p>
+<ul>
+<li>Request <span class="caps">URL</span></li>
+<li>Reqeust Body</li>
+</ul>
+<p>I’ll be using a post office analogy. Because post offices are great ancient
+American relics (yes, that was sarcasm). The equivalences for these for the
+post office analogy<span class="widont">&nbsp;</span>are:</p>
+<table>
+    <tr>
+        <td>
+            Request <span class="caps">URL</span>
+        </td>
+        <td>
+             Shipping Address
+         </td>
+     </tr>
+     <tr>
+         <td>
+             Request Body
+         </td>
+         <td>
+              Letter
+          </td>
+      </tr>
+ </table>
+
+<p>Obviously, there are nuances with each service, but those are the 2 major
+components. Now, lets’ dive into each<span class="widont">&nbsp;</span>component.</p>
+<h2 id="request-url-telling-the-postman-where-and-how-to-send-it">Request <span class="caps">URL</span>: Telling the Postman Where and How to Send<span class="widont">&nbsp;</span>It</h2>
+<p>If you’re used the web at all, you’re used to a web<span class="widont">&nbsp;</span>address:</p>
+<pre><code>http://somethingerrather.com/here/i/am/</code></pre><p><code>http</code> is the protocol. It’s basically like putting your letter in the mailbox.
+The post office understands that anything in the mailbox should be collected.
+If you try to deliver all the mail to the cashier at your local convenience
+store, they wouldn’t know what to do with it (and your identity would probably
+be<span class="widont">&nbsp;</span>stolen).</p>
+<p><span class="caps">REST</span> APIs typically use standard http<span class="widont">&nbsp;</span>protocol.</p>
+<p>But how does your web browser know where to get the content? In an attempt to
+not complicate the answer, your browser sends the <span class="caps">URL</span> to a cental server (like
+a post office) that routes the <strong>domain</strong> (the <code>sometherrather.com</code> part) to
+the server registered for the<span class="widont">&nbsp;</span>domain.</p>
+<p>Sometimes a protocol may have a port number associated with<span class="widont">&nbsp;</span>it:</p>
+<pre><code>http://someserver.com:2020</code></pre><p><code>2020</code> is the port number. This is not typical for public APIs and is usually
+used for internal<span class="widont">&nbsp;</span>devleopment.</p>
+<p>The registered server takes care of the <code>/here/i/am</code> part (commonly referred to
+as the “path”) that services are most iterested in. So from here on out we’ll
+ignore the<span class="widont">&nbsp;</span>domain.</p>
+<p><strong>tl;dr: The request <span class="caps">URL</span> tells the <span class="caps">API</span> client the “where” of the<span class="widont">&nbsp;</span>request.</strong></p>
+<h2 id="paths">Paths</h2>
+<p>Paths are handled by the server that hosts the<span class="widont">&nbsp;</span><span class="caps">API</span>.</p>
+<p>In the post office example, this is like the administrator of a business that
+recieves the<span class="widont">&nbsp;</span>letter.</p>
+<p>As a standard, a path is preceded by a slash<span class="widont">&nbsp;</span>(‘/‘).</p>
+<h2 id="paramters">Paramters</h2>
+<p>Remember when I showed you the <span class="caps">URL</span><span class="widont">&nbsp;</span>above?</p>
+<pre><code>http://somethingerrather.com/here/i/am/</code></pre><p>There’s another part that’s sometimes used: the query parameters. Query
+parameters are key and value pairs that provide details to whatever service
+consumes the<span class="widont">&nbsp;</span>path.</p>
+<p>It’s denoted starting with question mark<span class="widont">&nbsp;</span>(‘?’):</p>
+<pre><code>http://somethingerrather.com/here/i/am/name=frank&amp;greeting=hello&amp;repeat=3</code></pre><p>The part after the ‘?’ is the query: <code>?name=frank&amp;greeting=hello&amp;repeat=3</code>.
+Hard to read? You betcha! Even developers like to use libraries that split
+the query into something easy to comprehent. Simply put, this is the<span class="widont">&nbsp;</span>query:</p>
+<table>
+    <tr>
+        <th>
+            key
+        </th>
+        <th>
+             value
+         </th>
+     </tr>
+    <tr>
+        <td>
+            name
+        </td>
+        <td>
+             frank
+         </td>
+     </tr>
+     <tr>
+         <td>
+             greeting
+         </td>
+         <td>
+              hello
+          </td>
+      </tr>
+      <tr>
+          <td>
+              repeat
+          </td>
+          <td>
+               3
+           </td>
+       </tr>
+ </table>
+
+<p>Now the <span class="caps">API</span> service knows what to<span class="widont">&nbsp;</span>do!</p>
+<p>For the post office analogy this is like providing additional shipping
+information like adding an <strong><span class="caps">ATTN</span>:</strong> to the address or a
+<strong>[<span class="caps">FRAGILE</span>: <span class="caps">HANDLE</span> <span class="caps">WITH</span> <span class="caps">CARE</span>]</strong> sticker to the<span class="widont">&nbsp;</span>side.</p>
+<p><strong>tl;dr: Paramters tell <em>how</em> to deliver<span class="widont">&nbsp;</span>something.</strong></p>
+<h2 id="the-body-the-letter-within-the-parcel">The Body: The Letter Within the<span class="widont">&nbsp;</span>Parcel</h2>
+<p>While getting envelopes around the holidays is always exciting (I’m always up
+for getting $10 bills) it can always be disappointing if you open up an
+envelope and see<span class="widont">&nbsp;</span>nothing.</p>
+<p>Yes, the envelope can tell you a lot. An envelope from your utility company
+that says <strong><span class="caps">PAST</span> <span class="caps">DUE</span></strong> can indicate something should be done pretty<span class="widont">&nbsp;</span>soon.</p>
+<p>So it’s pretty common for a <span class="caps">REST</span> <span class="caps">API</span> to contain a body as well. <span class="caps">REST</span> bodies are
+usually in <span class="caps">JSON</span> format, since <span class="caps">JSON</span> allows for free-flow strucutre and is easily<span class="widont">&nbsp;</span>parseable.</p>
+<p>However, <span class="caps">JSON</span> is not required. You can send virtually anything from numbers to
+complex graphs, and even your kitchen sink (that last one’s not<span class="widont">&nbsp;</span>recommended)!</p>
+<p>Here’s one example:</p>
+<pre><code>REQUEST:
+    POST https://example.com/resource/add
+
+BODY:
+    {
+        &quot;name&quot;: &quot;Jane Doe&quot;,
+        &quot;gender&quot;: &quot;f&quot;,
+        &quot;account&quot;: 1234
+    }</code></pre><h3 id="sideline-request-methods">Sideline: Request Methods</h3>
+<p>Notice the “<span class="caps">POST</span>” request method. There are other <span class="caps">HTTP</span> methods as well and
+are equivalent to the type of delivery within the postal<span class="widont">&nbsp;</span>service.</p>
+<p>For example, once upon a time in America, whenever someone would want to
+subscribe to a magazine (another ancient relic, but bear with me), they would
+need to send in a registration form. We can call this a “<span class="caps">PUT</span>” request. Each
+month the magazine comes out, the reader goes out to the mailbox and gets his
+magazine. This can be considered a “<span class="caps">GET</span>” request. Same transport, but a
+different method of sending an retrieving<span class="widont">&nbsp;</span>mail.</p>
+<h3 id="back-to-the-body">Back to the<span class="widont">&nbsp;</span>Body</h3>
+<p>The body is typically only implemented in <span class="caps">POST</span>-like request methods. While
+<span class="caps">HTTP</span> (as far as I know) doesn’t forbid a body with ‘<span class="caps">GET</span>’ requests it’s bad
+table manners to include a body, so a lot of libraries strip the body if
+a client tries to do a ‘<span class="caps">GET</span>’ request with a<span class="widont">&nbsp;</span>body.</p>
+<p><strong>lt;dr: The body is the thing you want<span class="widont">&nbsp;</span>delivered.</strong></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>In this post I (hopefully) provided a brief overview of how APIs work. Before
+you run off to grab more coffee, here’s an overview comparison of APIs vs.
+the post office<span class="widont">&nbsp;</span>analogy.</p>
+<table>
+    <tr>
+        <td></td>
+        <th>
+             Post Office
+         </th>
+         <th>
+             Example
+         </th>
+         <th>
+             <span class="caps">API</span>
+         </th>
+         <th>
+             Example
+         </th>
+     </tr>
+    <tr>
+        <td rowspan="5"><span class="caps">URL</span></td>
+        <td>
+            container for the mail
+        </td>
+        <td>
+            Mailbox
+        </td>
+        <td>
+             Protocol
+         </td>
+        <td>
+            `http`
+        </td>
+     </tr>
+     <tr>
+        <td>
+            method of delivery
+        </td>
+        <td>
+            Sending, pickup, &hellip;
+        </td>
+        <td>
+             <span class="caps">HTTP</span> Method
+         </td>
+        <td>
+            <span class="caps">GET</span>, <span class="caps">POST</span>, <span class="caps">PUT</span>, <span class="caps">PATCH</span>, <span class="caps">DELETE</span>, &hellip;
+        </td>
+      </tr>
+      <tr>
+          <td>
+              Where to send the mail
+          </td>
+          <td>
+              1234 N Example St., &hellip;
+          </td>
+          <td>
+               domain
+           </td>
+          <td>
+              `www.example.com`
+          </td>
+       </tr>
+       <tr>
+           <td>
+               Where to go after delivery
+           </td>
+           <td>
+               <span class="caps">ATTN</span>: Person at company
+           </td>
+           <td>
+                Path
+            </td>
+           <td>
+               `/resource/get/1`
+           </td>
+        </tr>
+        <tr>
+            <td>
+                How to handle the delivery
+            </td>
+            <td>
+                <span class="caps">FRAGILE</span>: <span class="caps">HANDLE</span> <span class="caps">WITH</span> <span class="caps">CARE</span>!
+            </td>
+            <td>
+                 Query Paramters
+             </td>
+            <td>
+                `name=henry&number=1234`
+            </td>
+         </tr>
+         <tr>
+            <td>Body</td>
+            <td>Contents of the letter</td>
+            <td>Dear Sir, In my opinion &hellip;</td>
+            <td>Body</td>
+            <td>`{&#8220;name&#8221;: &#8220;Henry&#8221;, &#8220;number&#8221;: 1234, &#8230;}`</td>
+         </tr>
+ </table>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">&laquo; Full blog</a></div>
+        <section class="about"><p>Wintersmith is made by <a href="http://johan-nordberg.com">Johan Nordberg</a> and licensed under the <a href="http://opensource.org/licenses/MIT">MIT-license</a>.
+This footer text can be edited in about.md</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur.</p>
+<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est laborum.</p>
+
+        </section>
+        <section class="copy">
+          <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
