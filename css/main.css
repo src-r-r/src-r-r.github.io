@@ -2849,6 +2849,8 @@ div#sidebar {
   background-color: #e6e4e1;
   padding: 5pt 15pt;
   font-family: secondary-font; }
+  div#sidebar dd {
+    margin-left: 10%; }
   div#sidebar h1, div#sidebar h2, div#sidebar h3, div#sidebar h4 {
     font-family: "sears_towerregular";
     text-align: center; }
