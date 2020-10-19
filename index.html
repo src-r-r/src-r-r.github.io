@@ -6,147 +6,135 @@
     <meta name="viewport" content="width=device-width">
     <title>The Source-r-r
     </title>
-    <link rel="alternate" href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangrously | Serve Ethically | Think Technically">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/fonts/abel_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bolditalic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bold_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_italic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/searstower_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <script defer src="/fontawesome/js/all.js"></script>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.3.1/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.3.1/build/highlight.min.js"></script>
   </head>
-  <body>
-    <header class="header">
-      <div class="content-wrap">
-        <div class="logo">
-          <h1><a href="http://localhost:8080">The Source-r-r</a></h1>
-          <p class="description">Live Dangrously | Serve Ethically | Think Technically</p>
+  <body><a href="http://localhost:8080/feed.xml" type="application/rss+xml" title="Live Dangerously | Serve Ethically | Think Technically">Feed</a>
+    <div class="container">
+      <div class="columns">
+        <div class="col-9">
+          <div class="logo">
+            <h1><a href="http://localhost:8080">The Source-r-r</a></h1>
+            <p class="description">Live Dangerously | Serve Ethically | Think Technically</p>
+          </div>
+          <div class="container">
+            <article class="article intro">
+              <header>
+                <p class="date"><span>05. October 2020</span></p>
+                <h2><a href="/articles/taking_the_pain_out_of_files_in_python/">Justfile takes the pain out of reading files in Python</a></h2>
+              </header>
+              <section class="content"><p>Writing files in Python isn’t terrible, but it’s not convenient, either.
+With-syntax can get cumbersome inside other constructs and there’s a
+lot of overhead before you even get to reading the<span class="widont">&nbsp;</span>file!</p>
+<p>Thankfully, the <code>justfile</code> library makes it easy by “just reading” or 
+“just writing” to a file. It makes assumptions that can be easily
+overriden based on<span class="widont">&nbsp;</span>need.</p>
+<p>Let’s take a<span class="widont">&nbsp;</span>look!</p>
+
+                <p class="more"><a href="/articles/taking_the_pain_out_of_files_in_python/">MORE &#8594;</a></p>
+              </section>
+              <hr class="article-break">
+            </article>
+            <article class="article intro">
+              <header>
+                <p class="date"><span>15. September 2020</span></p>
+                <h2><a href="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/">WebSockets: How to Give a Slide Presentation from Halfway Across The World</a></h2>
+              </header>
+              <section class="content"><p>In this article I describe how to use the <span class="caps">ASGI</span> interface for listening
+for messages from a server. Essentially, it works like a server in
+reverse, where the client makes decisions based on what’s sent from
+the<span class="widont">&nbsp;</span>client.</p>
+<p>I figured I’d test it out on a simple project I’ve had in mind that I
+wanted to tackle… presenting chruch lyrics<span class="widont">&nbsp;</span>remotely.</p>
+
+                <p class="more"><a href="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/">MORE &#8594;</a></p>
+              </section>
+              <hr class="article-break">
+            </article>
+            <article class="article intro">
+              <header>
+                <p class="date"><span>16. October 2018</span></p>
+                <h2><a href="/articles/responsive-web-design-in-django-without-javascript/">Responsive Web Design in Django (Without JavaScript!)</a></h2>
+              </header>
+              <section class="content">
+                <p class="more"><a href="/articles/responsive-web-design-in-django-without-javascript/">MORE &#8594;</a></p>
+              </section>
+              <hr class="article-break">
+            </article>
+          </div>
+          <div class="columns"><a class="col-6" href="/archive.html">&laquo; Archives</a><a class="col-6" href="/page/2/">Next page &raquo;</a>
+          </div>
         </div>
-      </div>
-    </header>
-    <div id="content">
-      <div class="content-wrap">
-        <article class="article intro">
-          <header>
-            <p class="date"><span>05. October 2020</span></p>
-            <h2><a href="/articles/taking_the_pain_out_of_files_in_python/">Justfile takes the pain out of reading files in Python</a></h2>
-          </header>
-          <section class="content"><h1 id="full-disclosure-">Full Disclosure…</h1>
-<p>Full disclosure, this is my library. I just figured I’d promote it
-while showing examples of file i/o in<span class="widont">&nbsp;</span>Python.</p>
-<h1 id="the-boring-painful-hair-pulling-excruciating-way">The Boring/Painful/Hair-pulling/Excruciating Way</h1>
-<p>This is how official Python tutorial says to read a<span class="widont">&nbsp;</span>file:</p>
-<pre><code class="language-python"><span class="keyword">with</span> open(<span class="string">'workfile'</span>) <span class="keyword">as</span> f:
-    read_data = f.read()</code></pre>
-<p>If you’re new to programming this probably looks like a bunch of
-gobbledy-gook. If you’re
-a veteran you may find this annoying but still
-understand what’s happening and you understand the
-reasoning behind<span class="widont">&nbsp;</span>it</p>
-<p>Oh, but wait…we want to add error checking if the file doesn’t exist.
-Or if we can’t open<span class="widont">&nbsp;</span>it.</p>
-<p>Let’s add some more<span class="widont">&nbsp;</span>code.</p>
-<pre><code class="language-python"><span class="keyword">try</span>:
-    <span class="keyword">with</span> open(<span class="string">'workfile'</span>) <span class="keyword">as</span> f:
-        read_data = f.read()
-catch FileNotFoundError <span class="keyword">as</span> e:
-    print(<span class="string">"not found"</span>);</code></pre>
-<p>Okay, whew! At least that’s over. Just imagine if we had to write to
-a file. Ah, what the heck! Let’s do<span class="widont">&nbsp;</span>it.</p>
-<pre><code class="language-python"><span class="keyword">with</span> open(<span class="string">'workfile'</span>, <span class="string">'w+'</span>) <span class="keyword">as</span> f:
-    f.write(<span class="string">"hello world"</span>)</code></pre>
-<p>Not too bad. But we still have some errors to contend<span class="widont">&nbsp;</span>with:</p>
+        <div class="col-3 col-lg-7 content-wrap" id="sidebar">
+          <section class="about"><img src="/images/portrait.png" class="s-circle col-5 p-centered" />
+
+<h1 id="important-links">Important Links</h1>
+<p><a href="portfolio.html" class="btn btn-primary col-12">My Project Portfolio</a></p>
+<dl>
+  <dt><i class="fab fa-github"></i> GitHub</dt>
+  <dd>
+    <a href="https://github.com/src-r-r">https://github.com/src-r-r</a></dd>
+  <dt><i class="fab fa-gitlab"></i> GitLab</dt>
+  <dd>
+  <a href="https://gitlab.com/src-r-r">https://gitlab.com/srcrr</a></dd>
+  <dt><i class="fas fa-camera"></i> Photography</dt>
+  <dd><a href="https://writelight.website">https://writelight.website</a></dd>
+</dl>
+
+<h2 id="contact-me">Contact Me</h2>
+<dl>
+  <dt>Email</dt>
+  <dd><i class="far fa-envelope"></i>
+    <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></dd>
+  <dt>Wire</dt>
+  <dd>@nswered</dd>
+</dl>
+
+<h2 id="services-i-provide">Services I Provide</h2>
+<dl class="hourly-rate">
+  <dt>Hourly Rate</dt>
+  <dd><strong>$57/hr</strong>(negotiable)</dd>
+</dl>
+
 <ul>
-<li>The path to the file doesn’t<span class="widont">&nbsp;</span>exist.</li>
-<li>The file already<span class="widont">&nbsp;</span>exists</li>
-<li>We don’t have permission to write a file<span class="widont">&nbsp;</span>there.</li>
+<li>Full Stack Application development</li>
+<li>Documentation writing</li>
+<li>IT Support</li>
+<li>Automation</li>
+<li>Database design (Including PostgreSQL, MongoDB)</li>
+<li>Website creation</li>
 </ul>
-<p>Okay, that’s no problem, right? We just have to add about 10 more lines
-of code. No<span class="widont">&nbsp;</span>biggie!</p>
-<pre><code class="language-python"><span class="keyword">import</span> os
-<span class="caps">OUTFILE</span> = <span class="string">"/home/disgruntledprogrammer/somedir/somefile.txt"</span>
-<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(os.path.dirname(<span class="caps">OUTFILE</span>)):
-    os.makedirs(os.path.dirname(<span class="caps">OUTFILE</span>))
-<span class="keyword">if</span> os.path.exists(<span class="caps">OUTFILE</span>):
-    <span class="keyword">raise</span> RuntimeError(<span class="string">"file exists"</span>)
-<span class="keyword">with</span> open(<span class="caps">OUTFILE</span>, <span class="string">'w+'</span>) <span class="keyword">as</span> f:
-    f.write(<span class="string">"hello world"</span>)</code></pre>
-<p>And then your boss comes to you and asks you to read a config file and
-write out data to an <span class="caps">XML</span> file. Then in a fit of rage you grab your
-entire workstation march over to the window and throw it out onto the
-street 3 floors below. While this action doesn’t result in physical
-injury the company fines you
-$10,300 for destruction of property. But by the time they fine you
-you’re already on the run,
-living out of your van with an unregistered license plate, selling
-potato chips on the black market and using burner phones to call your
-mom to tell her you’re alright but you can’t make it for Christmas this
-year. But that’s a story for another<span class="widont">&nbsp;</span>time.</p>
-<p>As you can see all we’re trying to do is write to a file, yet we have a
-lot of overhead to make it<span class="widont">&nbsp;</span>work.</p>
-<h1 id="enter-justfile">Enter <code>justfile</code></h1>
-<p>I realized one day, why can’t I “just write” to a file, or “just read” 
-to it without having to wory about all these edge<span class="widont">&nbsp;</span>cases?</p>
-<p>So that’s why I created <code>justfile</code>. It’s a library that allows you
-to simply read and write without worrying about error<span class="widont">&nbsp;</span>checking.</p>
+<h2 id="things-i-enjoy-that-i-do-not-charge-for-hobbies-">Things I enjoy that I do not charge for (Hobbies)</h2>
+<ul>
+<li>Reading about philsophy</li>
+<li>Reading about metaphysics</li>
+<li><a href="https:/writelight.website">Photography</a></li>
+<li>Reading fiction</li>
+<li>Improv (didn’t know I’d say that, did you?)</li>
+<li>Theater</li>
+<li>Thinking as a hobby</li>
+<li>Hiking</li>
+</ul>
+<small>
+This project is build on Wintersmith by 
+<a href="http://johan-nordberg.com">Johan Nordberg</a>
+</small>
 
-            <p class="more"><a href="/articles/taking_the_pain_out_of_files_in_python/">more</a></p>
           </section>
-        </article>
-        <article class="article intro">
-          <header>
-            <p class="date"><span>15. September 2020</span></p>
-            <h2><a href="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/">WebSockets: How to Give a Slide Presentation from Halfway Across The World</a></h2>
-          </header>
-          <section class="content"><h1 id="church-song-lyrics">Church Song Lyrics</h1>
-<p>Before I delve into a code, let me explain a bit about the example<span class="widont">&nbsp;</span>problem.</p>
-<p>I used to run the overhead at my church. For those not familar with church,
-during worship service it’s common for the current song to be displayed on a large
-display screen for people to join the worship team, kind of like<span class="widont">&nbsp;</span>this:</p>
-<p><img src="https://fthmb.tqn.com/By6QhFoVDLXh49uX7N7-5DV3aR8=/768x0/filters:no_upscale()/Praise-and-Worship-58b5c8ba5f9b586046caf1fa.jpg" alt="Overhead"></p>
-<p>Most churches use PowerPoint for this. If a church is technically-adept enough,
-they’ll often use a special church presentation software. <a href="https://openlp.org/">OpenLP</a>
-is one awesome open source application I’ve used, but there are some really great
-commercial versions as<span class="widont">&nbsp;</span>well.</p>
-<p>But most of these involve a person having to sit in a central location to control the<span class="widont">&nbsp;</span>screen.</p>
-<p>I thought one day.. “What if the person running the lyrics can sit anywhere?” Maybe
-they’re ill with the flu and they need to stay home but they’re the only one who can
-run it. Or they want to sit with their<span class="widont">&nbsp;</span>family.</p>
-<p>So, can we design a system that listens for commands (perhaps given by a <span class="caps">REST</span> request)
-then hands that command off to an application to<span class="widont">&nbsp;</span>display?</p>
-<p>Yes we can!</p>
-<p>Very briefly it would look like<span class="widont">&nbsp;</span>this:</p>
-<p><img src="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/overhead-websocket-diagram.png" alt="diagram 1"></p>
-
-            <p class="more"><a href="/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/">more</a></p>
+          <section class="copy">
+            <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
           </section>
-        </article>
-        <article class="article intro">
-          <header>
-            <p class="date"><span>16. October 2018</span></p>
-            <h2><a href="/articles/responsive-web-design-in-django-without-javascript/">Responsive Web Design in Django (Without JavaScript!)</a></h2>
-          </header>
-          <section class="content">
-            <p class="more"><a href="/articles/responsive-web-design-in-django-without-javascript/">more</a></p>
-          </section>
-        </article>
+        </div>
       </div>
     </div>
-    <footer>
-      <div class="content-wrap">
-        <div class="nav"><a href="/archive.html">&laquo; Archives</a><a href="/page/2/">Next page &raquo;</a>
-        </div>
-        <section class="about"><p>Wintersmith is made by <a href="http://johan-nordberg.com">Johan Nordberg</a> and licensed under the <a href="http://opensource.org/licenses/MIT">MIT-license</a>.
-This footer text can be edited in about.md</p>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat.</p>
-<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-dolore eu fugiat nulla pariatur.</p>
-<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-deserunt mollit anim id est laborum.</p>
-
-        </section>
-        <section class="copy">
-          <p>&copy; 2020 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
-        </section>
-      </div>
-    </footer>
   </body>
 </html>

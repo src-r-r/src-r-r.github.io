@@ -4,7 +4,7 @@
     <title>The Source-r-r</title>
     <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://localhost:8080</link>
-    <description>Live Dangrously | Serve Ethically | Think Technically</description>
+    <description>Live Dangerously | Serve Ethically | Think Technically</description>
     <pubDate>Sun, 04 Oct 2020 17:00:00 -0700</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
@@ -14,7 +14,15 @@
       <pubDate>Sun, 04 Oct 2020 17:00:00 -0700</pubDate>
       <guid isPermaLink="true">http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</guid>
       <author></author>
-      <description>&lt;h1 id=&quot;full-disclosure-&quot;&gt;Full Disclosure…&lt;/h1&gt;
+      <description>&lt;p&gt;Writing files in Python isn’t terrible, but it’s not convenient, either.
+With-syntax can get cumbersome inside other constructs and there’s a
+lot of overhead before you even get to reading the file!&lt;/p&gt;
+&lt;p&gt;Thankfully, the &lt;code&gt;justfile&lt;/code&gt; library makes it easy by “just reading” or 
+“just writing” to a file. It makes assumptions that can be easily
+overriden based on need.&lt;/p&gt;
+&lt;p&gt;Let’s take a look!&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;full-disclosure-&quot;&gt;Full Disclosure…&lt;/h1&gt;
 &lt;p&gt;Full disclosure, this is my library. I just figured I’d promote it
 while showing examples of file i/o in Python.&lt;/p&gt;
 &lt;h1 id=&quot;the-boring-painful-hair-pulling-excruciating-way&quot;&gt;The Boring/Painful/Hair-pulling/Excruciating Way&lt;/h1&gt;
@@ -188,7 +196,14 @@ ticket!&lt;/p&gt;
       <pubDate>Mon, 14 Sep 2020 17:00:00 -0700</pubDate>
       <guid isPermaLink="true">http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</guid>
       <author></author>
-      <description>&lt;h1 id=&quot;church-song-lyrics&quot;&gt;Church Song Lyrics&lt;/h1&gt;
+      <description>&lt;p&gt;In this article I describe how to use the ASGI interface for listening
+for messages from a server. Essentially, it works like a server in
+reverse, where the client makes decisions based on what’s sent from
+the client.&lt;/p&gt;
+&lt;p&gt;I figured I’d test it out on a simple project I’ve had in mind that I
+wanted to tackle… presenting chruch lyrics remotely.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;church-song-lyrics&quot;&gt;Church Song Lyrics&lt;/h1&gt;
 &lt;p&gt;Before I delve into a code, let me explain a bit about the example problem.&lt;/p&gt;
 &lt;p&gt;I used to run the overhead at my church. For those not familar with church,
 during worship service it’s common for the current song to be displayed on a large
@@ -635,6 +650,7 @@ claiming it’s &lt;a href=&quot;https://lstu.fr/qd0dgLRB&quot;&gt;ruining&lt;/a
 &lt;a href=&quot;https://lstu.fr/s5Dze7cK&quot;&gt;the web&lt;/a&gt;. I’m not here to join the JavaScript bashing
 party. Instead, I’d like to show you how to incorporate repsonsive web design
 in your Django site without the need for JavaScript.&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id=&quot;choosing-a-css-only-design-framwork&quot;&gt;Choosing a CSS-Only Design Framwork&lt;/h2&gt;
 &lt;p&gt;There aren’t a lot, but a few exist&lt;/p&gt;
 &lt;ul&gt;
@@ -811,6 +827,7 @@ looked for some plug-and-play method for creating users. After all, in today’s
 social-driven world, any kind of content management system is bound to have a
 basic username/password (or, better yet, email/password) foundation.&lt;/p&gt;
 &lt;p&gt;However, my search came up empty.&lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;&lt;em&gt;NOTE: Yeah, I realize “escargo” should be “escargot.” Later on I may change
 it.&lt;/em&gt;&lt;/p&gt;
 &lt;h1 id=&quot;starting-small&quot;&gt;Starting Small&lt;/h1&gt;
@@ -1139,6 +1156,7 @@ possibly earlier. Developers either love it or hate it. I’m in the camp that
 says let’s do without it. But that’s for another post.&lt;/p&gt;
 &lt;p&gt;From my experience understanding JavaScript can be a challenge if you spend the
 majority of your time in a non-JavaScript environment.&lt;/p&gt;
+&lt;hr&gt;
 &lt;h1 id=&quot;ur-doing-it-rong&quot;&gt;ur doing it rong&lt;/h1&gt;
 &lt;p&gt;Basically, early on my projects began like this. You might have had similar
 experiences.&lt;/p&gt;
@@ -1265,6 +1283,7 @@ every user profile on Reddit while reading an article, but they do provide
 links to user profiles who have commented on the article.&lt;/p&gt;
 &lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
 for.&lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
 yet), cover links with other elements. If you use a JavaScript blocker (which I
 recommend to everyone, for both security and privacy), you know what I’m
@@ -1295,6 +1314,7 @@ and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&g
 ReStructuredText, a popular Markup text format. In this first part I’ll talk
 about why this is important and the conversions I used in between standard
 stageplay format.&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id=&quot;let-me-explain&quot;&gt;Let Me Explain&lt;/h2&gt;
 &lt;p&gt;I love markup languages. I like the simplicity of being able to seperate content
 and formatting, so that if I don’t like the color of something I can go into
@@ -1486,6 +1506,7 @@ the ReStructuredText into a document with the correct formatting.&lt;/p&gt;
 opportunity to brush up against some great innovators at some of the
 leading-edge companies. This event was the Open API Strategy conference, or
 “apistrat.” (pronounced as “app-pee-strat” to frequenters).&lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;This is a big deal. Unless you’ve lived under a rock since 2000 (and sorry if
 you have; I can help you reintegrate into society) then you’ll have noticed a
 shift away from desktop-centric apps and a move toward a cloud architecture.
