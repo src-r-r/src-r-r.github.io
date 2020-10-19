@@ -113,7 +113,13 @@ for the<span class="widont">&nbsp;</span>script.</p>
   [[ <span class="variable">$<span class="caps">SOURCE</span></span> != /* ]] &amp;&amp; <span class="caps">SOURCE</span>="</span><span class="variable">$<span class="caps">DIR</span></span>/<span class="variable">$<span class="caps">SOURCE</span></span><span class="string">" # if <span class="variable">$<span class="caps">SOURCE</span></span> was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
 <span class="caps">DIR</span>="</span>$( <span class="built_in">cd</span> -P <span class="string">"<span class="variable">$( dirname "$<span class="caps">SOURCE</span>" )</span>"</span> &gt;/dev/null 2&gt;&amp;1 &amp;&amp; <span class="built_in">pwd</span> )<span class="string">"</span></code></pre>
-<p>Just include that in every <span class="caps">BASH</span> file and you’ll have access<span class="widont">&nbsp;</span>to </p>
+<p>Just include that in every <span class="caps">BASH</span> file and you’ll have access to the current directory
+where the script<span class="widont">&nbsp;</span>resides.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>I just reviewed 6 <span class="caps">BASH</span> commands and aliases that I like to include in either <span class="caps">BASH</span>
+script files or my <code>.bashrc</code> files. These have helped me navigate through the
+filesystem with ease, get information quickly, or ensure I don’t delete anything<span class="widont">&nbsp;</span>important!</p>
+<p>Hoepfully you’ll find them equally<span class="widont">&nbsp;</span>helpful.</p>
 </section>
             </article>
           </div>
