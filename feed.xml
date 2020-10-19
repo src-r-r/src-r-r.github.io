@@ -5,9 +5,105 @@
     <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://localhost:8080</link>
     <description>Live Dangerously | Serve Ethically | Think Technically</description>
-    <pubDate>Sun, 04 Oct 2020 17:00:00 -0700</pubDate>
+    <pubDate>Sun, 18 Oct 2020 17:00:00 -0700</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>6 Essential BASH commands to make life easier</title>
+      <link>http://localhost:8080/articles/essential-bash-commands-to-make-life-easier/</link>
+      <pubDate>Sun, 18 Oct 2020 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/essential-bash-commands-to-make-life-easier/</guid>
+      <author></author>
+      <description>&lt;p&gt;I love making things simpler and easier, especially when it comes to
+programming. Already Linux is set up for easy configuration and
+customization. But I’ve found missing commands that, once added,
+make life a whole lot easier.&lt;/p&gt;
+&lt;p&gt;Note that these are not programs to install (yet). They’re BASH snippets,
+functions and aliases that are must-haves in my &lt;code&gt;.bashrc&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So, without furhter ado, here are 6 essential BASH commands to add
+to your arsenal.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;resource-source-your-bashrc-again-&quot;&gt;&lt;code&gt;resource&lt;/code&gt; - Source your &lt;code&gt;.bashrc&lt;/code&gt; again.&lt;/h1&gt;
+&lt;p&gt;Many times you’ll be adding something to &lt;code&gt;.bashrc&lt;/code&gt; that you’ll want to
+try. This alias can reload it easily without having to streatch your
+fingers toward the symbol row.&lt;/p&gt;
+&lt;p&gt;Add the following to your &lt;code&gt;.bashrc&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;alias&lt;/span&gt; resource=&lt;span class=&quot;string&quot;&gt;&quot;source &lt;span class=&quot;variable&quot;&gt;$HOME&lt;/span&gt;/.bashrc&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, the first time, you do have to say &lt;code&gt;source ~/.bashrc&lt;/code&gt;. Subsequent
+times you can just say &lt;code&gt;resource&lt;/code&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;addtopath-add-a-new-path-to-the-path-environment-variable-&quot;&gt;addToPath - Add a new path to the &lt;code&gt;PATH&lt;/code&gt; environment variable.&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;title&quot;&gt;addToPath&lt;/span&gt;&lt;/span&gt;() {
+    [[ &lt;span class=&quot;string&quot;&gt;&quot;:&lt;span class=&quot;variable&quot;&gt;$PATH&lt;/span&gt;:&quot;&lt;/span&gt; != *&lt;span class=&quot;string&quot;&gt;&quot;:&lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;:&quot;&lt;/span&gt;* ]] &amp;amp;&amp;amp; PATH=&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;:&lt;span class=&quot;variable&quot;&gt;${PATH}&lt;/span&gt;&quot;&lt;/span&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;u-go-up-a-directory&quot;&gt;&lt;code&gt;u&lt;/code&gt; - Go up a directory&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;user@host:~/very/long/path/to/a/project$ cd..
+user@host:~/very/long/path/to/a$ cd..
+user@host:~/very/long/path/to$ cd..
+user@host:~/very/long/path$ cd..
+user@host:~/very/long$&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Look familiar?&lt;/p&gt;
+&lt;p&gt;Credit for the answer goes to &lt;a href=&quot;https://stackoverflow.com/a/26134858&quot;&gt;Grigory K&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Essentially, just goes up a certain 6 of directories.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;user@host:~/very/long/path/to/a/project$ u 3
+user@host:~/very/long/path$ &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Easy. Way too easy.&lt;/p&gt;
+&lt;p&gt;Here’s the code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# cd up to n dirs&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# using:  cd.. 10   cd.. dir&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# Thanks to https://stackoverflow.com/a/26134858&lt;/span&gt;
+
+&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;title&quot;&gt;up&lt;/span&gt;&lt;/span&gt;() {
+  &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; $(&lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;%0.0s../&quot;&lt;/span&gt; $(seq 1 &lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;));
+}
+
+&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;title&quot;&gt;u&lt;/span&gt;&lt;/span&gt;() {
+  &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt;
+    *[!0-9]*)                                          &lt;span class=&quot;comment&quot;&gt;# if no a 6&lt;/span&gt;
+      &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; $( &lt;span class=&quot;built_in&quot;&gt;pwd&lt;/span&gt; | sed -r &lt;span class=&quot;string&quot;&gt;&quot;s|(.*/&lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;[^/]*/).*|\1|&quot;&lt;/span&gt; )     &lt;span class=&quot;comment&quot;&gt;# search dir_name in current path, if found - cd to it&lt;/span&gt;
+      ;;                                               &lt;span class=&quot;comment&quot;&gt;# if not found - not cd&lt;/span&gt;
+    *)
+      &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; $(&lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;%0.0s../&quot;&lt;/span&gt; $(seq 1 &lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;));             &lt;span class=&quot;comment&quot;&gt;# cd ../../../../  (N dirs)&lt;/span&gt;
+    ;;
+  &lt;span class=&quot;keyword&quot;&gt;esac&lt;/span&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;cb-copy-things-to-the-clipboard&quot;&gt;&lt;code&gt;cb&lt;/code&gt; - Copy things to the clipboard&lt;/h1&gt;
+&lt;p&gt;There’s &lt;code&gt;xclip&lt;/code&gt;, for sure, but this only copies things to the x buffer
+for middle click paste. Sometimes you’ll want to use the standard
+&lt;code&gt;CTRL+V&lt;/code&gt; to paste something.&lt;/p&gt;
+&lt;p&gt;Thankfully, there’s &lt;code&gt;cb&lt;/code&gt; for that. It’s more of a file to place in your
+executable &lt;code&gt;PATH&lt;/code&gt; than an actual alias, but it’s essential nonetheless.&lt;/p&gt;
+&lt;p&gt;The code is pretty long so I’ll only link to it. Shout out to the poster
+&lt;a href=&quot;https://gist.github.com/RichardBronosky&quot;&gt;RichardBronosky&lt;/a&gt; for posting it.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://gist.github.com/RichardBronosky/56d8f614fab2bacdd8b048fb58d0c0c7&quot;&gt;https://gist.github.com/RichardBronosky/56d8f614fab2bacdd8b048fb58d0c0c7&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To get started, excute the following commands:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;mkdir ~/.&lt;span class=&quot;built_in&quot;&gt;local&lt;/span&gt;/bin &lt;span class=&quot;comment&quot;&gt;# Or whatever you have in the $PATH variable&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; ~/.&lt;span class=&quot;built_in&quot;&gt;local&lt;/span&gt;/bin
+wget https://gist.githubusercontent.com/RichardBronosky/56d8f614fab2bacdd8b048fb58d0c0c7/raw/842a92ad909ade54f73a29fb710ee2861d0f2699/cb
+chmod u+x cb&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;timestamp-a-simple-timestamp-string-ot-remember-when-you-saved-a-file-&quot;&gt;&lt;code&gt;timestamp&lt;/code&gt; - A simple timestamp string ot remember when you saved a file.&lt;/h1&gt;
+&lt;p&gt;While not a revolutionary alias, this helps when I’m saving a backup
+file.&lt;/p&gt;
+&lt;h1 id=&quot;getting-the-current-directory-of-a-bash-script&quot;&gt;Getting the current directory of a BASH script&lt;/h1&gt;
+&lt;p&gt;This is more of a must-have code snippet than an alias.&lt;/p&gt;
+&lt;p&gt;In scripts a lot of times its imperative to know where you are. Contrary
+to what you might thing &lt;code&gt;.&lt;/code&gt; will not resolve to the current directory
+of the script. It only resolves to the current directory of the path
+of executation. This can be really dangerous. For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ cat /home/benign/remove-everything.sh
+rm -fr .
+$ &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; /
+$ bash /home/benign/remove-everything.sh&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Yikes! Better keep your backups in order!&lt;/p&gt;
+&lt;p&gt;Thankfully there’s a snippet that resolves to the current directory
+for the script.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;SOURCE=&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;${BASH_SOURCE[0]}&lt;/span&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; [ -h &lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt;&quot;&lt;/span&gt; ]; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;# resolve $SOURCE until the file is no longer a symlink&lt;/span&gt;
+  DIR=&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$( cd -P &quot;$( dirname &quot;$SOURCE&quot; )&lt;/span&gt;&quot;&lt;/span&gt; &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;&amp;amp; &lt;span class=&quot;built_in&quot;&gt;pwd&lt;/span&gt; )&lt;span class=&quot;string&quot;&gt;&quot;
+  SOURCE=&quot;&lt;/span&gt;$(readlink &lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt;&quot;&lt;/span&gt;)&lt;span class=&quot;string&quot;&gt;&quot;
+  [[ &lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt; != /* ]] &amp;amp;&amp;amp; SOURCE=&quot;&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;$DIR&lt;/span&gt;/&lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt;&lt;span class=&quot;string&quot;&gt;&quot; # if &lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt; was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR=&quot;&lt;/span&gt;$( &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; -P &lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$( dirname &quot;$SOURCE&quot; )&lt;/span&gt;&quot;&lt;/span&gt; &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;&amp;amp; &lt;span class=&quot;built_in&quot;&gt;pwd&lt;/span&gt; )&lt;span class=&quot;string&quot;&gt;&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Just include that in every BASH file and you’ll have access to &lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Justfile takes the pain out of reading files in Python</title>
       <link>http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</link>
