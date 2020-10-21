@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>The Source-r-r</title>
-    <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"></atom:link>
-    <link>http://localhost:8080</link>
+    <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
+    <link>https://src-r-r.github.io</link>
     <description>Live Dangerously | Serve Ethically | Think Technically</description>
     <pubDate>Sun, 18 Oct 2020 17:00:00 -0700</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
     <item>
       <title>6 Essential BASH commands to make life easier</title>
-      <link>http://localhost:8080/articles/essential-bash-commands-to-make-life-easier/</link>
+      <link>https://src-r-r.github.io/articles/essential-bash-commands-to-make-life-easier/</link>
       <pubDate>Sun, 18 Oct 2020 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/essential-bash-commands-to-make-life-easier/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/essential-bash-commands-to-make-life-easier/</guid>
       <author></author>
       <description>&lt;p&gt;I love making things simpler and easier, especially when it comes to
 programming. Already Linux is set up for easy configuration and
@@ -113,9 +113,9 @@ important!&lt;/p&gt;
     </item>
     <item>
       <title>Justfile takes the pain out of reading files in Python</title>
-      <link>http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</link>
+      <link>https://src-r-r.github.io/articles/taking_the_pain_out_of_files_in_python/</link>
       <pubDate>Sun, 04 Oct 2020 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/taking_the_pain_out_of_files_in_python/</guid>
       <author></author>
       <description>&lt;p&gt;Writing files in Python isn’t terrible, but it’s not convenient, either.
 With-syntax can get cumbersome inside other constructs and there’s a
@@ -295,9 +295,9 @@ ticket!&lt;/p&gt;
     </item>
     <item>
       <title>WebSockets: How to Give a Slide Presentation from Halfway Across The World</title>
-      <link>http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</link>
+      <link>https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</link>
       <pubDate>Mon, 14 Sep 2020 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</guid>
       <author></author>
       <description>&lt;p&gt;In this article I describe how to use the ASGI interface for listening
 for messages from a server. Essentially, it works like a server in
@@ -325,7 +325,7 @@ run it. Or they want to sit with their family.&lt;/p&gt;
 then hands that command off to an application to display?&lt;/p&gt;
 &lt;p&gt;Yes we can!&lt;/p&gt;
 &lt;p&gt;Very briefly it would look like this:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/overhead-websocket-diagram.png&quot; alt=&quot;diagram 1&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/overhead-websocket-diagram.png&quot; alt=&quot;diagram 1&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;on-a-web-page&quot;&gt;On a Web Page&lt;/h2&gt;
 &lt;p&gt;Another “requirement” – let’s use the browser as the application container.
 Can this work? What’s needed for a church presentation?&lt;/p&gt;
@@ -598,10 +598,10 @@ REST client)&lt;/p&gt;
 &lt;p&gt;For example the following URL will display the first slide on the client:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# Remember, we're listening on port 3001 for the REST request!&lt;/span&gt;
 curl http://127.0.0.1:3001/first&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/first.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/first.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Consequently, we’ll go to the next slide with the following command:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;curl http://127.0.0.1:3001/next&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/next.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/next.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
 &lt;p&gt;How awesome is that! The webpage obeys our command without us touching it!&lt;/p&gt;
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 &lt;p&gt;WebSockets allow the programmer to send data from a server to a client. In this example,
@@ -738,9 +738,9 @@ recv.listen(&lt;span class=&quot;number&quot;&gt;3001&lt;/span&gt;);
     </item>
     <item>
       <title>Responsive Web Design in Django (Without JavaScript!)</title>
-      <link>http://localhost:8080/articles/responsive-web-design-in-django-without-javascript/</link>
+      <link>https://src-r-r.github.io/articles/responsive-web-design-in-django-without-javascript/</link>
       <pubDate>Mon, 15 Oct 2018 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/responsive-web-design-in-django-without-javascript/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/responsive-web-design-in-django-without-javascript/</guid>
       <author></author>
       <description>&lt;h2 id=&quot;the-case-for-non-js-responsive-web-design&quot;&gt;The Case for Non-JS Responsive Web Design&lt;/h2&gt;
 &lt;p&gt;I would argue JavaScript is becoming more common with which to build websites,
@@ -916,9 +916,9 @@ site ready to run!&lt;/p&gt;
     </item>
     <item>
       <title>Escargo: The Zero-Configuration Email API</title>
-      <link>http://localhost:8080/articles/Escargo:-The-Zero-Configuration-Email-API/</link>
+      <link>https://src-r-r.github.io/articles/Escargo:-The-Zero-Configuration-Email-API/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/Escargo:-The-Zero-Configuration-Email-API/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/Escargo:-The-Zero-Configuration-Email-API/</guid>
       <author></author>
       <description>&lt;h1 id=&quot;don-t-re-invent-the-wheel&quot;&gt;Don’t Re-Invent the Wheel&lt;/h1&gt;
 &lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/155149/pre-historic-wheel-cartoon.png&quot; alt=&quot;wheel&quot;&gt;&lt;/p&gt;
@@ -1000,9 +1000,9 @@ I’ll be sure to add it.&lt;/p&gt;
     </item>
     <item>
       <title>Basic Parts of an API Request</title>
-      <link>http://localhost:8080/articles/basic-parts-of-an-api-request/</link>
+      <link>https://src-r-r.github.io/articles/basic-parts-of-an-api-request/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/basic-parts-of-an-api-request/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/basic-parts-of-an-api-request/</guid>
       <author></author>
       <description>&lt;h1 id=&quot;basic-parts-of-an-api-request&quot;&gt;Basic Parts of an API Request&lt;/h1&gt;
 &lt;p&gt;Sometimes understanding URLs and requests can be intimidating. If you’re wanting
@@ -1249,9 +1249,9 @@ the post office analogy.&lt;/p&gt;
     </item>
     <item>
       <title>JavaScript Programming for Non-JavaScript Programmers</title>
-      <link>http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</link>
+      <link>https://src-r-r.github.io/articles/javascript-programming-for-non-javascript-programmers/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/javascript-programming-for-non-javascript-programmers/</guid>
       <author></author>
       <description>&lt;p&gt;No technology has divided the programming community more than JavsScript, mainly
 because it’s the been de-facto standard for web pages since around 2012, or
@@ -1371,9 +1371,9 @@ I was able to explain what goes on in a more visual way.&lt;/p&gt;
     </item>
     <item>
       <title>My Latest Project - LinkList Firefox Extension</title>
-      <link>http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</link>
+      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
       <author></author>
       <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
 &lt;p&gt;We are a species whose brains like limited information.
@@ -1407,9 +1407,9 @@ and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&g
     </item>
     <item>
       <title>You Can't Write a Stage Play in ReStructuredText! (Part 1)</title>
-      <link>http://localhost:8080/articles/you_cant_write_a_stageplay_in_restructuredtext/</link>
+      <link>https://src-r-r.github.io/articles/you_cant_write_a_stageplay_in_restructuredtext/</link>
       <pubDate>Fri, 03 Nov 2017 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/you_cant_write_a_stageplay_in_restructuredtext/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/you_cant_write_a_stageplay_in_restructuredtext/</guid>
       <author></author>
       <description>&lt;h1 id=&quot;you-s-can-t-s-sup-can-sup-write-a-stage-play-in-restructuredtext-part&quot;&gt;You &lt;s&gt;Can’t&lt;/s&gt; &lt;sup&gt;Can&lt;/sup&gt; Write a Stage Play in ReStructuredText! (Part&lt;/h1&gt;
 &lt;h1 id=&quot;1-&quot;&gt;1 )&lt;/h1&gt;
@@ -1599,11 +1599,11 @@ the ReStructuredText into a document with the correct formatting.&lt;/p&gt;
     </item>
     <item>
       <title>The Decline of Closed-Source APIs - Apistrat 2017</title>
-      <link>http://localhost:8080/articles/the_decline_of_closed_apis/</link>
+      <link>https://src-r-r.github.io/articles/the_decline_of_closed_apis/</link>
       <pubDate>Thu, 02 Nov 2017 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/the_decline_of_closed_apis/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/the_decline_of_closed_apis/</guid>
       <author></author>
-      <description>&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04667.png&quot; alt=&quot;APIStratBanner&quot;&gt;&lt;/p&gt;
+      <description>&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04667.png&quot; alt=&quot;APIStratBanner&quot;&gt;&lt;/p&gt;
 &lt;h1 id=&quot;what-i-learned-at-apistrat-2017&quot;&gt;What I Learned at APISTRAT 2017&lt;/h1&gt;
 &lt;p&gt;This last week from October 31st to November 2nd, I had the amazing
 opportunity to brush up against some great innovators at some of the
@@ -1657,7 +1657,7 @@ of &lt;a href=&quot;http://apivista.com/&quot;&gt;APIVista&lt;/a&gt;. This works
 friendlier way than a full-on “How to API” course, but was not any less
 relevant. Chris did an excellent job encouraging the class participants to
 reconstruct old ideas into new API framework.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04684.png&quot; alt=&quot;Chris Busse&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04684.png&quot; alt=&quot;Chris Busse&quot;&gt;&lt;/p&gt;
 &lt;p&gt;The example he used was the old “lemonade stand” game, a meme that,
 unfortunately, predated me. He led us through individual and group activities
 to rethink how to program the lemonade stand game in terms of REST calls. The
@@ -1667,7 +1667,7 @@ programmers.&lt;/p&gt;
 &lt;p&gt;The morning was opened by keynote talks–fueled by coffee, of course. The
 talks were given by people from some of the biggest names in tech: Yina Arena,
 from Microsoft, and Sarah Novotny, from Google.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04788.png&quot; alt=&quot;Sarah Novotny&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04788.png&quot; alt=&quot;Sarah Novotny&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Personally, I find myself surprised these days by how–er, open–Microsoft is
 to adopt open source technologies. As a primarily open source developer,
 Microsoft has always been a thorn: unwilling to work with open source. In
@@ -1685,7 +1685,7 @@ this development strategy.&lt;/p&gt;
 yet to have a name for themselves. I’d never heard of BioBright before
 APIStrat, but found Ryan Harrison’s desire to change the field of science and
 research infectious.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04934.png&quot; alt=&quot;Ryan Harrison&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04934.png&quot; alt=&quot;Ryan Harrison&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Documentation for APIs (and documentation in general) is something I find is
 looked over, both for me and for other developers, so I attended talks that
 spoke on these subjects. One of the most interesting was by Ash Hathaway, a
@@ -1694,7 +1694,7 @@ proud Texan, who brought to light why words matter in documentation.&lt;/p&gt;
 “API Evangelist” (if not &lt;em&gt;the&lt;/em&gt; API Evangelist), Kin Lane. I was not fortunate
 enough to attend any of his talks, but I did get to talk with him in person
 during a break.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04869.png&quot; alt=&quot;Kin Lane&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04869.png&quot; alt=&quot;Kin Lane&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Kin gets most of his income from hustling, doing anything from writing,
 consulting, and photography. He started getting interested in APIs after
 seeing fighting from companies like Twitter, and worked with the Department of

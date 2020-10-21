@@ -2824,7 +2824,8 @@ div.logo {
   color: black; }
 
 h1, h2, h3, h4 {
-  text-transform: capitalize; }
+  text-transform: capitalize;
+  font-family: "sears_towerregular"; }
 
 ul, li, dl, dt, dd {
   font-family: "camingocoderegular"; }
@@ -2850,7 +2851,8 @@ div#sidebar {
   padding: 5pt 15pt;
   font-family: secondary-font; }
   div#sidebar dd {
-    margin-left: 10%; }
+    margin-left: 10%;
+    font-size: 90%; }
   div#sidebar h1, div#sidebar h2, div#sidebar h3, div#sidebar h4 {
     font-family: "sears_towerregular";
     text-align: center; }
@@ -2885,9 +2887,17 @@ article {
   article h2 {
     font-size: 225%;
     font-weight: bold; }
+  article dt {
+    color: gray; }
 
 .article-break {
   width: 20pt; }
 
 p img {
   max-width: 90%; }
+
+div.nav {
+  font-family: "camingocoderegular";
+  padding: 4pt; }
+  div.nav a {
+    color: #343434; }
