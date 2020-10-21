@@ -143,7 +143,7 @@ Or if we can’t open it.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;:
     &lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt; open(&lt;span class=&quot;string&quot;&gt;'workfile'&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; f:
         read_data = f.read()
-catch FileNotFoundError &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; e:
+&lt;span class=&quot;keyword&quot;&gt;except&lt;/span&gt; FileNotFoundError &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; e:
     print(&lt;span class=&quot;string&quot;&gt;&quot;not found&quot;&lt;/span&gt;);&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Okay, whew! At least that’s over. Just imagine if we had to write to
 a file. Ah, what the heck! Let’s do it.&lt;/p&gt;

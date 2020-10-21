@@ -53,7 +53,7 @@ Or if we can’t open<span class="widont">&nbsp;</span>it.</p>
 <pre><code class="language-python"><span class="keyword">try</span>:
     <span class="keyword">with</span> open(<span class="string">'workfile'</span>) <span class="keyword">as</span> f:
         read_data = f.read()
-catch FileNotFoundError <span class="keyword">as</span> e:
+<span class="keyword">except</span> FileNotFoundError <span class="keyword">as</span> e:
     print(<span class="string">"not found"</span>);</code></pre>
 <p>Okay, whew! At least that’s over. Just imagine if we had to write to
 a file. Ah, what the heck! Let’s do<span class="widont">&nbsp;</span>it.</p>
