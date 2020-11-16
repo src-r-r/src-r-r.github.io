@@ -4,10 +4,131 @@
     <title>The Source-r-r</title>
     <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>https://src-r-r.github.io</link>
-    <description>Live Dangerously | Serve Ethically | Think Technically</description>
-    <pubDate>Sun, 18 Oct 2020 17:00:00 -0700</pubDate>
+    <description>Break Barriers | Simplify the Complex | Be Open to Ideas</description>
+    <pubDate>Sun, 15 Nov 2020 16:00:00 -0800</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>4 Ways Mozilla Could Pivot</title>
+      <link>https://src-r-r.github.io/articles/how-mozilla-could-pivot/</link>
+      <pubDate>Sun, 15 Nov 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/how-mozilla-could-pivot/</guid>
+      <author></author>
+      <description>&lt;p&gt;Countless articles have been written about Mozilla, the organizaiton that’s part
+community effort, part corporate machine, and part Internet patriot, but 100% in
+trouble. Members of the free Internet fanbase agree that Mozilla has done a great
+deal to leave the Internet open and free, but their current business model is
+in danger of collapsing.&lt;/p&gt;
+&lt;p&gt;Instead of writing another “Oh, no, what are we going to do?” article, I’ve decided to
+brainstorm some ideas Mozilla could capitalize on to pivot and save itself from
+extinction. I’ve come up with 4 solutions that I believe could help Mozilla come back
+from the darkness and continue to spread the message of freedom and innovation.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;mozilla-s-in-trouble&quot;&gt;Mozilla’s In Trouble&lt;/h1&gt;
+&lt;p&gt;I remember the days in high school (shortly after my exposure to the open source world)
+I discovered Mozilla’s Firefox web browser. Back in those days it was the only browser with
+tabs. Internet Explorer did catch on a few years later (and a few years after that Chrome
+took the stage) but I felt pretty cool switching between tabs, especially since my school’s
+computers didn’t restrict &lt;a href=&quot;http://portableapps.com&quot;&gt;Portable Apps&lt;/a&gt; from being executed.&lt;/p&gt;
+&lt;p&gt;And Mozilla has done a good job maintaining their mission of being open and transparent and
+respecting the privacy of their users. Even when GDPR went into effect, most companies
+were scrambling to make sure their practices were up to par so as not be slapped with the
+fines, but Mozilla seemed to not be phased by it at all–mainly because they stood by the
+spirit of the GDPR &lt;a href=&quot;https://www.mozilla.org/en-US/about/manifesto/&quot;&gt;since their inception&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;However, lately Mozilla has been faltering. It’s old news that Firefox has dropped
+below Chrome (the browser owned by Google) and Edge (the browser owned by Microsoft),
+but they’ve &lt;a href=&quot;https://fosspost.org/mozilla-go-unfck-yourself/&quot;&gt;also fired their staff&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And remember: Mozilla’s a company. They have other products besides Firefox (which
+is more of a service than a product, anyway).&lt;/p&gt;
+&lt;p&gt;In order for Mozilla to get back in the game and stay ahead of the competition, it must
+do what other businesses do when they’re in trouble: pivot. I’m sorry to say, but
+no one is going to financially rescue Mozilla. Or if they do, it will be devastating for
+Mozilla’s autonomy.&lt;/p&gt;
+&lt;h1 id=&quot;aren-t-they-trying-different-things-&quot;&gt;Aren’t They Trying Different Things?&lt;/h1&gt;
+&lt;p&gt;Some people point out that Mozilla is already trying to pivot. It was big news when
+they announced they were launching their own VPN service–rather,
+&lt;a href=&quot;https://www.tomsguide.com/reviews/mozilla-vpn-review&quot;&gt;Incorporating the Mullvan VPN&lt;/a&gt;
+into the browser.&lt;/p&gt;
+&lt;p&gt;I admit. It makes sense from a marketing standpoint. VPNs are becoming more popular
+as a means to protect one’s privacy. Why not spin up our own VPN? That’s too expensive.
+Alright, maybe we can take a less-popular VPN and give it a boost in exposure.&lt;/p&gt;
+&lt;p&gt;Which I think will be the problem. I think this benefits Mullvan more than it benefits
+Mozilla. Maybe they’re planning on forking off from this, but in my opinion Mozilla
+needs to do something daring and risky in order to survive.&lt;/p&gt;
+&lt;h1 id=&quot;my-suggestions-for-pivoting&quot;&gt;My Suggestions For Pivoting&lt;/h1&gt;
+&lt;h2 id=&quot;1-open-a-privacy-conscious-tech-store&quot;&gt;1 - Open A Privacy-Conscious Tech Store&lt;/h2&gt;
+&lt;p&gt;Believe it or not, I think there is a market for technology stores. Amazon sells
+&lt;em&gt;meh&lt;/em&gt;-chendise, while other stores like Tiger Direct and Fry’s are becoming more focused
+on consumer electronics. Hobbyists and home technology entrepreneurs are forced to
+buy from wholesale marketplaces or purchase off-the-shelf solutions for all their needs.&lt;/p&gt;
+&lt;p&gt;So here’s what I’m picturing: a privacy-aware e-commerce site that sells products
+and services that are very privacy-friendly. Picture NextCloud subscriptions, VPN
+subscriptions (yes, to Mullvan as well), routers with OpenWRT pre-installed, or computers
+with Firefox as the default browser.&lt;/p&gt;
+&lt;p&gt;The only downside here is that Mozilla will be playing catchup more than anything
+else. But the upside is that if people value privacy, they’ll check on &lt;code&gt;mozillastore.com&lt;/code&gt;
+before &lt;code&gt;amazon.com&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;2-host-paid-internet-3-0-conferences&quot;&gt;2 - Host Paid Internet 3.0 Conferences&lt;/h2&gt;
+&lt;p&gt;Mozilla has long touted they are on the frontier of the Intenet. But their actions have
+not matched their words. They have aligned themselves with a libertarian dream of a free
+and open Internet; most of the group dreams of an
+&lt;a href=&quot;https://is.gd/5uJ3Ne&quot;&gt;Internet that isn’t controlled by a single corporation&lt;/a&gt;. The most
+Mozilla has done is stand in the back and clap their hands hoping others would join
+along.&lt;/p&gt;
+&lt;p&gt;There are discussions of a &lt;a href=&quot;https://web3forall.org/&quot;&gt;new design of the World Wide Web&lt;/a&gt;,
+a reimagining of the framework Tim Berners-Lee laid out in in the 80’s that has since
+been hijacked (sorry, Tim, we tried).&lt;/p&gt;
+&lt;p&gt;Great minds are trying to design this future. If Mozilla saw this as their opportunity
+to own the future, they would take full advantage of trying to bring people together
+to discuss what this would look like. Can’t you imagine the news headlines? “Mozilla
+Leading the Way to the Web 3.0; Twitter, Facebook Scared.”&lt;/p&gt;
+&lt;p&gt;Increased revenue, neck-breaking headlines, an opportunity to lead. What’s not to like?&lt;/p&gt;
+&lt;h2 id=&quot;3-act-as-a-privacy-consultant-contractor&quot;&gt;3 - Act as a Privacy Consultant/Contractor&lt;/h2&gt;
+&lt;p&gt;This may not be the most earth-shattering pivot, but what do most software companies do
+these days? Hire out their knowledge to others. It would at least give them some
+time to float above water to act on an even riskier pivot.&lt;/p&gt;
+&lt;h2 id=&quot;4-create-a-commercial-browser&quot;&gt;4 - Create a commercial browser&lt;/h2&gt;
+&lt;p&gt;I say “Mozilla,” you say&amp;hellip;&lt;/p&gt;
+&lt;p&gt;I’m guessing you yelled, “Firefox!” their flagship product. Firefox is an
+incredible piece of software that uses its own web engine (Gecko) that still remains
+ACID-compliant, even while most other browsers adopt Google’s engine (Chromium) and
+slap their own flavor on top of it. Firefox, from the ground up, is independently
+owned by Mozilla.&lt;/p&gt;
+&lt;p&gt;They need to capitalize on this by providing a &lt;/p&gt;
+&lt;p&gt;This may seem counter-intuitive. Firefox is free! Why make it commercial?&lt;/p&gt;
+&lt;p&gt;Have you ever heard of RedHat? They’re open source. But they are a paid service. You have
+to pay for a license to install their software.&lt;/p&gt;
+&lt;p&gt;What about Nginx? If you’re running a server and not using Apache or Microsoft, you’re
+most likely using Nginx. They have a community edition as well as a paid edition.&lt;/p&gt;
+&lt;p&gt;Same with Docker. If you’re installing Docker on your own system you most likely read
+“Installing Docker (Community Edition).”&lt;/p&gt;
+&lt;p&gt;What does the paid version provide? Well, that depends on the model. Usually it
+means that the proprietary fork of the product is worked on by the staff of that
+company, while it leaves the free version to be worked on by volunteers, so the
+theory goes that the paid version is of better quality than the volunteer version.&lt;/p&gt;
+&lt;p&gt;I think this could be Mozilla’s best chance at pivoting.&lt;/p&gt;
+&lt;p&gt;I, like most users, do have issues with Firefox. Firefox is mostly developed by 
+volunteers, so unless bug is a security flaw or causes a fatal crash, it will seldom be 
+worked on. And who has time to fix it themselves?&lt;/p&gt;
+&lt;p&gt;The reason Chrome and Edge have succeeded even though they’re free is because they’re not
+free. You’re giving up your own private data to be sold in order to fund development.
+Firefox (at its core, at least) is truly free, which is also their Achilles Heel.&lt;/p&gt;
+&lt;p&gt;My suggestion is for Mozilla to provide 2 versions of Firefox–one open source (for community development)
+and one paid (for expert-level support and better quality). Don’t do anything creepy
+with the paid version (although I can’t imagine Mozilla would) and people would pay for it.
+Heck, &lt;em&gt;I’d&lt;/em&gt; pay for something like that!&lt;/p&gt;
+&lt;h1 id=&quot;mozilla-must-pivot&quot;&gt;Mozilla Must Pivot&lt;/h1&gt;
+&lt;p&gt;The Internet is in danger of being lost. Some might argue it already is lost. Perhaps so.
+But Mozilla has been a staunch advocate for a free and open Internet.&lt;/p&gt;
+&lt;p&gt;I’m not against Mozilla. In fact, I am 100% behind what they do. But the fact of the matter
+is most people don’t want to be inconvenienced by increased privacy, even if that
+inconvenience means spending 3 minutes to install Firefox over Edge on their desktop.&lt;/p&gt;
+&lt;p&gt;So Mozilla needs to move beyond, “We believe in a free and open internet.” Yes, we get that.
+Everyone wants that utopia.&lt;/p&gt;
+&lt;p&gt;But what is Mozilla going to do to better people’s lives? That’s where the value is. That’s
+what people will pay for. That’s how Mozilla will survive.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>6 Essential BASH commands to make life easier</title>
       <link>https://src-r-r.github.io/articles/essential-bash-commands-to-make-life-easier/</link>
@@ -1248,6 +1369,42 @@ the post office analogy.&lt;/p&gt;
 </description>
     </item>
     <item>
+      <title>My Latest Project - LinkList Firefox Extension</title>
+      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
+      <author></author>
+      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
+&lt;p&gt;We are a species whose brains like limited information.
+[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
+after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
+proven that when given a lot of information our brains are overwhelmed. This
+has driven content designers of websites to display selected bits of
+information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
+every user profile on Reddit while reading an article, but they do provide
+links to user profiles who have commented on the article.&lt;/p&gt;
+&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
+for.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
+yet), cover links with other elements. If you use a JavaScript blocker (which I
+recommend to everyone, for both security and privacy), you know what I’m
+talking about.&lt;/p&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;My solution is a Firefox extension called
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
+For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
+provides a text field to allow you to search for a given link.&lt;/p&gt;
+&lt;p&gt;I created this because of my frustration with searching for a job. At a local
+company page I’d look for the “Careers” or “Jobs” page which may or may not be
+at the footer. Instead of wasting 3 seconds scrolling to the bottom and
+another 3 seconds scanning the footer links I can simply look in the sidebar
+and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>JavaScript Programming for Non-JavaScript Programmers</title>
       <link>https://src-r-r.github.io/articles/javascript-programming-for-non-javascript-programmers/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
@@ -1367,42 +1524,6 @@ appeared as an afterthought it has become the backbone of the web. So, for
 programmers who are used to Java or C++ or some other framework, you, like me,
 might be a little confused as to what goes on under the hood. But, hopefully,
 I was able to explain what goes on in a more visual way.&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>My Latest Project - LinkList Firefox Extension</title>
-      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
-      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
-      <author></author>
-      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
-&lt;p&gt;We are a species whose brains like limited information.
-[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
-after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
-proven that when given a lot of information our brains are overwhelmed. This
-has driven content designers of websites to display selected bits of
-information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
-every user profile on Reddit while reading an article, but they do provide
-links to user profiles who have commented on the article.&lt;/p&gt;
-&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
-for.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
-yet), cover links with other elements. If you use a JavaScript blocker (which I
-recommend to everyone, for both security and privacy), you know what I’m
-talking about.&lt;/p&gt;
-&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
-&lt;p&gt;My solution is a Firefox extension called
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
-For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
-provides a text field to allow you to search for a given link.&lt;/p&gt;
-&lt;p&gt;I created this because of my frustration with searching for a job. At a local
-company page I’d look for the “Careers” or “Jobs” page which may or may not be
-at the footer. Instead of wasting 3 seconds scrolling to the bottom and
-another 3 seconds scanning the footer links I can simply look in the sidebar
-and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 </description>
     </item>
     <item>
