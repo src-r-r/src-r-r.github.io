@@ -37,7 +37,7 @@ fines, but Mozilla seemed to not be phased by it at all–mainly because they st
 spirit of the GDPR &lt;a href=&quot;https://www.mozilla.org/en-US/about/manifesto/&quot;&gt;since their inception&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;However, lately Mozilla has been faltering. It’s old news that Firefox has dropped
 below Chrome (the browser owned by Google) and Edge (the browser owned by Microsoft),
-but they’ve &lt;a href=&quot;https://fosspost.org/mozilla-go-unfck-yourself/&quot;&gt;also fired their staff&lt;/a&gt;.&lt;/p&gt;
+but they’ve &lt;a href=&quot;https://fosspost.org/mozilla-go-unfck-yourself/&quot;&gt;also let most of their staff go&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;And remember: Mozilla’s a company. They have other products besides Firefox (which
 is more of a service than a product, anyway).&lt;/p&gt;
 &lt;p&gt;In order for Mozilla to get back in the game and stay ahead of the competition, it must
@@ -1369,42 +1369,6 @@ the post office analogy.&lt;/p&gt;
 </description>
     </item>
     <item>
-      <title>My Latest Project - LinkList Firefox Extension</title>
-      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
-      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
-      <author></author>
-      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
-&lt;p&gt;We are a species whose brains like limited information.
-[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
-after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
-proven that when given a lot of information our brains are overwhelmed. This
-has driven content designers of websites to display selected bits of
-information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
-every user profile on Reddit while reading an article, but they do provide
-links to user profiles who have commented on the article.&lt;/p&gt;
-&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
-for.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
-yet), cover links with other elements. If you use a JavaScript blocker (which I
-recommend to everyone, for both security and privacy), you know what I’m
-talking about.&lt;/p&gt;
-&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
-&lt;p&gt;My solution is a Firefox extension called
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
-For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
-provides a text field to allow you to search for a given link.&lt;/p&gt;
-&lt;p&gt;I created this because of my frustration with searching for a job. At a local
-company page I’d look for the “Careers” or “Jobs” page which may or may not be
-at the footer. Instead of wasting 3 seconds scrolling to the bottom and
-another 3 seconds scanning the footer links I can simply look in the sidebar
-and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>JavaScript Programming for Non-JavaScript Programmers</title>
       <link>https://src-r-r.github.io/articles/javascript-programming-for-non-javascript-programmers/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
@@ -1524,6 +1488,42 @@ appeared as an afterthought it has become the backbone of the web. So, for
 programmers who are used to Java or C++ or some other framework, you, like me,
 might be a little confused as to what goes on under the hood. But, hopefully,
 I was able to explain what goes on in a more visual way.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>My Latest Project - LinkList Firefox Extension</title>
+      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
+      <author></author>
+      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
+&lt;p&gt;We are a species whose brains like limited information.
+[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
+after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
+proven that when given a lot of information our brains are overwhelmed. This
+has driven content designers of websites to display selected bits of
+information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
+every user profile on Reddit while reading an article, but they do provide
+links to user profiles who have commented on the article.&lt;/p&gt;
+&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
+for.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
+yet), cover links with other elements. If you use a JavaScript blocker (which I
+recommend to everyone, for both security and privacy), you know what I’m
+talking about.&lt;/p&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;My solution is a Firefox extension called
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
+For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
+provides a text field to allow you to search for a given link.&lt;/p&gt;
+&lt;p&gt;I created this because of my frustration with searching for a job. At a local
+company page I’d look for the “Careers” or “Jobs” page which may or may not be
+at the footer. Instead of wasting 3 seconds scrolling to the bottom and
+another 3 seconds scanning the footer links I can simply look in the sidebar
+and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 </description>
     </item>
     <item>
