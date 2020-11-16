@@ -94,7 +94,8 @@ incredible piece of software that uses its own web engine (Gecko) that still rem
 ACID-compliant, even while most other browsers adopt Google’s engine (Chromium) and
 slap their own flavor on top of it. Firefox, from the ground up, is independently
 owned by Mozilla.&lt;/p&gt;
-&lt;p&gt;They need to capitalize on this by providing a &lt;/p&gt;
+&lt;p&gt;They need to capitalize on this by providing a paid version of Firefox, along with
+their free one.&lt;/p&gt;
 &lt;p&gt;This may seem counter-intuitive. Firefox is free! Why make it commercial?&lt;/p&gt;
 &lt;p&gt;Have you ever heard of RedHat? They’re open source. But they are a paid service. You have
 to pay for a license to install their software.&lt;/p&gt;
@@ -1036,90 +1037,6 @@ site ready to run!&lt;/p&gt;
 </description>
     </item>
     <item>
-      <title>Escargo: The Zero-Configuration Email API</title>
-      <link>https://src-r-r.github.io/articles/Escargo:-The-Zero-Configuration-Email-API/</link>
-      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">https://src-r-r.github.io/articles/Escargo:-The-Zero-Configuration-Email-API/</guid>
-      <author></author>
-      <description>&lt;h1 id=&quot;don-t-re-invent-the-wheel&quot;&gt;Don’t Re-Invent the Wheel&lt;/h1&gt;
-&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/155149/pre-historic-wheel-cartoon.png&quot; alt=&quot;wheel&quot;&gt;&lt;/p&gt;
-&lt;p&gt;One of the principles of REST APIs is the ability to reuse common parts,
-starting from the ground up. Then, if one of those parts is broken, just go in,
-fix that part, and you’re good to go.&lt;/p&gt;
-&lt;p&gt;Which is why I was a bit baffled recently when I was starting on a project and
-looked for some plug-and-play method for creating users. After all, in today’s
-social-driven world, any kind of content management system is bound to have a
-basic username/password (or, better yet, email/password) foundation.&lt;/p&gt;
-&lt;p&gt;However, my search came up empty.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;NOTE: Yeah, I realize “escargo” should be “escargot.” Later on I may change
-it.&lt;/em&gt;&lt;/p&gt;
-&lt;h1 id=&quot;starting-small&quot;&gt;Starting Small&lt;/h1&gt;
-&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/248466/pyramid.png&quot; alt=&quot;pyramid&quot;&gt;&lt;/p&gt;
-&lt;p&gt;So I decided to start my own project called &lt;strong&gt;Refactor&lt;/strong&gt;, which is a set of
-projects with common functionalities (in the form of microservices) to build a
-CMS from the ground up.&lt;/p&gt;
-&lt;p&gt;I started with a user system (which is coming soon), but then realized that
-part of a user management system was email. There are various situations in
-which a CMS needs to email a user:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Verification of new user accounts.&lt;/li&gt;
-&lt;li&gt;Password reset/reminder (preferably a &lt;strong&gt;reset&lt;/strong&gt; since the database is not
-supposed to know a password).&lt;/li&gt;
-&lt;li&gt;Marketing, advertising, notifications, etc.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Obviously, as ubiquitous as email is these days most languages have some
-semblance of an email library. But the fact that libraries exist to do this
-only constitutes automated emails from scratch with the framework. This breaks
-a tenant of REST API methodology.&lt;/p&gt;
-&lt;h1 id=&quot;introducing-escargo-t-&quot;&gt;Introducing: Escargo[t]&lt;/h1&gt;
-&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/166284/escargot-decroissance.png&quot; alt=&quot;escargot&quot;&gt;&lt;/p&gt;
-&lt;p&gt;Hence, I created Escargo, the zero-configuration REST API for email. Literally
-all one needs on his system is &lt;a href=&quot;https://www.vagrantup.com/&quot;&gt;Vagrant&lt;/a&gt; (and
-git, for now) and he’ll be able to get a REST API up and running for email.&lt;/p&gt;
-&lt;p&gt;The power here is that there’s absolutely &lt;strong&gt;no configuration and no setup&lt;/strong&gt;.
-The microservice is up instantly and the user can send an email easily.&lt;/p&gt;
-&lt;h2 id=&quot;wait-no-configuration-&quot;&gt;Wait? No configuration?&lt;/h2&gt;
-&lt;p&gt;That’s right. Well, almost right. The configuration needs to be passed in to the
-POST body. For example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-    &amp;quot;connection&amp;quot;: {
-        &amp;quot;conn_type&amp;quot;: &amp;quot;smtp&amp;quot;,
-        &amp;quot;host&amp;quot;: &amp;quot;mail.example.com&amp;quot;,
-        &amp;quot;port&amp;quot;: 587
-    },
-    &amp;quot;options&amp;quot;: {
-        &amp;quot;debug_level&amp;quot;: 2,
-        &amp;quot;login&amp;quot;: {
-            &amp;quot;user&amp;quot;: &amp;quot;noreply@example.com&amp;quot;,
-            &amp;quot;password&amp;quot;: &amp;quot;super-secret-pa55word&amp;quot;
-        },
-        &amp;quot;starttls&amp;quot;: {}
-    },
-    &amp;quot;sending&amp;quot;: {
-        &amp;quot;from&amp;quot;: &amp;quot;noreply@example.com&amp;quot;,
-        &amp;quot;to&amp;quot;: &amp;quot;some-user@gmail.com&amp;quot;,
-        &amp;quot;subject&amp;quot;: &amp;quot;Hello from Escargo!&amp;quot;,
-        &amp;quot;message&amp;quot;: {
-            &amp;quot;text_body&amp;quot;: &amp;quot;This is a test of Escargo, the 0-config Email API&amp;quot;
-        }
-    }
-}&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I essentially just translated Python’s
-&lt;a href=&quot;https://docs.python.org/3/library/smtplib.html&quot;&gt;smtplib&lt;/a&gt;
-to a function that was ready for a JSON structure. There’s only one endpoint to
-the service (&lt;code&gt;POST /&lt;/code&gt;), that takes a body describing the type of connection,
-any options associated with the email, and anything you want to send with the
-email (HTML data, images, etc.)&lt;/p&gt;
-&lt;p&gt;Documentation on the project can be read
-&lt;a href=&quot;https://github.com/src-r-r/escargo&quot;&gt;on the project’s GitHub Page&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;this-isn-t-the-end&quot;&gt;This Isn’t The End&lt;/h1&gt;
-&lt;p&gt;This is only the base of the pyramid. I’ll be coming up with more microservices
-to add to the &lt;strong&gt;Refraction&lt;/strong&gt; project.&lt;/p&gt;
-&lt;p&gt;And if you have an open source project you think should be added, email me and
-I’ll be sure to add it.&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>Basic Parts of an API Request</title>
       <link>https://src-r-r.github.io/articles/basic-parts-of-an-api-request/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
@@ -1366,6 +1283,90 @@ the post office analogy.&lt;/p&gt;
             &lt;td&gt;`{&quot;name&quot;: &quot;Henry&quot;, &quot;number&quot;: 1234, ...}`&lt;/td&gt;
          &lt;/tr&gt;
  &lt;/table&gt;
+</description>
+    </item>
+    <item>
+      <title>Escargo: The Zero-Configuration Email API</title>
+      <link>https://src-r-r.github.io/articles/Escargo:-The-Zero-Configuration-Email-API/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/Escargo:-The-Zero-Configuration-Email-API/</guid>
+      <author></author>
+      <description>&lt;h1 id=&quot;don-t-re-invent-the-wheel&quot;&gt;Don’t Re-Invent the Wheel&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/155149/pre-historic-wheel-cartoon.png&quot; alt=&quot;wheel&quot;&gt;&lt;/p&gt;
+&lt;p&gt;One of the principles of REST APIs is the ability to reuse common parts,
+starting from the ground up. Then, if one of those parts is broken, just go in,
+fix that part, and you’re good to go.&lt;/p&gt;
+&lt;p&gt;Which is why I was a bit baffled recently when I was starting on a project and
+looked for some plug-and-play method for creating users. After all, in today’s
+social-driven world, any kind of content management system is bound to have a
+basic username/password (or, better yet, email/password) foundation.&lt;/p&gt;
+&lt;p&gt;However, my search came up empty.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;NOTE: Yeah, I realize “escargo” should be “escargot.” Later on I may change
+it.&lt;/em&gt;&lt;/p&gt;
+&lt;h1 id=&quot;starting-small&quot;&gt;Starting Small&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/248466/pyramid.png&quot; alt=&quot;pyramid&quot;&gt;&lt;/p&gt;
+&lt;p&gt;So I decided to start my own project called &lt;strong&gt;Refactor&lt;/strong&gt;, which is a set of
+projects with common functionalities (in the form of microservices) to build a
+CMS from the ground up.&lt;/p&gt;
+&lt;p&gt;I started with a user system (which is coming soon), but then realized that
+part of a user management system was email. There are various situations in
+which a CMS needs to email a user:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Verification of new user accounts.&lt;/li&gt;
+&lt;li&gt;Password reset/reminder (preferably a &lt;strong&gt;reset&lt;/strong&gt; since the database is not
+supposed to know a password).&lt;/li&gt;
+&lt;li&gt;Marketing, advertising, notifications, etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Obviously, as ubiquitous as email is these days most languages have some
+semblance of an email library. But the fact that libraries exist to do this
+only constitutes automated emails from scratch with the framework. This breaks
+a tenant of REST API methodology.&lt;/p&gt;
+&lt;h1 id=&quot;introducing-escargo-t-&quot;&gt;Introducing: Escargo[t]&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/166284/escargot-decroissance.png&quot; alt=&quot;escargot&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Hence, I created Escargo, the zero-configuration REST API for email. Literally
+all one needs on his system is &lt;a href=&quot;https://www.vagrantup.com/&quot;&gt;Vagrant&lt;/a&gt; (and
+git, for now) and he’ll be able to get a REST API up and running for email.&lt;/p&gt;
+&lt;p&gt;The power here is that there’s absolutely &lt;strong&gt;no configuration and no setup&lt;/strong&gt;.
+The microservice is up instantly and the user can send an email easily.&lt;/p&gt;
+&lt;h2 id=&quot;wait-no-configuration-&quot;&gt;Wait? No configuration?&lt;/h2&gt;
+&lt;p&gt;That’s right. Well, almost right. The configuration needs to be passed in to the
+POST body. For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;connection&amp;quot;: {
+        &amp;quot;conn_type&amp;quot;: &amp;quot;smtp&amp;quot;,
+        &amp;quot;host&amp;quot;: &amp;quot;mail.example.com&amp;quot;,
+        &amp;quot;port&amp;quot;: 587
+    },
+    &amp;quot;options&amp;quot;: {
+        &amp;quot;debug_level&amp;quot;: 2,
+        &amp;quot;login&amp;quot;: {
+            &amp;quot;user&amp;quot;: &amp;quot;noreply@example.com&amp;quot;,
+            &amp;quot;password&amp;quot;: &amp;quot;super-secret-pa55word&amp;quot;
+        },
+        &amp;quot;starttls&amp;quot;: {}
+    },
+    &amp;quot;sending&amp;quot;: {
+        &amp;quot;from&amp;quot;: &amp;quot;noreply@example.com&amp;quot;,
+        &amp;quot;to&amp;quot;: &amp;quot;some-user@gmail.com&amp;quot;,
+        &amp;quot;subject&amp;quot;: &amp;quot;Hello from Escargo!&amp;quot;,
+        &amp;quot;message&amp;quot;: {
+            &amp;quot;text_body&amp;quot;: &amp;quot;This is a test of Escargo, the 0-config Email API&amp;quot;
+        }
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I essentially just translated Python’s
+&lt;a href=&quot;https://docs.python.org/3/library/smtplib.html&quot;&gt;smtplib&lt;/a&gt;
+to a function that was ready for a JSON structure. There’s only one endpoint to
+the service (&lt;code&gt;POST /&lt;/code&gt;), that takes a body describing the type of connection,
+any options associated with the email, and anything you want to send with the
+email (HTML data, images, etc.)&lt;/p&gt;
+&lt;p&gt;Documentation on the project can be read
+&lt;a href=&quot;https://github.com/src-r-r/escargo&quot;&gt;on the project’s GitHub Page&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;this-isn-t-the-end&quot;&gt;This Isn’t The End&lt;/h1&gt;
+&lt;p&gt;This is only the base of the pyramid. I’ll be coming up with more microservices
+to add to the &lt;strong&gt;Refraction&lt;/strong&gt; project.&lt;/p&gt;
+&lt;p&gt;And if you have an open source project you think should be added, email me and
+I’ll be sure to add it.&lt;/p&gt;
 </description>
     </item>
     <item>
