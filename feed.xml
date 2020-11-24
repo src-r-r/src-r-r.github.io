@@ -5,9 +5,155 @@
     <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>https://src-r-r.github.io</link>
     <description>Break Barriers | Simplify the Complex | Be Open to Ideas</description>
-    <pubDate>Sun, 15 Nov 2020 16:00:00 -0800</pubDate>
+    <pubDate>Mon, 23 Nov 2020 16:00:00 -0800</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Explanation of the Top 10 '/r/programmingmemes' Posts</title>
+      <link>https://src-r-r.github.io/articles/top-10-programming-meme-explanations/</link>
+      <pubDate>Mon, 23 Nov 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/top-10-programming-meme-explanations/</guid>
+      <author></author>
+      <description>&lt;p&gt;Who knew memes could be so educational? I enjoy memes as a form of art and
+satire (political cartoons are cool again!), and sometimes that can even
+be informative.&lt;/p&gt;
+&lt;p&gt;If you’re a developer you’ve undoubtedly come across the
+&lt;a href=&quot;https://www.reddit.com/r/programmingmemes/top/?t=all&quot;&gt;Programming Memes&lt;/a&gt; Subreddit, or 
+been the victim of meme spamming from your coworkers. If you’re just starting
+programming most of them may be a bit archaic, so in this article, I’ll explain (from
+my experience) what the top 10 memes mean.&lt;/p&gt;
+&lt;p&gt;Note these are the top ten “of all time” as of the writing of this article.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;yes-windows-diagnostics-&quot;&gt;Yes (Windows Diagnostics)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/630rh1twb8g51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=f6e5a26984d4e4a9391d1df76fb1a4c7d58ac6cf&quot; alt=&quot;Yes&quot;&gt;&lt;/p&gt;
+&lt;p&gt;This is a simple Python function that supposedly looks for issues on the Windows
+system.&lt;/p&gt;
+&lt;p&gt;If you’re trying to learn Python by looking at this, you’re in for a surprise–it’s
+not even close to syntactically correct.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import os # This module isn&amp;#39;t even used
+def Windows_Diagnostics() # Where&amp;#39;s the &amp;quot;:&amp;quot;?
+    print(&amp;#39;Looking for problems&amp;#39;)
+    waitTimer(20000ms) # waitTimer is not a built-in function, and &amp;quot;20000ms&amp;quot;
+                       # is not a valid data type
+    print(&amp;#39;Unable to fix the issue.&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I think that’s part of the joke. Maybe they’re hoping advanced developers will see it
+and have their hair catch on fire.&lt;/p&gt;
+&lt;h1 id=&quot;whyyy-the-code-i-write-what-it-does-&quot;&gt;whyyy (The Code I Write/What it Does)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.redd.it/ik3cqvmfozm51.png&quot; alt=&quot;whyyy&quot;&gt;&lt;/p&gt;
+&lt;p&gt;You just spent an entire weekend designing, testing (because we all unit test our
+code, right?), and deploying your project. It’s amazing. Bill Gates and Linus Torvalds
+should bow down to you.&lt;/p&gt;
+&lt;p&gt;Because you parsed a CSV file and turned it into JSON. All hail the hacker!&lt;/p&gt;
+&lt;p&gt;All developers think they’re cool when they write a program. I’m no different. But in
+reality, nobody cares. It’s cool to you and nobody else.&lt;/p&gt;
+&lt;h1 id=&quot;no-doubt-they-are-hard-to-swallow&quot;&gt;No doubt they are hard to swallow&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/7q9gqt2ie1p51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=a926d4930c530c13f564b76eb770d520ed20214f&quot; alt=&quot;hard to swallow pills&quot;&gt;&lt;/p&gt;
+&lt;p&gt;These days when doing development it’s common to have to download toolkits and framework
+from the Internet. But how did the Internet get there? Did someone download the 
+framework?&lt;/p&gt;
+&lt;p&gt;With instant access to memes so mundane, it can be hard to grasp that just sending the 
+string “Hello World” from one computer to another took teams of engineers to design.
+But thanks to the need for military intelligence we can now look up cat videos at any
+time of the day.&lt;/p&gt;
+&lt;h1 id=&quot;ptsd-intensifies-missing-semicolon-&quot;&gt;PTSD Intensifies (Missing semicolon)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/lx5ys76e4tq41.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=b3745dc9e6b45875bf99c536a8b83cac8335a241&quot; alt=&quot;ptsd intensifies&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you’re using Python, Ruby, Go or (for the love of Stallman, please don’t) Perl, you 
+probably don’t know what the use of semicolons is for.&lt;/p&gt;
+&lt;p&gt;They’re not used in scripting languages very much, but often used in compiled languages, 
+such as, C, C++, and Java.  For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;HelloWorld&lt;/span&gt; &lt;/span&gt;{
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String [] args)&lt;/span&gt; &lt;/span&gt;{
+        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; sum = &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt; + &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;
+        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;4 + 5 is &quot;&lt;/span&gt; + sum);
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is a Java snippet. A programmer must compile this code into Java byte code which
+is then run as an executable.&lt;/p&gt;
+&lt;p&gt;Missing one semicolon can result in an entire project not being compiled.&lt;/p&gt;
+&lt;p&gt;As you can imagine with some projects clocking in at millions of lines, this can be
+very frustrating.&lt;/p&gt;
+&lt;p&gt;The missing semicolon is the go-to problem most compiled language programmers face.
+But what happens if the issue isn’t that? What then?&lt;/p&gt;
+&lt;h1 id=&quot;hackathon&quot;&gt;Hackathon&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/cl94gjydjkn51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=f13e51e45881a9d4b09831a2ab40d015c60bd732&quot; alt=&quot;Hackathon&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I’ll agree the “woman yelling at cat meme”
+&lt;a href=&quot;https://thetab.com/uk/2019/11/11/woman-yelling-at-cat-meme-131352&quot;&gt;doesn’t have very funny origins&lt;/a&gt;
+so its humor has dissipated for me. But it’s in the top ten, so here we go&amp;hellip;&lt;/p&gt;
+&lt;p&gt;To the uninitiated, hackathons are events (usually a couple of days) hosted by companies,
+where developers get together to develop a project, usually competing.
+Typically there’s another goal of the event, like networking or recruiting.&lt;/p&gt;
+&lt;p&gt;I’ve never attended one (I’ve attended something &lt;em&gt;like&lt;/em&gt; one, though–Python for good),
+but hackatons are usually very competative; consequently, most developers sacrifice
+some conveniences (like sleep) in order to get their project done and win the prize.&lt;/p&gt;
+&lt;h1 id=&quot;all-will-agree-with-this-c-linker-errors-&quot;&gt;All will agree with this! (C++ Linker Errors)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/qvd5x5e52rx41.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=4b2a62404bc8735a887468d4337fc4018fe13ff8&quot; alt=&quot;All will agree with this&quot;&gt;&lt;/p&gt;
+&lt;p&gt;As mentioned above, C++ is a compiled language, and must be turned into binary in
+order to run.&lt;/p&gt;
+&lt;p&gt;What differetiates C++ from its predecessor, though, is the stage of “linking,” or
+including libraries (external or internal) into the code base.&lt;/p&gt;
+&lt;p&gt;Any errors produced tend to be very long.
+You’ll typically have the module name, concatenated with the 
+full member definition (with the template type in brackets), &lt;em&gt;then&lt;/em&gt; &lt;strong&gt;finally&lt;/strong&gt; the 
+error, e.g.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/usr/local/lib/gcc-lib/i686-pc-linux-gnu/3.2.1/include/c++/bits/ios_base.h: In
+   copy constructor `std::basic_ios&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;
+   &amp;gt;::basic_ios(const std::basic_ios&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;&amp;amp;)&amp;#39;:
+/usr/local/lib/gcc-lib/i686-pc-linux-gnu/3.2.1/include/c++/bits/ios_base.h:424: `std::ios_base::ios_base(const std::ios_base&amp;amp;)&amp;#39; is private
+mil.cpp:28: within this context
+mil.cpp: In function `int main()&amp;#39;:
+mil.cpp:28:   initializing argument 1 of `void
+   Fraction::Print(std::basic_ostream&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;) const&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;(Thanks to &lt;a href=&quot;https://www.csee.umbc.edu/courses/undergraduate/202/fall04/Projects/CommonErrors.shtml&quot;&gt;https://www.csee.umbc.edu/courses/undergraduate/202/fall04/Projects/CommonErrors.shtml&lt;/a&gt; for the code exmaple)&lt;/p&gt;
+&lt;p&gt;Believe it or not, this is one of the short ones!&lt;/p&gt;
+&lt;p&gt;So now you can see why you’d want a large monitor!&lt;/p&gt;
+&lt;h1 id=&quot;this-meme-trash-equality-&quot;&gt;this.meme = trash (equality)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/3c8epii09um51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=7b6a8944cd0ac69ea3f1782a807b2e2bc9add333&quot; alt=&quot;this.meme=trash&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Typically in English when we want to say things aren’t the same (and we’re geeks) we say 
+“not equal.” For example, “The year 2020 is not equal to utopia.”&lt;/p&gt;
+&lt;p&gt;In algebra we use the “≠” symbol.&lt;/p&gt;
+&lt;p&gt;Obviously, you don’t have the “≠” on your keyboard, and programmers were too lazy to put one in, so most programming languages use “!=”&lt;/p&gt;
+&lt;p&gt;But if you used one in algebra class your teacher would probably accuse you of trying to do a factorial of the right hand side or something.&lt;/p&gt;
+&lt;p&gt;But programmers are inherently more refined than algebra teachers so we use “!=” whether Ms. Abigail likes it or not!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;I deserve that “A,” Ms. Abigail!&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;an-interesting-title&quot;&gt;An Interesting Title&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/jrqjk6959ur41.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=40110c2b6e3e63fece8d678e369f28f8a0b892c6&quot; alt=&quot;An Interesting Title&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you’re just starting out in programming you’re undoubtedly copying error messages
+you’re seeing, and finding some solution on StackOverflow from someone else with a
+different system and a different problem.&lt;/p&gt;
+&lt;p&gt;Or you’re not too sure about a specific topic so you look on YouTube (e.g. “how to 
+tangle your tango with django”) and hope that someone explains it just so. And for
+some reason folks from India rule the programming tutorial space.&lt;/p&gt;
+&lt;p&gt;Don’t feel bad if you have to go this route. Even expert developers do this from time
+to time. With patience and hard work you’ll rely on online resources less and less, 
+and instead spend 5 hours reading the C++ compiler source code only to see a 
+StackOverflow post saying you simply need to downgrade the Boost library version you’re 
+using.&lt;/p&gt;
+&lt;h1 id=&quot;you-guys-&quot;&gt;You guys:|&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/mshfob64v3u51.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=28abd467a345948bf5f1a8e5a2d34bf8991b08d9&quot; alt=&quot;you guys&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I don’t think you need to be a programmer to get this, but I’ll explain anyway since I
+promised I would.&lt;/p&gt;
+&lt;p&gt;The top left cable is standard USB. And, yes, it only goes in one way into your
+computer port.&lt;/p&gt;
+&lt;p&gt;In the late 2010’s someone had the genius idea to make the connection reversible,
+so it doesn’t matter which way you flip the cable; hence, USB-C (top right).&lt;/p&gt;
+&lt;p&gt;But wait! There’s more! There’s the audio cable (predating USB by, like, a lot of years)
+that isn’t directional at all. You just plug it in. That’s bottom left.&lt;/p&gt;
+&lt;p&gt;Finally, “Why use cables at all?” said the developers of Bluetooth?&lt;/p&gt;
+&lt;p&gt;And we’ve been fighting with connecting Bluetooth ever since.&lt;/p&gt;
+&lt;h1 id=&quot;last-one-true-af-&quot;&gt;Last one - true af :)))))))&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/oyp1pbq28il51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=83ed7868bda34cd6839c29fbc7e1d3b5129c5530&quot; alt=&quot;true af&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I’m sure the inspiration for this is XKCD’s &lt;a href=&quot;https://xkcd.com/149/&quot;&gt;“make me a sandwich”&lt;/a&gt;
+cartoon.&lt;/p&gt;
+&lt;p&gt;If you have not had the opportunity to ditch Windows in favor of Linux, &lt;code&gt;sudo&lt;/code&gt; is the
+keyword to run any command as super-user.&lt;/p&gt;
+&lt;p&gt;This is equivalent to Windows’ “admin mode.”&lt;/p&gt;
+&lt;p&gt;Technically, most Linux distributions have a “root” user which has unlimited permissions
+on the system but it’s very dangerous to log in as root. So most distributions have
+safeguards in place to prevent this from happening. Obviously, you will need root
+permissions &lt;em&gt;some&lt;/em&gt; of the time, hence the keyword “sudo.”&lt;/p&gt;
+&lt;p&gt;For example, to install packages on Ubuntu you’d say…&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo apt install obs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That gets you what you want! ;)&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>4 Ways Mozilla Could Pivot</title>
       <link>https://src-r-r.github.io/articles/how-mozilla-could-pivot/</link>
