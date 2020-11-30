@@ -2843,6 +2843,16 @@ p.more {
   p.more a {
     text-transform: capitalize; }
 
+div.hiring-box {
+  width: 100%;
+  border: 5px dashed darkgray;
+  border-radius: 10pt;
+  padding: 5pt;
+  font-family: "camingocoderegular"; }
+  div.hiring-box p {
+    padding: 0;
+    margin: 0; }
+
 .container {
   padding: 10pt 20pt; }
 
