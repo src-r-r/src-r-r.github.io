@@ -5,9 +5,938 @@
     <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>https://src-r-r.github.io</link>
     <description>Break Barriers | Simplify the Complex | Be Open to Ideas</description>
-    <pubDate>Sun, 29 Nov 2020 16:00:00 -0800</pubDate>
+    <pubDate>Wed, 02 Dec 2020 16:00:00 -0800</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Amazon Scraping with Scrapy, Part I - Scraping</title>
+      <link>https://src-r-r.github.io/articles/scraping_amazon/</link>
+      <pubDate>Wed, 02 Dec 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/scraping_amazon/</guid>
+      <author></author>
+      <description>&lt;p&gt;Recently I was doing a research project trying to determine information on the top sellers at
+Amazon.&lt;/p&gt;
+&lt;p&gt;In this first part I describe my process of scraping the necessary data from Amazon. In
+Part II I’ll discuss some of my findings.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Full disclosure that I’m usually not on Amazon. I prefer shopping local as much
+as I can to bolster my local economy.&lt;/p&gt;
+&lt;p&gt;I’d encourage others to do the same this Christmas season.&lt;/p&gt;
+&lt;h1 id=&quot;the-goal-of-the-project&quot;&gt;The Goal of the Project&lt;/h1&gt;
+&lt;p&gt;First: the objective. I wanted to find out what countries Amazon sellers are from
+to see how many are in the United States.&lt;/p&gt;
+&lt;h2 id=&quot;but-how-do-i-know-what-sellers-there-are-&quot;&gt;But how do I know what sellers there are?&lt;/h2&gt;
+&lt;p&gt;My first mode of business was to find out if Amazon lists their sellers. I figured Amazon
+wouldn’t list all of their sellers on one page, let alone have an API where I can get all the
+sellers.&lt;/p&gt;
+&lt;p&gt;I needed to use a scraper.&lt;/p&gt;
+&lt;p&gt;By far the best open source scraper available is &lt;a href=&quot;https://scrapy.readthedocs.io&quot;&gt;Scrapy&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;First, though, I needed to determine how to find these sellers.&lt;/p&gt;
+&lt;h1 id=&quot;investigating-the-url-scemes&quot;&gt;Investigating the URL Scemes&lt;/h1&gt;
+&lt;h2 id=&quot;invididual-seller-pages&quot;&gt;Invididual Seller Pages&lt;/h2&gt;
+&lt;p&gt;Turns out Amazon has seller pages.&lt;/p&gt;
+&lt;p&gt;And on that page there’s an address.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/seller-address-circled.png&quot; alt=&quot;seller address&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I found this out by choosing a random product. For most (but not all) Amazon lists the
+seller on the right side of the page (typically says &lt;code&gt;Fullfilled by...&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;So I’ll eventually scrape that, I realize. Since I know I’m going to scrape this page,
+and others like this, I need a way to determine the patter for the seller page. I’ll
+take a look at the URL in the address bar:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;https://www.amazon.com/sp/?seller=A1W4F5UCY68C8L&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;OK, no mystery here. Looks like each sellers has a code, which in this case is &lt;code&gt;A1W4F5UCY68C8L&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now we need to determine where the list of sellers are.&lt;/p&gt;
+&lt;h2 id=&quot;list-of-all-the-sellers&quot;&gt;List Of All the Sellers&lt;/h2&gt;
+&lt;p&gt;Here I just did a quick DuckDuckGo search for “list of Amazon sellers” The first page that
+popped up was this page:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/gp/search/other/ref=sr_in_-2_1?rh=i%3Aappliances%2Cn%3A2619525011&amp;amp;page=2&amp;amp;pickerToList=enc-merchantbin&amp;amp;ie=UTF8&amp;amp;qid=1607290974&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s save that URL; bookmark it or save it to a text file. We’ll return to it later.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-appliances-top-sellers.png&quot; alt=&quot;top appliance sellers&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;getting-the-seller-url-from-the-list&quot;&gt;Getting the Seller URL from the List&lt;/h3&gt;
+&lt;p&gt;I right clicked on one of the sellers and copied the URL. Here is one for “Goodman’s:”&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/s/ref=sr_in_-2_p_6_19?fst=as%3Aoff&amp;amp;rh=n%3A2619525011%2Cp_6%3AA1H5N2R2HL9LG2&amp;amp;bbn=2619525011&amp;amp;ie=UTF8&amp;amp;qid=1607287774&amp;amp;rnid=2661622011&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s examine the URL in more detail. For this I like to use a REST API client for parsing the parts
+of the URL. I spun up Insomnia and imported the URL as arguments.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/insomnia-amazon-seller-url.png&quot; alt=&quot;insomnia URL parsing&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The objective here is to find the seller code within the URL.&lt;/strong&gt; This will help us
+when constructing the seller address page.&lt;/p&gt;
+&lt;p&gt;Here it’s a bit more hidden. Essentially what we’re looking for is a random string with
+alphanumeric characters. Most everything looks numeric, except for the &lt;code&gt;rh&lt;/code&gt; string:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;n:2619525011,p_6:A1H5N2R2HL9LG2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In fact. Let’s test that we can get the seller info page. Remember earlier the page
+for the “AntiAgingBed” seller?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/sp/?seller=A1W4F5UCY68C8L&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;See that seller code? Let’s replace &lt;code&gt;A1W4F5UCY68C8L&lt;/code&gt; with &lt;code&gt;A1H5N2R2HL9LG2&lt;/code&gt;, and we should
+have seller info for “Goodman’s:”&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/sp/?seller=A1H5N2R2HL9LG2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-goodmans-seller-page.png&quot; alt=&quot;Goodman&amp;#39;s Seller Page&quot;&gt;&lt;/p&gt;
+&lt;p&gt;And Bingo was his name–oh!&lt;/p&gt;
+&lt;p&gt;Note that there’s no seller address for Goodman’s. I noticed that for a lot of the seller
+info pages, so I just skipped them in data collection.&lt;/p&gt;
+&lt;h2 id=&quot;list-of-departments&quot;&gt;List of Departments&lt;/h2&gt;
+&lt;p&gt;So, we’re ready to start scraping, right?&lt;/p&gt;
+&lt;p&gt;Well, not so fast. Based on the information provided we just have the information for the
+“appliances department.” Amazon is not just an appliance store (and based on your experience
+you may say it’s &lt;em&gt;not even&lt;/em&gt; an appliance store).&lt;/p&gt;
+&lt;p&gt;Remember that “Best Appliance Sellers” page? Let’s examine that URL:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;https://www.amazon.com/gp/search/other?page=2&amp;amp;pickerToList=enc-merchantbin&amp;amp;rh=n%3A2619525011&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here it is parsed with Insomnia:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/insomnia-appliance-top-sellers-url.png&quot; alt=&quot;Goodman&amp;#39;s Seller Page&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Based on inference (and experimentation) we can determine what each of these query paramaters
+does:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;page &lt;emph&gt;(optional)&lt;/emph&gt;&lt;/dt&gt;
+&lt;dd&gt;
+    I'd imagine if the result was paginated, this would be on one of the pages. However,
+    if you change it to `1` or `7` the results remain the same.
+&lt;dd&gt;
+&lt;dt&gt;pickerToList &lt;strong&gt;(required)&lt;/strong&gt;&lt;/dd&gt;
+&lt;dd&gt;
+I have a feeling this is needed. To determine if is, I remove it from the URL and try the
+same page. A &quot;Sorry&quot; page pops up with a cute little dog, showing me the department page
+isn't found.
+&lt;/dd&gt;
+&lt;dt&gt;rh &lt;strong&gt;(required)&lt;/strong&gt;&lt;/dd&gt;
+&lt;dd&gt;
+OK, this seems interesting. Obviously the only other query parameter we have left that
+could relate to the department code is this. I make a note of it for later.
+&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;We just need to find a page that lists all Amazon departments. In fact, there is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/gp/site-directory&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-all-departments.png&quot; alt=&quot;All Amazon Departments&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now, remember the &lt;code&gt;rh&lt;/code&gt; query parameter for the “Appliances” department? It was &lt;code&gt;3A2619525011&lt;/code&gt;. Let’s find the “Appliances” department, parse the URL, and find a match.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We’re doing this because this page is the entry point of the spider.&lt;/strong&gt; We’ll be able to
+go through each department and get the sellers associated with the department.&lt;/p&gt;
+&lt;p&gt;Let’s do a simple search to find the “Appliances” link. It’s highlighted below.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-all-departments-appliances-selected.png&quot; alt=&quot;Amazon Appliances Highlighted&quot;&gt;.&lt;/p&gt;
+&lt;p&gt;The URL is here:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/s?_encoding=UTF8&amp;amp;bbn=256643011&amp;amp;ref_=sd_allcat_nav_desktop_sa_intl_appliances&amp;amp;rh=i%3Aspecialty-aps,n%3A256643011,n%3A!468240,n%3A13397451&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is what it looks like in Insomnia:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/insomnia-department-page-appliances.png&quot; alt=&quot;Insomnia&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you navigate to the URL, it won’t go to the “Top Sellers” like before. The URL for that is
+here:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/gp/search/other/ref=sr_in_-2_1?rh=i%3Aappliances%2Cn%3A2619525011&amp;amp;page=2&amp;amp;pickerToList=enc-merchantbin&amp;amp;ie=UTF8&amp;amp;qid=1607290974&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/insomnia-appliance-top-sellers-url.png&quot; alt=&quot;Insomnia&quot;&gt;&lt;/p&gt;
+&lt;p&gt;See any similarities?&lt;/p&gt;
+&lt;p&gt;Remember, are trying to construct a URL similar to the &lt;em&gt;2nd URL&lt;/em&gt; from information from
+the &lt;em&gt;1st URL&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;What I see is the &lt;code&gt;rh&lt;/code&gt; string from the 1st URL:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;i:specialty-aps,n:256643011,n:!468240,n:13397451&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Specifically, the &lt;code&gt;bbn&lt;/code&gt; value (&lt;code&gt;256643011&lt;/code&gt;), which matches the &lt;code&gt;n&lt;/code&gt; value from the &lt;code&gt;rh&lt;/code&gt;
+query param in the 2nd URL (&lt;code&gt;256643011&lt;/code&gt;).&lt;/p&gt;
+&lt;h1 id=&quot;initial-program-flow&quot;&gt;Initial Program Flow&lt;/h1&gt;
+&lt;h2 id=&quot;scraping-the-all-departments-page&quot;&gt;Scraping the “All departments” page&lt;/h2&gt;
+&lt;p&gt;So, we have a plan for scraping the department page:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Find all department links.&lt;/li&gt;
+&lt;li&gt;For each department link, extract the &lt;code&gt;n&lt;/code&gt; value from the &lt;code&gt;rh&lt;/code&gt; query parameter.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;From there we can scrape the “top sellers” page for each department.&lt;/p&gt;
+&lt;h2 id=&quot;scraping-the-top-sellers-of-each-department-&quot;&gt;Scraping the “Top Sellers” of each department.&lt;/h2&gt;
+&lt;p&gt;Using the URL from the previous step (using the &lt;code&gt;n&lt;/code&gt; value), fetch the HTML from that page.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Find all seller links on the page.&lt;/li&gt;
+&lt;li&gt;Get the name (stripping all leading and trailing spaces), and as an added bouns,
+the product count in the parentheses.&lt;/li&gt;
+&lt;li&gt;Get the URL for the seller.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;scraping-the-seller-information-page-&quot;&gt;Scraping the seller information page.&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Construct a URL for the seller page based on the URL extracted above (specifically the
+&lt;code&gt;n&lt;/code&gt; value of the &lt;code&gt;rh&lt;/code&gt; query param). Translate it to the &lt;code&gt;rh&lt;/code&gt; query paramter for
+the seller info page.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;amazon-didn-t-like-it&quot;&gt;Amazon Didn’t Like It&lt;/h1&gt;
+&lt;p&gt;Amazon didn’t like to be scraped and I found it blocked me quite a bit. I’ll describe later
+how I managed to fake out Amazon and get some data.&lt;/p&gt;
+&lt;p&gt;For now Let me describe how I planned to store the data.&lt;/p&gt;
+&lt;h1 id=&quot;storing-the-data&quot;&gt;Storing the Data&lt;/h1&gt;
+&lt;p&gt;To save time we’ll save as much in a database as possible.&lt;/p&gt;
+&lt;p&gt;I chose MongoDB for storage, since a lot of this info looks heirarchical and I didn’t
+feel like spending a half hour to drum up a schema. If this was a longer project
+with more needs I would have used PostgreSQL.&lt;/p&gt;
+&lt;h2 id=&quot;departments&quot;&gt;Departments&lt;/h2&gt;
+&lt;p&gt;I wanted to first find all departments on the page and record them. At this point I didn’t
+care if the seller info page exists…I’ll take care of that later.&lt;/p&gt;
+&lt;p&gt;So our first spider would only be fetching one page: &lt;a href=&quot;https://www.amazon.com/gp/site-directory&quot;&gt;https://www.amazon.com/gp/site-directory&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Here is the redacted code for the &lt;code&gt;all_department&lt;/code&gt; spider:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;AzStoreDirectorySpider&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(scrapy.Spider)&lt;/span&gt;:&lt;/span&gt;
+    name = &lt;span class=&quot;string&quot;&gt;&quot;amazon_store_directory&quot;&lt;/span&gt;
+    allowed_domains = [&lt;span class=&quot;string&quot;&gt;&quot;amazon.com&quot;&lt;/span&gt;]
+    start_urls = [
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/gp/site-directory&quot;&lt;/span&gt;,
+    ]
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;department_rh&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, name: T.AnyStr, node: T.Union[int, T.AnyStr])&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;f&quot;i:&lt;span class=&quot;subst&quot;&gt;{name}&lt;/span&gt;,n:&lt;span class=&quot;subst&quot;&gt;{node}&lt;/span&gt;&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_department_info&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, url: T.AnyStr)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot;
+        :param url: URL for department
+
+        :return: (name, node)
+        &quot;&quot;&quot;&lt;/span&gt;
+        parts = urlparse(url)
+        query = parse_qs(parts.query)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;rh&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; query:
+            log.warn(&lt;span class=&quot;string&quot;&gt;&quot;`rh` key not in %s&quot;&lt;/span&gt;, list(url))
+        rh = query[&lt;span class=&quot;string&quot;&gt;&quot;rh&quot;&lt;/span&gt;][&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;]
+        res = RE_NAME_NODE(rh)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; res:
+            log.warning(&lt;span class=&quot;string&quot;&gt;&quot;name and node not found for rh='%s', url='%s&quot;&lt;/span&gt;, rh, url)
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        name = res[&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;]
+        node = res[&lt;span class=&quot;string&quot;&gt;&quot;node&quot;&lt;/span&gt;]
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (res[&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;], node)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;department_query&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(
+        self, name: T.AnyStr, node: T.Union[int, T.AnyStr], indexField=None
+    )&lt;/span&gt;:&lt;/span&gt;
+        val = {
+            &lt;span class=&quot;string&quot;&gt;&quot;rh&quot;&lt;/span&gt;: self.department_rh(name, node),
+            &lt;span class=&quot;string&quot;&gt;&quot;pickerToList&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;enc-merchantbin&quot;&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;&quot;ie&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;UTF8&quot;&lt;/span&gt;,
+        }
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; indexField:
+            val.update(
+                {
+                    &lt;span class=&quot;string&quot;&gt;&quot;indexField&quot;&lt;/span&gt;: indexField,
+                }
+            )
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; val
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;queue_department_page&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(
+        self, name: T.AnyStr, node: T.Union[int, T.AnyStr], indexField=None
+    )&lt;/span&gt;:&lt;/span&gt;
+        query = urlencode(self.department_query(name, node))
+        parts = (
+            &lt;span class=&quot;string&quot;&gt;&quot;https&quot;&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;&quot;www.amazon.com&quot;&lt;/span&gt;,
+            DEPARTMENT_PATH,
+            query,
+            &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;,
+        )
+        url = urlunsplit(parts)
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;+ queue '%s' -- '%s'&quot;&lt;/span&gt;, name, url)
+        &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; scrapy.Request(url)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;process_department_link&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(
+        self,
+        response: scrapy.http.Response,
+        dep_link: T.Any,
+    )&lt;/span&gt;:&lt;/span&gt;
+        a = dep_link
+        name = a.text
+        href = a[&lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt;]
+        url = urlparse(href)
+        query = parse_qs(url.query)
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;Processing %s&quot;&lt;/span&gt;, name)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;node&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; query:
+            log.info(&lt;span class=&quot;string&quot;&gt;&quot;`node` not given in query: %s&quot;&lt;/span&gt;, list(query.keys()))
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; self.queue_department_page(name, query[&lt;span class=&quot;string&quot;&gt;&quot;node&quot;&lt;/span&gt;][&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;])
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.mg_department.find_one(
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: name,
+            }
+        ):
+            log.info(&lt;span class=&quot;string&quot;&gt;&quot;# %s already added&quot;&lt;/span&gt;, name)
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        doc = {
+            &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: name,
+            &lt;span class=&quot;string&quot;&gt;&quot;path&quot;&lt;/span&gt;: url.path,
+            &lt;span class=&quot;string&quot;&gt;&quot;query&quot;&lt;/span&gt;: query,
+        }
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;+ inserting %s&quot;&lt;/span&gt;, doc)
+        self.mg_department.insert_one(doc)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, response: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        soup = BeautifulSoup(response.text, &lt;span class=&quot;string&quot;&gt;&quot;lxml&quot;&lt;/span&gt;)
+        dept_links = soup.find_all(&lt;span class=&quot;string&quot;&gt;&quot;a&quot;&lt;/span&gt;, class_=&lt;span class=&quot;string&quot;&gt;&quot;fsdDeptLink&quot;&lt;/span&gt;)
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;Found %d department links&quot;&lt;/span&gt;, len(dept_links))
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; a &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; dept_links:
+            &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; self.process_department_link(response, a)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I used BeautifulSoup for parsing since this was my first attempt at a spider. Scrapy has
+its own XML parsing mechanism.&lt;/p&gt;
+&lt;p&gt;I tried to print out lots of warnings that indicated if something went wrong. I’m not
+expecting Amazon pages to be consistent (as you saw with the seller above) but it gives
+me an idea if somethings is REALLY wrong.&lt;/p&gt;
+&lt;p&gt;I mark a link as &lt;code&gt;invalid&lt;/code&gt; if I’m unable to come up with a seller page, as is what
+happens from time to time. Obviously, the seller address will not be collected.&lt;/p&gt;
+&lt;p&gt;What’s important to note is that I’m both storing the department in the MongoDB collection
+(in &lt;code&gt;process_department_link&lt;/code&gt;) as well as constructing a department URL and passing it
+to Scrapy (in &lt;code&gt;queue_department_page&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;When storing the department document I use the following schema:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+    &lt;span class=&quot;attr&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &amp;lt;Object ID&amp;gt;,
+    &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt; : &amp;lt;String of the Department ID&amp;gt;,
+    &lt;span class=&quot;attr&quot;&gt;&quot;path&quot;&lt;/span&gt; : &amp;lt;URL Path portion&amp;gt;,
+    &lt;span class=&quot;attr&quot;&gt;&quot;query&quot;&lt;/span&gt; : &amp;lt;SubDocument of query params&amp;gt;,
+    &lt;span class=&quot;attr&quot;&gt;&quot;invalid&quot;&lt;/span&gt; : &amp;lt;boolean - Does the department page exist?&amp;gt;,
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For example, here is the stored document of “Appliances.”&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+  &lt;span class=&quot;attr&quot;&gt;&quot;_id&quot;&lt;/span&gt;: ObjectId(&lt;span class=&quot;string&quot;&gt;&quot;5fc70f5e1244453a23c34067&quot;&lt;/span&gt;),
+  &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Appliances&quot;&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;path&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;/Appliances/b&quot;&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;query&quot;&lt;/span&gt;: {
+    &lt;span class=&quot;attr&quot;&gt;&quot;ie&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;UTF8&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;node&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;2619525011&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;ref_&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;sd_allcat_ha&quot;&lt;/span&gt;]
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;sellers&quot;&gt;Sellers&lt;/h2&gt;
+&lt;p&gt;This step is pretty intensive. My initial draft was single-threaded, and after parsing it
+stored the result. I found this was too slow, so I decided to spawn off MongoDB storage on
+a different thread (hence the executor).&lt;/p&gt;
+&lt;p&gt;Ready? It’s a long one. I try not to include long-winded code samples, but couldn’t find
+ways of making this shorter…&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;AmazonTopSellersSpider&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(scrapy.Spider)&lt;/span&gt;:&lt;/span&gt;
+    name = &lt;span class=&quot;string&quot;&gt;&quot;amazon_top_sellers&quot;&lt;/span&gt;
+    allowed_domains = [&lt;span class=&quot;string&quot;&gt;&quot;amazon.com&quot;&lt;/span&gt;]
+    switch_user_agent_range = (&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, *args, **kwargs)&lt;/span&gt;:&lt;/span&gt;
+        super(AmazonSpider, self).__init__(*args, **kwargs)
+
+        self.mg_client = MongoClient()
+        self.mg_db = self.mg_client.amazon_scraping
+
+        self.mg_department = self.mg_db.department
+        self.mg_top_sellers = mg_db.top_sellers
+
+        &lt;span class=&quot;comment&quot;&gt;# URLs of department sellers&lt;/span&gt;
+        self.department_urls = self.get_department_urls()
+        _u = self.department_urls
+
+        &lt;span class=&quot;comment&quot;&gt;# Shuffle this.&lt;/span&gt;
+        random.shuffle(self.department_urls)
+
+        self.start_urls = self.department_urls
+
+        self.future_to_add_sellers = {
+            &lt;span class=&quot;string&quot;&gt;&quot;task_add_sellers&quot;&lt;/span&gt;: {},
+            &lt;span class=&quot;string&quot;&gt;&quot;task_update_product_count&quot;&lt;/span&gt;: {},
+        }
+
+        self.db_executor = concurrent.futures.ThreadPoolExecutor(max_workers=&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; future &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; concurrent.futures.as_completed(self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_add_sellers&quot;&lt;/span&gt;]):
+            items_added = self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_add_sellers&quot;&lt;/span&gt;][future]
+            log.debug(&lt;span class=&quot;string&quot;&gt;&quot;FUTURE: %d items added to %s&quot;&lt;/span&gt;, len(items_added), future)
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; future &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; concurrent.futures.as_completed(self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_update_product_count&quot;&lt;/span&gt;]):
+            prodCountUpdated = self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_update_product_count&quot;&lt;/span&gt;][
+                future
+            ]
+            log.debug(
+                &lt;span class=&quot;string&quot;&gt;&quot;FUTURE: '%s' product count updated&quot;&lt;/span&gt;,
+                prodCountUpdated.get(&lt;span class=&quot;string&quot;&gt;&quot;productCount&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;&amp;lt;?&amp;gt;&quot;&lt;/span&gt;),
+            )
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_department_urls&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        urls = []
+        selector = {
+            &lt;span class=&quot;string&quot;&gt;&quot;invalid&quot;&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;&quot;$exists&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+            },
+        }
+        departments = self.mg_department.find(selector)
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; department &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; departments:
+            urls.extend(get_department_urls_from_doc(department))
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; urls
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;response_in_salt&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; resp.url &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; self.salt_urls &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; resp.url &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; self._mark_salt
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;find_seller_department&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, node_id)&lt;/span&gt; -&amp;gt; dict:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; isinstance(node_id, (list, tuple)):
+            node_id = [node_id]
+        query = {&lt;span class=&quot;string&quot;&gt;&quot;query.node&quot;&lt;/span&gt;: node_id}
+        dep = self.mg_department.find_one(query)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; dep
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add_seller&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(
+        self, seller_url: str, seller_name: str, indexField: str = None, _logger=log
+    )&lt;/span&gt;:&lt;/span&gt;
+        url = urlparse(seller_url)
+        qs = parse_qs(url.query)
+        bnn = qs.get(&lt;span class=&quot;string&quot;&gt;&quot;bbn&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;)
+        dep = &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        dep_id = &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; indexField &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;:
+            indexField = &lt;span class=&quot;string&quot;&gt;&quot;__top__&quot;&lt;/span&gt;
+        found = self.mg_top_sellers.count(
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: seller_name,
+                &lt;span class=&quot;string&quot;&gt;&quot;indexField&quot;&lt;/span&gt;: indexField,
+            }
+        )
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; found:
+            &lt;span class=&quot;comment&quot;&gt;# _logger.info(&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;#     &quot;SKIP - Seller %s (index='%s') already exists: %s&quot;,&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;#     seller_name,&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;#     indexField,&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;#     found,&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# )&lt;/span&gt;
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; bnn &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;:
+            _logger.warn(
+                &lt;span class=&quot;string&quot;&gt;&quot;Seller '%s': bbn param not given; leaving blank; url='%s'&quot;&lt;/span&gt;,
+                seller_name,
+                seller_url,
+            )
+            &lt;span class=&quot;keyword&quot;&gt;pass&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;:
+            dep = self.find_seller_department(bnn)
+            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; dep:
+                _logger.warning(
+                    &lt;span class=&quot;string&quot;&gt;&quot;Seller '%s': Could not get department for node '%s' (url=%s)&quot;&lt;/span&gt;,
+                    seller_name,
+                    bnn,
+                    seller_url,
+                )
+            &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;:
+                dep_id = dep.get(&lt;span class=&quot;string&quot;&gt;&quot;_id&quot;&lt;/span&gt;)
+        doc = {
+            &lt;span class=&quot;string&quot;&gt;&quot;department_id&quot;&lt;/span&gt;: dep_id,
+            &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: seller_name,
+            &lt;span class=&quot;string&quot;&gt;&quot;qs&quot;&lt;/span&gt;: qs,
+            &lt;span class=&quot;string&quot;&gt;&quot;path&quot;&lt;/span&gt;: url.path,
+            &lt;span class=&quot;string&quot;&gt;&quot;indexField&quot;&lt;/span&gt;: indexField,
+        }
+        _logger.debug(&lt;span class=&quot;string&quot;&gt;&quot;Inserting document %s&quot;&lt;/span&gt;, doc)
+        inserted = self.mg_top_sellers.insert_one(doc)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; inserted
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, href: str)&lt;/span&gt;:&lt;/span&gt;
+        url = urlparse(href)
+        scheme = url.scheme &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;https&quot;&lt;/span&gt;
+        netloc = url.netloc &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;www.amazon.com&quot;&lt;/span&gt;
+        path = url.path
+        params = url.params
+        query = url.query
+        fragment = url.fragment
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; urlunparse((scheme, netloc, path, params, query, fragment))
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add_sellers&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: scrapy.http.Response, _logger=log)&lt;/span&gt;:&lt;/span&gt;
+        url = urlparse(resp.url)
+        q = parse_qs(url.query)
+        indexField = q.get(&lt;span class=&quot;string&quot;&gt;&quot;indexField&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; isinstance(indexField, list):
+            indexField = indexField[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;]
+        added = []
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; link &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; resp.css(&lt;span class=&quot;string&quot;&gt;&quot;.s-see-all-indexbar-column a&quot;&lt;/span&gt;):
+            url = self.normalize(link.attrib[&lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt;])
+            name = link.xpath(&lt;span class=&quot;string&quot;&gt;&quot;span/text()&quot;&lt;/span&gt;)[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;].get()
+            name = name.strip()
+            &lt;span class=&quot;comment&quot;&gt;# import ipdb; ipdb.set_trace()&lt;/span&gt;
+            doc = self.add_seller(url, name, indexField=indexField, _logger=_logger)
+            added.append(doc)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; added
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;update_product_count&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; link &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; resp.css(&lt;span class=&quot;string&quot;&gt;&quot;.s-see-all-indexbar-column a&quot;&lt;/span&gt;):
+            url = self.normalize(link.attrib[&lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt;])
+            &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;:
+                name = link.xpath(&lt;span class=&quot;string&quot;&gt;&quot;span/text()&quot;&lt;/span&gt;)[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;].get()
+                name = name.strip()
+                count = link.xpath(&lt;span class=&quot;string&quot;&gt;&quot;span/text()&quot;&lt;/span&gt;).getall()[&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;]
+                count = count.strip().strip(&lt;span class=&quot;string&quot;&gt;&quot;(&quot;&lt;/span&gt;).rstrip(&lt;span class=&quot;string&quot;&gt;&quot;)&quot;&lt;/span&gt;).replace(&lt;span class=&quot;string&quot;&gt;&quot;,&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;&quot;&lt;/span&gt;)
+                count = int(count)
+                self.add_seller(url, name)
+                self.mg_top_sellers.find_one_and_update(
+                    {
+                        &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: name,
+                    },
+                    {
+                        &lt;span class=&quot;string&quot;&gt;&quot;$set&quot;&lt;/span&gt;: {
+                            &lt;span class=&quot;string&quot;&gt;&quot;productCount&quot;&lt;/span&gt;: count,
+                        }
+                    },
+                )
+                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; self.mg_top_sellers.find_one({&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: name})
+            &lt;span class=&quot;keyword&quot;&gt;except&lt;/span&gt; Exception &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; exc:
+                log.warn(exc)
+                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, response: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        parts = urlparse(response.url)
+        qs = parse_qs(parts.query)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;gp/search/other&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; parts.path:
+            self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_add_sellers&quot;&lt;/span&gt;].update(
+                {
+                    self.db_executor.submit(self.add_sellers, response): response.url,
+                }
+            )
+            self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_update_product_count&quot;&lt;/span&gt;].update(
+                {
+                    self.db_executor.submit(
+                        self.update_product_count, response
+                    ): response.url,
+                }
+            )
+            &lt;span class=&quot;comment&quot;&gt;# this was the original code, without the executor.&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# self.add_sellers(response, _logger=log)&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# self.update_product_count(response)&lt;/span&gt;
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;other url: %s&quot;&lt;/span&gt;, response.url)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I added the &lt;code&gt;update_product_count&lt;/code&gt; as a separate method because I had previously run this
+without taking &lt;code&gt;product_count&lt;/code&gt; into–er–account. However, this works fine even if the
+seller isn’t yet stored.&lt;/p&gt;
+&lt;p&gt;This is just the information scraped from the “Top Sellers” page for the department. The
+data store in Mongo has the following schema:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+    &quot;_id&quot; : &amp;lt;standard object ID&amp;gt;,
+    &quot;department_id&quot; : &amp;lt;ID for the department&amp;gt;,
+    &quot;name&quot; : &amp;lt;name of the seller&amp;gt;,
+    &quot;qs&quot; : &amp;lt;subdocument of query parameters in the URL&amp;gt;,
+    &quot;path&quot; : &amp;lt;Path component of the URL&amp;gt;,
+    &quot;productCount&quot; : &amp;lt;The number in the parentheses&amp;gt;,
+    &quot;indexField&quot; : &amp;lt;The Index Field, if given; defaults to &quot;__top__&quot;&amp;gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For example, here’s the stored data for the “AntiAgingBed” seller:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+  &lt;span class=&quot;attr&quot;&gt;&quot;_id&quot;&lt;/span&gt;: ObjectId(&lt;span class=&quot;string&quot;&gt;&quot;5fc7d467b0957b4fa057f9fa&quot;&lt;/span&gt;),
+  &lt;span class=&quot;attr&quot;&gt;&quot;department_id&quot;&lt;/span&gt;: ObjectId(&lt;span class=&quot;string&quot;&gt;&quot;5fc70f5e1244453a23c34064&quot;&lt;/span&gt;),
+  &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;AntiAgingBed&quot;&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;qs&quot;&lt;/span&gt;: {
+    &lt;span class=&quot;attr&quot;&gt;&quot;fst&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;as:off&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;rh&quot;&lt;/span&gt;: [
+      &lt;span class=&quot;string&quot;&gt;&quot;n:1055398,n:!1063498,n:1063306,n:1063308,n:3732961,p_6:A1W4F5UCY68C8L&quot;&lt;/span&gt;
+    ],
+    &lt;span class=&quot;attr&quot;&gt;&quot;bbn&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;3732961&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;ie&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;UTF8&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;qid&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;1606930036&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;rnid&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;331544011&quot;&lt;/span&gt;]
+  },
+  &lt;span class=&quot;attr&quot;&gt;&quot;path&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;/s/ref=sr_in_-2_p_6_3/146-7467592-8962054&quot;&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;productCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;14&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;indexField&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;__top__&quot;&lt;/span&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I included the “indexField” for when I went back later to collect the sellers that were
+not “top sellers.” I might cover that in another article.&lt;/p&gt;
+&lt;h2 id=&quot;seller-information&quot;&gt;Seller Information&lt;/h2&gt;
+&lt;p&gt;The final stage on the scraping part is to scrape the address of the seller. I use the
+information from the previous scraper to construct a URL for getting the seller info.&lt;/p&gt;
+&lt;p&gt;Extracting the seller address is relatively straightfoward. In fact, I just need to supply
+the XPath to the element:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;extract_seller_address&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        addrs = [
+            i.get()
+            &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; resp.xpath(
+                &lt;span class=&quot;string&quot;&gt;&quot;/html/body/div[1]/div[1]/div[2]/div/ul/li[2]/span/ul/li/*/text()&quot;&lt;/span&gt;
+            )
+        ]
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; addrs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For the example of “AntiAgingBed” this updates the document like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+  &lt;span class=&quot;attr&quot;&gt;&quot;address&quot;&lt;/span&gt;: [
+    &lt;span class=&quot;string&quot;&gt;&quot;1844 West Fairbanks Ave&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;523&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;Winter Park&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;FL&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;32789&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;US&quot;&lt;/span&gt;
+  ]
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Pretty handy!&lt;/p&gt;
+&lt;h2 id=&quot;fetching-geographic-information-via-arcgis&quot;&gt;Fetching Geographic Information, via ArcGIS&lt;/h2&gt;
+&lt;p&gt;This is all well and good, but I wanted to get the country of origin.&lt;/p&gt;
+&lt;p&gt;“But you already have the country of origin!” You might say, “Just use that!”&lt;/p&gt;
+&lt;p&gt;Well, I wouldn’t recommend it. That would have to be a system all on its own.
+Because what if the seller left off the “US” part of the address? You and I can
+easily see it’s a U.S. address, but I won’t be able to look for it.&lt;/p&gt;
+&lt;p&gt;“But that’s because of the ‘FL.’ Just look for states.”&lt;/p&gt;
+&lt;p&gt;In other words, we’re going down a machine learning rabit hole I don’t want to go
+down.&lt;/p&gt;
+&lt;p&gt;In addition, I thought it would be helpful to also collect the GPS coordinates of the address. I’m not
+going to guestimate all those, manually or automatically.&lt;/p&gt;
+&lt;p&gt;So what I need to do is called &lt;strong&gt;Geocoding&lt;/strong&gt;, or getting geographic information based
+off a query string.&lt;/p&gt;
+&lt;p&gt;You do it all the time with Google Maps (or if we’re privacy-conscious, OpenStreetMaps).
+If you type in “Grandma’s House,” in the directions, the map will find out where
+“Grandma’s House” is based on a combination of AI and magic (mostly magic). And we
+all know where Grandma’s house is! (5 miles past the troll’s cave)&lt;/p&gt;
+&lt;p&gt;So I’ll let AI do all the work at this point. I first got an API key at ArcGIS, and
+created one final script to fetch more precise seller coordinates.&lt;/p&gt;
+&lt;p&gt;Here’s the redacted code.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SellerFinder&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(object)&lt;/span&gt;:&lt;/span&gt;
+
+    arcgis_auth_url = &lt;span class=&quot;string&quot;&gt;&quot;https://www.arcgis.com/sharing/rest/oauth2/token&quot;&lt;/span&gt;
+    arcgis_search_url = &lt;span class=&quot;string&quot;&gt;&quot;https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;comment&quot;&gt;# Before 2 minutes is up, fetch a new auth token.&lt;/span&gt;
+    arcgis_buffer = timedelta(minutes=&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;)
+
+    arcgis_auth_headers = {
+        &lt;span class=&quot;string&quot;&gt;&quot;content-type&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;application/x-www-form-urlencoded&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;accept&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;application/json&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;cache-control&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;no-cache&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;postman-token&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;11df29d1-17d3-c58c-565f-2ca4092ddf5f&quot;&lt;/span&gt;,
+    }
+
+    gis_for_storage = &lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;
+
+    query_out_fields = &lt;span class=&quot;string&quot;&gt;&quot;Country,X,Y,Match_addr,Addr_type,Score,URL&quot;&lt;/span&gt;
+
+    arcgis_token_expiration = &lt;span class=&quot;number&quot;&gt;20160&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;# 2 weeks&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; ARCGIS_CLIENT_ID:
+            &lt;span class=&quot;keyword&quot;&gt;raise&lt;/span&gt; RuntimeError(&lt;span class=&quot;string&quot;&gt;&quot;ARCGIS_CLIENT_ID not set&quot;&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; ARCGIS_CLIENT_SECRET:
+            &lt;span class=&quot;keyword&quot;&gt;raise&lt;/span&gt; RuntimeError(&lt;span class=&quot;string&quot;&gt;&quot;ARCGIS_CLIENT_SECRET not set&quot;&lt;/span&gt;)
+
+        self.mg_client = MongoClient()
+        self.mg_db = self.mg_client.amazon_scraping
+
+        self.mg_department = self.mg_db.department
+        self.mg_top_sellers = self.mg_db.top_sellers
+
+        self.arcgis_token = &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        self.arcgis_token_expiration = &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;sellers_with_addresses&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot; Returns all the sellers that do have an address string but
+        do not have a &quot;geo&quot; document.
+        &quot;&quot;&quot;&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; self.mg_top_sellers.find(
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;address&quot;&lt;/span&gt;: {
+                    &lt;span class=&quot;string&quot;&gt;&quot;$exists&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;,
+                },
+                &lt;span class=&quot;string&quot;&gt;&quot;geo&quot;&lt;/span&gt;: {
+                    &lt;span class=&quot;string&quot;&gt;&quot;$exists&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+                },
+            }
+        )
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;auth_arcgis&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot; Housekeeping: basically updates the arcgis token.
+        This will run on the first iteration, and execute if the token will expire soon.
+        &quot;&quot;&quot;&lt;/span&gt;
+        log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Requesting new arcgis token&quot;&lt;/span&gt;)
+        resp = requests.post(
+            self.arcgis_auth_url,
+            data=self.auth_argcis_payload,
+            headers=self.arcgis_auth_headers,
+        )
+        data = resp.json()
+        self.arcgis_token = data[&lt;span class=&quot;string&quot;&gt;&quot;access_token&quot;&lt;/span&gt;]
+        self.arcgis_token_expiration = datetime.now() + timedelta(
+            minutes=data[&lt;span class=&quot;string&quot;&gt;&quot;expires_in&quot;&lt;/span&gt;]
+        )
+        log.debug(&lt;span class=&quot;string&quot;&gt;&quot;New expiration token will expire %s&quot;&lt;/span&gt;, self.arcgis_token_expiration)
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;auth_argcis_payload&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;f&quot;client_id=&lt;span class=&quot;subst&quot;&gt;{ARCGIS_CLIENT_ID}&lt;/span&gt;&amp;amp;client_secret=&lt;span class=&quot;subst&quot;&gt;{ARCGIS_CLIENT_SECRET}&lt;/span&gt;&amp;amp;grant_type=client_credentials&amp;amp;expiration=&lt;span class=&quot;subst&quot;&gt;{self.arcgis_token_expiration}&lt;/span&gt;&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_arcgis_search_params&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, query: T.AnyStr)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; {
+            &lt;span class=&quot;string&quot;&gt;&quot;f&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;json&quot;&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;&quot;singleLine&quot;&lt;/span&gt;: query,
+            &lt;span class=&quot;string&quot;&gt;&quot;token&quot;&lt;/span&gt;: self.arcgis_token,
+            &lt;span class=&quot;string&quot;&gt;&quot;outFields&quot;&lt;/span&gt;: self.query_out_fields,
+            &lt;span class=&quot;comment&quot;&gt;## IMPORTANT!!! -- `gis_for_storage` must be set to `True`&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# https://developers.arcgis.com/rest/geocode/api-reference/geocoding-free-vs-paid.htm&lt;/span&gt;
+            &lt;span class=&quot;string&quot;&gt;&quot;forStorage&quot;&lt;/span&gt;: self.gis_for_storage,
+        }
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;argcis_search&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, query: T.AnyStr)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot; Performs the arcgis search.
+
+        :param query: the query given in the mongodb document.
+
+        :return: Json data of the response.
+        &quot;&quot;&quot;&lt;/span&gt;
+        payload = self.get_arcgis_search_params(query)
+        resp = requests.get(self.arcgis_search_url, params=payload)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; resp.status_code != &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;:
+            log.error(resp.request.url)
+            log.error(&lt;span class=&quot;string&quot;&gt;&quot;GET %s : %s&quot;&lt;/span&gt;, resp.status_code, resp.text)
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; resp.json()
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;seller_location&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, seller: dict)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot; This updates the seller information.
+
+        :param seller: seller information fetched from mongo.
+
+        First it fetches the seller information from mongo. Then it performs the
+        arcgis query (based on the entire &quot;address&quot; string if given.)
+        &quot;&quot;&quot;&lt;/span&gt;
+        search = &lt;span class=&quot;string&quot;&gt;&quot; &quot;&lt;/span&gt;.join(seller[&lt;span class=&quot;string&quot;&gt;&quot;address&quot;&lt;/span&gt;])
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;Looking for '%s'&quot;&lt;/span&gt;, search)
+        result = self.argcis_search(search)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; result &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;:
+            log.warning(&lt;span class=&quot;string&quot;&gt;&quot;Could not find location for %s&quot;&lt;/span&gt;, seller[&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;])
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Setting geo for '%s'&quot;&lt;/span&gt;, seller[&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;])
+        log.debug(pprint.pformat(result))
+        self.mg_top_sellers.find_one_and_update(
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;_id&quot;&lt;/span&gt;: seller[&lt;span class=&quot;string&quot;&gt;&quot;_id&quot;&lt;/span&gt;],
+            },
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;$set&quot;&lt;/span&gt;: {
+                    &lt;span class=&quot;string&quot;&gt;&quot;geo&quot;&lt;/span&gt;: result,
+                }
+            },
+        )
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;arcgis_about_to_expire&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; datetime.now() + self.arcgis_buffer &amp;gt; self.arcgis_token_expiration
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;update_arcgis_auth&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.arcgis_token_expiration &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; self.arcgis_about_to_expire:
+            self.auth_arcgis()
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; seller &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; self.sellers_with_addresses:
+            self.update_arcgis_auth()
+            self.seller_location(seller)
+
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;:&lt;/span&gt;
+    finder = SellerFinder()
+    finder.run()
+
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__ == &lt;span class=&quot;string&quot;&gt;&quot;__main__&quot;&lt;/span&gt;:
+    logging.basicConfig(level=logging.DEBUG)
+    main()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s important to note that the &lt;code&gt;forStorage&lt;/code&gt; query argument &lt;em&gt;must&lt;/em&gt; be &lt;code&gt;True&lt;/code&gt; in order
+for the data to be stored legally.&lt;/p&gt;
+&lt;p&gt;As such, it’s a paid account. Only about 500 queries could be done on the free tier; since I was going to be doing more than that I decided to do about $20 more of queries.&lt;/p&gt;
+&lt;p&gt;Since I was not able to extract address information from “Goodman’s” I was not able to get
+geo information either. However, the code below shows an example of geo data retrieved from
+another seller.&lt;/p&gt;
+&lt;p&gt;In Part II I’ll show a sneaky way in MongoDB to make this (as well as other data) more statistics-friendly.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;&amp;quot;geo&amp;quot; : {
+    &amp;quot;spatialReference&amp;quot; : {
+        &amp;quot;wkid&amp;quot; : 4326,
+        &amp;quot;latestWkid&amp;quot; : 4326
+    },
+    &amp;quot;candidates&amp;quot; : [
+        {
+            &amp;quot;address&amp;quot; : &amp;quot;39158, Ridgeland, Mississippi&amp;quot;,
+            &amp;quot;location&amp;quot; : {
+                &amp;quot;x&amp;quot; : -90.123555,
+                &amp;quot;y&amp;quot; : 32.409505
+            },
+            &amp;quot;score&amp;quot; : 98,
+            &amp;quot;attributes&amp;quot; : {
+                &amp;quot;Score&amp;quot; : 98,
+                &amp;quot;Match_addr&amp;quot; : &amp;quot;39158, Ridgeland, Mississippi&amp;quot;,
+                &amp;quot;Addr_type&amp;quot; : &amp;quot;Postal&amp;quot;,
+                &amp;quot;URL&amp;quot; : &amp;quot;&amp;quot;,
+                &amp;quot;Country&amp;quot; : &amp;quot;USA&amp;quot;,
+                &amp;quot;X&amp;quot; : -90.123555,
+                &amp;quot;Y&amp;quot; : 32.409505
+            },
+            &amp;quot;extent&amp;quot; : {
+                &amp;quot;xmin&amp;quot; : -90.1285549999999,
+                &amp;quot;ymin&amp;quot; : 32.404505,
+                &amp;quot;xmax&amp;quot; : -90.118555,
+                &amp;quot;ymax&amp;quot; : 32.414505
+            }
+        }
+    ]
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This was the last step of where to find the sellers. We now have a guessed “Country”
+value that’s most probably right.&lt;/p&gt;
+&lt;h1 id=&quot;when-amazon-blocks-you&quot;&gt;When Amazon Blocks You&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon_captcha.png&quot; alt=&quot;amazon captcha&quot;&gt;&lt;/p&gt;
+&lt;p&gt;It may come as no surprise that Amazon does block you if you scrape. But the good news is
+that you can navigate the site, so Amazon doesn’t block &lt;em&gt;everyone&lt;/em&gt; , just people who act like a
+bot.&lt;/p&gt;
+&lt;p&gt;Most annoying is the fact that Scrapy doesn’t see when Amazon blocks you.&lt;/p&gt;
+&lt;p&gt;“Why’s that?” You ask.&lt;/p&gt;
+&lt;p&gt;Good question, astute reader.&lt;/p&gt;
+&lt;p&gt;Mainly because the captcha page returns a response code 200, so scrapy doesn’t see that
+as an error, and keeps right on truckin’.&lt;/p&gt;
+&lt;p&gt;To detect if a captcha is found, I created some DownloaderMiddleware to search for part
+of the captcha notice. If it’s found, then the middleware raises a 403 error, and notifies
+the spider that it needs to invoke the salt shaker (described below).&lt;/p&gt;
+&lt;p&gt;For now, just note how I threw a new status code.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;GenericAmazonMiddleware&lt;/span&gt;:&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;response_is_captcha&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: Response)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;comment&quot;&gt;# This string is in the response if a captcha is detected.&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; resp.status == &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; (&lt;span class=&quot;string&quot;&gt;&quot;api-services-support@amazon.com&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; resp.text)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;amazon_is_sorry&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: Response)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; resp.css(&lt;span class=&quot;string&quot;&gt;&quot;h2&quot;&lt;/span&gt;):
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;
+        h2 = resp.css(&lt;span class=&quot;string&quot;&gt;&quot;h2&quot;&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; any([&lt;span class=&quot;string&quot;&gt;&quot;we're sorry!&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; h.get().lower() &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; h &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; h2])
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;process_response&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, request: Request, response: Response, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.amazon_is_sorry(response):
+            &lt;span class=&quot;comment&quot;&gt;# This is raised if a page is not found, specifically a seller.&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# this still returns a response code of 200, so Scrapy doesn't detect it.&lt;/span&gt;
+            spider.logger.warning(&lt;span class=&quot;string&quot;&gt;'Amazon said &quot;We\'re sorry!&quot; for %s'&lt;/span&gt;, response.url)
+            on_amazon_sorry = getattr(spider, &lt;span class=&quot;string&quot;&gt;&quot;on_amazon_sorry&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;)
+            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; on_amazon_sorry:
+                on_amazon_sorry(self, request, response)
+            &lt;span class=&quot;keyword&quot;&gt;raise&lt;/span&gt; IgnoreRequest()
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.response_is_captcha(response):
+            &lt;span class=&quot;comment&quot;&gt;# Same with captchas. But in this instance we want to ask the throttle&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# to slow down (although, the damage has probably already been done).&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# To tell scrapy to slow down, we throw an error 403.&lt;/span&gt;
+            spider.logger.warning(
+                &lt;span class=&quot;string&quot;&gt;&quot;Encountered captcha; sleeping for %d seconds, adding '%s' to queue&quot;&lt;/span&gt;,
+                CAPTCHA_SLEEP_TIME,
+                request.url,
+            )
+            time.sleep(CAPTCHA_SLEEP_TIME)
+            &lt;span class=&quot;comment&quot;&gt;# I'm sure there's a better way to do this. This is just a quick and&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# dirty method.&lt;/span&gt;
+            setattr(spider, &lt;span class=&quot;string&quot;&gt;&quot;__invoke_shaker&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+            response.status = &lt;span class=&quot;number&quot;&gt;403&lt;/span&gt;
+            spider.start_urls.append(request.url)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; response&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So after a while I started to see &lt;code&gt;&amp;quot;Encountered captcha; ...&amp;quot;&lt;/code&gt; in the log output.&lt;/p&gt;
+&lt;p&gt;Here are a few strategies I found that were very effective in being able to scrape the site.&lt;/p&gt;
+&lt;h2 id=&quot;change-user-agent-&quot;&gt;Change User Agent.&lt;/h2&gt;
+&lt;p&gt;The user agent is a string sent with every query to the server. This is used for several
+purposes, most notably for web site maintainers to know how to render a page. But it’s also
+used by sites for tracking you (as well as spam detection).&lt;/p&gt;
+&lt;p&gt;Switching user agents took care of my blocks about 90% of the time. Scrapy makes this easy
+with the &lt;a href=&quot;https://pypi.org/project/scrapy-user-agents/&quot;&gt;scrapy-user-agents&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;All this does is change the user agent string every so often.&lt;/p&gt;
+&lt;h1 id=&quot;set-a-proper-autothrottle_start_delay-and-autothrottle_max_delay&quot;&gt;Set a proper &lt;code&gt;AUTOTHROTTLE_START_DELAY&lt;/code&gt; and &lt;code&gt;AUTOTHROTTLE_MAX_DELAY&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;I set mine as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;AUTOTHROTTLE_START_DELAY = &lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;
+AUTOTHROTTLE_MAX_DELAY = &lt;span class=&quot;number&quot;&gt;160&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It seemed to do just fine.&lt;/p&gt;
+&lt;h2 id=&quot;salt-shaker-scrape-random-links&quot;&gt;Salt Shaker - Scrape Random Links&lt;/h2&gt;
+&lt;p&gt;If your links are oddly specific and repetitive, it doesn’t take a security expert to
+detect you’re a bot.&lt;/p&gt;
+&lt;p&gt;Let’s add some salt to our navigation.&lt;/p&gt;
+&lt;p&gt;The term “salt” is used in cryptography to denote entropy in a cryptographic string (a fancy
+term to mean “a bunch of garbage to confuse someone decrypting the string who’s not supposed
+to”). I decided to use the same
+approach to scraping.&lt;/p&gt;
+&lt;p&gt;Essentially I provided initial breadcrumbs to Amazon to “prove” that I wasn’t a bot.
+This involves adding addition links to the &lt;code&gt;start_urls&lt;/code&gt; property in the spider, and
+crawling those as if I’m navigating to them.&lt;/p&gt;
+&lt;p&gt;I added salt URLs as the first 5-7 URLs preceding the actual scraping, and sprinkled in
+some more salt URLs into the actual &lt;code&gt;start_urls&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I incorporated this as a middleware, and listend for the &lt;code&gt;__invoke_shaker&lt;/code&gt; attribute set
+by the &lt;code&gt;GenericAmazonMiddleware&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SaltShakerMiddleware&lt;/span&gt;:&lt;/span&gt;
+
+    salt_urls: T.Iterable[T.AnyStr] = []
+    initial_salt_k = &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;
+
+    SALT_USAGE = &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;
+    SHAKE_PROBABILITY = &lt;span class=&quot;number&quot;&gt;25&lt;/span&gt;
+
+    &lt;span class=&quot;comment&quot;&gt;# Set this to whatever you want...better yet, set it up in&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# settings!&lt;/span&gt;
+    salt_urls = [
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/b?node=16225009011&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/gp/customer-preferences/select-currency/ref=aistrust3&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/business?_encoding=UTF8&amp;amp;ref_=footer_retail_b2b&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/gp/help/customer/display.html?ie=UTF8&amp;amp;nodeId=GDFU3JS5AL6SYHRD&amp;amp;ref_=footer_covid&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.jobs/&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://blog.aboutamazon.com/?utm_source=gateway&amp;amp;utm_medium=footer&quot;&lt;/span&gt;,
+    ]
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, *args, **kwargs)&lt;/span&gt;:&lt;/span&gt;
+        super(SaltShakerMiddleware, self).__init__(*args, **kwargs)
+        self._mark_salt = []
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;spider_opened&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+        spider.logger.info(&lt;span class=&quot;string&quot;&gt;&quot;Adding salt to spider '%s'&quot;&lt;/span&gt;, spider.name)
+        self.add_salt(spider)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, href: str)&lt;/span&gt;:&lt;/span&gt;
+        url = urlparse(href)
+        scheme = url.scheme &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;https&quot;&lt;/span&gt;
+        netloc = url.netloc &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;www.amazon.com&quot;&lt;/span&gt;
+        path = url.path
+        params = url.params
+        query = url.query
+        fragment = url.fragment
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; urlunparse((scheme, netloc, path, params, query, fragment))
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;shake&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: Response, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+        links = resp.xpath(&lt;span class=&quot;string&quot;&gt;&quot;//a/@href&quot;&lt;/span&gt;).getall()
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; links:
+            spider.logger.warning(&lt;span class=&quot;string&quot;&gt;&quot;!! NO-LINK: No links found for %s&quot;&lt;/span&gt;, resp.url)
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        n = max(min(len(links), &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;), &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;)
+        k = random.randint(&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, n)
+        &lt;span class=&quot;comment&quot;&gt;# We'll choose a random selection of the links...again, a human thing to do.&lt;/span&gt;
+        chosen = random.sample(links, k=min(k, len(links)))
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; link &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; chosen:
+            lnk = self.normalize(link)
+            self._mark_salt.append(lnk)
+            spider.logger.debug(&lt;span class=&quot;string&quot;&gt;&quot;salt shaker: &amp;lt;%s&amp;gt;&quot;&lt;/span&gt;, lnk)
+            resp.follow(lnk)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;maybe_shake&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, response: Response, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+
+        shake_salt = random.randint(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;) &amp;lt; self.SHAKE_PROBABILITY
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; getattr(spider, &lt;span class=&quot;string&quot;&gt;&quot;__invoke_shaker&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;:
+            self.shake(response, spider)
+        &lt;span class=&quot;keyword&quot;&gt;elif&lt;/span&gt; len(self._mark_salt) &amp;lt; self.SALT_USAGE &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; shake_salt:
+            spider.logger.info(&lt;span class=&quot;string&quot;&gt;&quot;.: invoking salt shaker :.&quot;&lt;/span&gt;)
+            self.shake(response, spider)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add_salt&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+
+        random.shuffle(self.salt_urls)
+
+        &lt;span class=&quot;comment&quot;&gt;# Start with an initial salt to throw Amazon off&lt;/span&gt;
+        self.initial_salt = random.sample(self.salt_urls, k=self.initial_salt_k)
+
+        spider.start_urls = self.salt_urls + spider.start_urls
+        random.shuffle(spider.start_urls)
+        spider.start_urls = self.initial_salt + spider.start_urls
+
+        self._mark_salt = []
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;process_response&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, request: Request, response: Response, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+        self.maybe_shake(response, spider)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; response&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Because we want to stay focused on scraping I’ve set a limit for the amount of salt we’ll
+chase. This is handled by the &lt;code&gt;SALT_USAGE&lt;/code&gt; class variable; if the length of &lt;code&gt;_mark_salt&lt;/code&gt;
+hits &lt;code&gt;SALT_USAGE&lt;/code&gt;, we don’t scrape any more random links.&lt;/p&gt;
+&lt;p&gt;If this is not the case there are 2 cases in which the salt shaker is executed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;code&gt;SHAKE_PROBABILITY&lt;/code&gt; percent chance (e.g. &lt;code&gt;25%&lt;/code&gt; in this example)&lt;/li&gt;
+&lt;li&gt;If a captcha is detected. Assure Amazon we’re really not scraping the site (but we are).
+In this case, the shake is invoked through the spider by the &lt;code&gt;GenericAmazonMiddleware&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;lessons-learned&quot;&gt;Lessons Learned&lt;/h1&gt;
+&lt;p&gt;That was probably the longest most-invoved article I’ve written. And it’s only the first part!&lt;/p&gt;
+&lt;p&gt;Here are some take-aways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Scrapy is an awesome scraping tool!&lt;/li&gt;
+&lt;li&gt;MongoDB makes an excellent storage engine.&lt;/li&gt;
+&lt;li&gt;Amazon does not like to be scraped.&lt;/li&gt;
+&lt;li&gt;Save as much as you can first round so you don’t have to scrape a 2nd time.&lt;/li&gt;
+&lt;li&gt;All it takes is a little investigative work (and the help of a REST API client!) to
+find the seller codes.&lt;/li&gt;
+&lt;li&gt;We first needed to find the department URL from Amazon’s “All Departments” page. From
+there, we navigated to each department, extracting each seller’s URL in the “Top
+Sellers.” From there, we went to a third stage, of scraping the seller’s page (if it
+exists) to extract the address.&lt;/li&gt;
+&lt;li&gt;Amazon returns http status code 200 on being blocked, so additional detection
+techniques have to be employed.&lt;/li&gt;
+&lt;li&gt;3rd party middleware, or your own, can be used to get around some of the blocks.&lt;/li&gt;
+&lt;li&gt;Reverse geocoding can be done with ArcGIS &lt;strong&gt;(but remember to use the &lt;code&gt;forStorage&lt;/code&gt; flag!)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In the part 2 (which I hope to post next week) I’ll talk about my findings. Where are the
+top sellers on Amazon?&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>What nobody tells you about freelancing</title>
       <link>https://src-r-r.github.io/articles/what-nobody-tells-you-about-freelancing/</link>
