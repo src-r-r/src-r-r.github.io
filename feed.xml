@@ -14,7 +14,8 @@
       <pubDate>Wed, 02 Dec 2020 16:00:00 -0800</pubDate>
       <guid isPermaLink="true">https://src-r-r.github.io/articles/scraping_amazon/</guid>
       <author></author>
-      <description>&lt;p&gt;Recently I was doing a research project trying to determine information on the top sellers at
+      <description>&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-scrapy-cover.png&quot; alt=&quot;Amazon Scraping&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Recently I was doing a research project trying to determine information on the top sellers at
 Amazon.&lt;/p&gt;
 &lt;p&gt;In this first part I describe my process of scraping the necessary data from Amazon. In
 Part II I’ll discuss some of my findings.&lt;/p&gt;
