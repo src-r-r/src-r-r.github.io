@@ -13,7 +13,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.0.1 (0767f8302a, 2020-10-17)"
-   sodipodi:docname="amazon-scrapy-cover.svg">
+   sodipodi:docname="amazon-scrapy-cover.svg"
+   inkscape:export-filename="/home/jordan/projects/github-pages/contents/articles/scraping_amazon/images/amazon-scrapy-cover.png"
+   inkscape:export-xdpi="96.730003"
+   inkscape:export-ydpi="96.730003">
   <defs
      id="defs2">
     <filter
@@ -63,9 +66,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.89692166"
-     inkscape:cx="198.61227"
-     inkscape:cy="70.870474"
+     inkscape:zoom="1.7938433"
+     inkscape:cx="316.63858"
+     inkscape:cy="338.45237"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"

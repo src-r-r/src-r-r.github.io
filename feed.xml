@@ -9,6 +9,172 @@
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
     <item>
+      <title>Going Full 💯 Karen on JavaScript with the Web Console</title>
+      <link>https://src-r-r.github.io/articles/going_all_karen_on_javascript/</link>
+      <pubDate>Wed, 02 Dec 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/going_all_karen_on_javascript/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/karen-cover.png&quot; alt=&quot;Karen Hates JavaScript&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Whether you like it or not, at some point, with whatever programming
+language you’re develping in, you’re going to have to enter the debugger.
+C uses GDB. Java uses JDB. Python uses PDB (or iPDB). This allows you
+to step through the code and find out where an error exists.&lt;/p&gt;
+&lt;p&gt;But there doesn’t seem to be a “jsdb” for JavaScript. If you’re using
+node, there’s a debugger for that, but what if you’re not using
+the Node framework? How can you tell what your code is doing?&lt;/p&gt;
+&lt;p&gt;You speak to the manager, that’s what you do!&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;where-s-the-feedback-&quot;&gt;Where’s the Feedback?&lt;/h1&gt;
+&lt;p&gt;Consider the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&lt;span class=&quot;meta&quot;&gt;&amp;lt;!DOCTYPE &lt;span class=&quot;meta-keyword&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;head&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;title&lt;/span&gt;&amp;gt;&lt;/span&gt;Simple JavaScript Debugging Example&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;title&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;head&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;init()&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;p&lt;/span&gt;&amp;gt;&lt;/span&gt;To do list:&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;p&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;ul&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;todoList&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Unit Tests&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Documentation&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Writing Code&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Comments&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Integration Testing&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;ul&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
+            &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;init&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;{
+                items = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;todoList&quot;&lt;/span&gt;).children;
+                &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; items.length; ++i) {
+                    &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; rgb = [
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;)
+                    ];
+                    items[i].attributes[&lt;span class=&quot;string&quot;&gt;&quot;style&quot;&lt;/span&gt;] = &lt;span class=&quot;string&quot;&gt;`color: rgb(&lt;span class=&quot;subst&quot;&gt;${rgb.join(&lt;span class=&quot;string&quot;&gt;&quot;, &quot;&lt;/span&gt;)}&lt;/span&gt;)`&lt;/span&gt;;
+                }
+            }
+        &lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;body&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Essentially what we’re doing here is assigning a random color (below &lt;code&gt;rgb(100, 100, 100)&lt;/code&gt;
+so we can read it) to each element of the “To Do List.”&lt;/p&gt;
+&lt;p&gt;For those not familiar with JavaScript, those back tick marks (&lt;code&gt;``&lt;/code&gt;) indicate
+that whatever is inside &lt;code&gt;${}&lt;/code&gt; is to replaced by variables in the current scope.&lt;/p&gt;
+&lt;p&gt;By the look of this code, everything seems correct (astute JavaScript developers can
+probably spot what’s wrong, but that’s not the point of this article).&lt;/p&gt;
+&lt;p&gt;But why doesn’t it work?&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/web-page-does-not-work.png&quot; alt=&quot;Why doesn&amp;#39;t it work?&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Where are the pretty colors? That’s okay…The debug console will tell us.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/debug-console-no-errors.png&quot; alt=&quot;No Error?&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Hm…perhaps not.&lt;/p&gt;
+&lt;p&gt;You can ignore the 404 error (It’s the browser trying to find a favicon). But
+we don’t see any error in the console related to the JavaScript&lt;/p&gt;
+&lt;p&gt;But our web page does not show the list items with pretty rainbow colors?&lt;/p&gt;
+&lt;p&gt;Now, ask yourself…would Karen give up, or would she demand that JavaScript tell
+her what’s wrong?&lt;/p&gt;
+&lt;p&gt;You know the answer to that one! Let’s speak to the manager!&lt;/p&gt;
+&lt;p&gt;The manager (in this case) is the debug console.&lt;/p&gt;
+&lt;h1 id=&quot;debugging-in-the-console&quot;&gt;Debugging in the Console&lt;/h1&gt;
+&lt;p&gt;We must use the browser console for debugging in this instance.&lt;/p&gt;
+&lt;p&gt;I’m a fan of Firefox, moreso because of Mozilla’s respect of user privacy, but
+Chrome an Safari have similar consoles.&lt;/p&gt;
+&lt;p&gt;One neat feature about the console is that it has very powerful object inspection.
+You can duplicate objects, edit objects live, and even add break points to code.&lt;/p&gt;
+&lt;p&gt;How can we do this? &lt;code&gt;console.log&lt;/code&gt;. Open up the JavaScript console and type
+&lt;code&gt;console.log(&amp;quot;Hello World&amp;quot;)&lt;/code&gt;. You should see the following line in the console:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;Hello World                 debugger eval code:1:9&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;What this is telling you is that this value is given on line 1, column 9 of the “debugger
+eval” (equivalent to a source code file).&lt;/p&gt;
+&lt;p&gt;But there’s more to this. &lt;code&gt;console.log&lt;/code&gt; can also print out objects.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(&lt;span class=&quot;built_in&quot;&gt;window&lt;/span&gt;);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;OK? So? How does that help us?&lt;/p&gt;
+&lt;p&gt;Right click on the object of the line printed, and you should see the following menu.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/console-save-as-global-object.png&quot; alt=&quot;Store As Global Object&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Click on “Store as Global Variable.” You’ll now see the following in the console:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/temp0-is-now-window.png&quot; alt=&quot;temp0 is now window&quot;&gt;&lt;/p&gt;
+&lt;p&gt;This is cool! Now we can do whatever we want with &lt;code&gt;window&lt;/code&gt; as &lt;code&gt;temp0&lt;/code&gt;! This is how
+Karen can get her way in the code.&lt;/p&gt;
+&lt;p&gt;So let’s make a small modification to the code to print out the variable in
+JavaScript:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;init&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;{
+        items = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;todoList&quot;&lt;/span&gt;).children;
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; items.length; ++i) {
+            &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; rgb = [
+                &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;)
+            ];
+            &lt;span class=&quot;comment&quot;&gt;// Print out the current item.&lt;/span&gt;
+            &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(items[i]);
+            items[i].attributes[&lt;span class=&quot;string&quot;&gt;&quot;style&quot;&lt;/span&gt;] = &lt;span class=&quot;string&quot;&gt;`color: rgb(&lt;span class=&quot;subst&quot;&gt;${rgb.join(&lt;span class=&quot;string&quot;&gt;&quot;, &quot;&lt;/span&gt;)}&lt;/span&gt;)`&lt;/span&gt;;
+        }
+    }
+&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If we open up the console window we’ll see the following:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/initial-debug-all-list-items.png&quot; alt=&quot;List Items Printed&quot;&gt;&lt;/p&gt;
+&lt;p&gt;As you can see, each individual &lt;code&gt;li&lt;/code&gt; item has been printed to the console.&lt;/p&gt;
+&lt;p&gt;Note this corresponds to &lt;code&gt;items[i]&lt;/code&gt;, for which we don’t correctly set the style
+color. Why is this? Let’s inspect the &lt;code&gt;items[i]&lt;/code&gt; element.&lt;/p&gt;
+&lt;p&gt;First right click on it, and say “Store as Global Variable.” The new variable name
+will be called &lt;code&gt;temp0&lt;/code&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Here’s what’s cool…even though the &lt;code&gt;items[i]&lt;/code&gt; printed to the console only lives as
+long as the &lt;code&gt;for&lt;/code&gt; loop, Firefox stores a reference to this instance in memory for 
+future use.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So now let’s use &lt;code&gt;temp0&lt;/code&gt; for debugging.&lt;/p&gt;
+&lt;p&gt;First, let’s see if there’s anything called &lt;code&gt;attributes&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;temp0.attributes
+&lt;span class=&quot;comment&quot;&gt;// &amp;gt; NamedNodeMap []&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Looks like there is. So there’s no issue there. What are some of the items of
+&lt;code&gt;NamedNodeMap&lt;/code&gt;? There’s a little triangle beside the result of &lt;code&gt;temp0.attributes&lt;/code&gt;. If we
+click on it we’ll see an expanded definition.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/console-i-am-setting-attributes-correctly.png&quot; alt=&quot;I am setting attributes correctly&quot;&gt;&lt;/p&gt;
+&lt;p&gt;So, looks like I’m setting style correctly! But it still doesn’t work!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Me: &lt;em&gt;goes on Internet hunt to search how to add styling to elements in JavaScript&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Okay, looks like the actual way to do it is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;item.style = &lt;span class=&quot;string&quot;&gt;&quot;color: &amp;lt;color&amp;gt;&quot;&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But let’s experiment to see if it would work. In the console, copy using &lt;code&gt;temp0&lt;/code&gt;,
+try setting the color to green:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;temp0.style = &lt;span class=&quot;string&quot;&gt;&quot;color: green&quot;&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Whadayaknow it works!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/wadayaknowitworks.png&quot; alt=&quot;Whadayaknow&quot;&gt;&lt;/p&gt;
+&lt;p&gt;So let’s correct our new code to use &lt;code&gt;items[i].style&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;
+            &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;init&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;{
+                items = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;todoList&quot;&lt;/span&gt;).children;
+                &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; items.length; ++i) {
+                    &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; rgb = [
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;)
+                    ];
+                    items[i].style = &lt;span class=&quot;string&quot;&gt;`color: rgb(&lt;span class=&quot;subst&quot;&gt;${rgb.join(&lt;span class=&quot;string&quot;&gt;&quot;, &quot;&lt;/span&gt;)}&lt;/span&gt;)`&lt;/span&gt;;
+                }
+            }
+&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And now when we reload the page we have pretty little rainbow text!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/pretty-little-rainbow-text.png&quot; alt=&quot;Pretty Little Rainbow Text&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;As we saw, there really is no good debugger in JavaScript that has the same
+power as GDB or PDB. However, with a little inginuity, we can find out what’s
+wrong in our code and correct it.&lt;/p&gt;
+&lt;p&gt;It essentially involves printing the object within the current scope to the console.
+You can do this from within any code construct, including anonymous functions. The 
+browser is pretty good at maintaining references to all these elements, so
+all you have to do is explore the object you’re interested in.&lt;/p&gt;
+&lt;p&gt;This was a pretty simple example, but you can imagine the more quirky examples that
+you may have in your own development process (e.g. responses from AJAX calls).&lt;/p&gt;
+&lt;p&gt;And note that there are a lot of other features with the web console and debugger
+I didn’t even cover, like setting break points and stepping through code. There are
+a lot of tutorials written on this, but I didn’t see a lot that covered this
+simple strategy.&lt;/p&gt;
+&lt;p&gt;Essentially, we went full Karen. Because we deserve better from JavaScript!&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>Amazon Scraping with Scrapy, Part I - Scraping</title>
       <link>https://src-r-r.github.io/articles/scraping_amazon/</link>
       <pubDate>Wed, 02 Dec 2020 16:00:00 -0800</pubDate>
@@ -2562,42 +2728,6 @@ the post office analogy.&lt;/p&gt;
 </description>
     </item>
     <item>
-      <title>My Latest Project - LinkList Firefox Extension</title>
-      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
-      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
-      <author></author>
-      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
-&lt;p&gt;We are a species whose brains like limited information.
-[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
-after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
-proven that when given a lot of information our brains are overwhelmed. This
-has driven content designers of websites to display selected bits of
-information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
-every user profile on Reddit while reading an article, but they do provide
-links to user profiles who have commented on the article.&lt;/p&gt;
-&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
-for.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
-yet), cover links with other elements. If you use a JavaScript blocker (which I
-recommend to everyone, for both security and privacy), you know what I’m
-talking about.&lt;/p&gt;
-&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
-&lt;p&gt;My solution is a Firefox extension called
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
-For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
-provides a text field to allow you to search for a given link.&lt;/p&gt;
-&lt;p&gt;I created this because of my frustration with searching for a job. At a local
-company page I’d look for the “Careers” or “Jobs” page which may or may not be
-at the footer. Instead of wasting 3 seconds scrolling to the bottom and
-another 3 seconds scanning the footer links I can simply look in the sidebar
-and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>JavaScript Programming for Non-JavaScript Programmers</title>
       <link>https://src-r-r.github.io/articles/javascript-programming-for-non-javascript-programmers/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
@@ -2717,6 +2847,42 @@ appeared as an afterthought it has become the backbone of the web. So, for
 programmers who are used to Java or C++ or some other framework, you, like me,
 might be a little confused as to what goes on under the hood. But, hopefully,
 I was able to explain what goes on in a more visual way.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>My Latest Project - LinkList Firefox Extension</title>
+      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
+      <author></author>
+      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
+&lt;p&gt;We are a species whose brains like limited information.
+[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
+after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
+proven that when given a lot of information our brains are overwhelmed. This
+has driven content designers of websites to display selected bits of
+information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
+every user profile on Reddit while reading an article, but they do provide
+links to user profiles who have commented on the article.&lt;/p&gt;
+&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
+for.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
+yet), cover links with other elements. If you use a JavaScript blocker (which I
+recommend to everyone, for both security and privacy), you know what I’m
+talking about.&lt;/p&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;My solution is a Firefox extension called
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
+For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
+provides a text field to allow you to search for a given link.&lt;/p&gt;
+&lt;p&gt;I created this because of my frustration with searching for a job. At a local
+company page I’d look for the “Careers” or “Jobs” page which may or may not be
+at the footer. Instead of wasting 3 seconds scrolling to the bottom and
+another 3 seconds scanning the footer links I can simply look in the sidebar
+and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 </description>
     </item>
     <item>
