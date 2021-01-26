@@ -5,9 +5,362 @@
     <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>https://src-r-r.github.io</link>
     <description>Break Barriers | Simplify the Complex | Be Open to Ideas</description>
-    <pubDate>Tue, 29 Dec 2020 16:00:00 -0800</pubDate>
+    <pubDate>Fri, 22 Jan 2021 16:00:00 -0800</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>How to Property Set up Python Logging with a Command Line Program</title>
+      <link>https://src-r-r.github.io/articles/how_to_log_with_a_python_cli_program/</link>
+      <pubDate>Fri, 22 Jan 2021 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/how_to_log_with_a_python_cli_program/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/how_to_log_with_a_python_cli_program/images/boy-with-tumpet-and-girl-plugging-ears-with-log-debug-and-stderr.png&quot; alt=&quot;Boy With Trumpet as Log.debug and stderr&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I promise you that the above meme will make sense by the end of the article. Just
+bear with me.&lt;/p&gt;
+&lt;p&gt;While logging should not be used as a replacement for debugging or unit testing, it’s 
+vital to incorporate logging to notify if something is going wrong.&lt;/p&gt;
+&lt;p&gt;Novice Python programmers (or veteran Python programmers) may be a bit frustrated
+configuring logging for a command line application. Unfortunately, while Python’s logging
+module is highly configuragle, this power comes at the cost of clarity.&lt;/p&gt;
+&lt;p&gt;In this article I describe how to properly set up logging in a Python command line
+interface (or CLI), so that we can set up a industry-ready command line program.&lt;/p&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Examples used in this article can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples&quot;&gt;https://gitlab.com/srcrr/python_logging_examples&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;a-command-line-argument-primer&quot;&gt;A Command Line Argument Primer&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is the &lt;strong&gt;tl;dr&lt;/strong&gt; portion for folks who are uninitiated in the ways of argparser.
+For those who are, feel free to skip to
+&lt;a href=&quot;#adding-logging&quot;&gt;Adding Loging and Verbosity&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;For those not familiar, CLI is the term used for any program that is run in the non-
+graphical interface. If you’ve used &lt;code&gt;ls&lt;/code&gt; or &lt;code&gt;dir&lt;/code&gt;, congratulations, you’ve used a CLI
+program.&lt;/p&gt;
+&lt;p&gt;Python is often used as a scrpting language for command line utilities. The basic template
+for such a program looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;:&lt;/span&gt;
+    print(&lt;span class=&quot;string&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt;)
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__ == &lt;span class=&quot;string&quot;&gt;'__main__'&lt;/span&gt;:
+    main()&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/basic_setup/hello_world.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/basic_setup/hello_world.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The program is run like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python hello_world.py 
+Hello World!&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;or like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python -m hello_world
+Hello World!&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;Most veteran python programmers prefer the &lt;code&gt;python -m&lt;/code&gt; approach, since it tries to treat
+everything as a module. I’ll use that form throughout.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;adding-arguments&quot;&gt;Adding Arguments&lt;/h1&gt;
+&lt;p&gt;Let’s add some spice to the program! If you’ve ever spent a day on the command line you’ve
+undoubtedly come across arguments and options. This is something like &lt;code&gt;ps -aux&lt;/code&gt; for linux or &lt;code&gt;dir /t&lt;/code&gt; for Windows. Python prefers the hyphenated syntax (.e.g. &lt;code&gt;-v&lt;/code&gt; or &lt;code&gt;--verbose&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;For this we’ll use the argparse library. If you’re looking for more power, I’d suggest
+the &lt;a href=&quot;https://click.palletsprojects.com/en/master/&quot;&gt;Click package&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; argparse
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument(&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;, nargs=&lt;span class=&quot;string&quot;&gt;&quot;?&quot;&lt;/span&gt;, default=&lt;span class=&quot;string&quot;&gt;&quot;World&quot;&lt;/span&gt;)
+
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    print(&lt;span class=&quot;string&quot;&gt;f&quot;Hello, &lt;span class=&quot;subst&quot;&gt;{args.name}&lt;/span&gt;!&quot;&lt;/span&gt;)
+
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__ == &lt;span class=&quot;string&quot;&gt;&quot;__main__&quot;&lt;/span&gt;:
+    args = parser.parse_args()
+    main(args)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/cli_add_argparse/hello.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/cli_add_argparse/hello.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This program has an optional argument &lt;code&gt;name&lt;/code&gt;, which will be printed in place of &lt;code&gt;World&lt;/code&gt;,
+if given.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python -m hello
+Hello, World!
+
+$ python -m hello Jerry
+Hello, Jerry!&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a name=&quot;adding-logging&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;adding-logging-and-verbosity&quot;&gt;Adding Logging and Verbosity&lt;/h1&gt;
+&lt;p&gt;Let’s add a few more things to the program:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Add logging so we know what’s going on.&lt;/li&gt;
+&lt;li&gt;Add a flag to specify how verbose we want to be.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Since the example above is pretty basic (despite there not being a pumpkin spice latte in 
+sight) let’s modify the program to do something more complex.&lt;/p&gt;
+&lt;p&gt;Let’s still greet the person, but check to see what time of day it is. Then we’ll greet
+the user accordingly. For added fun, let’s add an hour offset!&lt;/p&gt;
+&lt;p&gt;Here’s the code for the program:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; sys
+&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; datetime &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; datetime, timedelta
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; argparse
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; logging
+
+&lt;span class=&quot;comment&quot;&gt;# Only used for type hinting.&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; typing &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; T
+
+parser = argparse.ArgumentParser()
+parser.add_argument(&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;, nargs=&lt;span class=&quot;string&quot;&gt;&quot;?&quot;&lt;/span&gt;, default=&lt;span class=&quot;string&quot;&gt;&quot;World&quot;&lt;/span&gt;)
+parser.add_argument(&lt;span class=&quot;string&quot;&gt;&quot;-o&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;--offset&quot;&lt;/span&gt;, type=int, default=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)
+
+&lt;span class=&quot;comment&quot;&gt;# Create a new logger&lt;/span&gt;
+log = logging.getLogger(__name__)
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;say_hello&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(name : T.Any, hour_offset : int)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# Boundary checking.&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# &lt;span class=&quot;doctag&quot;&gt;NOTE:&lt;/span&gt; typically we'd want to raise an exception here,&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# such as a RuntimeException. However, to demonstrate logging,&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# we'll just log an error, then exit gracefully.&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# &lt;span class=&quot;doctag&quot;&gt;NOTE:&lt;/span&gt; Actually, more than likely the proper way to do this&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# would be to do bounds checking via argparser.&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; abs(hour_offset) &amp;gt; &lt;span class=&quot;number&quot;&gt;23&lt;/span&gt;:
+        log.error(&lt;span class=&quot;string&quot;&gt;&quot;`hour_offset` must be less than 24!&quot;&lt;/span&gt;)
+        sys.exit(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+    curr_time = datetime.now()
+    check_time = curr_time + timedelta(hours=hour_offset)
+    log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Current time: %s&quot;&lt;/span&gt;, curr_time.strftime(&lt;span class=&quot;string&quot;&gt;&quot;%c&quot;&lt;/span&gt;))
+    log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Offset in hours: %s&quot;&lt;/span&gt;, hour_offset)
+    log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Time to check: %s&quot;&lt;/span&gt;, check_time)
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; check_time.hour &amp;gt; &lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;:
+        print(&lt;span class=&quot;string&quot;&gt;f&quot;Closing time, &lt;span class=&quot;subst&quot;&gt;{name}&lt;/span&gt;. I'm done for the day.&quot;&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; check_time.hour &amp;gt; &lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;:
+        print(&lt;span class=&quot;string&quot;&gt;f&quot;Good afternoon, &lt;span class=&quot;subst&quot;&gt;{name}&lt;/span&gt;. How was lunch?&quot;&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+    print(&lt;span class=&quot;string&quot;&gt;f&quot;&lt;span class=&quot;subst&quot;&gt;{name}&lt;/span&gt;, I need coffee.&quot;&lt;/span&gt;)
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__==&lt;span class=&quot;string&quot;&gt;'__main__'&lt;/span&gt;:
+    args = parser.parse_args()
+    main(args)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/adding_complexity/hello_check.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/adding_complexity/hello_check.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Excellent. Let’s try running the program!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python -m hello_check
+World, I need coffee.
+$ python -m hello_check -o 4 Susan
+Good afternoon, Susan. How was lunch?
+$ python -m hello_check -o 77 Sam
+`hour_offset` must be less than 24!&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So far so good. But notice anything?&lt;/p&gt;
+&lt;p&gt;Where are all the debugging messages?&lt;/p&gt;
+&lt;p&gt;Logging is obviously working, otherwise &lt;code&gt;&amp;quot;&amp;#39;hour_offset&amp;#39; must be less than 24!&amp;quot;&lt;/code&gt; won’t be
+printed.&lt;/p&gt;
+&lt;p&gt;This is due to how Python logs…specifically &lt;strong&gt;logging levels&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;how-python-logging-works&quot;&gt;How Python Logging Works&lt;/h1&gt;
+&lt;p&gt;I would highly recommend taking a look at the &lt;a href=&quot;https://docs.python.org/3/library/logging.html&quot;&gt;Python Logging Documentation&lt;/a&gt;. I’ll admit–It’s a lot to unpack, so I’ll put the
+simplistic explanation here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Logging is done within a &lt;strong&gt;logger object&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;There are 5 levels of logging: &lt;code&gt;DEBUG&lt;/code&gt;, &lt;code&gt;INFO&lt;/code&gt;, &lt;code&gt;WARNING&lt;/code&gt;, &lt;code&gt;ERROR&lt;/code&gt;, and &lt;code&gt;CRITICAL&lt;/code&gt;,
+&lt;code&gt;DEBUG&lt;/code&gt; being the lowest level (just used for developers), and &lt;code&gt;CRITICAL&lt;/code&gt; being
+the highest level.&lt;/li&gt;
+&lt;li&gt;If not configured, instantiating a logger object will configure it with default
+properties.&lt;/li&gt;
+&lt;li&gt;These default properties result in anything with level &lt;code&gt;INFO&lt;/code&gt; and above to be
+written to &lt;code&gt;stderr&lt;/code&gt; without any fancy formatting.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Here’s what’s important:&lt;/strong&gt; all these defaults can be overridden.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Since (in the example above) we don’t configure the logger, Python just uses the default
+properties, meaning nothing below &lt;code&gt;INFO&lt;/code&gt; will be printed.&lt;/p&gt;
+&lt;p&gt;With this we use the &lt;code&gt;logging.basicConfig&lt;/code&gt; function:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; logging
+&lt;span class=&quot;comment&quot;&gt;# Only used for type hinting.&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; typing &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; T
+
+logging.basicConfig(level=logging.DEBUG)
+&lt;span class=&quot;comment&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And we run the program again:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python -m hello_check -o 77 Sam
+ERROR:__main__:`hour_offset` must be less than 24!
+
+$ python -m hello_check -o 3 Sam
+DEBUG:__main__:Current time: Sun Jan 24 08:14:04 2021
+DEBUG:__main__:Offset in hours: 3
+DEBUG:__main__:Time to check: 2021-01-24 11:14:04.988934
+Sam, I need coffee.&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice 2 things:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The formatting of the log messages changed. Now it’s printed as 
+&lt;code&gt;&amp;lt;Level&amp;gt;:&amp;lt;__name__&amp;gt;:&amp;lt;message&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Messages with level &lt;code&gt;DEBUG&lt;/code&gt; are printed to the console.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Sweet! However, there is an issue. Typically with a program we don’t want to
+print out the debug messages &lt;em&gt;EVERY TIME&lt;/em&gt;. Only for when a user wants to find out
+more detailed info on what happened or if we’re doing active development.&lt;/p&gt;
+&lt;p&gt;So most programs have a “debug” flag (sometimes it’s a “verbosity” flag), like
+this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;$ program -d
+DEBUG: Here is a debug message
+This is the output
+
+$ program
+This is the output&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s modify our program to include a debug flag.&lt;/p&gt;
+&lt;h1 id=&quot;debug-flag&quot;&gt;Debug Flag&lt;/h1&gt;
+&lt;p&gt;The following changes are made to our program:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; typing &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; T
+
+&lt;span class=&quot;comment&quot;&gt;# logging.basicConfig Is removed from here&lt;/span&gt;
+
+parser = argparse.ArgumentParser()
+
+&lt;span class=&quot;comment&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;parser.add_argument(&lt;span class=&quot;string&quot;&gt;&quot;-d&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;--debug&quot;&lt;/span&gt;, action=&lt;span class=&quot;string&quot;&gt;&quot;store_true&quot;&lt;/span&gt;, default=&lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;)
+
+&lt;span class=&quot;comment&quot;&gt;# Create a new logger&lt;/span&gt;
+log = logging.getLogger(__name__)
+
+&lt;span class=&quot;comment&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We’ve added the flag. Cool. But how do we control the program flow to enable
+debugging messages?&lt;/p&gt;
+&lt;p&gt;While there may be a few options, I’d recommend putting it in &lt;code&gt;main&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; args.debug:
+        logging.basicConfig(level=logging.DEBUG)
+    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;:
+        logging.basicConfig(level=logging.INFO)
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/configure_level_debug/hello_check.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/configure_level_debug/hello_check.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And with that, we can run the program with debugging:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;$ python -m hello_check
+World, I need coffee.
+
+$ python -m hello_check -d
+DEBUG:__main__:Current time: Tue Jan 26 06:17:51 2021
+DEBUG:__main__:Offset in hours: 0
+DEBUG:__main__:Time to check: 2021-01-26 06:17:51.652623
+World, I need coffee&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First of all, yes, I know that’s early. I’m an early riser–what can I say!&lt;/p&gt;
+&lt;p&gt;Second of all, we have successfully added a &lt;code&gt;-d/--debug&lt;/code&gt; flag to control debugging
+output–just like the pros do. 😎&lt;/p&gt;
+&lt;h1 id=&quot;advanced-topic-dictconfig&quot;&gt;Advanced Topic: DictConfig&lt;/h1&gt;
+&lt;p&gt;For simple programs this is fine, but typically if you’re doing logging “right,” you’d
+use &lt;a href=&quot;https://docs.djangoproject.com/en/3.1/topics/logging/#examples&quot;&gt;&lt;code&gt;logging.config.dictConfig&lt;/code&gt;&lt;/a&gt;. This allows for finer-grained control over logging output.&lt;/p&gt;
+&lt;p&gt;But we want to control the flow of the debug output. How do we go about this?&lt;/p&gt;
+&lt;p&gt;There are 2 ways:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Invoking &lt;code&gt;dictConfig&lt;/code&gt; from a global context (e.g. near the &lt;code&gt;import&lt;/code&gt;s), then iterating
+through each handler in &lt;code&gt;main&lt;/code&gt; to set each one to &lt;code&gt;DEBUG&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Invoking &lt;code&gt;dictConfig&lt;/code&gt; from &lt;code&gt;main&lt;/code&gt;, based on the value of &lt;code&gt;args.debug&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Option 1 does have it’s advantages, but for the sake of simplicity I’ll incorporate
+option 2.&lt;/p&gt;
+&lt;p&gt;Consider the following &lt;code&gt;LOGGING&lt;/code&gt; dict:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;{
+    &lt;span class=&quot;string&quot;&gt;'version'&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;'disable_existing_loggers'&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;'formatters'&lt;/span&gt;: {
+        &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'format'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{levelname} {message}'&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;'style'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{'&lt;/span&gt;,
+        },
+    },
+    &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: {
+        &lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'class'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'logging.StreamHandler'&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;'formatter'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;,
+        },
+    },
+    &lt;span class=&quot;string&quot;&gt;'root'&lt;/span&gt;: {
+        &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;],
+        &lt;span class=&quot;string&quot;&gt;'level'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'DEBUG'&lt;/span&gt;,
+    },
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We’ll want to pass this in to &lt;code&gt;logging.config.dictConfig&lt;/code&gt; but remember that we
+also want to set &lt;code&gt;level&lt;/code&gt; dynamically, based on the value of  &lt;code&gt;args.debug&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We can use boolean comprehension for shorthand here, and return it as a value from
+a function.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_log_dict&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; {
+        &lt;span class=&quot;string&quot;&gt;'version'&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;'disable_existing_loggers'&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;'formatters'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;'format'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{levelname} {message}'&lt;/span&gt;,
+                &lt;span class=&quot;string&quot;&gt;'style'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{'&lt;/span&gt;,
+            },
+        },
+        &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;'class'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'logging.StreamHandler'&lt;/span&gt;,
+                &lt;span class=&quot;string&quot;&gt;'formatter'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;,
+            },
+        },
+        &lt;span class=&quot;string&quot;&gt;'root'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;],
+            &lt;span class=&quot;string&quot;&gt;'level'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'DEBUG'&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; args.debug &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;'INFO'&lt;/span&gt;,
+        },
+    }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That way we can simply call the function from main:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# In imports...&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; os
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; logging.config
+&lt;span class=&quot;comment&quot;&gt;# Later on in main ...&lt;/span&gt;
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    logging.config.dictConfig(get_log_dict(args))
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/with_dictconfig/hello_check.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/with_dictconfig/hello_check.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now we can have finer grained control over debug output.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;python -m hello_check -d
+DEBUG Current time: Tue Jan 26 06:41:52 2021
+DEBUG Offset in hours: 0
+DEBUG Time to check: 2021-01-26 06:41:52.706966
+World, I need coffee.&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note that this will only control the logging for the current console. If you’re a Django
+enthusiast and really want Django in your program (and who doesn’t!), you can control
+that logging sepearately:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_log_dict&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; {
+        &lt;span class=&quot;string&quot;&gt;'version'&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;'disable_existing_loggers'&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;'formatters'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;'format'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{levelname} {message}'&lt;/span&gt;,
+                &lt;span class=&quot;string&quot;&gt;'style'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{'&lt;/span&gt;,
+            },
+        },
+        &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;'class'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'logging.StreamHandler'&lt;/span&gt;,
+                &lt;span class=&quot;string&quot;&gt;'formatter'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;,
+            },
+        },
+        &lt;span class=&quot;comment&quot;&gt;# Print `info` if `-d` flag passed...otherwise `warning`&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;'django'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;],
+            &lt;span class=&quot;string&quot;&gt;'level'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'INFO'&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; args.debug &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;'WARNING'&lt;/span&gt;,
+        },
+        &lt;span class=&quot;string&quot;&gt;'root'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;],
+            &lt;span class=&quot;string&quot;&gt;'level'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'DEBUG'&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; args.debug &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;'INFO'&lt;/span&gt;,
+        },
+    }&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;In this tutorial we showed how to properly configure logging in Python. What Python
+lacks in clarity it makes up for in granularity. Python’s logging module is one of the
+most powerful out there, and there are many modules you can incorporate to add
+formatters, handlers, and more!&lt;/p&gt;
+&lt;p&gt;It can be confusing sometimes to add logging to command line interfaces programs, though.
+Above we showed how to do this.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Going Full 💯 Karen on JavaScript with the Web Console</title>
       <link>https://src-r-r.github.io/articles/going_all_karen_on_javascript/</link>
