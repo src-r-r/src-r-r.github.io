@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Jordan Hewitt, Senior Software Developer, specializing in Full Stack Software Development and programming. Driven, passionate for helping others, and creative-problem solver.">
+    <title>3 Common Mistakes You're Making with Software Projects (And How to Fix Them) - Jordan Hewitt - Software Developer
+    </title>
+    <link rel="stylesheet" href="/fonts/abel_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bolditalic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bold_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_italic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/searstower_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <script defer src="/fontawesome/js/all.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  </head>
+  <body class="article-detail" onLoad=";">
+    <div class="container">
+      <div class="columns">
+        <div class="col-9 col-lg-12">
+          <h1>3 Common Mistakes You're Making with Software Projects (And How to Fix Them)</h1>
+          <p class="author">Written by <span class="author"></span>
+          </p>
+          <div class="container">
+            <article class="article">
+              <section class="content"><p><img src="/articles/3-major-things-projects-need-to-have/images/when-the-product-keeps-crashing-but-you-get-paid-12-to-develop-people-smiling.png" alt="People Smiling"></p>
+<p>I can’t wait to see my program<span class="widont">&nbsp;</span>crash!</p>
+<p>You probably have never said this to yourself or in a meeting with your
+colleagues. But actions can speak otherwise. There are 3 common mistakes
+most projects make that can spell disaster for the project and the<span class="widont">&nbsp;</span>team.</p>
+<p>In this article I walk through these mistakes you or your team are making
+in developing and deploying projects, as well as provide the antidote to
+these<span class="widont">&nbsp;</span>mistakes.</p>
+<p>Whether you’re going solo or on a team, read on if you find your projects<span class="widont">&nbsp;</span>fail.</p>
+<hr>
+<p>Before we begin, I do give you permission to feel smug if none of these apply
+to<span class="widont">&nbsp;</span>you.</p>
+<h1 id="1-no-version-control">1. No Version<span class="widont">&nbsp;</span>Control</h1>
+<p>There are 3 major schools of thought with version<span class="widont">&nbsp;</span>control:</p>
+<ol>
+<li>“Version control? What’s<span class="widont">&nbsp;</span>that?”</li>
+<li>“Oh, yeah, I got that. It’s called <span class="caps">CTRL</span>+Z” (hint: no, no it’s<span class="widont">&nbsp;</span>not!)</li>
+<li>“Version control? So there are others like you? We use it in all our projects.
+ Please, join our underground society. Our deity is a<span class="widont">&nbsp;</span>penguin.”</li>
+</ol>
+<p>Since I’m writing this article you probably have a pretty good guess where I<span class="widont">&nbsp;</span>fall.</p>
+<p>Spoiler alert: I believe you should absolutely be using version control! For any<span class="widont">&nbsp;</span>project!</p>
+<p>What is version control? Simply put, it’s a way to save different revisions of a project.
+Think of it like one of those time travel movies where the good guy gets to go
+back in time to save the day, and each time he changes something a new timeline emerges
+leaving the old one in tact. Loosly, that’s what’s<span class="widont">&nbsp;</span>happening.</p>
+<p>In this scenario you are the good guy (or<span class="widont">&nbsp;</span>girl)!</p>
+<p>You get to save the day from failed<span class="widont">&nbsp;</span>deployment!</p>
+<h2 id="solution-implement-version-control-">Solution: Implement Version<span class="widont">&nbsp;</span>Control!</h2>
+<p>By far the “industry standard” is git. There are others, including mercurial,
+<span class="caps">CVS</span>, and (oh, please, for the love of all things Linux avoid)<span class="widont">&nbsp;</span><span class="caps">SVN</span>.</p>
+<p>So, you’ve chosen a version control system. What projects do I use it<span class="widont">&nbsp;</span>on? </p>
+<p>Yes.</p>
+<p>Check code in no matter how small the project. Who knows? Maybe your experimentation
+of “Hello World” in Java will evolve to be included in one of Elon Musk’s Mars
+missions! (say that 10 times<span class="widont">&nbsp;</span>fast)</p>
+<h1 id="2-lack-of-any-kind-of-automated-testing">2. Lack of Any Kind of Automated<span class="widont">&nbsp;</span>Testing</h1>
+<p>I once had a mind-numbing internship job of manual interop testing. I would have to
+plug and unplug different cables in different orders and record the test result
+(did things blow up? etc.). It was <span class="caps">BAR</span>, or “Boring and<span class="widont">&nbsp;</span>Repetitive.”</p>
+<p>As an early developer, I would do that, too. I would go through
+the features one by one, manually. No wonder I never finished any projects.
+I would forge ahead, creating something specacular, just making sure (manually) all
+the peices worked–the login, the registration–<span class="caps">EVERYTHING</span>! <span class="caps">BAR</span>. Very<span class="widont">&nbsp;</span><span class="caps">BAR</span>.</p>
+<p>If you’re doing this, too, <span class="caps">STOP</span>. Stop reading this article right now and change
+your project setup (okay–maybe finish the article<span class="widont">&nbsp;</span>first).</p>
+<p>Sometimes you get impatient. I get it. Creating a work of art from mathematics is exciting.
+As someone with <span class="caps">ADHD</span>, I understand the dopamine hit of seeing the
+pretty React page you spent all afternoon working on. It feels good to see<span class="widont">&nbsp;</span>progress.</p>
+<p>But all that manual testing takes time. Logging in, selecting the page, entering
+the search form. And maybe the bug is really a back-end bug! Oh,<span class="widont">&nbsp;</span>no!</p>
+<h2 id="solution-add-automated-tests">Solution: Add Automated<span class="widont">&nbsp;</span>Tests</h2>
+<p>Build from the ground up. Do not move on to building on top of your code until
+you’ve unit tested what you have<span class="widont">&nbsp;</span>already.</p>
+<p>Yes, unit test may initially come across as <span class="caps">BAR</span>. You’re just seeing text
+printed to the screen saying “<span class="caps">PASS</span>” and “<span class="caps">FAIL</span>.” No music, no lights, no nothing
+except <span class="caps">PASS</span> and<span class="widont">&nbsp;</span><span class="caps">FAIL</span>.</p>
+<p>But they allow you to fail fast. Find the bugs quickly and easily and get past
+all the <span class="caps">BAR</span><span class="widont">&nbsp;</span>work.</p>
+<p>If you’re already stuck in (No) Test Valley, start small. Add a unit test framework
+for new features. When things slow down try to add unit tests to already-existing<span class="widont">&nbsp;</span>features.</p>
+<p>I’m not going to spend more time explaining unit testing. Just do an internet
+search for “testing &lt;language of choice&gt;” and you’re off to the<span class="widont">&nbsp;</span>cases.</p>
+<h1 id="3-lack-of-documentation">3. Lack of<span class="widont">&nbsp;</span>Documentation</h1>
+<p>Let’s say you’re developing a Python application and you need to toast some
+bread. So you found a <code>bread_toaster</code> library.</p>
+<p>However, there’s no documentation on how to toast your bread! You end up
+having to dig into the source code to find out how this toaster<span class="widont">&nbsp;</span>works.</p>
+<p>Yes, silly example, but the principles are what matters. Without documentation
+ambiguity is the project<span class="widont">&nbsp;</span>lead.</p>
+<p>Now think about your own project.
+How many new people join your team every year? How many times do you hand
+the project off to someone else? You can waste anywhere from hours to weeks
+helping someone get up to speed on a new<span class="widont">&nbsp;</span>project.</p>
+<p>Even you–the developer–are not immune to amnesia. You may put the project to
+the side. I can’t tell you how many times I opened a personal project back up months
+later and swore another developer had written the code. But, lo and behold,
+the git commit messages were in my<span class="widont">&nbsp;</span>name.</p>
+<h2 id="solution-document-the-code-">Solution: Document the<span class="widont">&nbsp;</span>code.</h2>
+<p>While ideally it would be a full wiki, I realize time is limited. So at the very
+least do the<span class="widont">&nbsp;</span>following:</p>
+<ol>
+<li>Comments to the<span class="widont">&nbsp;</span>code</li>
+<li>A <span class="caps">README</span> containing:<ul>
+<li>system requirements</li>
+<li>setup instruction</li>
+</ul>
+</li>
+</ol>
+<p>Hint: you may be able to find example READMEs to copy and paste from the<span class="widont">&nbsp;</span>Internet.</p>
+<p>And, oh yeah, add the <span class="caps">README</span> to verison<span class="widont">&nbsp;</span>control.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>I’ve come across some projects that don’t implement these and I’m surprised the
+client still has customers. So it is possible that projects survive without
+these<span class="widont">&nbsp;</span>practices.</p>
+<p>However, a lot of time (and money–we all like that, right?) can be saved by
+implementing these 3 practices. Heck, even doing <span class="caps">ONE</span> of these things (like
+documenting) sets you ahead of 90% of the<span class="widont">&nbsp;</span>developers.</p>
+<p>Why not give it a<span class="widont">&nbsp;</span>try?</p>
+</section>
+            </article>
+            <div class="hiring-box">
+              <center>
+                <h4>Did you like this article?</h4>
+              </center>
+              <center>
+                <p>Did you know I'm<strong> 
+                    <u>available for hire?</u></strong></p>
+              </center>
+              <p>Send me an email here: <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></p>
+              <p>Or connect with me in Wire:<b> @nswered</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 col-lg-12 content-wrap" id="sidebar">
+          <div class="nav"><a href="/">&laquo; Full blog</a></div>
+          <section class="about"><img src="/images/portrait.png" class="s-circle col-5 p-centered" />
+
+<h1 id="important-links">Important Links</h1>
+<p><a href="portfolio.html" class="btn btn-primary col-12">My Project Portfolio</a></p>
+<p></p>
+<a href="https://src-r-r.github.io/feed.xml" type='application/rss+xml' class="btn col-12" title="Blog">
+<i class="fas fa-rss-square"></i>
+Blog RSS Feed
+</a>
+
+<dl>
+  <dt>Services</dt>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.freelancer.com/u/TheSrcRR">Freelancer</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.upwork.com/freelancers/~0105fc69312e2da97a">UpWork</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://talent.hubstaff.com/profiles/jordan-hewitt">HubStaff</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.fiverr.com/striking_subzer">Fiverr</a></dd>
+  <dt>Social</dt>
+  <dd><i class="fab fa-twitter"></i>
+  <a href="https://mobile.twitter.com/thesrcrr">@TheSrcRr</dd>
+  <dd><i class="fab fa-linkedin"></i>
+  <a href="https://www.linkedin.com/in/jordan-h-a78122163/">LinkedIn</a></dd>
+  <dt>Software</dt>
+  <dd>
+  <i class="fab fa-github"></i>
+    <a href="https://github.com/src-r-r">GitHub</a></dd>
+  <dd>
+  <i class="fab fa-gitlab"></i>
+  <a href="https://gitlab.com/src-r-r">GitLab</a></dd>
+  <dt><i class="fas fa-camera"></i> Photography</dt>
+  <dd><a href="https://writelight.website">https://writelight.website</a></dd>
+</dl>
+
+<h2 id="contact-me">Contact Me</h2>
+<dl>
+  <dt>Email</dt>
+  <dd><i class="far fa-envelope"></i>
+    <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></dd>
+  <dt>Wire</dt>
+  <dd>@nswered</dd>
+</dl>
+
+<h2 id="services-i-provide">Services I Provide</h2>
+<dl class="hourly-rate">
+  <dt>Hourly Rate</dt>
+  <dd><strong>$57/hr</strong> (negotiable)</dd>
+</dl>
+
+<ul>
+<li>Full Stack Application development</li>
+<li>Documentation writing</li>
+<li>IT Support</li>
+<li>Automation</li>
+<li>Database design (Including PostgreSQL, MongoDB)</li>
+<li>Website creation</li>
+</ul>
+<h2 id="things-i-enjoy-that-i-do-not-charge-for-hobbies-">Things I enjoy that I do not charge for (Hobbies)</h2>
+<ul>
+<li>Reading about philsophy</li>
+<li>Reading about metaphysics</li>
+<li><a href="https:/writelight.website">Photography</a></li>
+<li>Reading fiction</li>
+<li>Improv (didn’t know I’d say that, did you?)</li>
+<li>Theater</li>
+<li>Thinking as a hobby</li>
+<li>Hiking</li>
+</ul>
+<small>
+This project is build on Wintersmith by
+<a href="http://johan-nordberg.com">Johan Nordberg</a>
+</small>
+
+          </section>
+          <section class="copy">
+            <p>&copy; 2021 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+          </section>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/init-highlight.js"></script>
+    </div>
+  </body>
+</html>
