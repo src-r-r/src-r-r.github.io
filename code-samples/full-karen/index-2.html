@@ -1,0 +1,29 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+        <title>Simple JavaScript Debugging Example</title>
+    </head>
+    <body onload="init()">
+        <p>To do list:</p>
+        <ul id="todoList">
+            <li>Unit Tests</li>
+            <li>Documentation</li>
+            <li>Writing Code</li>
+            <li>Comments</li>
+            <li>Integration Testing</li>
+        </ul>
+        <script type="text/javascript">
+            function init () {
+                items = document.getElementById("todoList").children;
+                for (let i = 0; i < items.length; ++i) {
+                    let rgb = [
+                        Math.round(Math.random() * 200),
+                        Math.round(Math.random() * 200),
+                        Math.round(Math.random() * 200)
+                    ];
+                    items[i].style = `color: rgb(${rgb.join(", ")})`;
+                }
+            }
+        </script>
+    </body>
+  </html>

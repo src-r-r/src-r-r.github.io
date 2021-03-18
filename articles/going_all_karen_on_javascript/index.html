@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Jordan Hewitt, Senior Software Developer, specializing in Full Stack Software Development and programming. Driven, passionate for helping others, and creative-problem solver.">
+    <title>Going Full 💯 Karen on JavaScript with the Web Console - Jordan Hewitt - Software Developer
+    </title>
+    <link rel="stylesheet" href="/fonts/abel_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bolditalic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bold_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_italic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/searstower_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <script defer src="/fontawesome/js/all.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  </head>
+  <body class="article-detail" onLoad=";">
+    <div class="container">
+      <div class="columns">
+        <div class="col-9 col-lg-12">
+          <h1>Going Full 💯 Karen on JavaScript with the Web Console</h1>
+          <p class="author">Written by <span class="author">Jordan H.</span>
+          </p>
+          <div class="container">
+            <article class="article">
+              <section class="content"><p><img src="/articles/going_all_karen_on_javascript/images/karen-cover.png" alt="Karen Hates JavaScript"></p>
+<p>Whether you like it or not, at some point, with whatever programming
+language you’re develping in, you’re going to have to enter the debugger.
+C uses <span class="caps">GDB</span>. Java uses <span class="caps">JDB</span>. Python uses <span class="caps">PDB</span> (or iPDB). This allows you
+to step through the code and find out where an error<span class="widont">&nbsp;</span>exists.</p>
+<p>But there doesn’t seem to be a “jsdb” for JavaScript. If you’re using
+node, there’s a debugger for that, but what if you’re not using
+the Node framework? How can you tell what your code is<span class="widont">&nbsp;</span>doing?</p>
+<p>You speak to the manager, that’s what you<span class="widont">&nbsp;</span>do!</p>
+<hr>
+<h1 id="where-s-the-feedback-">Where’s the Feedback?</h1>
+<p>Consider the following:</p>
+<pre><code class="language-html"><span class="meta">&lt;!<span class="caps">DOCTYPE</span> <span class="meta-keyword">html</span>&gt;</span>
+  <span class="tag">&lt;<span class="name">html</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">head</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Simple JavaScript Debugging Example<span class="tag">&lt;/<span class="name">title</span>&gt;</span>
+    <span class="tag">&lt;/<span class="name">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">"init()"</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">p</span>&gt;</span>To do list:<span class="tag">&lt;/<span class="name">p</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"todoList"</span>&gt;</span>
+            <span class="tag">&lt;<span class="name">li</span>&gt;</span>Unit Tests<span class="tag">&lt;/<span class="name">li</span>&gt;</span>
+            <span class="tag">&lt;<span class="name">li</span>&gt;</span>Documentation<span class="tag">&lt;/<span class="name">li</span>&gt;</span>
+            <span class="tag">&lt;<span class="name">li</span>&gt;</span>Writing Code<span class="tag">&lt;/<span class="name">li</span>&gt;</span>
+            <span class="tag">&lt;<span class="name">li</span>&gt;</span>Comments<span class="tag">&lt;/<span class="name">li</span>&gt;</span>
+            <span class="tag">&lt;<span class="name">li</span>&gt;</span>Integration Testing<span class="tag">&lt;/<span class="name">li</span>&gt;</span>
+        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript">
+            <span class="function"><span class="keyword">function</span> <span class="title">init</span> (<span class="params"></span>) </span>{
+                items = <span class="built_in">document</span>.getElementById(<span class="string">"todoList"</span>).children;
+                <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; items.length; ++i) {
+                    <span class="keyword">let</span> rgb = [
+                        <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>),
+                        <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>),
+                        <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>)
+                    ];
+                    items[i].attributes[<span class="string">"style"</span>] = <span class="string">`color: rgb(<span class="subst">${rgb.join(<span class="string">", "</span>)}</span>)`</span>;
+                }
+            }
+        </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+    <span class="tag">&lt;/<span class="name">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="name">html</span>&gt;</span></code></pre>
+<p>Essentially what we’re doing here is assigning a random color (below <code>rgb(100, 100, 100)</code>
+so we can read it) to each element of the “To Do<span class="widont">&nbsp;</span>List.”</p>
+<p>For those not familiar with JavaScript, those back tick marks (<code>``</code>) indicate
+that whatever is inside <code>${}</code> is to replaced by variables in the current<span class="widont">&nbsp;</span>scope.</p>
+<p>By the look of this code, everything seems correct (astute JavaScript developers can
+probably spot what’s wrong, but that’s not the point of this<span class="widont">&nbsp;</span>article).</p>
+<p>But why doesn’t it<span class="widont">&nbsp;</span>work?</p>
+<p><img src="/articles/going_all_karen_on_javascript/images/web-page-does-not-work.png" alt="Why doesn&#39;t it work?"></p>
+<p>Where are the pretty colors? That’s okay…The debug console will tell<span class="widont">&nbsp;</span>us.</p>
+<p><img src="/articles/going_all_karen_on_javascript/images/debug-console-no-errors.png" alt="No Error?"></p>
+<p>Hm…perhaps not.</p>
+<p>You can ignore the 404 error (It’s the browser trying to find a favicon). But
+we don’t see any error in the console related to the<span class="widont">&nbsp;</span>JavaScript</p>
+<p>But our web page does not show the list items with pretty rainbow<span class="widont">&nbsp;</span>colors?</p>
+<p>Now, ask yourself…would Karen give up, or would she demand that JavaScript tell
+her what’s<span class="widont">&nbsp;</span>wrong?</p>
+<p>You know the answer to that one! Let’s speak to the<span class="widont">&nbsp;</span>manager!</p>
+<p>The manager (in this case) is the debug<span class="widont">&nbsp;</span>console.</p>
+<h1 id="debugging-in-the-console">Debugging in the<span class="widont">&nbsp;</span>Console</h1>
+<p>We must use the browser console for debugging in this<span class="widont">&nbsp;</span>instance.</p>
+<p>I’m a fan of Firefox, moreso because of Mozilla’s respect of user privacy, but
+Chrome an Safari have similar<span class="widont">&nbsp;</span>consoles.</p>
+<p>One neat feature about the console is that it has very powerful object inspection.
+You can duplicate objects, edit objects live, and even add break points to<span class="widont">&nbsp;</span>code.</p>
+<p>How can we do this? <code>console.log</code>. Open up the JavaScript console and type
+<code>console.log(&quot;Hello World&quot;)</code>. You should see the following line in the<span class="widont">&nbsp;</span>console:</p>
+<pre><code class="language-text">Hello World                 debugger eval code:1:9</code></pre>
+<p>What this is telling you is that this value is given on line 1, column 9 of the “debugger
+eval” (equivalent to a source code<span class="widont">&nbsp;</span>file).</p>
+<p>But there’s more to this. <code>console.log</code> can also print out<span class="widont">&nbsp;</span>objects.</p>
+<pre><code class="language-javascript"><span class="built_in">console</span>.log(<span class="built_in">window</span>);</code></pre>
+<p><span class="caps">OK</span>? So? How does that help<span class="widont">&nbsp;</span>us?</p>
+<p>Right click on the object of the line printed, and you should see the following<span class="widont">&nbsp;</span>menu.</p>
+<p><img src="/articles/going_all_karen_on_javascript/images/console-save-as-global-object.png" alt="Store As Global Object"></p>
+<p>Click on “Store as Global Variable.” You’ll now see the following in the<span class="widont">&nbsp;</span>console:</p>
+<p><img src="/articles/going_all_karen_on_javascript/images/temp0-is-now-window.png" alt="temp0 is now window"></p>
+<p>This is cool! Now we can do whatever we want with <code>window</code> as <code>temp0</code>! This is how
+Karen can get her way in the<span class="widont">&nbsp;</span>code.</p>
+<p>So let’s make a small modification to the code to print out the variable in<span class="widont">&nbsp;</span>JavaScript:</p>
+<pre><code class="language-javascript"><span class="comment">// ...</span>
+    <span class="function"><span class="keyword">function</span> <span class="title">init</span> (<span class="params"></span>) </span>{
+        items = <span class="built_in">document</span>.getElementById(<span class="string">"todoList"</span>).children;
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; items.length; ++i) {
+            <span class="keyword">let</span> rgb = [
+                <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>),
+                <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>),
+                <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>)
+            ];
+            <span class="comment">// Print out the current item.</span>
+            <span class="built_in">console</span>.log(items[i]);
+            items[i].attributes[<span class="string">"style"</span>] = <span class="string">`color: rgb(<span class="subst">${rgb.join(<span class="string">", "</span>)}</span>)`</span>;
+        }
+    }
+<span class="comment">// ...</span></code></pre>
+<p>If we open up the console window we’ll see the<span class="widont">&nbsp;</span>following:</p>
+<p><img src="/articles/going_all_karen_on_javascript/images/initial-debug-all-list-items.png" alt="List Items Printed"></p>
+<p>As you can see, each individual <code>li</code> item has been printed to the<span class="widont">&nbsp;</span>console.</p>
+<p>Note this corresponds to <code>items[i]</code>, for which we don’t correctly set the style
+color. Why is this? Let’s inspect the <code>items[i]</code> element.</p>
+<p>First right click on it, and say “Store as Global Variable.” The new variable name
+will be called <code>temp0</code>.</p>
+<blockquote>
+<p>Here’s what’s cool…even though the <code>items[i]</code> printed to the console only lives as
+long as the <code>for</code> loop, Firefox stores a reference to this instance in memory for 
+future<span class="widont">&nbsp;</span>use.</p>
+</blockquote>
+<p>So now let’s use <code>temp0</code> for debugging.</p>
+<p>First, let’s see if there’s anything called <code>attributes</code></p>
+<pre><code class="language-javascript">temp0.attributes
+<span class="comment">// &gt; NamedNodeMap []</span></code></pre>
+<p>Looks like there is. So there’s no issue there. What are some of the items of
+<code>NamedNodeMap</code>? There’s a little triangle beside the result of <code>temp0.attributes</code>. If we
+click on it we’ll see an expanded<span class="widont">&nbsp;</span>definition.</p>
+<p><img src="/articles/going_all_karen_on_javascript/images/console-i-am-setting-attributes-correctly.png" alt="I am setting attributes correctly"></p>
+<p>So, looks like I’m setting style correctly! But it still doesn’t<span class="widont">&nbsp;</span>work!</p>
+<blockquote>
+<p>Me: <em>goes on Internet hunt to search how to add styling to elements in<span class="widont">&nbsp;</span>JavaScript</em></p>
+</blockquote>
+<p>Okay, looks like the actual way to do it<span class="widont">&nbsp;</span>is:</p>
+<pre><code class="language-javascript">item.style = <span class="string">"color: &lt;color&gt;"</span>;</code></pre>
+<p>But let’s experiment to see if it would work. In the console, copy using <code>temp0</code>,
+try setting the color to<span class="widont">&nbsp;</span>green:</p>
+<pre><code class="language-javascript">temp0.style = <span class="string">"color: green"</span>;</code></pre>
+<p>Whadayaknow it works!</p>
+<p><img src="/articles/going_all_karen_on_javascript/images/wadayaknowitworks.png" alt="Whadayaknow"></p>
+<p>So let’s correct our new code to use <code>items[i].style</code>:</p>
+<pre><code class="language-javascript"><span class="comment">// ...</span>
+            <span class="function"><span class="keyword">function</span> <span class="title">init</span> (<span class="params"></span>) </span>{
+                items = <span class="built_in">document</span>.getElementById(<span class="string">"todoList"</span>).children;
+                <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; items.length; ++i) {
+                    <span class="keyword">let</span> rgb = [
+                        <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>),
+                        <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>),
+                        <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * <span class="number">200</span>)
+                    ];
+                    items[i].style = <span class="string">`color: rgb(<span class="subst">${rgb.join(<span class="string">", "</span>)}</span>)`</span>;
+                }
+            }
+<span class="comment">// ...</span></code></pre>
+<p>And now when we reload the page we have pretty little rainbow<span class="widont">&nbsp;</span>text!</p>
+<p><img src="/articles/going_all_karen_on_javascript/images/pretty-little-rainbow-text.png" alt="Pretty Little Rainbow Text"></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>As we saw, there really is no good debugger in JavaScript that has the same
+power as <span class="caps">GDB</span> or <span class="caps">PDB</span>. However, with a little inginuity, we can find out what’s
+wrong in our code and correct<span class="widont">&nbsp;</span>it.</p>
+<p>It essentially involves printing the object within the current scope to the console.
+You can do this from within any code construct, including anonymous functions. The 
+browser is pretty good at maintaining references to all these elements, so
+all you have to do is explore the object you’re interested<span class="widont">&nbsp;</span>in.</p>
+<p>This was a pretty simple example, but you can imagine the more quirky examples that
+you may have in your own development process (e.g. responses from <span class="caps">AJAX</span><span class="widont">&nbsp;</span>calls).</p>
+<p>And note that there are a lot of other features with the web console and debugger
+I didn’t even cover, like setting break points and stepping through code. There are
+a lot of tutorials written on this, but I didn’t see a lot that covered this
+simple<span class="widont">&nbsp;</span>strategy.</p>
+<p>Essentially, we went full Karen. Because we deserve better from<span class="widont">&nbsp;</span>JavaScript!</p>
+</section>
+            </article>
+            <div class="hiring-box">
+              <center>
+                <h4>Did you like this article?</h4>
+              </center>
+              <center>
+                <p>Did you know I'm<strong> 
+                    <u>available for hire?</u></strong></p>
+              </center>
+              <p>Send me an email here: <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></p>
+              <p>Or connect with me in Wire:<b> @nswered</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 col-lg-12 content-wrap" id="sidebar">
+          <div class="nav"><a href="/">&laquo; Full blog</a></div>
+          <section class="about"><img src="/images/portrait.png" class="s-circle col-5 p-centered" />
+
+<h1 id="important-links">Important Links</h1>
+<p><a href="portfolio.html" class="btn btn-primary col-12">My Project Portfolio</a></p>
+<p></p>
+<a href="https://src-r-r.github.io/feed.xml" type='application/rss+xml' class="btn col-12" title="Blog">
+<i class="fas fa-rss-square"></i>
+Blog RSS Feed
+</a>
+
+<dl>
+  <dt>Services</dt>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.freelancer.com/u/TheSrcRR">Freelancer</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.upwork.com/freelancers/~0105fc69312e2da97a">UpWork</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://talent.hubstaff.com/profiles/jordan-hewitt">HubStaff</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.fiverr.com/striking_subzer">Fiverr</a></dd>
+  <dt>Social</dt>
+  <dd><i class="fab fa-twitter"></i>
+  <a href="https://mobile.twitter.com/thesrcrr">@TheSrcRr</dd>
+  <dd><i class="fab fa-linkedin"></i>
+  <a href="https://www.linkedin.com/in/jordan-h-a78122163/">LinkedIn</a></dd>
+  <dt>Software</dt>
+  <dd>
+  <i class="fab fa-github"></i>
+    <a href="https://github.com/src-r-r">GitHub</a></dd>
+  <dd>
+  <i class="fab fa-gitlab"></i>
+  <a href="https://gitlab.com/src-r-r">GitLab</a></dd>
+  <dt><i class="fas fa-camera"></i> Photography</dt>
+  <dd><a href="https://writelight.website">https://writelight.website</a></dd>
+</dl>
+
+<h2 id="contact-me">Contact Me</h2>
+<dl>
+  <dt>Email</dt>
+  <dd><i class="far fa-envelope"></i>
+    <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></dd>
+  <dt>Wire</dt>
+  <dd>@nswered</dd>
+</dl>
+
+<h2 id="services-i-provide">Services I Provide</h2>
+<dl class="hourly-rate">
+  <dt>Hourly Rate</dt>
+  <dd><strong>$57/hr</strong> (negotiable)</dd>
+</dl>
+
+<ul>
+<li>Full Stack Application development</li>
+<li>Documentation writing</li>
+<li>IT Support</li>
+<li>Automation</li>
+<li>Database design (Including PostgreSQL, MongoDB)</li>
+<li>Website creation</li>
+</ul>
+<h2 id="things-i-enjoy-that-i-do-not-charge-for-hobbies-">Things I enjoy that I do not charge for (Hobbies)</h2>
+<ul>
+<li>Reading about philsophy</li>
+<li>Reading about metaphysics</li>
+<li><a href="https:/writelight.website">Photography</a></li>
+<li>Reading fiction</li>
+<li>Improv (didn’t know I’d say that, did you?)</li>
+<li>Theater</li>
+<li>Thinking as a hobby</li>
+<li>Hiking</li>
+</ul>
+<small>
+This project is build on Wintersmith by
+<a href="http://johan-nordberg.com">Johan Nordberg</a>
+</small>
+
+          </section>
+          <section class="copy">
+            <p>&copy; 2021 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+          </section>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/init-highlight.js"></script>
+    </div>
+  </body>
+</html>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>The Source-r-r</title>
-    <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"></atom:link>
-    <link>http://localhost:8080</link>
-    <description>Live Dangerously | Serve Ethically | Think Technically</description>
+    <title>Jordan Hewitt - Software Developer</title>
+    <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
+    <link>https://src-r-r.github.io</link>
+    <description>Break Barriers | Simplify the Complex | Be Open to Ideas</description>
     <pubDate>Tue, 16 Mar 2021 17:00:00 -0700</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
     <item>
       <title>3 Common Mistakes You're Making with Software Projects (And How to Fix Them)</title>
-      <link>http://localhost:8080/articles/3-major-things-projects-need-to-have/</link>
+      <link>https://src-r-r.github.io/articles/3-major-things-projects-need-to-have/</link>
       <pubDate>Tue, 16 Mar 2021 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/3-major-things-projects-need-to-have/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/3-major-things-projects-need-to-have/</guid>
       <author></author>
       <description>&lt;p&gt;&lt;img src=&quot;/articles/3-major-things-projects-need-to-have/images/when-the-product-keeps-crashing-but-you-get-paid-12-to-develop-people-smiling.png&quot; alt=&quot;People Smiling&quot;&gt;&lt;/p&gt;
 &lt;p&gt;I can’t wait to see my program crash!&lt;/p&gt;
@@ -117,10 +117,1946 @@ documenting) sets you ahead of 90% of the developers.&lt;/p&gt;
 </description>
     </item>
     <item>
+      <title>How to Property Set up Python Logging with a Command Line Program</title>
+      <link>https://src-r-r.github.io/articles/how_to_log_with_a_python_cli_program/</link>
+      <pubDate>Fri, 22 Jan 2021 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/how_to_log_with_a_python_cli_program/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/how_to_log_with_a_python_cli_program/images/boy-with-tumpet-and-girl-plugging-ears-with-log-debug-and-stderr.png&quot; alt=&quot;Boy With Trumpet as Log.debug and stderr&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I promise you that the above meme will make sense by the end of the article. Just
+bear with me.&lt;/p&gt;
+&lt;p&gt;While logging should not be used as a replacement for debugging or unit testing, it’s 
+vital to incorporate logging to notify if something is going wrong.&lt;/p&gt;
+&lt;p&gt;Novice Python programmers (or veteran Python programmers) may be a bit frustrated
+configuring logging for a command line application. Unfortunately, while Python’s logging
+module is highly configuragle, this power comes at the cost of clarity.&lt;/p&gt;
+&lt;p&gt;In this article I describe how to properly set up logging in a Python command line
+interface (or CLI), so that we can set up a industry-ready command line program.&lt;/p&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Examples used in this article can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples&quot;&gt;https://gitlab.com/srcrr/python_logging_examples&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;a-command-line-argument-primer&quot;&gt;A Command Line Argument Primer&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is the &lt;strong&gt;tl;dr&lt;/strong&gt; portion for folks who are uninitiated in the ways of argparser.
+For those who are, feel free to skip to
+&lt;a href=&quot;#adding-logging&quot;&gt;Adding Loging and Verbosity&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;For those not familiar, CLI is the term used for any program that is run in the non-
+graphical interface. If you’ve used &lt;code&gt;ls&lt;/code&gt; or &lt;code&gt;dir&lt;/code&gt;, congratulations, you’ve used a CLI
+program.&lt;/p&gt;
+&lt;p&gt;Python is often used as a scrpting language for command line utilities. The basic template
+for such a program looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;:&lt;/span&gt;
+    print(&lt;span class=&quot;string&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt;)
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__ == &lt;span class=&quot;string&quot;&gt;'__main__'&lt;/span&gt;:
+    main()&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/basic_setup/hello_world.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/basic_setup/hello_world.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The program is run like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python hello_world.py 
+Hello World!&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;or like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python -m hello_world
+Hello World!&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;Most veteran python programmers prefer the &lt;code&gt;python -m&lt;/code&gt; approach, since it tries to treat
+everything as a module. I’ll use that form throughout.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;adding-arguments&quot;&gt;Adding Arguments&lt;/h1&gt;
+&lt;p&gt;Let’s add some spice to the program! If you’ve ever spent a day on the command line you’ve
+undoubtedly come across arguments and options. This is something like &lt;code&gt;ps -aux&lt;/code&gt; for linux or &lt;code&gt;dir /t&lt;/code&gt; for Windows. Python prefers the hyphenated syntax (.e.g. &lt;code&gt;-v&lt;/code&gt; or &lt;code&gt;--verbose&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;For this we’ll use the argparse library. If you’re looking for more power, I’d suggest
+the &lt;a href=&quot;https://click.palletsprojects.com/en/master/&quot;&gt;Click package&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; argparse
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument(&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;, nargs=&lt;span class=&quot;string&quot;&gt;&quot;?&quot;&lt;/span&gt;, default=&lt;span class=&quot;string&quot;&gt;&quot;World&quot;&lt;/span&gt;)
+
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    print(&lt;span class=&quot;string&quot;&gt;f&quot;Hello, &lt;span class=&quot;subst&quot;&gt;{args.name}&lt;/span&gt;!&quot;&lt;/span&gt;)
+
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__ == &lt;span class=&quot;string&quot;&gt;&quot;__main__&quot;&lt;/span&gt;:
+    args = parser.parse_args()
+    main(args)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/cli_add_argparse/hello.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/cli_add_argparse/hello.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This program has an optional argument &lt;code&gt;name&lt;/code&gt;, which will be printed in place of &lt;code&gt;World&lt;/code&gt;,
+if given.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python -m hello
+Hello, World!
+
+$ python -m hello Jerry
+Hello, Jerry!&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a name=&quot;adding-logging&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;adding-logging-and-verbosity&quot;&gt;Adding Logging and Verbosity&lt;/h1&gt;
+&lt;p&gt;Let’s add a few more things to the program:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Add logging so we know what’s going on.&lt;/li&gt;
+&lt;li&gt;Add a flag to specify how verbose we want to be.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Since the example above is pretty basic (despite there not being a pumpkin spice latte in 
+sight) let’s modify the program to do something more complex.&lt;/p&gt;
+&lt;p&gt;Let’s still greet the person, but check to see what time of day it is. Then we’ll greet
+the user accordingly. For added fun, let’s add an hour offset!&lt;/p&gt;
+&lt;p&gt;Here’s the code for the program:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; sys
+&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; datetime &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; datetime, timedelta
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; argparse
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; logging
+
+&lt;span class=&quot;comment&quot;&gt;# Only used for type hinting.&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; typing &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; T
+
+parser = argparse.ArgumentParser()
+parser.add_argument(&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;, nargs=&lt;span class=&quot;string&quot;&gt;&quot;?&quot;&lt;/span&gt;, default=&lt;span class=&quot;string&quot;&gt;&quot;World&quot;&lt;/span&gt;)
+parser.add_argument(&lt;span class=&quot;string&quot;&gt;&quot;-o&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;--offset&quot;&lt;/span&gt;, type=int, default=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)
+
+&lt;span class=&quot;comment&quot;&gt;# Create a new logger&lt;/span&gt;
+log = logging.getLogger(__name__)
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;say_hello&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(name : T.Any, hour_offset : int)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# Boundary checking.&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# &lt;span class=&quot;doctag&quot;&gt;NOTE:&lt;/span&gt; typically we'd want to raise an exception here,&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# such as a RuntimeException. However, to demonstrate logging,&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# we'll just log an error, then exit gracefully.&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# &lt;span class=&quot;doctag&quot;&gt;NOTE:&lt;/span&gt; Actually, more than likely the proper way to do this&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# would be to do bounds checking via argparser.&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; abs(hour_offset) &amp;gt; &lt;span class=&quot;number&quot;&gt;23&lt;/span&gt;:
+        log.error(&lt;span class=&quot;string&quot;&gt;&quot;`hour_offset` must be less than 24!&quot;&lt;/span&gt;)
+        sys.exit(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+    curr_time = datetime.now()
+    check_time = curr_time + timedelta(hours=hour_offset)
+    log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Current time: %s&quot;&lt;/span&gt;, curr_time.strftime(&lt;span class=&quot;string&quot;&gt;&quot;%c&quot;&lt;/span&gt;))
+    log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Offset in hours: %s&quot;&lt;/span&gt;, hour_offset)
+    log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Time to check: %s&quot;&lt;/span&gt;, check_time)
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; check_time.hour &amp;gt; &lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;:
+        print(&lt;span class=&quot;string&quot;&gt;f&quot;Closing time, &lt;span class=&quot;subst&quot;&gt;{name}&lt;/span&gt;. I'm done for the day.&quot;&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; check_time.hour &amp;gt; &lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;:
+        print(&lt;span class=&quot;string&quot;&gt;f&quot;Good afternoon, &lt;span class=&quot;subst&quot;&gt;{name}&lt;/span&gt;. How was lunch?&quot;&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+    print(&lt;span class=&quot;string&quot;&gt;f&quot;&lt;span class=&quot;subst&quot;&gt;{name}&lt;/span&gt;, I need coffee.&quot;&lt;/span&gt;)
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__==&lt;span class=&quot;string&quot;&gt;'__main__'&lt;/span&gt;:
+    args = parser.parse_args()
+    main(args)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/adding_complexity/hello_check.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/adding_complexity/hello_check.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Excellent. Let’s try running the program!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python -m hello_check
+World, I need coffee.
+$ python -m hello_check -o 4 Susan
+Good afternoon, Susan. How was lunch?
+$ python -m hello_check -o 77 Sam
+`hour_offset` must be less than 24!&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So far so good. But notice anything?&lt;/p&gt;
+&lt;p&gt;Where are all the debugging messages?&lt;/p&gt;
+&lt;p&gt;Logging is obviously working, otherwise &lt;code&gt;&amp;quot;&amp;#39;hour_offset&amp;#39; must be less than 24!&amp;quot;&lt;/code&gt; won’t be
+printed.&lt;/p&gt;
+&lt;p&gt;This is due to how Python logs…specifically &lt;strong&gt;logging levels&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;how-python-logging-works&quot;&gt;How Python Logging Works&lt;/h1&gt;
+&lt;p&gt;I would highly recommend taking a look at the &lt;a href=&quot;https://docs.python.org/3/library/logging.html&quot;&gt;Python Logging Documentation&lt;/a&gt;. I’ll admit–It’s a lot to unpack, so I’ll put the
+simplistic explanation here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Logging is done within a &lt;strong&gt;logger object&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;There are 5 levels of logging: &lt;code&gt;DEBUG&lt;/code&gt;, &lt;code&gt;INFO&lt;/code&gt;, &lt;code&gt;WARNING&lt;/code&gt;, &lt;code&gt;ERROR&lt;/code&gt;, and &lt;code&gt;CRITICAL&lt;/code&gt;,
+&lt;code&gt;DEBUG&lt;/code&gt; being the lowest level (just used for developers), and &lt;code&gt;CRITICAL&lt;/code&gt; being
+the highest level.&lt;/li&gt;
+&lt;li&gt;If not configured, instantiating a logger object will configure it with default
+properties.&lt;/li&gt;
+&lt;li&gt;These default properties result in anything with level &lt;code&gt;INFO&lt;/code&gt; and above to be
+written to &lt;code&gt;stderr&lt;/code&gt; without any fancy formatting.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Here’s what’s important:&lt;/strong&gt; all these defaults can be overridden.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Since (in the example above) we don’t configure the logger, Python just uses the default
+properties, meaning nothing below &lt;code&gt;INFO&lt;/code&gt; will be printed.&lt;/p&gt;
+&lt;p&gt;With this we use the &lt;code&gt;logging.basicConfig&lt;/code&gt; function:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; logging
+&lt;span class=&quot;comment&quot;&gt;# Only used for type hinting.&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; typing &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; T
+
+logging.basicConfig(level=logging.DEBUG)
+&lt;span class=&quot;comment&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And we run the program again:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python -m hello_check -o 77 Sam
+ERROR:__main__:`hour_offset` must be less than 24!
+
+$ python -m hello_check -o 3 Sam
+DEBUG:__main__:Current time: Sun Jan 24 08:14:04 2021
+DEBUG:__main__:Offset in hours: 3
+DEBUG:__main__:Time to check: 2021-01-24 11:14:04.988934
+Sam, I need coffee.&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice 2 things:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The formatting of the log messages changed. Now it’s printed as 
+&lt;code&gt;&amp;lt;Level&amp;gt;:&amp;lt;__name__&amp;gt;:&amp;lt;message&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Messages with level &lt;code&gt;DEBUG&lt;/code&gt; are printed to the console.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Sweet! However, there is an issue. Typically with a program we don’t want to
+print out the debug messages &lt;em&gt;EVERY TIME&lt;/em&gt;. Only for when a user wants to find out
+more detailed info on what happened or if we’re doing active development.&lt;/p&gt;
+&lt;p&gt;So most programs have a “debug” flag (sometimes it’s a “verbosity” flag), like
+this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;$ program -d
+DEBUG: Here is a debug message
+This is the output
+
+$ program
+This is the output&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s modify our program to include a debug flag.&lt;/p&gt;
+&lt;h1 id=&quot;debug-flag&quot;&gt;Debug Flag&lt;/h1&gt;
+&lt;p&gt;The following changes are made to our program:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; typing &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; T
+
+&lt;span class=&quot;comment&quot;&gt;# logging.basicConfig Is removed from here&lt;/span&gt;
+
+parser = argparse.ArgumentParser()
+
+&lt;span class=&quot;comment&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;parser.add_argument(&lt;span class=&quot;string&quot;&gt;&quot;-d&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;--debug&quot;&lt;/span&gt;, action=&lt;span class=&quot;string&quot;&gt;&quot;store_true&quot;&lt;/span&gt;, default=&lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;)
+
+&lt;span class=&quot;comment&quot;&gt;# Create a new logger&lt;/span&gt;
+log = logging.getLogger(__name__)
+
+&lt;span class=&quot;comment&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We’ve added the flag. Cool. But how do we control the program flow to enable
+debugging messages?&lt;/p&gt;
+&lt;p&gt;While there may be a few options, I’d recommend putting it in &lt;code&gt;main&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; args.debug:
+        logging.basicConfig(level=logging.DEBUG)
+    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;:
+        logging.basicConfig(level=logging.INFO)
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/configure_level_debug/hello_check.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/configure_level_debug/hello_check.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And with that, we can run the program with debugging:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;$ python -m hello_check
+World, I need coffee.
+
+$ python -m hello_check -d
+DEBUG:__main__:Current time: Tue Jan 26 06:17:51 2021
+DEBUG:__main__:Offset in hours: 0
+DEBUG:__main__:Time to check: 2021-01-26 06:17:51.652623
+World, I need coffee&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First of all, yes, I know that’s early. I’m an early riser–what can I say!&lt;/p&gt;
+&lt;p&gt;Second of all, we have successfully added a &lt;code&gt;-d/--debug&lt;/code&gt; flag to control debugging
+output–just like the pros do. 😎&lt;/p&gt;
+&lt;h1 id=&quot;advanced-topic-dictconfig&quot;&gt;Advanced Topic: DictConfig&lt;/h1&gt;
+&lt;p&gt;For simple programs this is fine, but typically if you’re doing logging “right,” you’d
+use &lt;a href=&quot;https://docs.djangoproject.com/en/3.1/topics/logging/#examples&quot;&gt;&lt;code&gt;logging.config.dictConfig&lt;/code&gt;&lt;/a&gt;. This allows for finer-grained control over logging output.&lt;/p&gt;
+&lt;p&gt;But we want to control the flow of the debug output. How do we go about this?&lt;/p&gt;
+&lt;p&gt;There are 2 ways:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Invoking &lt;code&gt;dictConfig&lt;/code&gt; from a global context (e.g. near the &lt;code&gt;import&lt;/code&gt;s), then iterating
+through each handler in &lt;code&gt;main&lt;/code&gt; to set each one to &lt;code&gt;DEBUG&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Invoking &lt;code&gt;dictConfig&lt;/code&gt; from &lt;code&gt;main&lt;/code&gt;, based on the value of &lt;code&gt;args.debug&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Option 1 does have it’s advantages, but for the sake of simplicity I’ll incorporate
+option 2.&lt;/p&gt;
+&lt;p&gt;Consider the following &lt;code&gt;LOGGING&lt;/code&gt; dict:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;{
+    &lt;span class=&quot;string&quot;&gt;'version'&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;'disable_existing_loggers'&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;'formatters'&lt;/span&gt;: {
+        &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'format'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{levelname} {message}'&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;'style'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{'&lt;/span&gt;,
+        },
+    },
+    &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: {
+        &lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'class'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'logging.StreamHandler'&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;'formatter'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;,
+        },
+    },
+    &lt;span class=&quot;string&quot;&gt;'root'&lt;/span&gt;: {
+        &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;],
+        &lt;span class=&quot;string&quot;&gt;'level'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'DEBUG'&lt;/span&gt;,
+    },
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We’ll want to pass this in to &lt;code&gt;logging.config.dictConfig&lt;/code&gt; but remember that we
+also want to set &lt;code&gt;level&lt;/code&gt; dynamically, based on the value of  &lt;code&gt;args.debug&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We can use boolean comprehension for shorthand here, and return it as a value from
+a function.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_log_dict&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; {
+        &lt;span class=&quot;string&quot;&gt;'version'&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;'disable_existing_loggers'&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;'formatters'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;'format'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{levelname} {message}'&lt;/span&gt;,
+                &lt;span class=&quot;string&quot;&gt;'style'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{'&lt;/span&gt;,
+            },
+        },
+        &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;'class'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'logging.StreamHandler'&lt;/span&gt;,
+                &lt;span class=&quot;string&quot;&gt;'formatter'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;,
+            },
+        },
+        &lt;span class=&quot;string&quot;&gt;'root'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;],
+            &lt;span class=&quot;string&quot;&gt;'level'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'DEBUG'&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; args.debug &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;'INFO'&lt;/span&gt;,
+        },
+    }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That way we can simply call the function from main:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# In imports...&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; os
+&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; logging.config
+&lt;span class=&quot;comment&quot;&gt;# Later on in main ...&lt;/span&gt;
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    logging.config.dictConfig(get_log_dict(args))
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The full source code can be seen here: &lt;a href=&quot;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/with_dictconfig/hello_check.py&quot;&gt;https://gitlab.com/srcrr/python_logging_examples/-/blob/master/with_dictconfig/hello_check.py&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now we can have finer grained control over debug output.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;python -m hello_check -d
+DEBUG Current time: Tue Jan 26 06:41:52 2021
+DEBUG Offset in hours: 0
+DEBUG Time to check: 2021-01-26 06:41:52.706966
+World, I need coffee.&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note that this will only control the logging for the current console. If you’re a Django
+enthusiast and really want Django in your program (and who doesn’t!), you can control
+that logging sepearately:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_log_dict&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; {
+        &lt;span class=&quot;string&quot;&gt;'version'&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;'disable_existing_loggers'&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;'formatters'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;'format'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{levelname} {message}'&lt;/span&gt;,
+                &lt;span class=&quot;string&quot;&gt;'style'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'{'&lt;/span&gt;,
+            },
+        },
+        &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;'class'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'logging.StreamHandler'&lt;/span&gt;,
+                &lt;span class=&quot;string&quot;&gt;'formatter'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'simple'&lt;/span&gt;,
+            },
+        },
+        &lt;span class=&quot;comment&quot;&gt;# Print `info` if `-d` flag passed...otherwise `warning`&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;'django'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;],
+            &lt;span class=&quot;string&quot;&gt;'level'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'INFO'&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; args.debug &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;'WARNING'&lt;/span&gt;,
+        },
+        &lt;span class=&quot;string&quot;&gt;'root'&lt;/span&gt;: {
+            &lt;span class=&quot;string&quot;&gt;'handlers'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'console'&lt;/span&gt;],
+            &lt;span class=&quot;string&quot;&gt;'level'&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;'DEBUG'&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; args.debug &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;'INFO'&lt;/span&gt;,
+        },
+    }&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;In this tutorial we showed how to properly configure logging in Python. What Python
+lacks in clarity it makes up for in granularity. Python’s logging module is one of the
+most powerful out there, and there are many modules you can incorporate to add
+formatters, handlers, and more!&lt;/p&gt;
+&lt;p&gt;It can be confusing sometimes to add logging to command line interfaces programs, though.
+Above we showed how to do this.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Going Full 💯 Karen on JavaScript with the Web Console</title>
+      <link>https://src-r-r.github.io/articles/going_all_karen_on_javascript/</link>
+      <pubDate>Tue, 29 Dec 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/going_all_karen_on_javascript/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/karen-cover.png&quot; alt=&quot;Karen Hates JavaScript&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Whether you like it or not, at some point, with whatever programming
+language you’re develping in, you’re going to have to enter the debugger.
+C uses GDB. Java uses JDB. Python uses PDB (or iPDB). This allows you
+to step through the code and find out where an error exists.&lt;/p&gt;
+&lt;p&gt;But there doesn’t seem to be a “jsdb” for JavaScript. If you’re using
+node, there’s a debugger for that, but what if you’re not using
+the Node framework? How can you tell what your code is doing?&lt;/p&gt;
+&lt;p&gt;You speak to the manager, that’s what you do!&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;where-s-the-feedback-&quot;&gt;Where’s the Feedback?&lt;/h1&gt;
+&lt;p&gt;Consider the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&lt;span class=&quot;meta&quot;&gt;&amp;lt;!DOCTYPE &lt;span class=&quot;meta-keyword&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;head&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;title&lt;/span&gt;&amp;gt;&lt;/span&gt;Simple JavaScript Debugging Example&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;title&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;head&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;init()&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;p&lt;/span&gt;&amp;gt;&lt;/span&gt;To do list:&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;p&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;ul&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;todoList&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Unit Tests&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Documentation&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Writing Code&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Comments&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;Integration Testing&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;li&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;ul&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
+            &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;init&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;{
+                items = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;todoList&quot;&lt;/span&gt;).children;
+                &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; items.length; ++i) {
+                    &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; rgb = [
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;)
+                    ];
+                    items[i].attributes[&lt;span class=&quot;string&quot;&gt;&quot;style&quot;&lt;/span&gt;] = &lt;span class=&quot;string&quot;&gt;`color: rgb(&lt;span class=&quot;subst&quot;&gt;${rgb.join(&lt;span class=&quot;string&quot;&gt;&quot;, &quot;&lt;/span&gt;)}&lt;/span&gt;)`&lt;/span&gt;;
+                }
+            }
+        &lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;body&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Essentially what we’re doing here is assigning a random color (below &lt;code&gt;rgb(100, 100, 100)&lt;/code&gt;
+so we can read it) to each element of the “To Do List.”&lt;/p&gt;
+&lt;p&gt;For those not familiar with JavaScript, those back tick marks (&lt;code&gt;``&lt;/code&gt;) indicate
+that whatever is inside &lt;code&gt;${}&lt;/code&gt; is to replaced by variables in the current scope.&lt;/p&gt;
+&lt;p&gt;By the look of this code, everything seems correct (astute JavaScript developers can
+probably spot what’s wrong, but that’s not the point of this article).&lt;/p&gt;
+&lt;p&gt;But why doesn’t it work?&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/web-page-does-not-work.png&quot; alt=&quot;Why doesn&amp;#39;t it work?&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Where are the pretty colors? That’s okay…The debug console will tell us.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/debug-console-no-errors.png&quot; alt=&quot;No Error?&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Hm…perhaps not.&lt;/p&gt;
+&lt;p&gt;You can ignore the 404 error (It’s the browser trying to find a favicon). But
+we don’t see any error in the console related to the JavaScript&lt;/p&gt;
+&lt;p&gt;But our web page does not show the list items with pretty rainbow colors?&lt;/p&gt;
+&lt;p&gt;Now, ask yourself…would Karen give up, or would she demand that JavaScript tell
+her what’s wrong?&lt;/p&gt;
+&lt;p&gt;You know the answer to that one! Let’s speak to the manager!&lt;/p&gt;
+&lt;p&gt;The manager (in this case) is the debug console.&lt;/p&gt;
+&lt;h1 id=&quot;debugging-in-the-console&quot;&gt;Debugging in the Console&lt;/h1&gt;
+&lt;p&gt;We must use the browser console for debugging in this instance.&lt;/p&gt;
+&lt;p&gt;I’m a fan of Firefox, moreso because of Mozilla’s respect of user privacy, but
+Chrome an Safari have similar consoles.&lt;/p&gt;
+&lt;p&gt;One neat feature about the console is that it has very powerful object inspection.
+You can duplicate objects, edit objects live, and even add break points to code.&lt;/p&gt;
+&lt;p&gt;How can we do this? &lt;code&gt;console.log&lt;/code&gt;. Open up the JavaScript console and type
+&lt;code&gt;console.log(&amp;quot;Hello World&amp;quot;)&lt;/code&gt;. You should see the following line in the console:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;Hello World                 debugger eval code:1:9&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;What this is telling you is that this value is given on line 1, column 9 of the “debugger
+eval” (equivalent to a source code file).&lt;/p&gt;
+&lt;p&gt;But there’s more to this. &lt;code&gt;console.log&lt;/code&gt; can also print out objects.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(&lt;span class=&quot;built_in&quot;&gt;window&lt;/span&gt;);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;OK? So? How does that help us?&lt;/p&gt;
+&lt;p&gt;Right click on the object of the line printed, and you should see the following menu.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/console-save-as-global-object.png&quot; alt=&quot;Store As Global Object&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Click on “Store as Global Variable.” You’ll now see the following in the console:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/temp0-is-now-window.png&quot; alt=&quot;temp0 is now window&quot;&gt;&lt;/p&gt;
+&lt;p&gt;This is cool! Now we can do whatever we want with &lt;code&gt;window&lt;/code&gt; as &lt;code&gt;temp0&lt;/code&gt;! This is how
+Karen can get her way in the code.&lt;/p&gt;
+&lt;p&gt;So let’s make a small modification to the code to print out the variable in
+JavaScript:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;init&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;{
+        items = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;todoList&quot;&lt;/span&gt;).children;
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; items.length; ++i) {
+            &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; rgb = [
+                &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;)
+            ];
+            &lt;span class=&quot;comment&quot;&gt;// Print out the current item.&lt;/span&gt;
+            &lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(items[i]);
+            items[i].attributes[&lt;span class=&quot;string&quot;&gt;&quot;style&quot;&lt;/span&gt;] = &lt;span class=&quot;string&quot;&gt;`color: rgb(&lt;span class=&quot;subst&quot;&gt;${rgb.join(&lt;span class=&quot;string&quot;&gt;&quot;, &quot;&lt;/span&gt;)}&lt;/span&gt;)`&lt;/span&gt;;
+        }
+    }
+&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If we open up the console window we’ll see the following:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/initial-debug-all-list-items.png&quot; alt=&quot;List Items Printed&quot;&gt;&lt;/p&gt;
+&lt;p&gt;As you can see, each individual &lt;code&gt;li&lt;/code&gt; item has been printed to the console.&lt;/p&gt;
+&lt;p&gt;Note this corresponds to &lt;code&gt;items[i]&lt;/code&gt;, for which we don’t correctly set the style
+color. Why is this? Let’s inspect the &lt;code&gt;items[i]&lt;/code&gt; element.&lt;/p&gt;
+&lt;p&gt;First right click on it, and say “Store as Global Variable.” The new variable name
+will be called &lt;code&gt;temp0&lt;/code&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Here’s what’s cool…even though the &lt;code&gt;items[i]&lt;/code&gt; printed to the console only lives as
+long as the &lt;code&gt;for&lt;/code&gt; loop, Firefox stores a reference to this instance in memory for 
+future use.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So now let’s use &lt;code&gt;temp0&lt;/code&gt; for debugging.&lt;/p&gt;
+&lt;p&gt;First, let’s see if there’s anything called &lt;code&gt;attributes&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;temp0.attributes
+&lt;span class=&quot;comment&quot;&gt;// &amp;gt; NamedNodeMap []&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Looks like there is. So there’s no issue there. What are some of the items of
+&lt;code&gt;NamedNodeMap&lt;/code&gt;? There’s a little triangle beside the result of &lt;code&gt;temp0.attributes&lt;/code&gt;. If we
+click on it we’ll see an expanded definition.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/console-i-am-setting-attributes-correctly.png&quot; alt=&quot;I am setting attributes correctly&quot;&gt;&lt;/p&gt;
+&lt;p&gt;So, looks like I’m setting style correctly! But it still doesn’t work!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Me: &lt;em&gt;goes on Internet hunt to search how to add styling to elements in JavaScript&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Okay, looks like the actual way to do it is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;item.style = &lt;span class=&quot;string&quot;&gt;&quot;color: &amp;lt;color&amp;gt;&quot;&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But let’s experiment to see if it would work. In the console, copy using &lt;code&gt;temp0&lt;/code&gt;,
+try setting the color to green:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;temp0.style = &lt;span class=&quot;string&quot;&gt;&quot;color: green&quot;&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Whadayaknow it works!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/wadayaknowitworks.png&quot; alt=&quot;Whadayaknow&quot;&gt;&lt;/p&gt;
+&lt;p&gt;So let’s correct our new code to use &lt;code&gt;items[i].style&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;
+            &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;init&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;) &lt;/span&gt;{
+                items = &lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.getElementById(&lt;span class=&quot;string&quot;&gt;&quot;todoList&quot;&lt;/span&gt;).children;
+                &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; items.length; ++i) {
+                    &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; rgb = [
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;),
+                        &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.random() * &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;)
+                    ];
+                    items[i].style = &lt;span class=&quot;string&quot;&gt;`color: rgb(&lt;span class=&quot;subst&quot;&gt;${rgb.join(&lt;span class=&quot;string&quot;&gt;&quot;, &quot;&lt;/span&gt;)}&lt;/span&gt;)`&lt;/span&gt;;
+                }
+            }
+&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And now when we reload the page we have pretty little rainbow text!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/going_all_karen_on_javascript/images/pretty-little-rainbow-text.png&quot; alt=&quot;Pretty Little Rainbow Text&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;As we saw, there really is no good debugger in JavaScript that has the same
+power as GDB or PDB. However, with a little inginuity, we can find out what’s
+wrong in our code and correct it.&lt;/p&gt;
+&lt;p&gt;It essentially involves printing the object within the current scope to the console.
+You can do this from within any code construct, including anonymous functions. The 
+browser is pretty good at maintaining references to all these elements, so
+all you have to do is explore the object you’re interested in.&lt;/p&gt;
+&lt;p&gt;This was a pretty simple example, but you can imagine the more quirky examples that
+you may have in your own development process (e.g. responses from AJAX calls).&lt;/p&gt;
+&lt;p&gt;And note that there are a lot of other features with the web console and debugger
+I didn’t even cover, like setting break points and stepping through code. There are
+a lot of tutorials written on this, but I didn’t see a lot that covered this
+simple strategy.&lt;/p&gt;
+&lt;p&gt;Essentially, we went full Karen. Because we deserve better from JavaScript!&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Amazon Scraping with Scrapy, Part I - Scraping</title>
+      <link>https://src-r-r.github.io/articles/scraping_amazon/</link>
+      <pubDate>Wed, 02 Dec 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/scraping_amazon/</guid>
+      <author></author>
+      <description>&lt;p&gt;Recently I was doing a research project trying to determine information on the top sellers at
+Amazon.&lt;/p&gt;
+&lt;p&gt;In this first part I describe my process of scraping the necessary data from Amazon. In
+Part II I’ll discuss some of my findings.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-scrapy-cover.png&quot; alt=&quot;Amazon Scraping&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Full disclosure that I’m usually not on Amazon. I prefer shopping local as much
+as I can to bolster my local economy.&lt;/p&gt;
+&lt;p&gt;I’d encourage others to do the same this Christmas season.&lt;/p&gt;
+&lt;h1 id=&quot;the-goal-of-the-project&quot;&gt;The Goal of the Project&lt;/h1&gt;
+&lt;p&gt;First: the objective. I wanted to find out what countries Amazon sellers are from
+to see how many are in the United States.&lt;/p&gt;
+&lt;h2 id=&quot;but-how-do-i-know-what-sellers-there-are-&quot;&gt;But how do I know what sellers there are?&lt;/h2&gt;
+&lt;p&gt;My first mode of business was to find out if Amazon lists their sellers. I figured Amazon
+wouldn’t list all of their sellers on one page, let alone have an API where I can get all the
+sellers.&lt;/p&gt;
+&lt;p&gt;I needed to use a scraper.&lt;/p&gt;
+&lt;p&gt;By far the best open source scraper available is &lt;a href=&quot;https://scrapy.readthedocs.io&quot;&gt;Scrapy&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;First, though, I needed to determine how to find these sellers.&lt;/p&gt;
+&lt;h1 id=&quot;investigating-the-url-scemes&quot;&gt;Investigating the URL Scemes&lt;/h1&gt;
+&lt;h2 id=&quot;invididual-seller-pages&quot;&gt;Invididual Seller Pages&lt;/h2&gt;
+&lt;p&gt;Turns out Amazon has seller pages.&lt;/p&gt;
+&lt;p&gt;And on that page there’s an address.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/seller-address-circled.png&quot; alt=&quot;seller address&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I found this out by choosing a random product. For most (but not all) Amazon lists the
+seller on the right side of the page (typically says &lt;code&gt;Fullfilled by...&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;So I’ll eventually scrape that, I realize. Since I know I’m going to scrape this page,
+and others like this, I need a way to determine the patter for the seller page. I’ll
+take a look at the URL in the address bar:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;https://www.amazon.com/sp/?seller=A1W4F5UCY68C8L&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;OK, no mystery here. Looks like each sellers has a code, which in this case is &lt;code&gt;A1W4F5UCY68C8L&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now we need to determine where the list of sellers are.&lt;/p&gt;
+&lt;h2 id=&quot;list-of-all-the-sellers&quot;&gt;List Of All the Sellers&lt;/h2&gt;
+&lt;p&gt;Here I just did a quick DuckDuckGo search for “list of Amazon sellers” The first page that
+popped up was this page:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/gp/search/other/ref=sr_in_-2_1?rh=i%3Aappliances%2Cn%3A2619525011&amp;amp;page=2&amp;amp;pickerToList=enc-merchantbin&amp;amp;ie=UTF8&amp;amp;qid=1607290974&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s save that URL; bookmark it or save it to a text file. We’ll return to it later.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-appliances-top-sellers.png&quot; alt=&quot;top appliance sellers&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;getting-the-seller-url-from-the-list&quot;&gt;Getting the Seller URL from the List&lt;/h3&gt;
+&lt;p&gt;I right clicked on one of the sellers and copied the URL. Here is one for “Goodman’s:”&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/s/ref=sr_in_-2_p_6_19?fst=as%3Aoff&amp;amp;rh=n%3A2619525011%2Cp_6%3AA1H5N2R2HL9LG2&amp;amp;bbn=2619525011&amp;amp;ie=UTF8&amp;amp;qid=1607287774&amp;amp;rnid=2661622011&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s examine the URL in more detail. For this I like to use a REST API client for parsing the parts
+of the URL. I spun up Insomnia and imported the URL as arguments.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/insomnia-amazon-seller-url.png&quot; alt=&quot;insomnia URL parsing&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The objective here is to find the seller code within the URL.&lt;/strong&gt; This will help us
+when constructing the seller address page.&lt;/p&gt;
+&lt;p&gt;Here it’s a bit more hidden. Essentially what we’re looking for is a random string with
+alphanumeric characters. Most everything looks numeric, except for the &lt;code&gt;rh&lt;/code&gt; string:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;n:2619525011,p_6:A1H5N2R2HL9LG2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In fact. Let’s test that we can get the seller info page. Remember earlier the page
+for the “AntiAgingBed” seller?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/sp/?seller=A1W4F5UCY68C8L&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;See that seller code? Let’s replace &lt;code&gt;A1W4F5UCY68C8L&lt;/code&gt; with &lt;code&gt;A1H5N2R2HL9LG2&lt;/code&gt;, and we should
+have seller info for “Goodman’s:”&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/sp/?seller=A1H5N2R2HL9LG2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-goodmans-seller-page.png&quot; alt=&quot;Goodman&amp;#39;s Seller Page&quot;&gt;&lt;/p&gt;
+&lt;p&gt;And Bingo was his name–oh!&lt;/p&gt;
+&lt;p&gt;Note that there’s no seller address for Goodman’s. I noticed that for a lot of the seller
+info pages, so I just skipped them in data collection.&lt;/p&gt;
+&lt;h2 id=&quot;list-of-departments&quot;&gt;List of Departments&lt;/h2&gt;
+&lt;p&gt;So, we’re ready to start scraping, right?&lt;/p&gt;
+&lt;p&gt;Well, not so fast. Based on the information provided we just have the information for the
+“appliances department.” Amazon is not just an appliance store (and based on your experience
+you may say it’s &lt;em&gt;not even&lt;/em&gt; an appliance store).&lt;/p&gt;
+&lt;p&gt;Remember that “Best Appliance Sellers” page? Let’s examine that URL:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;https://www.amazon.com/gp/search/other?page=2&amp;amp;pickerToList=enc-merchantbin&amp;amp;rh=n%3A2619525011&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here it is parsed with Insomnia:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/insomnia-appliance-top-sellers-url.png&quot; alt=&quot;Goodman&amp;#39;s Seller Page&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Based on inference (and experimentation) we can determine what each of these query paramaters
+does:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;page &lt;emph&gt;(optional)&lt;/emph&gt;&lt;/dt&gt;
+&lt;dd&gt;
+    I'd imagine if the result was paginated, this would be on one of the pages. However,
+    if you change it to `1` or `7` the results remain the same.
+&lt;dd&gt;
+&lt;dt&gt;pickerToList &lt;strong&gt;(required)&lt;/strong&gt;&lt;/dd&gt;
+&lt;dd&gt;
+I have a feeling this is needed. To determine if is, I remove it from the URL and try the
+same page. A &quot;Sorry&quot; page pops up with a cute little dog, showing me the department page
+isn't found.
+&lt;/dd&gt;
+&lt;dt&gt;rh &lt;strong&gt;(required)&lt;/strong&gt;&lt;/dd&gt;
+&lt;dd&gt;
+OK, this seems interesting. Obviously the only other query parameter we have left that
+could relate to the department code is this. I make a note of it for later.
+&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;We just need to find a page that lists all Amazon departments. In fact, there is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/gp/site-directory&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-all-departments.png&quot; alt=&quot;All Amazon Departments&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now, remember the &lt;code&gt;rh&lt;/code&gt; query parameter for the “Appliances” department? It was &lt;code&gt;3A2619525011&lt;/code&gt;. Let’s find the “Appliances” department, parse the URL, and find a match.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We’re doing this because this page is the entry point of the spider.&lt;/strong&gt; We’ll be able to
+go through each department and get the sellers associated with the department.&lt;/p&gt;
+&lt;p&gt;Let’s do a simple search to find the “Appliances” link. It’s highlighted below.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon-all-departments-appliances-selected.png&quot; alt=&quot;Amazon Appliances Highlighted&quot;&gt;.&lt;/p&gt;
+&lt;p&gt;The URL is here:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/s?_encoding=UTF8&amp;amp;bbn=256643011&amp;amp;ref_=sd_allcat_nav_desktop_sa_intl_appliances&amp;amp;rh=i%3Aspecialty-aps,n%3A256643011,n%3A!468240,n%3A13397451&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is what it looks like in Insomnia:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/insomnia-department-page-appliances.png&quot; alt=&quot;Insomnia&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you navigate to the URL, it won’t go to the “Top Sellers” like before. The URL for that is
+here:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;https://www.amazon.com/gp/search/other/ref=sr_in_-2_1?rh=i%3Aappliances%2Cn%3A2619525011&amp;amp;page=2&amp;amp;pickerToList=enc-merchantbin&amp;amp;ie=UTF8&amp;amp;qid=1607290974&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/insomnia-appliance-top-sellers-url.png&quot; alt=&quot;Insomnia&quot;&gt;&lt;/p&gt;
+&lt;p&gt;See any similarities?&lt;/p&gt;
+&lt;p&gt;Remember, are trying to construct a URL similar to the &lt;em&gt;2nd URL&lt;/em&gt; from information from
+the &lt;em&gt;1st URL&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;What I see is the &lt;code&gt;rh&lt;/code&gt; string from the 1st URL:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;i:specialty-aps,n:256643011,n:!468240,n:13397451&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Specifically, the &lt;code&gt;bbn&lt;/code&gt; value (&lt;code&gt;256643011&lt;/code&gt;), which matches the &lt;code&gt;n&lt;/code&gt; value from the &lt;code&gt;rh&lt;/code&gt;
+query param in the 2nd URL (&lt;code&gt;256643011&lt;/code&gt;).&lt;/p&gt;
+&lt;h1 id=&quot;initial-program-flow&quot;&gt;Initial Program Flow&lt;/h1&gt;
+&lt;h2 id=&quot;scraping-the-all-departments-page&quot;&gt;Scraping the “All departments” page&lt;/h2&gt;
+&lt;p&gt;So, we have a plan for scraping the department page:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Find all department links.&lt;/li&gt;
+&lt;li&gt;For each department link, extract the &lt;code&gt;n&lt;/code&gt; value from the &lt;code&gt;rh&lt;/code&gt; query parameter.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;From there we can scrape the “top sellers” page for each department.&lt;/p&gt;
+&lt;h2 id=&quot;scraping-the-top-sellers-of-each-department-&quot;&gt;Scraping the “Top Sellers” of each department.&lt;/h2&gt;
+&lt;p&gt;Using the URL from the previous step (using the &lt;code&gt;n&lt;/code&gt; value), fetch the HTML from that page.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Find all seller links on the page.&lt;/li&gt;
+&lt;li&gt;Get the name (stripping all leading and trailing spaces), and as an added bouns,
+the product count in the parentheses.&lt;/li&gt;
+&lt;li&gt;Get the URL for the seller.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;scraping-the-seller-information-page-&quot;&gt;Scraping the seller information page.&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Construct a URL for the seller page based on the URL extracted above (specifically the
+&lt;code&gt;n&lt;/code&gt; value of the &lt;code&gt;rh&lt;/code&gt; query param). Translate it to the &lt;code&gt;rh&lt;/code&gt; query paramter for
+the seller info page.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;amazon-didn-t-like-it&quot;&gt;Amazon Didn’t Like It&lt;/h1&gt;
+&lt;p&gt;Amazon didn’t like to be scraped and I found it blocked me quite a bit. I’ll describe later
+how I managed to fake out Amazon and get some data.&lt;/p&gt;
+&lt;p&gt;For now Let me describe how I planned to store the data.&lt;/p&gt;
+&lt;h1 id=&quot;storing-the-data&quot;&gt;Storing the Data&lt;/h1&gt;
+&lt;p&gt;To save time we’ll save as much in a database as possible.&lt;/p&gt;
+&lt;p&gt;I chose MongoDB for storage, since a lot of this info looks heirarchical and I didn’t
+feel like spending a half hour to drum up a schema. If this was a longer project
+with more needs I would have used PostgreSQL.&lt;/p&gt;
+&lt;h2 id=&quot;departments&quot;&gt;Departments&lt;/h2&gt;
+&lt;p&gt;I wanted to first find all departments on the page and record them. At this point I didn’t
+care if the seller info page exists…I’ll take care of that later.&lt;/p&gt;
+&lt;p&gt;So our first spider would only be fetching one page: &lt;a href=&quot;https://www.amazon.com/gp/site-directory&quot;&gt;https://www.amazon.com/gp/site-directory&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Here is the redacted code for the &lt;code&gt;all_department&lt;/code&gt; spider:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;AzStoreDirectorySpider&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(scrapy.Spider)&lt;/span&gt;:&lt;/span&gt;
+    name = &lt;span class=&quot;string&quot;&gt;&quot;amazon_store_directory&quot;&lt;/span&gt;
+    allowed_domains = [&lt;span class=&quot;string&quot;&gt;&quot;amazon.com&quot;&lt;/span&gt;]
+    start_urls = [
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/gp/site-directory&quot;&lt;/span&gt;,
+    ]
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;department_rh&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, name: T.AnyStr, node: T.Union[int, T.AnyStr])&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;f&quot;i:&lt;span class=&quot;subst&quot;&gt;{name}&lt;/span&gt;,n:&lt;span class=&quot;subst&quot;&gt;{node}&lt;/span&gt;&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_department_info&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, url: T.AnyStr)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot;
+        :param url: URL for department
+
+        :return: (name, node)
+        &quot;&quot;&quot;&lt;/span&gt;
+        parts = urlparse(url)
+        query = parse_qs(parts.query)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;rh&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; query:
+            log.warn(&lt;span class=&quot;string&quot;&gt;&quot;`rh` key not in %s&quot;&lt;/span&gt;, list(url))
+        rh = query[&lt;span class=&quot;string&quot;&gt;&quot;rh&quot;&lt;/span&gt;][&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;]
+        res = RE_NAME_NODE(rh)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; res:
+            log.warning(&lt;span class=&quot;string&quot;&gt;&quot;name and node not found for rh='%s', url='%s&quot;&lt;/span&gt;, rh, url)
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        name = res[&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;]
+        node = res[&lt;span class=&quot;string&quot;&gt;&quot;node&quot;&lt;/span&gt;]
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (res[&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;], node)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;department_query&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(
+        self, name: T.AnyStr, node: T.Union[int, T.AnyStr], indexField=None
+    )&lt;/span&gt;:&lt;/span&gt;
+        val = {
+            &lt;span class=&quot;string&quot;&gt;&quot;rh&quot;&lt;/span&gt;: self.department_rh(name, node),
+            &lt;span class=&quot;string&quot;&gt;&quot;pickerToList&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;enc-merchantbin&quot;&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;&quot;ie&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;UTF8&quot;&lt;/span&gt;,
+        }
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; indexField:
+            val.update(
+                {
+                    &lt;span class=&quot;string&quot;&gt;&quot;indexField&quot;&lt;/span&gt;: indexField,
+                }
+            )
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; val
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;queue_department_page&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(
+        self, name: T.AnyStr, node: T.Union[int, T.AnyStr], indexField=None
+    )&lt;/span&gt;:&lt;/span&gt;
+        query = urlencode(self.department_query(name, node))
+        parts = (
+            &lt;span class=&quot;string&quot;&gt;&quot;https&quot;&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;&quot;www.amazon.com&quot;&lt;/span&gt;,
+            DEPARTMENT_PATH,
+            query,
+            &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;,
+        )
+        url = urlunsplit(parts)
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;+ queue '%s' -- '%s'&quot;&lt;/span&gt;, name, url)
+        &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; scrapy.Request(url)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;process_department_link&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(
+        self,
+        response: scrapy.http.Response,
+        dep_link: T.Any,
+    )&lt;/span&gt;:&lt;/span&gt;
+        a = dep_link
+        name = a.text
+        href = a[&lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt;]
+        url = urlparse(href)
+        query = parse_qs(url.query)
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;Processing %s&quot;&lt;/span&gt;, name)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;node&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; query:
+            log.info(&lt;span class=&quot;string&quot;&gt;&quot;`node` not given in query: %s&quot;&lt;/span&gt;, list(query.keys()))
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; self.queue_department_page(name, query[&lt;span class=&quot;string&quot;&gt;&quot;node&quot;&lt;/span&gt;][&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;])
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.mg_department.find_one(
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: name,
+            }
+        ):
+            log.info(&lt;span class=&quot;string&quot;&gt;&quot;# %s already added&quot;&lt;/span&gt;, name)
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        doc = {
+            &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: name,
+            &lt;span class=&quot;string&quot;&gt;&quot;path&quot;&lt;/span&gt;: url.path,
+            &lt;span class=&quot;string&quot;&gt;&quot;query&quot;&lt;/span&gt;: query,
+        }
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;+ inserting %s&quot;&lt;/span&gt;, doc)
+        self.mg_department.insert_one(doc)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, response: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        soup = BeautifulSoup(response.text, &lt;span class=&quot;string&quot;&gt;&quot;lxml&quot;&lt;/span&gt;)
+        dept_links = soup.find_all(&lt;span class=&quot;string&quot;&gt;&quot;a&quot;&lt;/span&gt;, class_=&lt;span class=&quot;string&quot;&gt;&quot;fsdDeptLink&quot;&lt;/span&gt;)
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;Found %d department links&quot;&lt;/span&gt;, len(dept_links))
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; a &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; dept_links:
+            &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; self.process_department_link(response, a)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I used BeautifulSoup for parsing since this was my first attempt at a spider. Scrapy has
+its own XML parsing mechanism.&lt;/p&gt;
+&lt;p&gt;I tried to print out lots of warnings that indicated if something went wrong. I’m not
+expecting Amazon pages to be consistent (as you saw with the seller above) but it gives
+me an idea if somethings is REALLY wrong.&lt;/p&gt;
+&lt;p&gt;I mark a link as &lt;code&gt;invalid&lt;/code&gt; if I’m unable to come up with a seller page, as is what
+happens from time to time. Obviously, the seller address will not be collected.&lt;/p&gt;
+&lt;p&gt;What’s important to note is that I’m both storing the department in the MongoDB collection
+(in &lt;code&gt;process_department_link&lt;/code&gt;) as well as constructing a department URL and passing it
+to Scrapy (in &lt;code&gt;queue_department_page&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;When storing the department document I use the following schema:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+    &lt;span class=&quot;attr&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &amp;lt;Object ID&amp;gt;,
+    &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt; : &amp;lt;String of the Department ID&amp;gt;,
+    &lt;span class=&quot;attr&quot;&gt;&quot;path&quot;&lt;/span&gt; : &amp;lt;URL Path portion&amp;gt;,
+    &lt;span class=&quot;attr&quot;&gt;&quot;query&quot;&lt;/span&gt; : &amp;lt;SubDocument of query params&amp;gt;,
+    &lt;span class=&quot;attr&quot;&gt;&quot;invalid&quot;&lt;/span&gt; : &amp;lt;boolean - Does the department page exist?&amp;gt;,
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For example, here is the stored document of “Appliances.”&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+  &lt;span class=&quot;attr&quot;&gt;&quot;_id&quot;&lt;/span&gt;: ObjectId(&lt;span class=&quot;string&quot;&gt;&quot;5fc70f5e1244453a23c34067&quot;&lt;/span&gt;),
+  &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Appliances&quot;&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;path&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;/Appliances/b&quot;&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;query&quot;&lt;/span&gt;: {
+    &lt;span class=&quot;attr&quot;&gt;&quot;ie&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;UTF8&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;node&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;2619525011&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;ref_&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;sd_allcat_ha&quot;&lt;/span&gt;]
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;sellers&quot;&gt;Sellers&lt;/h2&gt;
+&lt;p&gt;This step is pretty intensive. My initial draft was single-threaded, and after parsing it
+stored the result. I found this was too slow, so I decided to spawn off MongoDB storage on
+a different thread (hence the executor).&lt;/p&gt;
+&lt;p&gt;Ready? It’s a long one. I try not to include long-winded code samples, but couldn’t find
+ways of making this shorter…&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;AmazonTopSellersSpider&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(scrapy.Spider)&lt;/span&gt;:&lt;/span&gt;
+    name = &lt;span class=&quot;string&quot;&gt;&quot;amazon_top_sellers&quot;&lt;/span&gt;
+    allowed_domains = [&lt;span class=&quot;string&quot;&gt;&quot;amazon.com&quot;&lt;/span&gt;]
+    switch_user_agent_range = (&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, *args, **kwargs)&lt;/span&gt;:&lt;/span&gt;
+        super(AmazonSpider, self).__init__(*args, **kwargs)
+
+        self.mg_client = MongoClient()
+        self.mg_db = self.mg_client.amazon_scraping
+
+        self.mg_department = self.mg_db.department
+        self.mg_top_sellers = mg_db.top_sellers
+
+        &lt;span class=&quot;comment&quot;&gt;# URLs of department sellers&lt;/span&gt;
+        self.department_urls = self.get_department_urls()
+        _u = self.department_urls
+
+        &lt;span class=&quot;comment&quot;&gt;# Shuffle this.&lt;/span&gt;
+        random.shuffle(self.department_urls)
+
+        self.start_urls = self.department_urls
+
+        self.future_to_add_sellers = {
+            &lt;span class=&quot;string&quot;&gt;&quot;task_add_sellers&quot;&lt;/span&gt;: {},
+            &lt;span class=&quot;string&quot;&gt;&quot;task_update_product_count&quot;&lt;/span&gt;: {},
+        }
+
+        self.db_executor = concurrent.futures.ThreadPoolExecutor(max_workers=&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; future &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; concurrent.futures.as_completed(self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_add_sellers&quot;&lt;/span&gt;]):
+            items_added = self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_add_sellers&quot;&lt;/span&gt;][future]
+            log.debug(&lt;span class=&quot;string&quot;&gt;&quot;FUTURE: %d items added to %s&quot;&lt;/span&gt;, len(items_added), future)
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; future &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; concurrent.futures.as_completed(self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_update_product_count&quot;&lt;/span&gt;]):
+            prodCountUpdated = self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_update_product_count&quot;&lt;/span&gt;][
+                future
+            ]
+            log.debug(
+                &lt;span class=&quot;string&quot;&gt;&quot;FUTURE: '%s' product count updated&quot;&lt;/span&gt;,
+                prodCountUpdated.get(&lt;span class=&quot;string&quot;&gt;&quot;productCount&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;&amp;lt;?&amp;gt;&quot;&lt;/span&gt;),
+            )
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_department_urls&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        urls = []
+        selector = {
+            &lt;span class=&quot;string&quot;&gt;&quot;invalid&quot;&lt;/span&gt;: {
+                &lt;span class=&quot;string&quot;&gt;&quot;$exists&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+            },
+        }
+        departments = self.mg_department.find(selector)
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; department &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; departments:
+            urls.extend(get_department_urls_from_doc(department))
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; urls
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;response_in_salt&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; resp.url &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; self.salt_urls &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; resp.url &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; self._mark_salt
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;find_seller_department&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, node_id)&lt;/span&gt; -&amp;gt; dict:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; isinstance(node_id, (list, tuple)):
+            node_id = [node_id]
+        query = {&lt;span class=&quot;string&quot;&gt;&quot;query.node&quot;&lt;/span&gt;: node_id}
+        dep = self.mg_department.find_one(query)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; dep
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add_seller&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(
+        self, seller_url: str, seller_name: str, indexField: str = None, _logger=log
+    )&lt;/span&gt;:&lt;/span&gt;
+        url = urlparse(seller_url)
+        qs = parse_qs(url.query)
+        bnn = qs.get(&lt;span class=&quot;string&quot;&gt;&quot;bbn&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;)
+        dep = &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        dep_id = &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; indexField &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;:
+            indexField = &lt;span class=&quot;string&quot;&gt;&quot;__top__&quot;&lt;/span&gt;
+        found = self.mg_top_sellers.count(
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: seller_name,
+                &lt;span class=&quot;string&quot;&gt;&quot;indexField&quot;&lt;/span&gt;: indexField,
+            }
+        )
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; found:
+            &lt;span class=&quot;comment&quot;&gt;# _logger.info(&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;#     &quot;SKIP - Seller %s (index='%s') already exists: %s&quot;,&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;#     seller_name,&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;#     indexField,&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;#     found,&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# )&lt;/span&gt;
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; bnn &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;:
+            _logger.warn(
+                &lt;span class=&quot;string&quot;&gt;&quot;Seller '%s': bbn param not given; leaving blank; url='%s'&quot;&lt;/span&gt;,
+                seller_name,
+                seller_url,
+            )
+            &lt;span class=&quot;keyword&quot;&gt;pass&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;:
+            dep = self.find_seller_department(bnn)
+            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; dep:
+                _logger.warning(
+                    &lt;span class=&quot;string&quot;&gt;&quot;Seller '%s': Could not get department for node '%s' (url=%s)&quot;&lt;/span&gt;,
+                    seller_name,
+                    bnn,
+                    seller_url,
+                )
+            &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;:
+                dep_id = dep.get(&lt;span class=&quot;string&quot;&gt;&quot;_id&quot;&lt;/span&gt;)
+        doc = {
+            &lt;span class=&quot;string&quot;&gt;&quot;department_id&quot;&lt;/span&gt;: dep_id,
+            &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: seller_name,
+            &lt;span class=&quot;string&quot;&gt;&quot;qs&quot;&lt;/span&gt;: qs,
+            &lt;span class=&quot;string&quot;&gt;&quot;path&quot;&lt;/span&gt;: url.path,
+            &lt;span class=&quot;string&quot;&gt;&quot;indexField&quot;&lt;/span&gt;: indexField,
+        }
+        _logger.debug(&lt;span class=&quot;string&quot;&gt;&quot;Inserting document %s&quot;&lt;/span&gt;, doc)
+        inserted = self.mg_top_sellers.insert_one(doc)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; inserted
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, href: str)&lt;/span&gt;:&lt;/span&gt;
+        url = urlparse(href)
+        scheme = url.scheme &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;https&quot;&lt;/span&gt;
+        netloc = url.netloc &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;www.amazon.com&quot;&lt;/span&gt;
+        path = url.path
+        params = url.params
+        query = url.query
+        fragment = url.fragment
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; urlunparse((scheme, netloc, path, params, query, fragment))
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add_sellers&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: scrapy.http.Response, _logger=log)&lt;/span&gt;:&lt;/span&gt;
+        url = urlparse(resp.url)
+        q = parse_qs(url.query)
+        indexField = q.get(&lt;span class=&quot;string&quot;&gt;&quot;indexField&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; isinstance(indexField, list):
+            indexField = indexField[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;]
+        added = []
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; link &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; resp.css(&lt;span class=&quot;string&quot;&gt;&quot;.s-see-all-indexbar-column a&quot;&lt;/span&gt;):
+            url = self.normalize(link.attrib[&lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt;])
+            name = link.xpath(&lt;span class=&quot;string&quot;&gt;&quot;span/text()&quot;&lt;/span&gt;)[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;].get()
+            name = name.strip()
+            &lt;span class=&quot;comment&quot;&gt;# import ipdb; ipdb.set_trace()&lt;/span&gt;
+            doc = self.add_seller(url, name, indexField=indexField, _logger=_logger)
+            added.append(doc)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; added
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;update_product_count&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; link &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; resp.css(&lt;span class=&quot;string&quot;&gt;&quot;.s-see-all-indexbar-column a&quot;&lt;/span&gt;):
+            url = self.normalize(link.attrib[&lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt;])
+            &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;:
+                name = link.xpath(&lt;span class=&quot;string&quot;&gt;&quot;span/text()&quot;&lt;/span&gt;)[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;].get()
+                name = name.strip()
+                count = link.xpath(&lt;span class=&quot;string&quot;&gt;&quot;span/text()&quot;&lt;/span&gt;).getall()[&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;]
+                count = count.strip().strip(&lt;span class=&quot;string&quot;&gt;&quot;(&quot;&lt;/span&gt;).rstrip(&lt;span class=&quot;string&quot;&gt;&quot;)&quot;&lt;/span&gt;).replace(&lt;span class=&quot;string&quot;&gt;&quot;,&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;&quot;&lt;/span&gt;)
+                count = int(count)
+                self.add_seller(url, name)
+                self.mg_top_sellers.find_one_and_update(
+                    {
+                        &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: name,
+                    },
+                    {
+                        &lt;span class=&quot;string&quot;&gt;&quot;$set&quot;&lt;/span&gt;: {
+                            &lt;span class=&quot;string&quot;&gt;&quot;productCount&quot;&lt;/span&gt;: count,
+                        }
+                    },
+                )
+                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; self.mg_top_sellers.find_one({&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;: name})
+            &lt;span class=&quot;keyword&quot;&gt;except&lt;/span&gt; Exception &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; exc:
+                log.warn(exc)
+                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, response: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        parts = urlparse(response.url)
+        qs = parse_qs(parts.query)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;gp/search/other&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; parts.path:
+            self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_add_sellers&quot;&lt;/span&gt;].update(
+                {
+                    self.db_executor.submit(self.add_sellers, response): response.url,
+                }
+            )
+            self.future_to_add_sellers[&lt;span class=&quot;string&quot;&gt;&quot;task_update_product_count&quot;&lt;/span&gt;].update(
+                {
+                    self.db_executor.submit(
+                        self.update_product_count, response
+                    ): response.url,
+                }
+            )
+            &lt;span class=&quot;comment&quot;&gt;# this was the original code, without the executor.&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# self.add_sellers(response, _logger=log)&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# self.update_product_count(response)&lt;/span&gt;
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;other url: %s&quot;&lt;/span&gt;, response.url)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I added the &lt;code&gt;update_product_count&lt;/code&gt; as a separate method because I had previously run this
+without taking &lt;code&gt;product_count&lt;/code&gt; into–er–account. However, this works fine even if the
+seller isn’t yet stored.&lt;/p&gt;
+&lt;p&gt;This is just the information scraped from the “Top Sellers” page for the department. The
+data store in Mongo has the following schema:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+    &quot;_id&quot; : &amp;lt;standard object ID&amp;gt;,
+    &quot;department_id&quot; : &amp;lt;ID for the department&amp;gt;,
+    &quot;name&quot; : &amp;lt;name of the seller&amp;gt;,
+    &quot;qs&quot; : &amp;lt;subdocument of query parameters in the URL&amp;gt;,
+    &quot;path&quot; : &amp;lt;Path component of the URL&amp;gt;,
+    &quot;productCount&quot; : &amp;lt;The number in the parentheses&amp;gt;,
+    &quot;indexField&quot; : &amp;lt;The Index Field, if given; defaults to &quot;__top__&quot;&amp;gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For example, here’s the stored data for the “AntiAgingBed” seller:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+  &lt;span class=&quot;attr&quot;&gt;&quot;_id&quot;&lt;/span&gt;: ObjectId(&lt;span class=&quot;string&quot;&gt;&quot;5fc7d467b0957b4fa057f9fa&quot;&lt;/span&gt;),
+  &lt;span class=&quot;attr&quot;&gt;&quot;department_id&quot;&lt;/span&gt;: ObjectId(&lt;span class=&quot;string&quot;&gt;&quot;5fc70f5e1244453a23c34064&quot;&lt;/span&gt;),
+  &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;AntiAgingBed&quot;&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;qs&quot;&lt;/span&gt;: {
+    &lt;span class=&quot;attr&quot;&gt;&quot;fst&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;as:off&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;rh&quot;&lt;/span&gt;: [
+      &lt;span class=&quot;string&quot;&gt;&quot;n:1055398,n:!1063498,n:1063306,n:1063308,n:3732961,p_6:A1W4F5UCY68C8L&quot;&lt;/span&gt;
+    ],
+    &lt;span class=&quot;attr&quot;&gt;&quot;bbn&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;3732961&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;ie&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;UTF8&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;qid&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;1606930036&quot;&lt;/span&gt;],
+    &lt;span class=&quot;attr&quot;&gt;&quot;rnid&quot;&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;&quot;331544011&quot;&lt;/span&gt;]
+  },
+  &lt;span class=&quot;attr&quot;&gt;&quot;path&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;/s/ref=sr_in_-2_p_6_3/146-7467592-8962054&quot;&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;productCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;14&lt;/span&gt;,
+  &lt;span class=&quot;attr&quot;&gt;&quot;indexField&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;__top__&quot;&lt;/span&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I included the “indexField” for when I went back later to collect the sellers that were
+not “top sellers.” I might cover that in another article.&lt;/p&gt;
+&lt;h2 id=&quot;seller-information&quot;&gt;Seller Information&lt;/h2&gt;
+&lt;p&gt;The final stage on the scraping part is to scrape the address of the seller. I use the
+information from the previous scraper to construct a URL for getting the seller info.&lt;/p&gt;
+&lt;p&gt;Extracting the seller address is relatively straightfoward. In fact, I just need to supply
+the XPath to the element:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;extract_seller_address&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: scrapy.http.Response)&lt;/span&gt;:&lt;/span&gt;
+        addrs = [
+            i.get()
+            &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; resp.xpath(
+                &lt;span class=&quot;string&quot;&gt;&quot;/html/body/div[1]/div[1]/div[2]/div/ul/li[2]/span/ul/li/*/text()&quot;&lt;/span&gt;
+            )
+        ]
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; addrs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For the example of “AntiAgingBed” this updates the document like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+  &lt;span class=&quot;attr&quot;&gt;&quot;address&quot;&lt;/span&gt;: [
+    &lt;span class=&quot;string&quot;&gt;&quot;1844 West Fairbanks Ave&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;523&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;Winter Park&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;FL&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;32789&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;US&quot;&lt;/span&gt;
+  ]
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Pretty handy!&lt;/p&gt;
+&lt;h2 id=&quot;fetching-geographic-information-via-arcgis&quot;&gt;Fetching Geographic Information, via ArcGIS&lt;/h2&gt;
+&lt;p&gt;This is all well and good, but I wanted to get the country of origin.&lt;/p&gt;
+&lt;p&gt;“But you already have the country of origin!” You might say, “Just use that!”&lt;/p&gt;
+&lt;p&gt;Well, I wouldn’t recommend it. That would have to be a system all on its own.
+Because what if the seller left off the “US” part of the address? You and I can
+easily see it’s a U.S. address, but I won’t be able to look for it.&lt;/p&gt;
+&lt;p&gt;“But that’s because of the ‘FL.’ Just look for states.”&lt;/p&gt;
+&lt;p&gt;In other words, we’re going down a machine learning rabit hole I don’t want to go
+down.&lt;/p&gt;
+&lt;p&gt;In addition, I thought it would be helpful to also collect the GPS coordinates of the address. I’m not
+going to guestimate all those, manually or automatically.&lt;/p&gt;
+&lt;p&gt;So what I need to do is called &lt;strong&gt;Geocoding&lt;/strong&gt;, or getting geographic information based
+off a query string.&lt;/p&gt;
+&lt;p&gt;You do it all the time with Google Maps (or if we’re privacy-conscious, OpenStreetMaps).
+If you type in “Grandma’s House,” in the directions, the map will find out where
+“Grandma’s House” is based on a combination of AI and magic (mostly magic). And we
+all know where Grandma’s house is! (5 miles past the troll’s cave)&lt;/p&gt;
+&lt;p&gt;So I’ll let AI do all the work at this point. I first got an API key at ArcGIS, and
+created one final script to fetch more precise seller coordinates.&lt;/p&gt;
+&lt;p&gt;Here’s the redacted code.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SellerFinder&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(object)&lt;/span&gt;:&lt;/span&gt;
+
+    arcgis_auth_url = &lt;span class=&quot;string&quot;&gt;&quot;https://www.arcgis.com/sharing/rest/oauth2/token&quot;&lt;/span&gt;
+    arcgis_search_url = &lt;span class=&quot;string&quot;&gt;&quot;https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;comment&quot;&gt;# Before 2 minutes is up, fetch a new auth token.&lt;/span&gt;
+    arcgis_buffer = timedelta(minutes=&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;)
+
+    arcgis_auth_headers = {
+        &lt;span class=&quot;string&quot;&gt;&quot;content-type&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;application/x-www-form-urlencoded&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;accept&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;application/json&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;cache-control&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;no-cache&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;postman-token&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;11df29d1-17d3-c58c-565f-2ca4092ddf5f&quot;&lt;/span&gt;,
+    }
+
+    gis_for_storage = &lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;
+
+    query_out_fields = &lt;span class=&quot;string&quot;&gt;&quot;Country,X,Y,Match_addr,Addr_type,Score,URL&quot;&lt;/span&gt;
+
+    arcgis_token_expiration = &lt;span class=&quot;number&quot;&gt;20160&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;# 2 weeks&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; ARCGIS_CLIENT_ID:
+            &lt;span class=&quot;keyword&quot;&gt;raise&lt;/span&gt; RuntimeError(&lt;span class=&quot;string&quot;&gt;&quot;ARCGIS_CLIENT_ID not set&quot;&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; ARCGIS_CLIENT_SECRET:
+            &lt;span class=&quot;keyword&quot;&gt;raise&lt;/span&gt; RuntimeError(&lt;span class=&quot;string&quot;&gt;&quot;ARCGIS_CLIENT_SECRET not set&quot;&lt;/span&gt;)
+
+        self.mg_client = MongoClient()
+        self.mg_db = self.mg_client.amazon_scraping
+
+        self.mg_department = self.mg_db.department
+        self.mg_top_sellers = self.mg_db.top_sellers
+
+        self.arcgis_token = &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        self.arcgis_token_expiration = &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;sellers_with_addresses&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot; Returns all the sellers that do have an address string but
+        do not have a &quot;geo&quot; document.
+        &quot;&quot;&quot;&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; self.mg_top_sellers.find(
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;address&quot;&lt;/span&gt;: {
+                    &lt;span class=&quot;string&quot;&gt;&quot;$exists&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;,
+                },
+                &lt;span class=&quot;string&quot;&gt;&quot;geo&quot;&lt;/span&gt;: {
+                    &lt;span class=&quot;string&quot;&gt;&quot;$exists&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;,
+                },
+            }
+        )
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;auth_arcgis&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot; Housekeeping: basically updates the arcgis token.
+        This will run on the first iteration, and execute if the token will expire soon.
+        &quot;&quot;&quot;&lt;/span&gt;
+        log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Requesting new arcgis token&quot;&lt;/span&gt;)
+        resp = requests.post(
+            self.arcgis_auth_url,
+            data=self.auth_argcis_payload,
+            headers=self.arcgis_auth_headers,
+        )
+        data = resp.json()
+        self.arcgis_token = data[&lt;span class=&quot;string&quot;&gt;&quot;access_token&quot;&lt;/span&gt;]
+        self.arcgis_token_expiration = datetime.now() + timedelta(
+            minutes=data[&lt;span class=&quot;string&quot;&gt;&quot;expires_in&quot;&lt;/span&gt;]
+        )
+        log.debug(&lt;span class=&quot;string&quot;&gt;&quot;New expiration token will expire %s&quot;&lt;/span&gt;, self.arcgis_token_expiration)
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;auth_argcis_payload&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;f&quot;client_id=&lt;span class=&quot;subst&quot;&gt;{ARCGIS_CLIENT_ID}&lt;/span&gt;&amp;amp;client_secret=&lt;span class=&quot;subst&quot;&gt;{ARCGIS_CLIENT_SECRET}&lt;/span&gt;&amp;amp;grant_type=client_credentials&amp;amp;expiration=&lt;span class=&quot;subst&quot;&gt;{self.arcgis_token_expiration}&lt;/span&gt;&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;get_arcgis_search_params&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, query: T.AnyStr)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; {
+            &lt;span class=&quot;string&quot;&gt;&quot;f&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;json&quot;&lt;/span&gt;,
+            &lt;span class=&quot;string&quot;&gt;&quot;singleLine&quot;&lt;/span&gt;: query,
+            &lt;span class=&quot;string&quot;&gt;&quot;token&quot;&lt;/span&gt;: self.arcgis_token,
+            &lt;span class=&quot;string&quot;&gt;&quot;outFields&quot;&lt;/span&gt;: self.query_out_fields,
+            &lt;span class=&quot;comment&quot;&gt;## IMPORTANT!!! -- `gis_for_storage` must be set to `True`&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# https://developers.arcgis.com/rest/geocode/api-reference/geocoding-free-vs-paid.htm&lt;/span&gt;
+            &lt;span class=&quot;string&quot;&gt;&quot;forStorage&quot;&lt;/span&gt;: self.gis_for_storage,
+        }
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;argcis_search&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, query: T.AnyStr)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot; Performs the arcgis search.
+
+        :param query: the query given in the mongodb document.
+
+        :return: Json data of the response.
+        &quot;&quot;&quot;&lt;/span&gt;
+        payload = self.get_arcgis_search_params(query)
+        resp = requests.get(self.arcgis_search_url, params=payload)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; resp.status_code != &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;:
+            log.error(resp.request.url)
+            log.error(&lt;span class=&quot;string&quot;&gt;&quot;GET %s : %s&quot;&lt;/span&gt;, resp.status_code, resp.text)
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; resp.json()
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;seller_location&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, seller: dict)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;string&quot;&gt;&quot;&quot;&quot; This updates the seller information.
+
+        :param seller: seller information fetched from mongo.
+
+        First it fetches the seller information from mongo. Then it performs the
+        arcgis query (based on the entire &quot;address&quot; string if given.)
+        &quot;&quot;&quot;&lt;/span&gt;
+        search = &lt;span class=&quot;string&quot;&gt;&quot; &quot;&lt;/span&gt;.join(seller[&lt;span class=&quot;string&quot;&gt;&quot;address&quot;&lt;/span&gt;])
+        log.info(&lt;span class=&quot;string&quot;&gt;&quot;Looking for '%s'&quot;&lt;/span&gt;, search)
+        result = self.argcis_search(search)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; result &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;:
+            log.warning(&lt;span class=&quot;string&quot;&gt;&quot;Could not find location for %s&quot;&lt;/span&gt;, seller[&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;])
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;
+        log.debug(&lt;span class=&quot;string&quot;&gt;&quot;Setting geo for '%s'&quot;&lt;/span&gt;, seller[&lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt;])
+        log.debug(pprint.pformat(result))
+        self.mg_top_sellers.find_one_and_update(
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;_id&quot;&lt;/span&gt;: seller[&lt;span class=&quot;string&quot;&gt;&quot;_id&quot;&lt;/span&gt;],
+            },
+            {
+                &lt;span class=&quot;string&quot;&gt;&quot;$set&quot;&lt;/span&gt;: {
+                    &lt;span class=&quot;string&quot;&gt;&quot;geo&quot;&lt;/span&gt;: result,
+                }
+            },
+        )
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;arcgis_about_to_expire&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; datetime.now() + self.arcgis_buffer &amp;gt; self.arcgis_token_expiration
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;update_arcgis_auth&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.arcgis_token_expiration &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; self.arcgis_about_to_expire:
+            self.auth_arcgis()
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; seller &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; self.sellers_with_addresses:
+            self.update_arcgis_auth()
+            self.seller_location(seller)
+
+
+&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;:&lt;/span&gt;
+    finder = SellerFinder()
+    finder.run()
+
+
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__ == &lt;span class=&quot;string&quot;&gt;&quot;__main__&quot;&lt;/span&gt;:
+    logging.basicConfig(level=logging.DEBUG)
+    main()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s important to note that the &lt;code&gt;forStorage&lt;/code&gt; query argument &lt;em&gt;must&lt;/em&gt; be &lt;code&gt;True&lt;/code&gt; in order
+for the data to be stored legally.&lt;/p&gt;
+&lt;p&gt;As such, it’s a paid account. Only about 500 queries could be done on the free tier; since I was going to be doing more than that I decided to do about $20 more of queries.&lt;/p&gt;
+&lt;p&gt;Since I was not able to extract address information from “Goodman’s” I was not able to get
+geo information either. However, the code below shows an example of geo data retrieved from
+another seller.&lt;/p&gt;
+&lt;p&gt;In Part II I’ll show a sneaky way in MongoDB to make this (as well as other data) more statistics-friendly.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;&amp;quot;geo&amp;quot; : {
+    &amp;quot;spatialReference&amp;quot; : {
+        &amp;quot;wkid&amp;quot; : 4326,
+        &amp;quot;latestWkid&amp;quot; : 4326
+    },
+    &amp;quot;candidates&amp;quot; : [
+        {
+            &amp;quot;address&amp;quot; : &amp;quot;39158, Ridgeland, Mississippi&amp;quot;,
+            &amp;quot;location&amp;quot; : {
+                &amp;quot;x&amp;quot; : -90.123555,
+                &amp;quot;y&amp;quot; : 32.409505
+            },
+            &amp;quot;score&amp;quot; : 98,
+            &amp;quot;attributes&amp;quot; : {
+                &amp;quot;Score&amp;quot; : 98,
+                &amp;quot;Match_addr&amp;quot; : &amp;quot;39158, Ridgeland, Mississippi&amp;quot;,
+                &amp;quot;Addr_type&amp;quot; : &amp;quot;Postal&amp;quot;,
+                &amp;quot;URL&amp;quot; : &amp;quot;&amp;quot;,
+                &amp;quot;Country&amp;quot; : &amp;quot;USA&amp;quot;,
+                &amp;quot;X&amp;quot; : -90.123555,
+                &amp;quot;Y&amp;quot; : 32.409505
+            },
+            &amp;quot;extent&amp;quot; : {
+                &amp;quot;xmin&amp;quot; : -90.1285549999999,
+                &amp;quot;ymin&amp;quot; : 32.404505,
+                &amp;quot;xmax&amp;quot; : -90.118555,
+                &amp;quot;ymax&amp;quot; : 32.414505
+            }
+        }
+    ]
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This was the last step of where to find the sellers. We now have a guessed “Country”
+value that’s most probably right.&lt;/p&gt;
+&lt;h1 id=&quot;when-amazon-blocks-you&quot;&gt;When Amazon Blocks You&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/scraping_amazon/images/amazon_captcha.png&quot; alt=&quot;amazon captcha&quot;&gt;&lt;/p&gt;
+&lt;p&gt;It may come as no surprise that Amazon does block you if you scrape. But the good news is
+that you can navigate the site, so Amazon doesn’t block &lt;em&gt;everyone&lt;/em&gt; , just people who act like a
+bot.&lt;/p&gt;
+&lt;p&gt;Most annoying is the fact that Scrapy doesn’t see when Amazon blocks you.&lt;/p&gt;
+&lt;p&gt;“Why’s that?” You ask.&lt;/p&gt;
+&lt;p&gt;Good question, astute reader.&lt;/p&gt;
+&lt;p&gt;Mainly because the captcha page returns a response code 200, so scrapy doesn’t see that
+as an error, and keeps right on truckin’.&lt;/p&gt;
+&lt;p&gt;To detect if a captcha is found, I created some DownloaderMiddleware to search for part
+of the captcha notice. If it’s found, then the middleware raises a 403 error, and notifies
+the spider that it needs to invoke the salt shaker (described below).&lt;/p&gt;
+&lt;p&gt;For now, just note how I threw a new status code.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;GenericAmazonMiddleware&lt;/span&gt;:&lt;/span&gt;
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;response_is_captcha&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: Response)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;comment&quot;&gt;# This string is in the response if a captcha is detected.&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; resp.status == &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; (&lt;span class=&quot;string&quot;&gt;&quot;api-services-support@amazon.com&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; resp.text)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;amazon_is_sorry&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: Response)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; resp.css(&lt;span class=&quot;string&quot;&gt;&quot;h2&quot;&lt;/span&gt;):
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;
+        h2 = resp.css(&lt;span class=&quot;string&quot;&gt;&quot;h2&quot;&lt;/span&gt;)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; any([&lt;span class=&quot;string&quot;&gt;&quot;we're sorry!&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; h.get().lower() &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; h &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; h2])
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;process_response&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, request: Request, response: Response, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.amazon_is_sorry(response):
+            &lt;span class=&quot;comment&quot;&gt;# This is raised if a page is not found, specifically a seller.&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# this still returns a response code of 200, so Scrapy doesn't detect it.&lt;/span&gt;
+            spider.logger.warning(&lt;span class=&quot;string&quot;&gt;'Amazon said &quot;We\'re sorry!&quot; for %s'&lt;/span&gt;, response.url)
+            on_amazon_sorry = getattr(spider, &lt;span class=&quot;string&quot;&gt;&quot;on_amazon_sorry&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;)
+            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; on_amazon_sorry:
+                on_amazon_sorry(self, request, response)
+            &lt;span class=&quot;keyword&quot;&gt;raise&lt;/span&gt; IgnoreRequest()
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.response_is_captcha(response):
+            &lt;span class=&quot;comment&quot;&gt;# Same with captchas. But in this instance we want to ask the throttle&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# to slow down (although, the damage has probably already been done).&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# To tell scrapy to slow down, we throw an error 403.&lt;/span&gt;
+            spider.logger.warning(
+                &lt;span class=&quot;string&quot;&gt;&quot;Encountered captcha; sleeping for %d seconds, adding '%s' to queue&quot;&lt;/span&gt;,
+                CAPTCHA_SLEEP_TIME,
+                request.url,
+            )
+            time.sleep(CAPTCHA_SLEEP_TIME)
+            &lt;span class=&quot;comment&quot;&gt;# I'm sure there's a better way to do this. This is just a quick and&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# dirty method.&lt;/span&gt;
+            setattr(spider, &lt;span class=&quot;string&quot;&gt;&quot;__invoke_shaker&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+            response.status = &lt;span class=&quot;number&quot;&gt;403&lt;/span&gt;
+            spider.start_urls.append(request.url)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; response&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So after a while I started to see &lt;code&gt;&amp;quot;Encountered captcha; ...&amp;quot;&lt;/code&gt; in the log output.&lt;/p&gt;
+&lt;p&gt;Here are a few strategies I found that were very effective in being able to scrape the site.&lt;/p&gt;
+&lt;h2 id=&quot;change-user-agent-&quot;&gt;Change User Agent.&lt;/h2&gt;
+&lt;p&gt;The user agent is a string sent with every query to the server. This is used for several
+purposes, most notably for web site maintainers to know how to render a page. But it’s also
+used by sites for tracking you (as well as spam detection).&lt;/p&gt;
+&lt;p&gt;Switching user agents took care of my blocks about 90% of the time. Scrapy makes this easy
+with the &lt;a href=&quot;https://pypi.org/project/scrapy-user-agents/&quot;&gt;scrapy-user-agents&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;All this does is change the user agent string every so often.&lt;/p&gt;
+&lt;h1 id=&quot;set-a-proper-autothrottle_start_delay-and-autothrottle_max_delay&quot;&gt;Set a proper &lt;code&gt;AUTOTHROTTLE_START_DELAY&lt;/code&gt; and &lt;code&gt;AUTOTHROTTLE_MAX_DELAY&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;I set mine as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;AUTOTHROTTLE_START_DELAY = &lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;
+AUTOTHROTTLE_MAX_DELAY = &lt;span class=&quot;number&quot;&gt;160&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It seemed to do just fine.&lt;/p&gt;
+&lt;h2 id=&quot;salt-shaker-scrape-random-links&quot;&gt;Salt Shaker - Scrape Random Links&lt;/h2&gt;
+&lt;p&gt;If your links are oddly specific and repetitive, it doesn’t take a security expert to
+detect you’re a bot.&lt;/p&gt;
+&lt;p&gt;Let’s add some salt to our navigation.&lt;/p&gt;
+&lt;p&gt;The term “salt” is used in cryptography to denote entropy in a cryptographic string (a fancy
+term to mean “a bunch of garbage to confuse someone decrypting the string who’s not supposed
+to”). I decided to use the same
+approach to scraping.&lt;/p&gt;
+&lt;p&gt;Essentially I provided initial breadcrumbs to Amazon to “prove” that I wasn’t a bot.
+This involves adding addition links to the &lt;code&gt;start_urls&lt;/code&gt; property in the spider, and
+crawling those as if I’m navigating to them.&lt;/p&gt;
+&lt;p&gt;I added salt URLs as the first 5-7 URLs preceding the actual scraping, and sprinkled in
+some more salt URLs into the actual &lt;code&gt;start_urls&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I incorporated this as a middleware, and listend for the &lt;code&gt;__invoke_shaker&lt;/code&gt; attribute set
+by the &lt;code&gt;GenericAmazonMiddleware&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SaltShakerMiddleware&lt;/span&gt;:&lt;/span&gt;
+
+    salt_urls: T.Iterable[T.AnyStr] = []
+    initial_salt_k = &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;
+
+    SALT_USAGE = &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;
+    SHAKE_PROBABILITY = &lt;span class=&quot;number&quot;&gt;25&lt;/span&gt;
+
+    &lt;span class=&quot;comment&quot;&gt;# Set this to whatever you want...better yet, set it up in&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# settings!&lt;/span&gt;
+    salt_urls = [
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/b?node=16225009011&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/gp/customer-preferences/select-currency/ref=aistrust3&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/business?_encoding=UTF8&amp;amp;ref_=footer_retail_b2b&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.com/gp/help/customer/display.html?ie=UTF8&amp;amp;nodeId=GDFU3JS5AL6SYHRD&amp;amp;ref_=footer_covid&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://www.amazon.jobs/&quot;&lt;/span&gt;,
+        &lt;span class=&quot;string&quot;&gt;&quot;https://blog.aboutamazon.com/?utm_source=gateway&amp;amp;utm_medium=footer&quot;&lt;/span&gt;,
+    ]
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, *args, **kwargs)&lt;/span&gt;:&lt;/span&gt;
+        super(SaltShakerMiddleware, self).__init__(*args, **kwargs)
+        self._mark_salt = []
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;spider_opened&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+        spider.logger.info(&lt;span class=&quot;string&quot;&gt;&quot;Adding salt to spider '%s'&quot;&lt;/span&gt;, spider.name)
+        self.add_salt(spider)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, href: str)&lt;/span&gt;:&lt;/span&gt;
+        url = urlparse(href)
+        scheme = url.scheme &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;https&quot;&lt;/span&gt;
+        netloc = url.netloc &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;www.amazon.com&quot;&lt;/span&gt;
+        path = url.path
+        params = url.params
+        query = url.query
+        fragment = url.fragment
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; urlunparse((scheme, netloc, path, params, query, fragment))
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;shake&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, resp: Response, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+        links = resp.xpath(&lt;span class=&quot;string&quot;&gt;&quot;//a/@href&quot;&lt;/span&gt;).getall()
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; links:
+            spider.logger.warning(&lt;span class=&quot;string&quot;&gt;&quot;!! NO-LINK: No links found for %s&quot;&lt;/span&gt;, resp.url)
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;
+        n = max(min(len(links), &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;), &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;)
+        k = random.randint(&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, n)
+        &lt;span class=&quot;comment&quot;&gt;# We'll choose a random selection of the links...again, a human thing to do.&lt;/span&gt;
+        chosen = random.sample(links, k=min(k, len(links)))
+        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; link &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; chosen:
+            lnk = self.normalize(link)
+            self._mark_salt.append(lnk)
+            spider.logger.debug(&lt;span class=&quot;string&quot;&gt;&quot;salt shaker: &amp;lt;%s&amp;gt;&quot;&lt;/span&gt;, lnk)
+            resp.follow(lnk)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;maybe_shake&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, response: Response, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+
+        shake_salt = random.randint(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;) &amp;lt; self.SHAKE_PROBABILITY
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; getattr(spider, &lt;span class=&quot;string&quot;&gt;&quot;__invoke_shaker&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;False&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;:
+            self.shake(response, spider)
+        &lt;span class=&quot;keyword&quot;&gt;elif&lt;/span&gt; len(self._mark_salt) &amp;lt; self.SALT_USAGE &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; shake_salt:
+            spider.logger.info(&lt;span class=&quot;string&quot;&gt;&quot;.: invoking salt shaker :.&quot;&lt;/span&gt;)
+            self.shake(response, spider)
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add_salt&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+
+        random.shuffle(self.salt_urls)
+
+        &lt;span class=&quot;comment&quot;&gt;# Start with an initial salt to throw Amazon off&lt;/span&gt;
+        self.initial_salt = random.sample(self.salt_urls, k=self.initial_salt_k)
+
+        spider.start_urls = self.salt_urls + spider.start_urls
+        random.shuffle(spider.start_urls)
+        spider.start_urls = self.initial_salt + spider.start_urls
+
+        self._mark_salt = []
+
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;process_response&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self, request: Request, response: Response, spider: Spider)&lt;/span&gt;:&lt;/span&gt;
+        self.maybe_shake(response, spider)
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; response&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Because we want to stay focused on scraping I’ve set a limit for the amount of salt we’ll
+chase. This is handled by the &lt;code&gt;SALT_USAGE&lt;/code&gt; class variable; if the length of &lt;code&gt;_mark_salt&lt;/code&gt;
+hits &lt;code&gt;SALT_USAGE&lt;/code&gt;, we don’t scrape any more random links.&lt;/p&gt;
+&lt;p&gt;If this is not the case there are 2 cases in which the salt shaker is executed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;code&gt;SHAKE_PROBABILITY&lt;/code&gt; percent chance (e.g. &lt;code&gt;25%&lt;/code&gt; in this example)&lt;/li&gt;
+&lt;li&gt;If a captcha is detected. Assure Amazon we’re really not scraping the site (but we are).
+In this case, the shake is invoked through the spider by the &lt;code&gt;GenericAmazonMiddleware&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;lessons-learned&quot;&gt;Lessons Learned&lt;/h1&gt;
+&lt;p&gt;That was probably the longest most-invoved article I’ve written. And it’s only the first part!&lt;/p&gt;
+&lt;p&gt;Here are some take-aways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Scrapy is an awesome scraping tool!&lt;/li&gt;
+&lt;li&gt;MongoDB makes an excellent storage engine.&lt;/li&gt;
+&lt;li&gt;Amazon does not like to be scraped.&lt;/li&gt;
+&lt;li&gt;Save as much as you can first round so you don’t have to scrape a 2nd time.&lt;/li&gt;
+&lt;li&gt;All it takes is a little investigative work (and the help of a REST API client!) to
+find the seller codes.&lt;/li&gt;
+&lt;li&gt;We first needed to find the department URL from Amazon’s “All Departments” page. From
+there, we navigated to each department, extracting each seller’s URL in the “Top
+Sellers.” From there, we went to a third stage, of scraping the seller’s page (if it
+exists) to extract the address.&lt;/li&gt;
+&lt;li&gt;Amazon returns http status code 200 on being blocked, so additional detection
+techniques have to be employed.&lt;/li&gt;
+&lt;li&gt;3rd party middleware, or your own, can be used to get around some of the blocks.&lt;/li&gt;
+&lt;li&gt;Reverse geocoding can be done with ArcGIS &lt;strong&gt;(but remember to use the &lt;code&gt;forStorage&lt;/code&gt; flag!)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In the part 2 (which I hope to post next week) I’ll talk about my findings. Where are the
+top sellers on Amazon?&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>What nobody tells you about freelancing</title>
+      <link>https://src-r-r.github.io/articles/what-nobody-tells-you-about-freelancing/</link>
+      <pubDate>Sun, 29 Nov 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/what-nobody-tells-you-about-freelancing/</guid>
+      <author></author>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;HOW I EARNED $1 Million freelancing!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;MAKE MONEY ON THE SIDE!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;WORK WHEN YOU WANT, WHERE YOU WANT!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;If you’ve browed LinkedIn or Twitter you’ve undoubtedly been beguiled by
+the aritcles touting how freeing freelance work can be. Work from home?
+No commute? Work when you want?&lt;/p&gt;
+&lt;p&gt;What’s not to like!&lt;/p&gt;
+&lt;p&gt;Well, there’s more than meets the eye when it comes to freelancing. It takes
+a special kind of person to navigate the freelancing world, and it’s not all
+it’s cracked up to be.&lt;/p&gt;
+&lt;p&gt;In this article I lay out my own experience freelancing, and you can decide if
+it’s right for you.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;a-little-background&quot;&gt;A little background&lt;/h1&gt;
+&lt;p&gt;Most freelancing stories start with “I was tired of working for the man, so I
+quit.”&lt;/p&gt;
+&lt;p&gt;With me, it was more of a necessity. I was let go out of the blue from a development
+job I had. This was about a year before COVID.&lt;/p&gt;
+&lt;p&gt;“No problem,” I thought. Just dust off my resume and move on to the next job.&lt;/p&gt;
+&lt;p&gt;Unfortunately I found the job market was dry…like Saltine Cracker dry. From what
+I could tell, nobody was hiring, especially someone whose last job ended
+inadvertantly.&lt;/p&gt;
+&lt;p&gt;With money running out I knew I needed to do something. I heard about a certain type
+of job called “virtual asssistant” during a podcast years ago and thought that maybe
+I should investigate.&lt;/p&gt;
+&lt;p&gt;Turns out, virtual assistants are basically generic freelancers. And I found that
+there are other types of freelance jobs. So I found out where the freelancer sites
+are and placed bids for software jobs.&lt;/p&gt;
+&lt;p&gt;I soon found the world of freelancing is not what is portrayed in social media or
+entrepreneur magazines. Here are some things that I found. Keep in mind that this is
+my experience; there may be others with different experiences.&lt;/p&gt;
+&lt;h1 id=&quot;freelancers-need-to-be-highly-specialized&quot;&gt;Freelancers need to be highly specialized&lt;/h1&gt;
+&lt;p&gt;It’s tempting to see low hanging fruit outside your area of expertise and think, “Hey, I 
+can do that!”&lt;/p&gt;
+&lt;p&gt;Don’t fall for it!&lt;/p&gt;
+&lt;p&gt;Clients are execting the most bang for their buck, and don’t have time to support your 
+on-the-job training. My first wake-up-call for this was what I thought was a simple job,
+“recreating a powerpoint layout.”&lt;/p&gt;
+&lt;p&gt;I’ve used PowerPoint before. I figured, “how hard can it be?” Granted, I use Linux
+for my primary desktop, so I had to use Microsoft’s online PowerPoint service,
+but once I got an account I was able to get started.&lt;/p&gt;
+&lt;p&gt;So, after carefully copying the design I sent it back to the client and…&lt;/p&gt;
+&lt;p&gt;“I can’t pay you for this. The alignment is all over the map. Looks like crap.”&lt;/p&gt;
+&lt;p&gt;Lesson learned: My career is in software, I stick with software.&lt;/p&gt;
+&lt;h1 id=&quot;there-are-a-lot-of-bad-freelancers-that-end-up-getting-work&quot;&gt;There are a lot of bad freelancers that end up getting work&lt;/h1&gt;
+&lt;p&gt;I’ll admit that I’ve only ever been working as a freelancer, but any client I’ve
+talked to admits it’s really hard to find good-quality freelance clients. And they’re not
+necessarily looking for the superstars, either…just ones that can do an average job on 
+a deliverable.&lt;/p&gt;
+&lt;p&gt;This means that the challenge for you as a freelancer is to write a convincing
+bid that proves you’ve done quality work and you’re able to do it for the client.
+It’s a challenge because bad freelancers know how the right things to say to get
+the client to accept their bid, but they can never deliver on the promises.&lt;/p&gt;
+&lt;p&gt;So, really, it comes down to luck and merit.&lt;/p&gt;
+&lt;h1 id=&quot;the-pay-is-terrible-&quot;&gt;The pay is terrible.&lt;/h1&gt;
+&lt;p&gt;There’s a reason why it’s considered a “side job.” Clients are looking for cheap
+labor. Since most aren’t legitimate businesses, it’s perfectly legal for clients
+to charge $2/hr.&lt;/p&gt;
+&lt;p&gt;Also keep in mind you’re usually an independent contractor, so no money is taken
+out for taxes. So for that $2/hr job you’re most likely &lt;em&gt;losing&lt;/em&gt; money.&lt;/p&gt;
+&lt;p&gt;But the fact of the matter is you have to take &lt;em&gt;some&lt;/em&gt; of the low-paying jobs to
+earn a reputation. Until you get a few clients to give you good reviews it’s
+nearly impossible to charge what you’re worth.&lt;/p&gt;
+&lt;p&gt;It helps to do a little market research. For me, as a developer, the salary range
+is about $80K - $110K.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Pro tip: to convert from salary to hourly, simply divide by 2,000 to get a rough 
+estimate&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So, a developer’s hourly rate is around $40/hr - $55/hr; remember, that’s for a full-time
+job with benefits and taxes taken out.&lt;/p&gt;
+&lt;p&gt;So I add a couple of extra dollars on the higher end as my standard rate: $57/hr.&lt;/p&gt;
+&lt;p&gt;99% of the jobs I come across (and that’s being generous) are barely at the $50/hr. So I
+do bend a little in order to get some income. In the future I won’t bend as much.&lt;/p&gt;
+&lt;h1 id=&quot;clients-will-try-to-take-advantage-of-you&quot;&gt;Clients will try to take advantage of you&lt;/h1&gt;
+&lt;p&gt;The playbook usually goes like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;You’ve got a great client. You agree to do a set amount of work for a given time
+period. Everything is hunky-dory&lt;/li&gt;
+&lt;li&gt;Perhaps you provide a few deliverables. Maybe it’s just one.&lt;/li&gt;
+&lt;li&gt;Suddenly the client ends the contract without warning. You ask what’s up.&lt;/li&gt;
+&lt;li&gt;There’s usually some lame excuse like, “we decided to go in a different direction.”&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The catch:&lt;/strong&gt; Could you do this “really quick thing for us?”&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Yes, I’ve encountered those “really quick things” pretty often. My job coach actually
+helped me the first time, so I’m able to say “no,” a lot more easily.&lt;/p&gt;
+&lt;p&gt;And then the client will most likely throw a tantrum. Expect it to happen. Close the
+contract, move on. For every client that does this there are 1,000 more that value
+your skills.&lt;/p&gt;
+&lt;p&gt;To avoid this, it’s imperative to nail down requirements before starting the contract. 
+Set a rate, estimate that rate, and try to stick to it as much as possible.&lt;/p&gt;
+&lt;h1 id=&quot;is-freelancing-the-new-normal-&quot;&gt;Is Freelancing the new normal?&lt;/h1&gt;
+&lt;p&gt;In this nearly 2-decades long recession companies are hiring less and less. Freelancing
+can be a great alternative if you do it right. I am not an expert by any means. I
+fumble a lot. I end up biting off more than I can chew sometimes. But Freelancing offers
+more control, in my book, because you can’t really get fired or laid off the way you
+can from a traditional job.&lt;/p&gt;
+&lt;p&gt;So is freelancing for you? I’d say if you are used to hustling, and used to instability
+it’s the only way. If you have never experienced instability in your life (which is
+probably the minority at this point) and you are confident that the carpet won’t be
+pulled out from under you at your job I would recommend not freelancing.&lt;/p&gt;
+&lt;p&gt;Then again, it’s up to you. I’m just giving my perspective on the matter.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Explanation of the Top 10 '/r/programmingmemes' Posts</title>
+      <link>https://src-r-r.github.io/articles/top-10-programming-meme-explanations/</link>
+      <pubDate>Mon, 23 Nov 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/top-10-programming-meme-explanations/</guid>
+      <author></author>
+      <description>&lt;p&gt;Who knew memes could be so educational? I enjoy memes as a form of art and
+satire (political cartoons are cool again!), and sometimes that can even
+be informative.&lt;/p&gt;
+&lt;p&gt;If you’re a developer you’ve undoubtedly come across the
+&lt;a href=&quot;https://www.reddit.com/r/programmingmemes/top/?t=all&quot;&gt;Programming Memes&lt;/a&gt; Subreddit, or 
+been the victim of meme spamming from your coworkers. If you’re just starting
+programming most of them may be a bit archaic, so in this article, I’ll explain (from
+my experience) what the top 10 memes mean.&lt;/p&gt;
+&lt;p&gt;Note these are the top ten “of all time” as of the writing of this article.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;yes-windows-diagnostics-&quot;&gt;Yes (Windows Diagnostics)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/630rh1twb8g51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=f6e5a26984d4e4a9391d1df76fb1a4c7d58ac6cf&quot; alt=&quot;Yes&quot;&gt;&lt;/p&gt;
+&lt;p&gt;This is a simple Python function that supposedly looks for issues on the Windows
+system.&lt;/p&gt;
+&lt;p&gt;If you’re trying to learn Python by looking at this, you’re in for a surprise–it’s
+not even close to syntactically correct.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import os # This module isn&amp;#39;t even used
+def Windows_Diagnostics() # Where&amp;#39;s the &amp;quot;:&amp;quot;?
+    print(&amp;#39;Looking for problems&amp;#39;)
+    waitTimer(20000ms) # waitTimer is not a built-in function, and &amp;quot;20000ms&amp;quot;
+                       # is not a valid data type
+    print(&amp;#39;Unable to fix the issue.&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I think that’s part of the joke. Maybe they’re hoping advanced developers will see it
+and have their hair catch on fire.&lt;/p&gt;
+&lt;h1 id=&quot;whyyy-the-code-i-write-what-it-does-&quot;&gt;whyyy (The Code I Write/What it Does)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.redd.it/ik3cqvmfozm51.png&quot; alt=&quot;whyyy&quot;&gt;&lt;/p&gt;
+&lt;p&gt;You just spent an entire weekend designing, testing (because we all unit test our
+code, right?), and deploying your project. It’s amazing. Bill Gates and Linus Torvalds
+should bow down to you.&lt;/p&gt;
+&lt;p&gt;Because you parsed a CSV file and turned it into JSON. All hail the hacker!&lt;/p&gt;
+&lt;p&gt;All developers think they’re cool when they write a program. I’m no different. But in
+reality, nobody cares. It’s cool to you and nobody else.&lt;/p&gt;
+&lt;h1 id=&quot;no-doubt-they-are-hard-to-swallow&quot;&gt;No doubt they are hard to swallow&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/7q9gqt2ie1p51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=a926d4930c530c13f564b76eb770d520ed20214f&quot; alt=&quot;hard to swallow pills&quot;&gt;&lt;/p&gt;
+&lt;p&gt;These days when doing development it’s common to have to download toolkits and framework
+from the Internet. But how did the Internet get there? Did someone download the 
+framework?&lt;/p&gt;
+&lt;p&gt;With instant access to memes so mundane, it can be hard to grasp that just sending the 
+string “Hello World” from one computer to another took teams of engineers to design.
+But thanks to the need for military intelligence we can now look up cat videos at any
+time of the day.&lt;/p&gt;
+&lt;h1 id=&quot;ptsd-intensifies-missing-semicolon-&quot;&gt;PTSD Intensifies (Missing semicolon)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/lx5ys76e4tq41.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=b3745dc9e6b45875bf99c536a8b83cac8335a241&quot; alt=&quot;ptsd intensifies&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you’re using Python, Ruby, Go or (for the love of Stallman, please don’t) Perl, you 
+probably don’t know what the use of semicolons is for.&lt;/p&gt;
+&lt;p&gt;They’re not used in scripting languages very much, but often used in compiled languages, 
+such as, C, C++, and Java.  For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;HelloWorld&lt;/span&gt; &lt;/span&gt;{
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String [] args)&lt;/span&gt; &lt;/span&gt;{
+        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; sum = &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt; + &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;
+        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;4 + 5 is &quot;&lt;/span&gt; + sum);
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is a Java snippet. A programmer must compile this code into Java byte code which
+is then run as an executable.&lt;/p&gt;
+&lt;p&gt;Missing one semicolon can result in an entire project not being compiled.&lt;/p&gt;
+&lt;p&gt;As you can imagine with some projects clocking in at millions of lines, this can be
+very frustrating.&lt;/p&gt;
+&lt;p&gt;The missing semicolon is the go-to problem most compiled language programmers face.
+But what happens if the issue isn’t that? What then?&lt;/p&gt;
+&lt;h1 id=&quot;hackathon&quot;&gt;Hackathon&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/cl94gjydjkn51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=f13e51e45881a9d4b09831a2ab40d015c60bd732&quot; alt=&quot;Hackathon&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I’ll agree the “woman yelling at cat meme”
+&lt;a href=&quot;https://thetab.com/uk/2019/11/11/woman-yelling-at-cat-meme-131352&quot;&gt;doesn’t have very funny origins&lt;/a&gt;
+so its humor has dissipated for me. But it’s in the top ten, so here we go&amp;hellip;&lt;/p&gt;
+&lt;p&gt;To the uninitiated, hackathons are events (usually a couple of days) hosted by companies,
+where developers get together to develop a project, usually competing.
+Typically there’s another goal of the event, like networking or recruiting.&lt;/p&gt;
+&lt;p&gt;I’ve never attended one (I’ve attended something &lt;em&gt;like&lt;/em&gt; one, though–Python for good),
+but hackatons are usually very competative; consequently, most developers sacrifice
+some conveniences (like sleep) in order to get their project done and win the prize.&lt;/p&gt;
+&lt;h1 id=&quot;all-will-agree-with-this-c-linker-errors-&quot;&gt;All will agree with this! (C++ Linker Errors)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/qvd5x5e52rx41.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=4b2a62404bc8735a887468d4337fc4018fe13ff8&quot; alt=&quot;All will agree with this&quot;&gt;&lt;/p&gt;
+&lt;p&gt;As mentioned above, C++ is a compiled language, and must be turned into binary in
+order to run.&lt;/p&gt;
+&lt;p&gt;What differetiates C++ from its predecessor, though, is the stage of “linking,” or
+including libraries (external or internal) into the code base.&lt;/p&gt;
+&lt;p&gt;Any errors produced tend to be very long.
+You’ll typically have the module name, concatenated with the 
+full member definition (with the template type in brackets), &lt;em&gt;then&lt;/em&gt; &lt;strong&gt;finally&lt;/strong&gt; the 
+error, e.g.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/usr/local/lib/gcc-lib/i686-pc-linux-gnu/3.2.1/include/c++/bits/ios_base.h: In
+   copy constructor `std::basic_ios&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;
+   &amp;gt;::basic_ios(const std::basic_ios&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;&amp;amp;)&amp;#39;:
+/usr/local/lib/gcc-lib/i686-pc-linux-gnu/3.2.1/include/c++/bits/ios_base.h:424: `std::ios_base::ios_base(const std::ios_base&amp;amp;)&amp;#39; is private
+mil.cpp:28: within this context
+mil.cpp: In function `int main()&amp;#39;:
+mil.cpp:28:   initializing argument 1 of `void
+   Fraction::Print(std::basic_ostream&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;) const&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;(Thanks to &lt;a href=&quot;https://www.csee.umbc.edu/courses/undergraduate/202/fall04/Projects/CommonErrors.shtml&quot;&gt;https://www.csee.umbc.edu/courses/undergraduate/202/fall04/Projects/CommonErrors.shtml&lt;/a&gt; for the code exmaple)&lt;/p&gt;
+&lt;p&gt;Believe it or not, this is one of the short ones!&lt;/p&gt;
+&lt;p&gt;So now you can see why you’d want a large monitor!&lt;/p&gt;
+&lt;h1 id=&quot;this-meme-trash-equality-&quot;&gt;this.meme = trash (equality)&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/3c8epii09um51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=7b6a8944cd0ac69ea3f1782a807b2e2bc9add333&quot; alt=&quot;this.meme=trash&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Typically in English when we want to say things aren’t the same (and we’re geeks) we say 
+“not equal.” For example, “The year 2020 is not equal to utopia.”&lt;/p&gt;
+&lt;p&gt;In algebra we use the “≠” symbol.&lt;/p&gt;
+&lt;p&gt;Obviously, you don’t have the “≠” on your keyboard, and programmers were too lazy to put one in, so most programming languages use “!=”&lt;/p&gt;
+&lt;p&gt;But if you used one in algebra class your teacher would probably accuse you of trying to do a factorial of the right hand side or something.&lt;/p&gt;
+&lt;p&gt;But programmers are inherently more refined than algebra teachers so we use “!=” whether Ms. Abigail likes it or not!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;I deserve that “A,” Ms. Abigail!&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;an-interesting-title&quot;&gt;An Interesting Title&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/jrqjk6959ur41.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=40110c2b6e3e63fece8d678e369f28f8a0b892c6&quot; alt=&quot;An Interesting Title&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you’re just starting out in programming you’re undoubtedly copying error messages
+you’re seeing, and finding some solution on StackOverflow from someone else with a
+different system and a different problem.&lt;/p&gt;
+&lt;p&gt;Or you’re not too sure about a specific topic so you look on YouTube (e.g. “how to 
+tangle your tango with django”) and hope that someone explains it just so. And for
+some reason folks from India rule the programming tutorial space.&lt;/p&gt;
+&lt;p&gt;Don’t feel bad if you have to go this route. Even expert developers do this from time
+to time. With patience and hard work you’ll rely on online resources less and less, 
+and instead spend 5 hours reading the C++ compiler source code only to see a 
+StackOverflow post saying you simply need to downgrade the Boost library version you’re 
+using.&lt;/p&gt;
+&lt;h1 id=&quot;you-guys-&quot;&gt;You guys:|&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/mshfob64v3u51.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=28abd467a345948bf5f1a8e5a2d34bf8991b08d9&quot; alt=&quot;you guys&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I don’t think you need to be a programmer to get this, but I’ll explain anyway since I
+promised I would.&lt;/p&gt;
+&lt;p&gt;The top left cable is standard USB. And, yes, it only goes in one way into your
+computer port.&lt;/p&gt;
+&lt;p&gt;In the late 2010’s someone had the genius idea to make the connection reversible,
+so it doesn’t matter which way you flip the cable; hence, USB-C (top right).&lt;/p&gt;
+&lt;p&gt;But wait! There’s more! There’s the audio cable (predating USB by, like, a lot of years)
+that isn’t directional at all. You just plug it in. That’s bottom left.&lt;/p&gt;
+&lt;p&gt;Finally, “Why use cables at all?” said the developers of Bluetooth?&lt;/p&gt;
+&lt;p&gt;And we’ve been fighting with connecting Bluetooth ever since.&lt;/p&gt;
+&lt;h1 id=&quot;last-one-true-af-&quot;&gt;Last one - true af :)))))))&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://preview.redd.it/oyp1pbq28il51.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=83ed7868bda34cd6839c29fbc7e1d3b5129c5530&quot; alt=&quot;true af&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I’m sure the inspiration for this is XKCD’s &lt;a href=&quot;https://xkcd.com/149/&quot;&gt;“make me a sandwich”&lt;/a&gt;
+cartoon.&lt;/p&gt;
+&lt;p&gt;If you have not had the opportunity to ditch Windows in favor of Linux, &lt;code&gt;sudo&lt;/code&gt; is the
+keyword to run any command as super-user.&lt;/p&gt;
+&lt;p&gt;This is equivalent to Windows’ “admin mode.”&lt;/p&gt;
+&lt;p&gt;Technically, most Linux distributions have a “root” user which has unlimited permissions
+on the system but it’s very dangerous to log in as root. So most distributions have
+safeguards in place to prevent this from happening. Obviously, you will need root
+permissions &lt;em&gt;some&lt;/em&gt; of the time, hence the keyword “sudo.”&lt;/p&gt;
+&lt;p&gt;For example, to install packages on Ubuntu you’d say…&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo apt install obs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That gets you what you want! ;)&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>4 Ways Mozilla Could Pivot</title>
+      <link>https://src-r-r.github.io/articles/how-mozilla-could-pivot/</link>
+      <pubDate>Sun, 15 Nov 2020 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/how-mozilla-could-pivot/</guid>
+      <author></author>
+      <description>&lt;p&gt;Countless articles have been written about Mozilla, the organizaiton that’s part
+community effort, part corporate machine, and part Internet patriot, but 100% in
+trouble. Members of the free Internet fanbase agree that Mozilla has done a great
+deal to leave the Internet open and free, but their current business model is
+in danger of collapsing.&lt;/p&gt;
+&lt;p&gt;Instead of writing another “Oh, no, what are we going to do?” article, I’ve decided to
+brainstorm some ideas Mozilla could capitalize on to pivot and save itself from
+extinction. I’ve come up with 4 solutions that I believe could help Mozilla come back
+from the darkness and continue to spread the message of freedom and innovation.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;mozilla-s-in-trouble&quot;&gt;Mozilla’s In Trouble&lt;/h1&gt;
+&lt;p&gt;I remember the days in high school (shortly after my exposure to the open source world)
+I discovered Mozilla’s Firefox web browser. Back in those days it was the only browser with
+tabs. Internet Explorer did catch on a few years later (and a few years after that Chrome
+took the stage) but I felt pretty cool switching between tabs, especially since my school’s
+computers didn’t restrict &lt;a href=&quot;http://portableapps.com&quot;&gt;Portable Apps&lt;/a&gt; from being executed.&lt;/p&gt;
+&lt;p&gt;And Mozilla has done a good job maintaining their mission of being open and transparent and
+respecting the privacy of their users. Even when GDPR went into effect, most companies
+were scrambling to make sure their practices were up to par so as not be slapped with the
+fines, but Mozilla seemed to not be phased by it at all–mainly because they stood by the
+spirit of the GDPR &lt;a href=&quot;https://www.mozilla.org/en-US/about/manifesto/&quot;&gt;since their inception&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;However, lately Mozilla has been faltering. It’s old news that Firefox has dropped
+below Chrome (the browser owned by Google) and Edge (the browser owned by Microsoft),
+but they’ve &lt;a href=&quot;https://fosspost.org/mozilla-go-unfck-yourself/&quot;&gt;also let most of their staff go&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And remember: Mozilla’s a company. They have other products besides Firefox (which
+is more of a service than a product, anyway).&lt;/p&gt;
+&lt;p&gt;In order for Mozilla to get back in the game and stay ahead of the competition, it must
+do what other businesses do when they’re in trouble: pivot. I’m sorry to say, but
+no one is going to financially rescue Mozilla. Or if they do, it will be devastating for
+Mozilla’s autonomy.&lt;/p&gt;
+&lt;h1 id=&quot;aren-t-they-trying-different-things-&quot;&gt;Aren’t They Trying Different Things?&lt;/h1&gt;
+&lt;p&gt;Some people point out that Mozilla is already trying to pivot. It was big news when
+they announced they were launching their own VPN service–rather,
+&lt;a href=&quot;https://www.tomsguide.com/reviews/mozilla-vpn-review&quot;&gt;Incorporating the Mullvan VPN&lt;/a&gt;
+into the browser.&lt;/p&gt;
+&lt;p&gt;I admit. It makes sense from a marketing standpoint. VPNs are becoming more popular
+as a means to protect one’s privacy. Why not spin up our own VPN? That’s too expensive.
+Alright, maybe we can take a less-popular VPN and give it a boost in exposure.&lt;/p&gt;
+&lt;p&gt;Which I think will be the problem. I think this benefits Mullvan more than it benefits
+Mozilla. Maybe they’re planning on forking off from this, but in my opinion Mozilla
+needs to do something daring and risky in order to survive.&lt;/p&gt;
+&lt;h1 id=&quot;my-suggestions-for-pivoting&quot;&gt;My Suggestions For Pivoting&lt;/h1&gt;
+&lt;h2 id=&quot;1-open-a-privacy-conscious-tech-store&quot;&gt;1 - Open A Privacy-Conscious Tech Store&lt;/h2&gt;
+&lt;p&gt;Believe it or not, I think there is a market for technology stores. Amazon sells
+&lt;em&gt;meh&lt;/em&gt;-chendise, while other stores like Tiger Direct and Fry’s are becoming more focused
+on consumer electronics. Hobbyists and home technology entrepreneurs are forced to
+buy from wholesale marketplaces or purchase off-the-shelf solutions for all their needs.&lt;/p&gt;
+&lt;p&gt;So here’s what I’m picturing: a privacy-aware e-commerce site that sells products
+and services that are very privacy-friendly. Picture NextCloud subscriptions, VPN
+subscriptions (yes, to Mullvan as well), routers with OpenWRT pre-installed, or computers
+with Firefox as the default browser.&lt;/p&gt;
+&lt;p&gt;The only downside here is that Mozilla will be playing catchup more than anything
+else. But the upside is that if people value privacy, they’ll check on &lt;code&gt;mozillastore.com&lt;/code&gt;
+before &lt;code&gt;amazon.com&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;2-host-paid-internet-3-0-conferences&quot;&gt;2 - Host Paid Internet 3.0 Conferences&lt;/h2&gt;
+&lt;p&gt;Mozilla has long touted they are on the frontier of the Intenet. But their actions have
+not matched their words. They have aligned themselves with a libertarian dream of a free
+and open Internet; most of the group dreams of an
+&lt;a href=&quot;https://is.gd/5uJ3Ne&quot;&gt;Internet that isn’t controlled by a single corporation&lt;/a&gt;. The most
+Mozilla has done is stand in the back and clap their hands hoping others would join
+along.&lt;/p&gt;
+&lt;p&gt;There are discussions of a &lt;a href=&quot;https://web3forall.org/&quot;&gt;new design of the World Wide Web&lt;/a&gt;,
+a reimagining of the framework Tim Berners-Lee laid out in in the 80’s that has since
+been hijacked (sorry, Tim, we tried).&lt;/p&gt;
+&lt;p&gt;Great minds are trying to design this future. If Mozilla saw this as their opportunity
+to own the future, they would take full advantage of trying to bring people together
+to discuss what this would look like. Can’t you imagine the news headlines? “Mozilla
+Leading the Way to the Web 3.0; Twitter, Facebook Scared.”&lt;/p&gt;
+&lt;p&gt;Increased revenue, neck-breaking headlines, an opportunity to lead. What’s not to like?&lt;/p&gt;
+&lt;h2 id=&quot;3-act-as-a-privacy-consultant-contractor&quot;&gt;3 - Act as a Privacy Consultant/Contractor&lt;/h2&gt;
+&lt;p&gt;This may not be the most earth-shattering pivot, but what do most software companies do
+these days? Hire out their knowledge to others. It would at least give them some
+time to float above water to act on an even riskier pivot.&lt;/p&gt;
+&lt;h2 id=&quot;4-create-a-commercial-browser&quot;&gt;4 - Create a commercial browser&lt;/h2&gt;
+&lt;p&gt;I say “Mozilla,” you say&amp;hellip;&lt;/p&gt;
+&lt;p&gt;I’m guessing you yelled, “Firefox!” their flagship product. Firefox is an
+incredible piece of software that uses its own web engine (Gecko) that still remains
+ACID-compliant, even while most other browsers adopt Google’s engine (Chromium) and
+slap their own flavor on top of it. Firefox, from the ground up, is independently
+owned by Mozilla.&lt;/p&gt;
+&lt;p&gt;They need to capitalize on this by providing a paid version of Firefox, along with
+their free one.&lt;/p&gt;
+&lt;p&gt;This may seem counter-intuitive. Firefox is free! Why make it commercial?&lt;/p&gt;
+&lt;p&gt;Have you ever heard of RedHat? They’re open source. But they are a paid service. You have
+to pay for a license to install their software.&lt;/p&gt;
+&lt;p&gt;What about Nginx? If you’re running a server and not using Apache or Microsoft, you’re
+most likely using Nginx. They have a community edition as well as a paid edition.&lt;/p&gt;
+&lt;p&gt;Same with Docker. If you’re installing Docker on your own system you most likely read
+“Installing Docker (Community Edition).”&lt;/p&gt;
+&lt;p&gt;What does the paid version provide? Well, that depends on the model. Usually it
+means that the proprietary fork of the product is worked on by the staff of that
+company, while it leaves the free version to be worked on by volunteers, so the
+theory goes that the paid version is of better quality than the volunteer version.&lt;/p&gt;
+&lt;p&gt;I think this could be Mozilla’s best chance at pivoting.&lt;/p&gt;
+&lt;p&gt;I, like most users, do have issues with Firefox. Firefox is mostly developed by 
+volunteers, so unless bug is a security flaw or causes a fatal crash, it will seldom be 
+worked on. And who has time to fix it themselves?&lt;/p&gt;
+&lt;p&gt;The reason Chrome and Edge have succeeded even though they’re free is because they’re not
+free. You’re giving up your own private data to be sold in order to fund development.
+Firefox (at its core, at least) is truly free, which is also their Achilles Heel.&lt;/p&gt;
+&lt;p&gt;My suggestion is for Mozilla to provide 2 versions of Firefox–one open source (for community development)
+and one paid (for expert-level support and better quality). Don’t do anything creepy
+with the paid version (although I can’t imagine Mozilla would) and people would pay for it.
+Heck, &lt;em&gt;I’d&lt;/em&gt; pay for something like that!&lt;/p&gt;
+&lt;h1 id=&quot;mozilla-must-pivot&quot;&gt;Mozilla Must Pivot&lt;/h1&gt;
+&lt;p&gt;The Internet is in danger of being lost. Some might argue it already is lost. Perhaps so.
+But Mozilla has been a staunch advocate for a free and open Internet.&lt;/p&gt;
+&lt;p&gt;I’m not against Mozilla. In fact, I am 100% behind what they do. But the fact of the matter
+is most people don’t want to be inconvenienced by increased privacy, even if that
+inconvenience means spending 3 minutes to install Firefox over Edge on their desktop.&lt;/p&gt;
+&lt;p&gt;So Mozilla needs to move beyond, “We believe in a free and open internet.” Yes, we get that.
+Everyone wants that utopia.&lt;/p&gt;
+&lt;p&gt;But what is Mozilla going to do to better people’s lives? That’s where the value is. That’s
+what people will pay for. That’s how Mozilla will survive.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>6 Essential BASH commands to make life easier</title>
+      <link>https://src-r-r.github.io/articles/essential-bash-commands-to-make-life-easier/</link>
+      <pubDate>Sun, 18 Oct 2020 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/essential-bash-commands-to-make-life-easier/</guid>
+      <author></author>
+      <description>&lt;p&gt;I love making things simpler and easier, especially when it comes to
+programming. Already Linux is set up for easy configuration and
+customization. But I’ve found missing commands that, once added,
+make life a whole lot easier.&lt;/p&gt;
+&lt;p&gt;Note that these are not programs to install (yet). They’re BASH snippets,
+functions and aliases that are must-haves in my &lt;code&gt;.bashrc&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So, without furhter ado, here are 6 essential BASH commands to add
+to your arsenal.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;resource-source-your-bashrc-again-&quot;&gt;&lt;code&gt;resource&lt;/code&gt; - Source your &lt;code&gt;.bashrc&lt;/code&gt; again.&lt;/h1&gt;
+&lt;p&gt;Many times you’ll be adding something to &lt;code&gt;.bashrc&lt;/code&gt; that you’ll want to
+try. This alias can reload it easily without having to streatch your
+fingers toward the symbol row.&lt;/p&gt;
+&lt;p&gt;Add the following to your &lt;code&gt;.bashrc&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;alias&lt;/span&gt; resource=&lt;span class=&quot;string&quot;&gt;&quot;source &lt;span class=&quot;variable&quot;&gt;$HOME&lt;/span&gt;/.bashrc&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, the first time, you do have to say &lt;code&gt;source ~/.bashrc&lt;/code&gt;. Subsequent
+times you can just say &lt;code&gt;resource&lt;/code&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;addtopath-add-a-new-path-to-the-path-environment-variable-&quot;&gt;addToPath - Add a new path to the &lt;code&gt;PATH&lt;/code&gt; environment variable.&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;title&quot;&gt;addToPath&lt;/span&gt;&lt;/span&gt;() {
+    [[ &lt;span class=&quot;string&quot;&gt;&quot;:&lt;span class=&quot;variable&quot;&gt;$PATH&lt;/span&gt;:&quot;&lt;/span&gt; != *&lt;span class=&quot;string&quot;&gt;&quot;:&lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;:&quot;&lt;/span&gt;* ]] &amp;amp;&amp;amp; PATH=&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;:&lt;span class=&quot;variable&quot;&gt;${PATH}&lt;/span&gt;&quot;&lt;/span&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;u-go-up-a-directory&quot;&gt;&lt;code&gt;u&lt;/code&gt; - Go up a directory&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;user@host:~/very/long/path/to/a/project$ cd..
+user@host:~/very/long/path/to/a$ cd..
+user@host:~/very/long/path/to$ cd..
+user@host:~/very/long/path$ cd..
+user@host:~/very/long$&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Look familiar?&lt;/p&gt;
+&lt;p&gt;Credit for the answer goes to &lt;a href=&quot;https://stackoverflow.com/a/26134858&quot;&gt;Grigory K&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Essentially, just goes up a certain 6 of directories.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;user@host:~/very/long/path/to/a/project$ u 3
+user@host:~/very/long/path$ &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Easy. Way too easy.&lt;/p&gt;
+&lt;p&gt;Here’s the code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# cd up to n dirs&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# using:  cd.. 10   cd.. dir&lt;/span&gt;
+&lt;span class=&quot;comment&quot;&gt;# Thanks to https://stackoverflow.com/a/26134858&lt;/span&gt;
+
+&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;title&quot;&gt;up&lt;/span&gt;&lt;/span&gt;() {
+  &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; $(&lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;%0.0s../&quot;&lt;/span&gt; $(seq 1 &lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;));
+}
+
+&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;title&quot;&gt;u&lt;/span&gt;&lt;/span&gt;() {
+  &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt;
+    *[!0-9]*)                                          &lt;span class=&quot;comment&quot;&gt;# if no a 6&lt;/span&gt;
+      &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; $( &lt;span class=&quot;built_in&quot;&gt;pwd&lt;/span&gt; | sed -r &lt;span class=&quot;string&quot;&gt;&quot;s|(.*/&lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;[^/]*/).*|\1|&quot;&lt;/span&gt; )     &lt;span class=&quot;comment&quot;&gt;# search dir_name in current path, if found - cd to it&lt;/span&gt;
+      ;;                                               &lt;span class=&quot;comment&quot;&gt;# if not found - not cd&lt;/span&gt;
+    *)
+      &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; $(&lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;%0.0s../&quot;&lt;/span&gt; $(seq 1 &lt;span class=&quot;variable&quot;&gt;$1&lt;/span&gt;));             &lt;span class=&quot;comment&quot;&gt;# cd ../../../../  (N dirs)&lt;/span&gt;
+    ;;
+  &lt;span class=&quot;keyword&quot;&gt;esac&lt;/span&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;cb-copy-things-to-the-clipboard&quot;&gt;&lt;code&gt;cb&lt;/code&gt; - Copy things to the clipboard&lt;/h1&gt;
+&lt;p&gt;There’s &lt;code&gt;xclip&lt;/code&gt;, for sure, but this only copies things to the x buffer
+for middle click paste. Sometimes you’ll want to use the standard
+&lt;code&gt;CTRL+V&lt;/code&gt; to paste something.&lt;/p&gt;
+&lt;p&gt;Thankfully, there’s &lt;code&gt;cb&lt;/code&gt; for that. It’s more of a file to place in your
+executable &lt;code&gt;PATH&lt;/code&gt; than an actual alias, but it’s essential nonetheless.&lt;/p&gt;
+&lt;p&gt;The code is pretty long so I’ll only link to it. Shout out to the poster
+&lt;a href=&quot;https://gist.github.com/RichardBronosky&quot;&gt;RichardBronosky&lt;/a&gt; for posting it.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://gist.github.com/RichardBronosky/56d8f614fab2bacdd8b048fb58d0c0c7&quot;&gt;https://gist.github.com/RichardBronosky/56d8f614fab2bacdd8b048fb58d0c0c7&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To get started, excute the following commands:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;mkdir ~/.&lt;span class=&quot;built_in&quot;&gt;local&lt;/span&gt;/bin &lt;span class=&quot;comment&quot;&gt;# Or whatever you have in the $PATH variable&lt;/span&gt;
+&lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; ~/.&lt;span class=&quot;built_in&quot;&gt;local&lt;/span&gt;/bin
+wget https://gist.githubusercontent.com/RichardBronosky/56d8f614fab2bacdd8b048fb58d0c0c7/raw/842a92ad909ade54f73a29fb710ee2861d0f2699/cb
+chmod u+x cb&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;timestamp-a-simple-timestamp-string-ot-remember-when-you-saved-a-file-&quot;&gt;&lt;code&gt;timestamp&lt;/code&gt; - A simple timestamp string ot remember when you saved a file.&lt;/h1&gt;
+&lt;p&gt;While not a revolutionary alias, this helps when I’m saving a backup
+file.&lt;/p&gt;
+&lt;h1 id=&quot;getting-the-current-directory-of-a-bash-script&quot;&gt;Getting the current directory of a BASH script&lt;/h1&gt;
+&lt;p&gt;This is more of a must-have code snippet than an alias.&lt;/p&gt;
+&lt;p&gt;In scripts a lot of times its imperative to know where you are. Contrary
+to what you might thing &lt;code&gt;.&lt;/code&gt; will not resolve to the current directory
+of the script. It only resolves to the current directory of the path
+of executation. This can be really dangerous. For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ cat /home/benign/remove-everything.sh
+rm -fr .
+$ &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; /
+$ bash /home/benign/remove-everything.sh&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Yikes! Better keep your backups in order!&lt;/p&gt;
+&lt;p&gt;Thankfully there’s a snippet that resolves to the current directory
+for the script.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;SOURCE=&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;${BASH_SOURCE[0]}&lt;/span&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; [ -h &lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt;&quot;&lt;/span&gt; ]; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;# resolve $SOURCE until the file is no longer a symlink&lt;/span&gt;
+  DIR=&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$( cd -P &quot;$( dirname &quot;$SOURCE&quot; )&lt;/span&gt;&quot;&lt;/span&gt; &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;&amp;amp; &lt;span class=&quot;built_in&quot;&gt;pwd&lt;/span&gt; )&lt;span class=&quot;string&quot;&gt;&quot;
+  SOURCE=&quot;&lt;/span&gt;$(readlink &lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt;&quot;&lt;/span&gt;)&lt;span class=&quot;string&quot;&gt;&quot;
+  [[ &lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt; != /* ]] &amp;amp;&amp;amp; SOURCE=&quot;&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;$DIR&lt;/span&gt;/&lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt;&lt;span class=&quot;string&quot;&gt;&quot; # if &lt;span class=&quot;variable&quot;&gt;$SOURCE&lt;/span&gt; was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR=&quot;&lt;/span&gt;$( &lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; -P &lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$( dirname &quot;$SOURCE&quot; )&lt;/span&gt;&quot;&lt;/span&gt; &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;&amp;amp; &lt;span class=&quot;built_in&quot;&gt;pwd&lt;/span&gt; )&lt;span class=&quot;string&quot;&gt;&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Just include that in every BASH file and you’ll have access to the current directory
+where the script resides.&lt;/p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I just reviewed 6 BASH commands and aliases that I like to include in either BASH
+script files or my &lt;code&gt;.bashrc&lt;/code&gt; files. These have helped me navigate through the
+filesystem with ease, get information quickly, or ensure I don’t delete anything
+important!&lt;/p&gt;
+&lt;p&gt;Hoepfully you’ll find them equally helpful.&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>Justfile takes the pain out of reading files in Python</title>
-      <link>http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</link>
+      <link>https://src-r-r.github.io/articles/taking_the_pain_out_of_files_in_python/</link>
       <pubDate>Sun, 04 Oct 2020 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/taking_the_pain_out_of_files_in_python/</guid>
       <author></author>
       <description>&lt;p&gt;Writing files in Python isn’t terrible, but it’s not convenient, either.
 With-syntax can get cumbersome inside other constructs and there’s a
@@ -148,7 +2084,7 @@ Or if we can’t open it.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;:
     &lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt; open(&lt;span class=&quot;string&quot;&gt;'workfile'&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; f:
         read_data = f.read()
-catch FileNotFoundError &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; e:
+&lt;span class=&quot;keyword&quot;&gt;except&lt;/span&gt; FileNotFoundError &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; e:
     print(&lt;span class=&quot;string&quot;&gt;&quot;not found&quot;&lt;/span&gt;);&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Okay, whew! At least that’s over. Just imagine if we had to write to
 a file. Ah, what the heck! Let’s do it.&lt;/p&gt;
@@ -300,9 +2236,9 @@ ticket!&lt;/p&gt;
     </item>
     <item>
       <title>WebSockets: How to Give a Slide Presentation from Halfway Across The World</title>
-      <link>http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</link>
+      <link>https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</link>
       <pubDate>Mon, 14 Sep 2020 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/</guid>
       <author></author>
       <description>&lt;p&gt;In this article I describe how to use the ASGI interface for listening
 for messages from a server. Essentially, it works like a server in
@@ -330,7 +2266,7 @@ run it. Or they want to sit with their family.&lt;/p&gt;
 then hands that command off to an application to display?&lt;/p&gt;
 &lt;p&gt;Yes we can!&lt;/p&gt;
 &lt;p&gt;Very briefly it would look like this:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/overhead-websocket-diagram.png&quot; alt=&quot;diagram 1&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/overhead-websocket-diagram.png&quot; alt=&quot;diagram 1&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;on-a-web-page&quot;&gt;On a Web Page&lt;/h2&gt;
 &lt;p&gt;Another “requirement” – let’s use the browser as the application container.
 Can this work? What’s needed for a church presentation?&lt;/p&gt;
@@ -603,10 +2539,10 @@ REST client)&lt;/p&gt;
 &lt;p&gt;For example the following URL will display the first slide on the client:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# Remember, we're listening on port 3001 for the REST request!&lt;/span&gt;
 curl http://127.0.0.1:3001/first&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/first.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/first.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Consequently, we’ll go to the next slide with the following command:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;curl http://127.0.0.1:3001/next&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/next.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/giving-a-powerpoint-presentation-from-halfway-across-the-world/static/images/websocket-presentation/next.png&quot; alt=&quot;first&quot;&gt;&lt;/p&gt;
 &lt;p&gt;How awesome is that! The webpage obeys our command without us touching it!&lt;/p&gt;
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 &lt;p&gt;WebSockets allow the programmer to send data from a server to a client. In this example,
@@ -743,9 +2679,9 @@ recv.listen(&lt;span class=&quot;number&quot;&gt;3001&lt;/span&gt;);
     </item>
     <item>
       <title>Responsive Web Design in Django (Without JavaScript!)</title>
-      <link>http://localhost:8080/articles/responsive-web-design-in-django-without-javascript/</link>
+      <link>https://src-r-r.github.io/articles/responsive-web-design-in-django-without-javascript/</link>
       <pubDate>Mon, 15 Oct 2018 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/responsive-web-design-in-django-without-javascript/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/responsive-web-design-in-django-without-javascript/</guid>
       <author></author>
       <description>&lt;h2 id=&quot;the-case-for-non-js-responsive-web-design&quot;&gt;The Case for Non-JS Responsive Web Design&lt;/h2&gt;
 &lt;p&gt;I would argue JavaScript is becoming more common with which to build websites,
@@ -921,9 +2857,9 @@ site ready to run!&lt;/p&gt;
     </item>
     <item>
       <title>Escargo: The Zero-Configuration Email API</title>
-      <link>http://localhost:8080/articles/Escargo:-The-Zero-Configuration-Email-API/</link>
+      <link>https://src-r-r.github.io/articles/Escargo:-The-Zero-Configuration-Email-API/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/Escargo:-The-Zero-Configuration-Email-API/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/Escargo:-The-Zero-Configuration-Email-API/</guid>
       <author></author>
       <description>&lt;h1 id=&quot;don-t-re-invent-the-wheel&quot;&gt;Don’t Re-Invent the Wheel&lt;/h1&gt;
 &lt;p&gt;&lt;img src=&quot;https://openclipart.org/image/300px/svg_to_png/155149/pre-historic-wheel-cartoon.png&quot; alt=&quot;wheel&quot;&gt;&lt;/p&gt;
@@ -1005,9 +2941,9 @@ I’ll be sure to add it.&lt;/p&gt;
     </item>
     <item>
       <title>Basic Parts of an API Request</title>
-      <link>http://localhost:8080/articles/basic-parts-of-an-api-request/</link>
+      <link>https://src-r-r.github.io/articles/basic-parts-of-an-api-request/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/basic-parts-of-an-api-request/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/basic-parts-of-an-api-request/</guid>
       <author></author>
       <description>&lt;h1 id=&quot;basic-parts-of-an-api-request&quot;&gt;Basic Parts of an API Request&lt;/h1&gt;
 &lt;p&gt;Sometimes understanding URLs and requests can be intimidating. If you’re wanting
@@ -1254,9 +3190,9 @@ the post office analogy.&lt;/p&gt;
     </item>
     <item>
       <title>JavaScript Programming for Non-JavaScript Programmers</title>
-      <link>http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</link>
+      <link>https://src-r-r.github.io/articles/javascript-programming-for-non-javascript-programmers/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/javascript-programming-for-non-javascript-programmers/</guid>
       <author></author>
       <description>&lt;p&gt;No technology has divided the programming community more than JavsScript, mainly
 because it’s the been de-facto standard for web pages since around 2012, or
@@ -1376,9 +3312,9 @@ I was able to explain what goes on in a more visual way.&lt;/p&gt;
     </item>
     <item>
       <title>My Latest Project - LinkList Firefox Extension</title>
-      <link>http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</link>
+      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
       <author></author>
       <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
 &lt;p&gt;We are a species whose brains like limited information.
@@ -1412,9 +3348,9 @@ and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&g
     </item>
     <item>
       <title>You Can't Write a Stage Play in ReStructuredText! (Part 1)</title>
-      <link>http://localhost:8080/articles/you_cant_write_a_stageplay_in_restructuredtext/</link>
+      <link>https://src-r-r.github.io/articles/you_cant_write_a_stageplay_in_restructuredtext/</link>
       <pubDate>Fri, 03 Nov 2017 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/you_cant_write_a_stageplay_in_restructuredtext/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/you_cant_write_a_stageplay_in_restructuredtext/</guid>
       <author></author>
       <description>&lt;h1 id=&quot;you-s-can-t-s-sup-can-sup-write-a-stage-play-in-restructuredtext-part&quot;&gt;You &lt;s&gt;Can’t&lt;/s&gt; &lt;sup&gt;Can&lt;/sup&gt; Write a Stage Play in ReStructuredText! (Part&lt;/h1&gt;
 &lt;h1 id=&quot;1-&quot;&gt;1 )&lt;/h1&gt;
@@ -1604,11 +3540,11 @@ the ReStructuredText into a document with the correct formatting.&lt;/p&gt;
     </item>
     <item>
       <title>The Decline of Closed-Source APIs - Apistrat 2017</title>
-      <link>http://localhost:8080/articles/the_decline_of_closed_apis/</link>
+      <link>https://src-r-r.github.io/articles/the_decline_of_closed_apis/</link>
       <pubDate>Thu, 02 Nov 2017 17:00:00 -0700</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/the_decline_of_closed_apis/</guid>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/the_decline_of_closed_apis/</guid>
       <author></author>
-      <description>&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04667.png&quot; alt=&quot;APIStratBanner&quot;&gt;&lt;/p&gt;
+      <description>&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04667.png&quot; alt=&quot;APIStratBanner&quot;&gt;&lt;/p&gt;
 &lt;h1 id=&quot;what-i-learned-at-apistrat-2017&quot;&gt;What I Learned at APISTRAT 2017&lt;/h1&gt;
 &lt;p&gt;This last week from October 31st to November 2nd, I had the amazing
 opportunity to brush up against some great innovators at some of the
@@ -1662,7 +3598,7 @@ of &lt;a href=&quot;http://apivista.com/&quot;&gt;APIVista&lt;/a&gt;. This works
 friendlier way than a full-on “How to API” course, but was not any less
 relevant. Chris did an excellent job encouraging the class participants to
 reconstruct old ideas into new API framework.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04684.png&quot; alt=&quot;Chris Busse&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04684.png&quot; alt=&quot;Chris Busse&quot;&gt;&lt;/p&gt;
 &lt;p&gt;The example he used was the old “lemonade stand” game, a meme that,
 unfortunately, predated me. He led us through individual and group activities
 to rethink how to program the lemonade stand game in terms of REST calls. The
@@ -1672,7 +3608,7 @@ programmers.&lt;/p&gt;
 &lt;p&gt;The morning was opened by keynote talks–fueled by coffee, of course. The
 talks were given by people from some of the biggest names in tech: Yina Arena,
 from Microsoft, and Sarah Novotny, from Google.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04788.png&quot; alt=&quot;Sarah Novotny&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04788.png&quot; alt=&quot;Sarah Novotny&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Personally, I find myself surprised these days by how–er, open–Microsoft is
 to adopt open source technologies. As a primarily open source developer,
 Microsoft has always been a thorn: unwilling to work with open source. In
@@ -1690,7 +3626,7 @@ this development strategy.&lt;/p&gt;
 yet to have a name for themselves. I’d never heard of BioBright before
 APIStrat, but found Ryan Harrison’s desire to change the field of science and
 research infectious.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04934.png&quot; alt=&quot;Ryan Harrison&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04934.png&quot; alt=&quot;Ryan Harrison&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Documentation for APIs (and documentation in general) is something I find is
 looked over, both for me and for other developers, so I attended talks that
 spoke on these subjects. One of the most interesting was by Ash Hathaway, a
@@ -1699,7 +3635,7 @@ proud Texan, who brought to light why words matter in documentation.&lt;/p&gt;
 “API Evangelist” (if not &lt;em&gt;the&lt;/em&gt; API Evangelist), Kin Lane. I was not fortunate
 enough to attend any of his talks, but I did get to talk with him in person
 during a break.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:8080/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04869.png&quot; alt=&quot;Kin Lane&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/the_decline_of_closed_apis/images/apistrat2017/small-DSC04869.png&quot; alt=&quot;Kin Lane&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Kin gets most of his income from hustling, doing anything from writing,
 consulting, and photography. He started getting interested in APIs after
 seeing fighting from companies like Twitter, and worked with the Department of

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Jordan Hewitt, Senior Software Developer, specializing in Full Stack Software Development and programming. Driven, passionate for helping others, and creative-problem solver.">
+    <title>How to Property Set up Python Logging with a Command Line Program - Jordan Hewitt - Software Developer
+    </title>
+    <link rel="stylesheet" href="/fonts/abel_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bolditalic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bold_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_italic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/searstower_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <script defer src="/fontawesome/js/all.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  </head>
+  <body class="article-detail" onLoad=";">
+    <div class="container">
+      <div class="columns">
+        <div class="col-9 col-lg-12">
+          <h1>How to Property Set up Python Logging with a Command Line Program</h1>
+          <p class="author">Written by <span class="author">Jordan H.</span>
+          </p>
+          <div class="container">
+            <article class="article">
+              <section class="content"><p><img src="/articles/how_to_log_with_a_python_cli_program/images/boy-with-tumpet-and-girl-plugging-ears-with-log-debug-and-stderr.png" alt="Boy With Trumpet as Log.debug and stderr"></p>
+<p>I promise you that the above meme will make sense by the end of the article. Just
+bear with<span class="widont">&nbsp;</span>me.</p>
+<p>While logging should not be used as a replacement for debugging or unit testing, it’s 
+vital to incorporate logging to notify if something is going<span class="widont">&nbsp;</span>wrong.</p>
+<p>Novice Python programmers (or veteran Python programmers) may be a bit frustrated
+configuring logging for a command line application. Unfortunately, while Python’s logging
+module is highly configuragle, this power comes at the cost of<span class="widont">&nbsp;</span>clarity.</p>
+<p>In this article I describe how to properly set up logging in a Python command line
+interface (or <span class="caps">CLI</span>), so that we can set up a industry-ready command line<span class="widont">&nbsp;</span>program.</p>
+<hr>
+<blockquote>
+<p>Examples used in this article can be seen here: <a href="https://gitlab.com/srcrr/python_logging_examples">https://gitlab.com/srcrr/python_logging_examples</a></p>
+</blockquote>
+<h1 id="a-command-line-argument-primer">A Command Line Argument<span class="widont">&nbsp;</span>Primer</h1>
+<blockquote>
+<p>This is the <strong>tl;dr</strong> portion for folks who are uninitiated in the ways of argparser.
+For those who are, feel free to skip to
+<a href="#adding-logging">Adding Loging and<span class="widont">&nbsp;</span>Verbosity</a></p>
+</blockquote>
+<p>For those not familiar, <span class="caps">CLI</span> is the term used for any program that is run in the non-
+graphical interface. If you’ve used <code>ls</code> or <code>dir</code>, congratulations, you’ve used a <span class="caps">CLI</span><span class="widont">&nbsp;</span>program.</p>
+<p>Python is often used as a scrpting language for command line utilities. The basic template
+for such a program looks like<span class="widont">&nbsp;</span>this:</p>
+<pre><code class="language-python"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span>
+    print(<span class="string">"Hello World!"</span>)
+
+<span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
+    main()</code></pre>
+<blockquote>
+<p>The full source code can be seen here: <a href="https://gitlab.com/srcrr/python_logging_examples/-/blob/master/basic_setup/hello_world.py">https://gitlab.com/srcrr/python_logging_examples/-/blob/master/basic_setup/hello_world.py</a></p>
+</blockquote>
+<p>The program is run like<span class="widont">&nbsp;</span>this:</p>
+<pre><code>$ python hello_world.py 
+Hello World!</code></pre><p>or like this:</p>
+<pre><code>$ python -m hello_world
+Hello World!</code></pre><blockquote>
+<p>Most veteran python programmers prefer the <code>python -m</code> approach, since it tries to treat
+everything as a module. I’ll use that form<span class="widont">&nbsp;</span>throughout.</p>
+</blockquote>
+<h1 id="adding-arguments">Adding Arguments</h1>
+<p>Let’s add some spice to the program! If you’ve ever spent a day on the command line you’ve
+undoubtedly come across arguments and options. This is something like <code>ps -aux</code> for linux or <code>dir /t</code> for Windows. Python prefers the hyphenated syntax (.e.g. <code>-v</code> or <code>--verbose</code>).</p>
+<p>For this we’ll use the argparse library. If you’re looking for more power, I’d suggest
+the <a href="https://click.palletsprojects.com/en/master/">Click<span class="widont">&nbsp;</span>package</a>.</p>
+<pre><code class="language-python"><span class="keyword">import</span> argparse
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument(<span class="string">"name"</span>, nargs=<span class="string">"?"</span>, default=<span class="string">"World"</span>)
+
+
+<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(args)</span>:</span>
+    print(<span class="string">f"Hello, <span class="subst">{args.name}</span>!"</span>)
+
+
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    args = parser.parse_args()
+    main(args)</code></pre>
+<blockquote>
+<p>The full source code can be seen here: <a href="https://gitlab.com/srcrr/python_logging_examples/-/blob/master/cli_add_argparse/hello.py">https://gitlab.com/srcrr/python_logging_examples/-/blob/master/cli_add_argparse/hello.py</a></p>
+</blockquote>
+<p>This program has an optional argument <code>name</code>, which will be printed in place of <code>World</code>,
+if given.</p>
+<pre><code>$ python -m hello
+Hello, World!
+
+$ python -m hello Jerry
+Hello, Jerry!</code></pre><p><a name="adding-logging"></a></p>
+<h1 id="adding-logging-and-verbosity">Adding Logging and<span class="widont">&nbsp;</span>Verbosity</h1>
+<p>Let’s add a few more things to the<span class="widont">&nbsp;</span>program:</p>
+<ol>
+<li>Add logging so we know what’s going<span class="widont">&nbsp;</span>on.</li>
+<li>Add a flag to specify how verbose we want to<span class="widont">&nbsp;</span>be.</li>
+</ol>
+<p>Since the example above is pretty basic (despite there not being a pumpkin spice latte in 
+sight) let’s modify the program to do something more<span class="widont">&nbsp;</span>complex.</p>
+<p>Let’s still greet the person, but check to see what time of day it is. Then we’ll greet
+the user accordingly. For added fun, let’s add an hour<span class="widont">&nbsp;</span>offset!</p>
+<p>Here’s the code for the<span class="widont">&nbsp;</span>program:</p>
+<pre><code class="language-python"><span class="keyword">import</span> sys
+<span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta
+<span class="keyword">import</span> argparse
+<span class="keyword">import</span> logging
+
+<span class="comment"># Only used for type hinting.</span>
+<span class="keyword">import</span> typing <span class="keyword">as</span> T
+
+parser = argparse.ArgumentParser()
+parser.add_argument(<span class="string">"name"</span>, nargs=<span class="string">"?"</span>, default=<span class="string">"World"</span>)
+parser.add_argument(<span class="string">"-o"</span>, <span class="string">"--offset"</span>, type=int, default=<span class="number">0</span>)
+
+<span class="comment"># Create a new logger</span>
+log = logging.getLogger(__name__)
+
+<span class="function"><span class="keyword">def</span> <span class="title">say_hello</span><span class="params">(name : T.Any, hour_offset : int)</span>:</span>
+    <span class="comment"># Boundary checking.</span>
+    <span class="comment"># <span class="doctag"><span class="caps">NOTE</span>:</span> typically we'd want to raise an exception here,</span>
+    <span class="comment"># such as a RuntimeException. However, to demonstrate logging,</span>
+    <span class="comment"># we'll just log an error, then exit gracefully.</span>
+    <span class="comment"># <span class="doctag"><span class="caps">NOTE</span>:</span> Actually, more than likely the proper way to do this</span>
+    <span class="comment"># would be to do bounds checking via argparser.</span>
+    <span class="keyword">if</span> abs(hour_offset) &gt; <span class="number">23</span>:
+        log.error(<span class="string">"`hour_offset` must be less than 24!"</span>)
+        sys.exit(<span class="number">1</span>)
+    curr_time = datetime.now()
+    check_time = curr_time + timedelta(hours=hour_offset)
+    log.debug(<span class="string">"Current time: %s"</span>, curr_time.strftime(<span class="string">"%c"</span>))
+    log.debug(<span class="string">"Offset in hours: %s"</span>, hour_offset)
+    log.debug(<span class="string">"Time to check: %s"</span>, check_time)
+    <span class="keyword">if</span> check_time.hour &gt; <span class="number">16</span>:
+        print(<span class="string">f"Closing time, <span class="subst">{name}</span>. I'm done for the day."</span>)
+        <span class="keyword">return</span>
+    <span class="keyword">if</span> check_time.hour &gt; <span class="number">12</span>:
+        print(<span class="string">f"Good afternoon, <span class="subst">{name}</span>. How was lunch?"</span>)
+        <span class="keyword">return</span>
+    print(<span class="string">f"<span class="subst">{name}</span>, I need coffee."</span>)
+    <span class="keyword">return</span>
+
+<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(args)</span>:</span>
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)
+
+<span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:
+    args = parser.parse_args()
+    main(args)</code></pre>
+<blockquote>
+<p>The full source code can be seen here: <a href="https://gitlab.com/srcrr/python_logging_examples/-/blob/master/adding_complexity/hello_check.py">https://gitlab.com/srcrr/python_logging_examples/-/blob/master/adding_complexity/hello_check.py</a></p>
+</blockquote>
+<p>Excellent. Let’s try running the<span class="widont">&nbsp;</span>program!</p>
+<pre><code>$ python -m hello_check
+World, I need coffee.
+$ python -m hello_check -o 4 Susan
+Good afternoon, Susan. How was lunch?
+$ python -m hello_check -o 77 Sam
+`hour_offset` must be less than 24!</code></pre><p>So far so good. But notice<span class="widont">&nbsp;</span>anything?</p>
+<p>Where are all the debugging<span class="widont">&nbsp;</span>messages?</p>
+<p>Logging is obviously working, otherwise <code>&quot;&#39;hour_offset&#39; must be less than 24!&quot;</code> won’t be<span class="widont">&nbsp;</span>printed.</p>
+<p>This is due to how Python logs…specifically <strong>logging<span class="widont">&nbsp;</span>levels</strong></p>
+<h1 id="how-python-logging-works">How Python Logging<span class="widont">&nbsp;</span>Works</h1>
+<p>I would highly recommend taking a look at the <a href="https://docs.python.org/3/library/logging.html">Python Logging Documentation</a>. I’ll admit–It’s a lot to unpack, so I’ll put the
+simplistic explanation<span class="widont">&nbsp;</span>here:</p>
+<ul>
+<li>Logging is done within a <strong>logger<span class="widont">&nbsp;</span>object</strong></li>
+<li>There are 5 levels of logging: <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>, and <code>CRITICAL</code>,
+<code>DEBUG</code> being the lowest level (just used for developers), and <code>CRITICAL</code> being
+the highest<span class="widont">&nbsp;</span>level.</li>
+<li>If not configured, instantiating a logger object will configure it with default<span class="widont">&nbsp;</span>properties.</li>
+<li>These default properties result in anything with level <code>INFO</code> and above to be
+written to <code>stderr</code> without any fancy<span class="widont">&nbsp;</span>formatting.</li>
+<li><strong>Here’s what’s important:</strong> all these defaults can be<span class="widont">&nbsp;</span>overridden.</li>
+</ul>
+<p>Since (in the example above) we don’t configure the logger, Python just uses the default
+properties, meaning nothing below <code>INFO</code> will be<span class="widont">&nbsp;</span>printed.</p>
+<p>With this we use the <code>logging.basicConfig</code> function:</p>
+<pre><code class="language-python"><span class="comment"># ...</span>
+<span class="keyword">import</span> logging
+<span class="comment"># Only used for type hinting.</span>
+<span class="keyword">import</span> typing <span class="keyword">as</span> T
+
+logging.basicConfig(level=logging.<span class="caps">DEBUG</span>)
+<span class="comment"># ...</span></code></pre>
+<p>And we run the program<span class="widont">&nbsp;</span>again:</p>
+<pre><code>$ python -m hello_check -o 77 Sam
+ERROR:__main__:`hour_offset` must be less than 24!
+
+$ python -m hello_check -o 3 Sam
+DEBUG:__main__:Current time: Sun Jan 24 08:14:04 2021
+DEBUG:__main__:Offset in hours: 3
+DEBUG:__main__:Time to check: 2021-01-24 11:14:04.988934
+Sam, I need coffee.</code></pre><p>Notice 2 things:</p>
+<ol>
+<li>The formatting of the log messages changed. Now it’s printed as 
+<code>&lt;Level&gt;:&lt;__name__&gt;:&lt;message&gt;</code>.</li>
+<li>Messages with level <code>DEBUG</code> are printed to the<span class="widont">&nbsp;</span>console.</li>
+</ol>
+<p>Sweet! However, there is an issue. Typically with a program we don’t want to
+print out the debug messages <em><span class="caps">EVERY</span> <span class="caps">TIME</span></em>. Only for when a user wants to find out
+more detailed info on what happened or if we’re doing active<span class="widont">&nbsp;</span>development.</p>
+<p>So most programs have a “debug” flag (sometimes it’s a “verbosity” flag), like<span class="widont">&nbsp;</span>this:</p>
+<pre><code class="language-txt">$ program -d
+DEBUG: Here is a debug message
+This is the output
+
+$ program
+This is the output</code></pre>
+<p>Let’s modify our program to include a debug<span class="widont">&nbsp;</span>flag.</p>
+<h1 id="debug-flag">Debug Flag</h1>
+<p>The following changes are made to our<span class="widont">&nbsp;</span>program:</p>
+<pre><code class="language-python"><span class="keyword">import</span> typing <span class="keyword">as</span> T
+
+<span class="comment"># logging.basicConfig Is removed from here</span>
+
+parser = argparse.ArgumentParser()
+
+<span class="comment"># ...</span></code></pre>
+<pre><code class="language-python">parser.add_argument(<span class="string">"-d"</span>, <span class="string">"--debug"</span>, action=<span class="string">"store_true"</span>, default=<span class="literal">False</span>)
+
+<span class="comment"># Create a new logger</span>
+log = logging.getLogger(__name__)
+
+<span class="comment"># ...</span></code></pre>
+<p>We’ve added the flag. Cool. But how do we control the program flow to enable
+debugging<span class="widont">&nbsp;</span>messages?</p>
+<p>While there may be a few options, I’d recommend putting it in <code>main</code>:</p>
+<pre><code class="language-python"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(args)</span>:</span>
+    <span class="keyword">if</span> args.debug:
+        logging.basicConfig(level=logging.<span class="caps">DEBUG</span>)
+    <span class="keyword">else</span>:
+        logging.basicConfig(level=logging.<span class="caps">INFO</span>)
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)</code></pre>
+<blockquote>
+<p>The full source code can be seen here: <a href="https://gitlab.com/srcrr/python_logging_examples/-/blob/master/configure_level_debug/hello_check.py">https://gitlab.com/srcrr/python_logging_examples/-/blob/master/configure_level_debug/hello_check.py</a></p>
+</blockquote>
+<p>And with that, we can run the program with<span class="widont">&nbsp;</span>debugging:</p>
+<pre><code class="language-txt">$ python -m hello_check
+World, I need coffee.
+
+$ python -m hello_check -d
+DEBUG:__main__:Current time: Tue Jan 26 06:17:51 2021
+DEBUG:__main__:Offset in hours: 0
+DEBUG:__main__:Time to check: 2021-01-26 06:17:51.652623
+World, I need coffee</code></pre>
+<p>First of all, yes, I know that’s early. I’m an early riser–what can I<span class="widont">&nbsp;</span>say!</p>
+<p>Second of all, we have successfully added a <code>-d/--debug</code> flag to control debugging
+output–just like the pros do.<span class="widont">&nbsp;</span>😎</p>
+<h1 id="advanced-topic-dictconfig">Advanced Topic: DictConfig</h1>
+<p>For simple programs this is fine, but typically if you’re doing logging “right,” you’d
+use <a href="https://docs.djangoproject.com/en/3.1/topics/logging/#examples"><code>logging.config.dictConfig</code></a>. This allows for finer-grained control over logging<span class="widont">&nbsp;</span>output.</p>
+<p>But we want to control the flow of the debug output. How do we go about<span class="widont">&nbsp;</span>this?</p>
+<p>There are 2<span class="widont">&nbsp;</span>ways:</p>
+<ol>
+<li>Invoking <code>dictConfig</code> from a global context (e.g. near the <code>import</code>s), then iterating
+through each handler in <code>main</code> to set each one to <code>DEBUG</code>.</li>
+<li>Invoking <code>dictConfig</code> from <code>main</code>, based on the value of <code>args.debug</code>.</li>
+</ol>
+<p>Option 1 does have it’s advantages, but for the sake of simplicity I’ll incorporate
+option<span class="widont">&nbsp;</span>2.</p>
+<p>Consider the following <code>LOGGING</code> dict:</p>
+<pre><code class="language-python">{
+    <span class="string">'version'</span>: <span class="number">1</span>,
+    <span class="string">'disable_existing_loggers'</span>: <span class="literal">False</span>,
+    <span class="string">'formatters'</span>: {
+        <span class="string">'simple'</span>: {
+            <span class="string">'format'</span>: <span class="string">'{levelname} {message}'</span>,
+            <span class="string">'style'</span>: <span class="string">'{'</span>,
+        },
+    },
+    <span class="string">'handlers'</span>: {
+        <span class="string">'console'</span>: {
+            <span class="string">'class'</span>: <span class="string">'logging.StreamHandler'</span>,
+            <span class="string">'formatter'</span>: <span class="string">'simple'</span>,
+        },
+    },
+    <span class="string">'root'</span>: {
+        <span class="string">'handlers'</span>: [<span class="string">'console'</span>],
+        <span class="string">'level'</span>: <span class="string">'<span class="caps">DEBUG</span>'</span>,
+    },
+}</code></pre>
+<p>We’ll want to pass this in to <code>logging.config.dictConfig</code> but remember that we
+also want to set <code>level</code> dynamically, based on the value of  <code>args.debug</code>.</p>
+<p>We can use boolean comprehension for shorthand here, and return it as a value from
+a<span class="widont">&nbsp;</span>function.</p>
+<pre><code class="language-python"><span class="function"><span class="keyword">def</span> <span class="title">get_log_dict</span><span class="params">(args)</span>:</span>
+    <span class="keyword">return</span> {
+        <span class="string">'version'</span>: <span class="number">1</span>,
+        <span class="string">'disable_existing_loggers'</span>: <span class="literal">False</span>,
+        <span class="string">'formatters'</span>: {
+            <span class="string">'simple'</span>: {
+                <span class="string">'format'</span>: <span class="string">'{levelname} {message}'</span>,
+                <span class="string">'style'</span>: <span class="string">'{'</span>,
+            },
+        },
+        <span class="string">'handlers'</span>: {
+            <span class="string">'console'</span>: {
+                <span class="string">'class'</span>: <span class="string">'logging.StreamHandler'</span>,
+                <span class="string">'formatter'</span>: <span class="string">'simple'</span>,
+            },
+        },
+        <span class="string">'root'</span>: {
+            <span class="string">'handlers'</span>: [<span class="string">'console'</span>],
+            <span class="string">'level'</span>: <span class="string">'<span class="caps">DEBUG</span>'</span> <span class="keyword">if</span> args.debug <span class="keyword">else</span> <span class="string">'<span class="caps">INFO</span>'</span>,
+        },
+    }</code></pre>
+<p>That way we can simply call the function from<span class="widont">&nbsp;</span>main:</p>
+<pre><code class="language-python"><span class="comment"># In imports...</span>
+<span class="keyword">import</span> os
+<span class="keyword">import</span> logging.config
+<span class="comment"># Later on in main ...</span>
+<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(args)</span>:</span>
+    logging.config.dictConfig(get_log_dict(args))
+    hour_offset = int(args.offset)
+    name = args.name
+    say_hello(name, hour_offset)</code></pre>
+<blockquote>
+<p>The full source code can be seen here: <a href="https://gitlab.com/srcrr/python_logging_examples/-/blob/master/with_dictconfig/hello_check.py">https://gitlab.com/srcrr/python_logging_examples/-/blob/master/with_dictconfig/hello_check.py</a></p>
+</blockquote>
+<p>Now we can have finer grained control over debug<span class="widont">&nbsp;</span>output.</p>
+<pre><code>python -m hello_check -d
+DEBUG Current time: Tue Jan 26 06:41:52 2021
+DEBUG Offset in hours: 0
+DEBUG Time to check: 2021-01-26 06:41:52.706966
+World, I need coffee.</code></pre><p>Note that this will only control the logging for the current console. If you’re a Django
+enthusiast and really want Django in your program (and who doesn’t!), you can control
+that logging<span class="widont">&nbsp;</span>sepearately:</p>
+<pre><code class="language-python"><span class="function"><span class="keyword">def</span> <span class="title">get_log_dict</span><span class="params">(args)</span>:</span>
+    <span class="keyword">return</span> {
+        <span class="string">'version'</span>: <span class="number">1</span>,
+        <span class="string">'disable_existing_loggers'</span>: <span class="literal">False</span>,
+        <span class="string">'formatters'</span>: {
+            <span class="string">'simple'</span>: {
+                <span class="string">'format'</span>: <span class="string">'{levelname} {message}'</span>,
+                <span class="string">'style'</span>: <span class="string">'{'</span>,
+            },
+        },
+        <span class="string">'handlers'</span>: {
+            <span class="string">'console'</span>: {
+                <span class="string">'class'</span>: <span class="string">'logging.StreamHandler'</span>,
+                <span class="string">'formatter'</span>: <span class="string">'simple'</span>,
+            },
+        },
+        <span class="comment"># Print `info` if `-d` flag passed...otherwise `warning`</span>
+        <span class="string">'django'</span>: {
+            <span class="string">'handlers'</span>: [<span class="string">'console'</span>],
+            <span class="string">'level'</span>: <span class="string">'<span class="caps">INFO</span>'</span> <span class="keyword">if</span> args.debug <span class="keyword">else</span> <span class="string">'<span class="caps">WARNING</span>'</span>,
+        },
+        <span class="string">'root'</span>: {
+            <span class="string">'handlers'</span>: [<span class="string">'console'</span>],
+            <span class="string">'level'</span>: <span class="string">'<span class="caps">DEBUG</span>'</span> <span class="keyword">if</span> args.debug <span class="keyword">else</span> <span class="string">'<span class="caps">INFO</span>'</span>,
+        },
+    }</code></pre>
+<h1 id="conclusion">Conclusion</h1>
+<p>In this tutorial we showed how to properly configure logging in Python. What Python
+lacks in clarity it makes up for in granularity. Python’s logging module is one of the
+most powerful out there, and there are many modules you can incorporate to add
+formatters, handlers, and<span class="widont">&nbsp;</span>more!</p>
+<p>It can be confusing sometimes to add logging to command line interfaces programs, though.
+Above we showed how to do<span class="widont">&nbsp;</span>this.</p>
+</section>
+            </article>
+            <div class="hiring-box">
+              <center>
+                <h4>Did you like this article?</h4>
+              </center>
+              <center>
+                <p>Did you know I'm<strong> 
+                    <u>available for hire?</u></strong></p>
+              </center>
+              <p>Send me an email here: <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></p>
+              <p>Or connect with me in Wire:<b> @nswered</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 col-lg-12 content-wrap" id="sidebar">
+          <div class="nav"><a href="/">&laquo; Full blog</a></div>
+          <section class="about"><img src="/images/portrait.png" class="s-circle col-5 p-centered" />
+
+<h1 id="important-links">Important Links</h1>
+<p><a href="portfolio.html" class="btn btn-primary col-12">My Project Portfolio</a></p>
+<p></p>
+<a href="https://src-r-r.github.io/feed.xml" type='application/rss+xml' class="btn col-12" title="Blog">
+<i class="fas fa-rss-square"></i>
+Blog RSS Feed
+</a>
+
+<dl>
+  <dt>Services</dt>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.freelancer.com/u/TheSrcRR">Freelancer</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.upwork.com/freelancers/~0105fc69312e2da97a">UpWork</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://talent.hubstaff.com/profiles/jordan-hewitt">HubStaff</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.fiverr.com/striking_subzer">Fiverr</a></dd>
+  <dt>Social</dt>
+  <dd><i class="fab fa-twitter"></i>
+  <a href="https://mobile.twitter.com/thesrcrr">@TheSrcRr</dd>
+  <dd><i class="fab fa-linkedin"></i>
+  <a href="https://www.linkedin.com/in/jordan-h-a78122163/">LinkedIn</a></dd>
+  <dt>Software</dt>
+  <dd>
+  <i class="fab fa-github"></i>
+    <a href="https://github.com/src-r-r">GitHub</a></dd>
+  <dd>
+  <i class="fab fa-gitlab"></i>
+  <a href="https://gitlab.com/src-r-r">GitLab</a></dd>
+  <dt><i class="fas fa-camera"></i> Photography</dt>
+  <dd><a href="https://writelight.website">https://writelight.website</a></dd>
+</dl>
+
+<h2 id="contact-me">Contact Me</h2>
+<dl>
+  <dt>Email</dt>
+  <dd><i class="far fa-envelope"></i>
+    <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></dd>
+  <dt>Wire</dt>
+  <dd>@nswered</dd>
+</dl>
+
+<h2 id="services-i-provide">Services I Provide</h2>
+<dl class="hourly-rate">
+  <dt>Hourly Rate</dt>
+  <dd><strong>$57/hr</strong> (negotiable)</dd>
+</dl>
+
+<ul>
+<li>Full Stack Application development</li>
+<li>Documentation writing</li>
+<li>IT Support</li>
+<li>Automation</li>
+<li>Database design (Including PostgreSQL, MongoDB)</li>
+<li>Website creation</li>
+</ul>
+<h2 id="things-i-enjoy-that-i-do-not-charge-for-hobbies-">Things I enjoy that I do not charge for (Hobbies)</h2>
+<ul>
+<li>Reading about philsophy</li>
+<li>Reading about metaphysics</li>
+<li><a href="https:/writelight.website">Photography</a></li>
+<li>Reading fiction</li>
+<li>Improv (didn’t know I’d say that, did you?)</li>
+<li>Theater</li>
+<li>Thinking as a hobby</li>
+<li>Hiking</li>
+</ul>
+<small>
+This project is build on Wintersmith by
+<a href="http://johan-nordberg.com">Johan Nordberg</a>
+</small>
+
+          </section>
+          <section class="copy">
+            <p>&copy; 2021 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+          </section>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/init-highlight.js"></script>
+    </div>
+  </body>
+</html>
