@@ -5,9 +5,117 @@
     <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://localhost:8080</link>
     <description>Live Dangerously | Serve Ethically | Think Technically</description>
-    <pubDate>Sun, 04 Oct 2020 17:00:00 -0700</pubDate>
+    <pubDate>Tue, 16 Mar 2021 17:00:00 -0700</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>3 Common Mistakes You're Making with Software Projects (And How to Fix Them)</title>
+      <link>http://localhost:8080/articles/3-major-things-projects-need-to-have/</link>
+      <pubDate>Tue, 16 Mar 2021 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/3-major-things-projects-need-to-have/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;/articles/3-major-things-projects-need-to-have/images/when-the-product-keeps-crashing-but-you-get-paid-12-to-develop-people-smiling.png&quot; alt=&quot;People Smiling&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I can’t wait to see my program crash!&lt;/p&gt;
+&lt;p&gt;You probably have never said this to yourself or in a meeting with your
+colleagues. But actions can speak otherwise. There are 3 common mistakes
+most projects make that can spell disaster for the project and the team.&lt;/p&gt;
+&lt;p&gt;In this article I walk through these mistakes you or your team are making
+in developing and deploying projects, as well as provide the antidote to
+these mistakes.&lt;/p&gt;
+&lt;p&gt;Whether you’re going solo or on a team, read on if you find your projects fail.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Before we begin, I do give you permission to feel smug if none of these apply
+to you.&lt;/p&gt;
+&lt;h1 id=&quot;1-no-version-control&quot;&gt;1. No Version Control&lt;/h1&gt;
+&lt;p&gt;There are 3 major schools of thought with version control:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;“Version control? What’s that?”&lt;/li&gt;
+&lt;li&gt;“Oh, yeah, I got that. It’s called CTRL+Z” (hint: no, no it’s not!)&lt;/li&gt;
+&lt;li&gt;“Version control? So there are others like you? We use it in all our projects.
+ Please, join our underground society. Our deity is a penguin.”&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Since I’m writing this article you probably have a pretty good guess where I fall.&lt;/p&gt;
+&lt;p&gt;Spoiler alert: I believe you should absolutely be using version control! For any project!&lt;/p&gt;
+&lt;p&gt;What is version control? Simply put, it’s a way to save different revisions of a project.
+Think of it like one of those time travel movies where the good guy gets to go
+back in time to save the day, and each time he changes something a new timeline emerges
+leaving the old one in tact. Loosly, that’s what’s happening.&lt;/p&gt;
+&lt;p&gt;In this scenario you are the good guy (or girl)!&lt;/p&gt;
+&lt;p&gt;You get to save the day from failed deployment!&lt;/p&gt;
+&lt;h2 id=&quot;solution-implement-version-control-&quot;&gt;Solution: Implement Version Control!&lt;/h2&gt;
+&lt;p&gt;By far the “industry standard” is git. There are others, including mercurial,
+CVS, and (oh, please, for the love of all things Linux avoid) SVN.&lt;/p&gt;
+&lt;p&gt;So, you’ve chosen a version control system. What projects do I use it on? &lt;/p&gt;
+&lt;p&gt;Yes.&lt;/p&gt;
+&lt;p&gt;Check code in no matter how small the project. Who knows? Maybe your experimentation
+of “Hello World” in Java will evolve to be included in one of Elon Musk’s Mars
+missions! (say that 10 times fast)&lt;/p&gt;
+&lt;h1 id=&quot;2-lack-of-any-kind-of-automated-testing&quot;&gt;2. Lack of Any Kind of Automated Testing&lt;/h1&gt;
+&lt;p&gt;I once had a mind-numbing internship job of manual interop testing. I would have to
+plug and unplug different cables in different orders and record the test result
+(did things blow up? etc.). It was BAR, or “Boring and Repetitive.”&lt;/p&gt;
+&lt;p&gt;As an early developer, I would do that, too. I would go through
+the features one by one, manually. No wonder I never finished any projects.
+I would forge ahead, creating something specacular, just making sure (manually) all
+the peices worked–the login, the registration–EVERYTHING! BAR. Very BAR.&lt;/p&gt;
+&lt;p&gt;If you’re doing this, too, STOP. Stop reading this article right now and change
+your project setup (okay–maybe finish the article first).&lt;/p&gt;
+&lt;p&gt;Sometimes you get impatient. I get it. Creating a work of art from mathematics is exciting.
+As someone with ADHD, I understand the dopamine hit of seeing the
+pretty React page you spent all afternoon working on. It feels good to see progress.&lt;/p&gt;
+&lt;p&gt;But all that manual testing takes time. Logging in, selecting the page, entering
+the search form. And maybe the bug is really a back-end bug! Oh, no!&lt;/p&gt;
+&lt;h2 id=&quot;solution-add-automated-tests&quot;&gt;Solution: Add Automated Tests&lt;/h2&gt;
+&lt;p&gt;Build from the ground up. Do not move on to building on top of your code until
+you’ve unit tested what you have already.&lt;/p&gt;
+&lt;p&gt;Yes, unit test may initially come across as BAR. You’re just seeing text
+printed to the screen saying “PASS” and “FAIL.” No music, no lights, no nothing
+except PASS and FAIL.&lt;/p&gt;
+&lt;p&gt;But they allow you to fail fast. Find the bugs quickly and easily and get past
+all the BAR work.&lt;/p&gt;
+&lt;p&gt;If you’re already stuck in (No) Test Valley, start small. Add a unit test framework
+for new features. When things slow down try to add unit tests to already-existing
+features.&lt;/p&gt;
+&lt;p&gt;I’m not going to spend more time explaining unit testing. Just do an internet
+search for “testing &amp;lt;language of choice&amp;gt;” and you’re off to the cases.&lt;/p&gt;
+&lt;h1 id=&quot;3-lack-of-documentation&quot;&gt;3. Lack of Documentation&lt;/h1&gt;
+&lt;p&gt;Let’s say you’re developing a Python application and you need to toast some
+bread. So you found a &lt;code&gt;bread_toaster&lt;/code&gt; library.&lt;/p&gt;
+&lt;p&gt;However, there’s no documentation on how to toast your bread! You end up
+having to dig into the source code to find out how this toaster works.&lt;/p&gt;
+&lt;p&gt;Yes, silly example, but the principles are what matters. Without documentation
+ambiguity is the project lead.&lt;/p&gt;
+&lt;p&gt;Now think about your own project.
+How many new people join your team every year? How many times do you hand
+the project off to someone else? You can waste anywhere from hours to weeks
+helping someone get up to speed on a new project.&lt;/p&gt;
+&lt;p&gt;Even you–the developer–are not immune to amnesia. You may put the project to
+the side. I can’t tell you how many times I opened a personal project back up months
+later and swore another developer had written the code. But, lo and behold,
+the git commit messages were in my name.&lt;/p&gt;
+&lt;h2 id=&quot;solution-document-the-code-&quot;&gt;Solution: Document the code.&lt;/h2&gt;
+&lt;p&gt;While ideally it would be a full wiki, I realize time is limited. So at the very
+least do the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Comments to the code&lt;/li&gt;
+&lt;li&gt;A README containing:&lt;ul&gt;
+&lt;li&gt;system requirements&lt;/li&gt;
+&lt;li&gt;setup instruction&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hint: you may be able to find example READMEs to copy and paste from the Internet.&lt;/p&gt;
+&lt;p&gt;And, oh yeah, add the README to verison control.&lt;/p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I’ve come across some projects that don’t implement these and I’m surprised the
+client still has customers. So it is possible that projects survive without
+these practices.&lt;/p&gt;
+&lt;p&gt;However, a lot of time (and money–we all like that, right?) can be saved by
+implementing these 3 practices. Heck, even doing ONE of these things (like
+documenting) sets you ahead of 90% of the developers.&lt;/p&gt;
+&lt;p&gt;Why not give it a try?&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Justfile takes the pain out of reading files in Python</title>
       <link>http://localhost:8080/articles/taking_the_pain_out_of_files_in_python/</link>
@@ -896,6 +1004,164 @@ I’ll be sure to add it.&lt;/p&gt;
 </description>
     </item>
     <item>
+      <title>JavaScript Programming for Non-JavaScript Programmers</title>
+      <link>http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</guid>
+      <author></author>
+      <description>&lt;p&gt;No technology has divided the programming community more than JavsScript, mainly
+because it’s the been de-facto standard for web pages since around 2012, or
+possibly earlier. Developers either love it or hate it. I’m in the camp that
+says let’s do without it. But that’s for another post.&lt;/p&gt;
+&lt;p&gt;From my experience understanding JavaScript can be a challenge if you spend the
+majority of your time in a non-JavaScript environment.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;ur-doing-it-rong&quot;&gt;ur doing it rong&lt;/h1&gt;
+&lt;p&gt;Basically, early on my projects began like this. You might have had similar
+experiences.&lt;/p&gt;
+&lt;p&gt;Most tutorials start you out in javascript with just the straight-up code, as
+shown below.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+            document.write.println(&amp;quot;Hello World!&amp;quot;);
+        &amp;lt;/script&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+    &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This works. Great. If you’re anything like me you probably thought, “This is
+great! Now I know how to write JavaScript!”&lt;/p&gt;
+&lt;p&gt;Then I looked on Google for neat JavaScript-y things to do like changing text
+on when a button is pressed. So, copy, paste the code!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+            var button = document.getElementById(&amp;#39;pressme&amp;#39;);
+            button.addEventListener(&amp;#39;click&amp;#39;, function () {
+                alert(&amp;#39;hello, world!&amp;#39;);
+            });
+        &amp;lt;/script&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
+    &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Reading this, this makes sense. You’re telling the JavaScript engine to look in
+the document object (or DOM) for a button (which &lt;em&gt;does&lt;/em&gt; exist) and then tell
+javascript to pop up an alert when the page is loaded! Simple!&lt;/p&gt;
+&lt;p&gt;JavaScript veterans are shaking their heads now. Here’s why this won’t work.&lt;/p&gt;
+&lt;h1 id=&quot;a-lt-dr-explanation-of-why-this-happens&quot;&gt;A LT;DR Explanation of Why This Happens&lt;/h1&gt;
+&lt;p&gt;When the page loads in a browser, the browser engine loads the page and parses
+the content linearly. After, just saying that, you can see the problem: the
+browser engine can’t see the button yet!&lt;/p&gt;
+&lt;p&gt;In fact, if you look in the console, you’ll see the error message displayed.&lt;/p&gt;
+&lt;p&gt;We can get around this in 2 ways. The first way is simply to move the script
+portion to below the body.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
+    &amp;lt;/body&amp;gt;
+    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+        var button = document.getElementById(&amp;#39;pressme&amp;#39;);
+        button.addEventListener(&amp;#39;click&amp;#39;, function () {
+            alert(&amp;#39;hello, world!&amp;#39;);
+        });
+    &amp;lt;/script&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is fairly standard, especially if you want to include external scripts and
+scripts from a CDN, since the browser engine can load the direct content of the
+page before waiting eons for a request from an external CDN.&lt;/p&gt;
+&lt;p&gt;Or, there’s a more JavaScript-y way to do it. The document object exists once
+we hit the &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tag, so we can add a &lt;strong&gt;listener&lt;/strong&gt; to the DOM.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+            document.addEventListener(&amp;#39;DOMContentLoaded&amp;#39;, function (e) {
+                var button = document.getElementById(&amp;#39;pressme&amp;#39;);
+                button.addEventListener(&amp;#39;click&amp;#39;, function () {
+                    alert(&amp;#39;hello!&amp;#39;);
+                });
+            });
+        &amp;lt;/script&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
+    &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice we need to use the &lt;code&gt;DomContentLoaded&lt;/code&gt; event or else the code will not
+find the button. In this case the JavaScript engine waits until all the content
+of the page is loaded (essentially doing the same thing as adding the script
+to the bottom–except that just the code inside the event handler is
+executed). Because the DOM content is loaded, that means the button exists, and
+the button can now use a click event listener.&lt;/p&gt;
+&lt;h1 id=&quot;the-point-rocket-vs-roadie&quot;&gt;The Point: Rocket vs. Roadie&lt;/h1&gt;
+&lt;p&gt;I’ve been realizing the way I thought about JavaScript was all wrong, mainly
+because JavaScript is mainly taught to web develeopers.&lt;/p&gt;
+&lt;p&gt;Most langauges you can think of as a rocket ship. You hit the &lt;strong&gt;EXECUTE&lt;/strong&gt; button
+and things start happening. Once the program executes, everything that goes
+on is already there, and you’re already aware of what the input is and output
+should be.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/images/js-for-no-js/apollo-launch.jpg&quot; alt=&quot;Rocket Launch&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Even when writing plug-ins this is true. Plug-in API usually tells you the
+expected input and output.&lt;/p&gt;
+&lt;p&gt;However, writing JavaScript code, you need think like a roadie for a band.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/images/js-for-no-js/roadie.jpg&quot; alt=&quot;Rocket Launch&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The band is the main event. The roadie is there, waiting for the next order
+order form the band. However, the roadie has to wait for the band’s instruction.
+Doesn’t matter if the roadie is the fast and efficient. Starting a stage
+tear-down during the climactic song set will ruin the performance and the
+roadie will be fired.&lt;/p&gt;
+&lt;p&gt;But, once the band asks the roadie to do something (moving equipment, testing
+the batteries on mics, handing out water), he knows exactly what to do and can
+do it without the band’s instructions.&lt;/p&gt;
+&lt;p&gt;The same analogy applies to JavaScript. With JavaScript programming you need
+to &lt;em&gt;wait&lt;/em&gt; for things to happen. Especially when adding on differnet JavaScript
+framworks like Vue or Angular, the complexity increases, so the programmer
+must not expect that once you hit a button that button is considered hit.&lt;/p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;Even now some aspects of JavaScript confuse or surprise me. For a language that
+appeared as an afterthought it has become the backbone of the web. So, for
+programmers who are used to Java or C++ or some other framework, you, like me,
+might be a little confused as to what goes on under the hood. But, hopefully,
+I was able to explain what goes on in a more visual way.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>My Latest Project - LinkList Firefox Extension</title>
+      <link>http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</guid>
+      <author></author>
+      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
+&lt;p&gt;We are a species whose brains like limited information.
+[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
+after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
+proven that when given a lot of information our brains are overwhelmed. This
+has driven content designers of websites to display selected bits of
+information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
+every user profile on Reddit while reading an article, but they do provide
+links to user profiles who have commented on the article.&lt;/p&gt;
+&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
+for.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
+yet), cover links with other elements. If you use a JavaScript blocker (which I
+recommend to everyone, for both security and privacy), you know what I’m
+talking about.&lt;/p&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;My solution is a Firefox extension called
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
+For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
+provides a text field to allow you to search for a given link.&lt;/p&gt;
+&lt;p&gt;I created this because of my frustration with searching for a job. At a local
+company page I’d look for the “Careers” or “Jobs” page which may or may not be
+at the footer. Instead of wasting 3 seconds scrolling to the bottom and
+another 3 seconds scanning the footer links I can simply look in the sidebar
+and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>Basic Parts of an API Request</title>
       <link>http://localhost:8080/articles/basic-parts-of-an-api-request/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
@@ -1142,164 +1408,6 @@ the post office analogy.&lt;/p&gt;
             &lt;td&gt;`{&quot;name&quot;: &quot;Henry&quot;, &quot;number&quot;: 1234, ...}`&lt;/td&gt;
          &lt;/tr&gt;
  &lt;/table&gt;
-</description>
-    </item>
-    <item>
-      <title>JavaScript Programming for Non-JavaScript Programmers</title>
-      <link>http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</link>
-      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/javascript-programming-for-non-javascript-programmers/</guid>
-      <author></author>
-      <description>&lt;p&gt;No technology has divided the programming community more than JavsScript, mainly
-because it’s the been de-facto standard for web pages since around 2012, or
-possibly earlier. Developers either love it or hate it. I’m in the camp that
-says let’s do without it. But that’s for another post.&lt;/p&gt;
-&lt;p&gt;From my experience understanding JavaScript can be a challenge if you spend the
-majority of your time in a non-JavaScript environment.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h1 id=&quot;ur-doing-it-rong&quot;&gt;ur doing it rong&lt;/h1&gt;
-&lt;p&gt;Basically, early on my projects began like this. You might have had similar
-experiences.&lt;/p&gt;
-&lt;p&gt;Most tutorials start you out in javascript with just the straight-up code, as
-shown below.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
-    &amp;lt;head&amp;gt;
-        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
-            document.write.println(&amp;quot;Hello World!&amp;quot;);
-        &amp;lt;/script&amp;gt;
-    &amp;lt;/head&amp;gt;
-    &amp;lt;body&amp;gt;
-    &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This works. Great. If you’re anything like me you probably thought, “This is
-great! Now I know how to write JavaScript!”&lt;/p&gt;
-&lt;p&gt;Then I looked on Google for neat JavaScript-y things to do like changing text
-on when a button is pressed. So, copy, paste the code!&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
-    &amp;lt;head&amp;gt;
-        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
-            var button = document.getElementById(&amp;#39;pressme&amp;#39;);
-            button.addEventListener(&amp;#39;click&amp;#39;, function () {
-                alert(&amp;#39;hello, world!&amp;#39;);
-            });
-        &amp;lt;/script&amp;gt;
-    &amp;lt;/head&amp;gt;
-    &amp;lt;body&amp;gt;
-        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
-    &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Reading this, this makes sense. You’re telling the JavaScript engine to look in
-the document object (or DOM) for a button (which &lt;em&gt;does&lt;/em&gt; exist) and then tell
-javascript to pop up an alert when the page is loaded! Simple!&lt;/p&gt;
-&lt;p&gt;JavaScript veterans are shaking their heads now. Here’s why this won’t work.&lt;/p&gt;
-&lt;h1 id=&quot;a-lt-dr-explanation-of-why-this-happens&quot;&gt;A LT;DR Explanation of Why This Happens&lt;/h1&gt;
-&lt;p&gt;When the page loads in a browser, the browser engine loads the page and parses
-the content linearly. After, just saying that, you can see the problem: the
-browser engine can’t see the button yet!&lt;/p&gt;
-&lt;p&gt;In fact, if you look in the console, you’ll see the error message displayed.&lt;/p&gt;
-&lt;p&gt;We can get around this in 2 ways. The first way is simply to move the script
-portion to below the body.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
-    &amp;lt;head&amp;gt;
-    &amp;lt;/head&amp;gt;
-    &amp;lt;body&amp;gt;
-        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
-    &amp;lt;/body&amp;gt;
-    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
-        var button = document.getElementById(&amp;#39;pressme&amp;#39;);
-        button.addEventListener(&amp;#39;click&amp;#39;, function () {
-            alert(&amp;#39;hello, world!&amp;#39;);
-        });
-    &amp;lt;/script&amp;gt;
-&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is fairly standard, especially if you want to include external scripts and
-scripts from a CDN, since the browser engine can load the direct content of the
-page before waiting eons for a request from an external CDN.&lt;/p&gt;
-&lt;p&gt;Or, there’s a more JavaScript-y way to do it. The document object exists once
-we hit the &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tag, so we can add a &lt;strong&gt;listener&lt;/strong&gt; to the DOM.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
-    &amp;lt;head&amp;gt;
-        &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
-            document.addEventListener(&amp;#39;DOMContentLoaded&amp;#39;, function (e) {
-                var button = document.getElementById(&amp;#39;pressme&amp;#39;);
-                button.addEventListener(&amp;#39;click&amp;#39;, function () {
-                    alert(&amp;#39;hello!&amp;#39;);
-                });
-            });
-        &amp;lt;/script&amp;gt;
-    &amp;lt;/head&amp;gt;
-    &amp;lt;body&amp;gt;
-        &amp;lt;button id=&amp;quot;pressme&amp;quot;&amp;gt;Press me!&amp;lt;/button&amp;gt;
-    &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice we need to use the &lt;code&gt;DomContentLoaded&lt;/code&gt; event or else the code will not
-find the button. In this case the JavaScript engine waits until all the content
-of the page is loaded (essentially doing the same thing as adding the script
-to the bottom–except that just the code inside the event handler is
-executed). Because the DOM content is loaded, that means the button exists, and
-the button can now use a click event listener.&lt;/p&gt;
-&lt;h1 id=&quot;the-point-rocket-vs-roadie&quot;&gt;The Point: Rocket vs. Roadie&lt;/h1&gt;
-&lt;p&gt;I’ve been realizing the way I thought about JavaScript was all wrong, mainly
-because JavaScript is mainly taught to web develeopers.&lt;/p&gt;
-&lt;p&gt;Most langauges you can think of as a rocket ship. You hit the &lt;strong&gt;EXECUTE&lt;/strong&gt; button
-and things start happening. Once the program executes, everything that goes
-on is already there, and you’re already aware of what the input is and output
-should be.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/images/js-for-no-js/apollo-launch.jpg&quot; alt=&quot;Rocket Launch&quot;&gt;&lt;/p&gt;
-&lt;p&gt;Even when writing plug-ins this is true. Plug-in API usually tells you the
-expected input and output.&lt;/p&gt;
-&lt;p&gt;However, writing JavaScript code, you need think like a roadie for a band.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/images/js-for-no-js/roadie.jpg&quot; alt=&quot;Rocket Launch&quot;&gt;&lt;/p&gt;
-&lt;p&gt;The band is the main event. The roadie is there, waiting for the next order
-order form the band. However, the roadie has to wait for the band’s instruction.
-Doesn’t matter if the roadie is the fast and efficient. Starting a stage
-tear-down during the climactic song set will ruin the performance and the
-roadie will be fired.&lt;/p&gt;
-&lt;p&gt;But, once the band asks the roadie to do something (moving equipment, testing
-the batteries on mics, handing out water), he knows exactly what to do and can
-do it without the band’s instructions.&lt;/p&gt;
-&lt;p&gt;The same analogy applies to JavaScript. With JavaScript programming you need
-to &lt;em&gt;wait&lt;/em&gt; for things to happen. Especially when adding on differnet JavaScript
-framworks like Vue or Angular, the complexity increases, so the programmer
-must not expect that once you hit a button that button is considered hit.&lt;/p&gt;
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-&lt;p&gt;Even now some aspects of JavaScript confuse or surprise me. For a language that
-appeared as an afterthought it has become the backbone of the web. So, for
-programmers who are used to Java or C++ or some other framework, you, like me,
-might be a little confused as to what goes on under the hood. But, hopefully,
-I was able to explain what goes on in a more visual way.&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>My Latest Project - LinkList Firefox Extension</title>
-      <link>http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</link>
-      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/my_latest_project_linklist_firefox_extension/</guid>
-      <author></author>
-      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
-&lt;p&gt;We are a species whose brains like limited information.
-[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
-after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
-proven that when given a lot of information our brains are overwhelmed. This
-has driven content designers of websites to display selected bits of
-information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
-every user profile on Reddit while reading an article, but they do provide
-links to user profiles who have commented on the article.&lt;/p&gt;
-&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
-for.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
-yet), cover links with other elements. If you use a JavaScript blocker (which I
-recommend to everyone, for both security and privacy), you know what I’m
-talking about.&lt;/p&gt;
-&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
-&lt;p&gt;My solution is a Firefox extension called
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
-For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
-provides a text field to allow you to search for a given link.&lt;/p&gt;
-&lt;p&gt;I created this because of my frustration with searching for a job. At a local
-company page I’d look for the “Careers” or “Jobs” page which may or may not be
-at the footer. Instead of wasting 3 seconds scrolling to the bottom and
-another 3 seconds scanning the footer links I can simply look in the sidebar
-and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 </description>
     </item>
     <item>
