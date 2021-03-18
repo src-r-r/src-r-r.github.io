@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Jordan Hewitt, Senior Software Developer, specializing in Full Stack Software Development and programming. Driven, passionate for helping others, and creative-problem solver.">
+    <title>Jordan Hewitt - Software Developer
+    </title>
+    <link rel="stylesheet" href="/fonts/abel_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bolditalic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bold_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_italic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/searstower_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <script defer src="/fontawesome/js/all.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  </head>
+  <body onLoad=";">
+    <div class="container">
+      <div class="columns">
+        <div class="col-9 col-lg-12">
+          <div class="logo">
+            <h1><a href="https://src-r-r.github.io">Jordan Hewitt - Software Developer</a></h1>
+            <p class="description">Break Barriers | Simplify the Complex | Be Open to Ideas</p>
+          </div>
+          <div class="container">
+            <article class="article intro">
+              <header>
+                <p class="date"><span>17. March 2021</span></p>
+                <h2><a href="/articles/3-major-things-projects-need-to-have/">3 Common Mistakes You're Making with Software Projects (And How to Fix Them)</a></h2>
+              </header>
+              <section class="content"><p><img src="/articles/3-major-things-projects-need-to-have/images/when-the-product-keeps-crashing-but-you-get-paid-12-to-develop-people-smiling.png" alt="People Smiling"></p>
+<p>I can’t wait to see my program<span class="widont">&nbsp;</span>crash!</p>
+<p>You probably have never said this to yourself or in a meeting with your
+colleagues. But actions can speak otherwise. There are 3 common mistakes
+most projects make that can spell disaster for the project and the<span class="widont">&nbsp;</span>team.</p>
+<p>In this article I walk through these mistakes you or your team are making
+in developing and deploying projects, as well as provide the antidote to
+these<span class="widont">&nbsp;</span>mistakes.</p>
+<p>Whether you’re going solo or on a team, read on if you find your projects<span class="widont">&nbsp;</span>fail.</p>
+
+                <p class="more"><a href="/articles/3-major-things-projects-need-to-have/">MORE &#8594;</a></p>
+              </section>
+              <hr class="article-break">
+            </article>
+            <article class="article intro">
+              <header>
+                <p class="date"><span>23. January 2021</span></p>
+                <h2><a href="/articles/how_to_log_with_a_python_cli_program/">How to Property Set up Python Logging with a Command Line Program</a></h2>
+              </header>
+              <section class="content"><p><img src="/articles/how_to_log_with_a_python_cli_program/images/boy-with-tumpet-and-girl-plugging-ears-with-log-debug-and-stderr.png" alt="Boy With Trumpet as Log.debug and stderr"></p>
+<p>I promise you that the above meme will make sense by the end of the article. Just
+bear with<span class="widont">&nbsp;</span>me.</p>
+<p>While logging should not be used as a replacement for debugging or unit testing, it’s 
+vital to incorporate logging to notify if something is going<span class="widont">&nbsp;</span>wrong.</p>
+<p>Novice Python programmers (or veteran Python programmers) may be a bit frustrated
+configuring logging for a command line application. Unfortunately, while Python’s logging
+module is highly configuragle, this power comes at the cost of<span class="widont">&nbsp;</span>clarity.</p>
+<p>In this article I describe how to properly set up logging in a Python command line
+interface (or <span class="caps">CLI</span>), so that we can set up a industry-ready command line<span class="widont">&nbsp;</span>program.</p>
+
+                <p class="more"><a href="/articles/how_to_log_with_a_python_cli_program/">MORE &#8594;</a></p>
+              </section>
+              <hr class="article-break">
+            </article>
+            <article class="article intro">
+              <header>
+                <p class="date"><span>30. December 2020</span></p>
+                <h2><a href="/articles/going_all_karen_on_javascript/">Going Full 💯 Karen on JavaScript with the Web Console</a></h2>
+              </header>
+              <section class="content"><p><img src="/articles/going_all_karen_on_javascript/images/karen-cover.png" alt="Karen Hates JavaScript"></p>
+<p>Whether you like it or not, at some point, with whatever programming
+language you’re develping in, you’re going to have to enter the debugger.
+C uses <span class="caps">GDB</span>. Java uses <span class="caps">JDB</span>. Python uses <span class="caps">PDB</span> (or iPDB). This allows you
+to step through the code and find out where an error<span class="widont">&nbsp;</span>exists.</p>
+<p>But there doesn’t seem to be a “jsdb” for JavaScript. If you’re using
+node, there’s a debugger for that, but what if you’re not using
+the Node framework? How can you tell what your code is<span class="widont">&nbsp;</span>doing?</p>
+<p>You speak to the manager, that’s what you<span class="widont">&nbsp;</span>do!</p>
+
+                <p class="more"><a href="/articles/going_all_karen_on_javascript/">MORE &#8594;</a></p>
+              </section>
+              <hr class="article-break">
+            </article>
+          </div>
+          <div class="columns"><a class="col-6" href="/archive.html">&laquo; Archives</a><a class="col-6" href="/page/2/">Next page &raquo;</a>
+          </div>
+        </div>
+        <div class="col-3 col-lg-12 content-wrap" id="sidebar">
+          <section class="about"><img src="/images/portrait.png" class="s-circle col-5 p-centered" />
+
+<h1 id="important-links">Important Links</h1>
+<p><a href="portfolio.html" class="btn btn-primary col-12">My Project Portfolio</a></p>
+<p></p>
+<a href="https://src-r-r.github.io/feed.xml" type='application/rss+xml' class="btn col-12" title="Blog">
+<i class="fas fa-rss-square"></i>
+Blog RSS Feed
+</a>
+
+<dl>
+  <dt>Services</dt>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.freelancer.com/u/TheSrcRR">Freelancer</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.upwork.com/freelancers/~0105fc69312e2da97a">UpWork</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://talent.hubstaff.com/profiles/jordan-hewitt">HubStaff</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.fiverr.com/striking_subzer">Fiverr</a></dd>
+  <dt>Social</dt>
+  <dd><i class="fab fa-twitter"></i>
+  <a href="https://mobile.twitter.com/thesrcrr">@TheSrcRr</dd>
+  <dd><i class="fab fa-linkedin"></i>
+  <a href="https://www.linkedin.com/in/jordan-h-a78122163/">LinkedIn</a></dd>
+  <dt>Software</dt>
+  <dd>
+  <i class="fab fa-github"></i>
+    <a href="https://github.com/src-r-r">GitHub</a></dd>
+  <dd>
+  <i class="fab fa-gitlab"></i>
+  <a href="https://gitlab.com/src-r-r">GitLab</a></dd>
+  <dt><i class="fas fa-camera"></i> Photography</dt>
+  <dd><a href="https://writelight.website">https://writelight.website</a></dd>
+</dl>
+
+<h2 id="contact-me">Contact Me</h2>
+<dl>
+  <dt>Email</dt>
+  <dd><i class="far fa-envelope"></i>
+    <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></dd>
+  <dt>Wire</dt>
+  <dd>@nswered</dd>
+</dl>
+
+<h2 id="services-i-provide">Services I Provide</h2>
+<dl class="hourly-rate">
+  <dt>Hourly Rate</dt>
+  <dd><strong>$57/hr</strong> (negotiable)</dd>
+</dl>
+
+<ul>
+<li>Full Stack Application development</li>
+<li>Documentation writing</li>
+<li>IT Support</li>
+<li>Automation</li>
+<li>Database design (Including PostgreSQL, MongoDB)</li>
+<li>Website creation</li>
+</ul>
+<h2 id="things-i-enjoy-that-i-do-not-charge-for-hobbies-">Things I enjoy that I do not charge for (Hobbies)</h2>
+<ul>
+<li>Reading about philsophy</li>
+<li>Reading about metaphysics</li>
+<li><a href="https:/writelight.website">Photography</a></li>
+<li>Reading fiction</li>
+<li>Improv (didn’t know I’d say that, did you?)</li>
+<li>Theater</li>
+<li>Thinking as a hobby</li>
+<li>Hiking</li>
+</ul>
+<small>
+This project is build on Wintersmith by
+<a href="http://johan-nordberg.com">Johan Nordberg</a>
+</small>
+
+          </section>
+          <section class="copy">
+            <p>&copy; 2021 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+          </section>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/init-highlight.js"></script>
+    </div>
+  </body>
+</html>
