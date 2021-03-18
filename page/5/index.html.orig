@@ -32,6 +32,8 @@
               <header>
                 <p class="date"><span>11. November 2017</span></p>
                 <h2><a href="/articles/basic-parts-of-an-api-request/">Basic Parts of an API Request</a></h2>
+<<<<<<< HEAD
+=======
               </header>
               <section class="content"><h1 id="basic-parts-of-an-api-request">Basic Parts of an <span class="caps">API</span><span class="widont">&nbsp;</span>Request</h1>
 <p>Sometimes understanding URLs and requests can be intimidating. If you’re wanting
@@ -76,15 +78,44 @@ components. Now, lets’ dive into each<span class="widont">&nbsp;</span>compone
               <header>
                 <p class="date"><span>11. November 2017</span></p>
                 <h2><a href="/articles/javascript-programming-for-non-javascript-programmers/">JavaScript Programming for Non-JavaScript Programmers</a></h2>
+>>>>>>> 0365267ec1af9c90990c32d692ec9ad1c3e0ec32
               </header>
-              <section class="content"><p>No technology has divided the programming community more than JavsScript, mainly
-because it’s the been de-facto standard for web pages since around 2012, or
-possibly earlier. Developers either love it or hate it. I’m in the camp that
-says let’s do without it. But that’s for another<span class="widont">&nbsp;</span>post.</p>
-<p>From my experience understanding JavaScript can be a challenge if you spend the
-majority of your time in a non-JavaScript<span class="widont">&nbsp;</span>environment.</p>
+              <section class="content"><h1 id="basic-parts-of-an-api-request">Basic Parts of an <span class="caps">API</span><span class="widont">&nbsp;</span>Request</h1>
+<p>Sometimes understanding URLs and requests can be intimidating. If you’re wanting
+to get into <span class="caps">API</span> programming (e.g. <span class="caps">REST</span>, <span class="caps">SOAP</span>, web [which isn’t considered
+part of the family, but follows the same procedures]) it helps to understand
+basic components of an <span class="caps">API</span><span class="widont">&nbsp;</span>request.</p>
+<p>The two major parts developers care about<span class="widont">&nbsp;</span>are:</p>
+<ul>
+<li>Request <span class="caps">URL</span></li>
+<li>Reqeust Body</li>
+</ul>
+<p>I’ll be using a post office analogy. Because post offices are great ancient
+American relics (yes, that was sarcasm). The equivalences for these for the
+post office analogy<span class="widont">&nbsp;</span>are:</p>
+<table>
+    <tr>
+        <td>
+            Request <span class="caps">URL</span>
+        </td>
+        <td>
+             Shipping Address
+         </td>
+     </tr>
+     <tr>
+         <td>
+             Request Body
+         </td>
+         <td>
+              Letter
+          </td>
+      </tr>
+ </table>
 
-                <p class="more"><a href="/articles/javascript-programming-for-non-javascript-programmers/">MORE &#8594;</a></p>
+<p>Obviously, there are nuances with each service, but those are the 2 major
+components. Now, lets’ dive into each<span class="widont">&nbsp;</span>component.</p>
+
+                <p class="more"><a href="/articles/basic-parts-of-an-api-request/">MORE &#8594;</a></p>
               </section>
               <hr class="article-break">
             </article>
@@ -98,22 +129,25 @@ majority of your time in a non-JavaScript<span class="widont">&nbsp;</span>envir
               </section>
               <hr class="article-break">
             </article>
+<<<<<<< HEAD
             <article class="article intro">
               <header>
-                <p class="date"><span>04. November 2017</span></p>
-                <h2><a href="/articles/you_cant_write_a_stageplay_in_restructuredtext/">You Can't Write a Stage Play in ReStructuredText! (Part 1)</a></h2>
+                <p class="date"><span>11. November 2017</span></p>
+                <h2><a href="/articles/javascript-programming-for-non-javascript-programmers/">JavaScript Programming for Non-JavaScript Programmers</a></h2>
               </header>
-              <section class="content"><h1 id="you-s-can-t-s-sup-can-sup-write-a-stage-play-in-restructuredtext-part">You <s>Can’t</s> <sup>Can</sup> Write a Stage Play in ReStructuredText!<span class="widont">&nbsp;</span>(Part</h1>
-<h1 id="1-">1 )</h1>
-<p>In this blog I’ll talk about my journey in writing a StagePlay in
-ReStructuredText, a popular Markup text format. In this first part I’ll talk
-about why this is important and the conversions I used in between standard
-stageplay<span class="widont">&nbsp;</span>format.</p>
+              <section class="content"><p>No technology has divided the programming community more than JavsScript, mainly
+because it’s the been de-facto standard for web pages since around 2012, or
+possibly earlier. Developers either love it or hate it. I’m in the camp that
+says let’s do without it. But that’s for another<span class="widont">&nbsp;</span>post.</p>
+<p>From my experience understanding JavaScript can be a challenge if you spend the
+majority of your time in a non-JavaScript<span class="widont">&nbsp;</span>environment.</p>
 
-                <p class="more"><a href="/articles/you_cant_write_a_stageplay_in_restructuredtext/">MORE &#8594;</a></p>
+                <p class="more"><a href="/articles/javascript-programming-for-non-javascript-programmers/">MORE &#8594;</a></p>
               </section>
               <hr class="article-break">
             </article>
+=======
+>>>>>>> 0365267ec1af9c90990c32d692ec9ad1c3e0ec32
           </div>
           <div class="columns"><a class="col-6" href="/page/4/">&laquo; Newer</a><a class="col-6" href="/page/6/">Next page &raquo;</a>
           </div>
