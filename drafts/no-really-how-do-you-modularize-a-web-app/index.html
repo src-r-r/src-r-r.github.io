@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Jordan Hewitt, Senior Software Developer, specializing in Full Stack Software Development and programming. Driven, passionate for helping others, and creative-problem solver.">
+    <title>No, Really, How do you modularize a web app? - Jordan Hewitt - Software Developer
+    </title>
+    <link rel="stylesheet" href="/fonts/abel_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bolditalic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bold_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_italic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/searstower_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <script defer src="/fontawesome/js/all.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  </head>
+  <body class="article-detail" onLoad=";">
+    <div class="container">
+      <div class="columns">
+        <div class="col-9 col-lg-12">
+          <h1>No, Really, How do you modularize a web app?</h1>
+          <p class="author">Written by <span class="author">Jordan H.</span>
+          </p>
+          <div class="container">
+            <article class="article">
+              <section class="content"><p>The goal of every web application is to be as modular as possible. But to the
+novice developer, it can be hard to wrap your head around what this actually
+means. There are simple examples on YouTube of how this works (your bound
+to see simple to-do list apps), but what does this mean at scale? In this
+article I describe in detail what it means to modularize your web<span class="widont">&nbsp;</span>app.</p>
+<hr>
+<h1 id="don-t-think-like-an-assembly-line">Don’t Think Like an Assembly<span class="widont">&nbsp;</span>Line</h1>
+<p>Let’s first use an illustration. Imagine our server is a set of these happy
+androgenous blue assembly line workers. Their job is pretty simple. The first
+person makes the box, the second person adds a doohicky on the box, the third
+person puts a thingamabob on the doohicky, and a the last person puts some
+sort of bat wings on<span class="widont">&nbsp;</span>top.</p>
+<p>What is this thing? Who knows? But for our example it’s our web<span class="widont">&nbsp;</span>response.</p>
+<p>Now, everything is working perfectly and the response is getting shipped out
+each<span class="widont">&nbsp;</span>time.</p>
+<p>But one worker along the assembly line doesn’t feel too good. What’s got him
+down? Who knows! But in any case he has to go<span class="widont">&nbsp;</span>home.</p>
+<p>Now what happens? Let’s<span class="widont">&nbsp;</span>see.</p>
+<p>As you can see it’s complete chaos. Nothing is working right. The factory
+explodes. People are out of work. That’s not<span class="widont">&nbsp;</span>good.</p>
+<p>This is how to <em>poorly</em> design a web server. You see, everything is very
+tightly interconnected, and one thing relies on the next. If one part of
+the web app is broken, the entire system from then on doesn’t<span class="widont">&nbsp;</span>work!</p>
+<h1 id="instead-think-like-a-river">Instead, think Like a<span class="widont">&nbsp;</span>River</h1>
+<p>2 By 2 Hands of<span class="widont">&nbsp;</span>Blue?</p>
+<p>No, not <em>that</em> River! A<span class="widont">&nbsp;</span>waterway.</p>
+<p>Imagine a fisherman (let’s name him Bob) at the bottom of the stream hoping
+to catch a web response–er,<span class="widont">&nbsp;</span>salmon.</p>
+<p>His evil twin Jerry doesn’t want him to catch fish. Because Jerry’s evil.
+So to screw up his brother’s dinner plans he steals a boulder from
+the river (he’s also very strong) and carries it<span class="widont">&nbsp;</span>away.</p>
+<p>But Bob doesn’t notice anything different? Why’s<span class="widont">&nbsp;</span>that?</p>
+<p>Because a river is more resilient than an assembly line. It finds a new path
+to Bob so that he can have that tasty<span class="widont">&nbsp;</span>salmon.</p>
+<p>Likewise, we can design our web server like<span class="widont">&nbsp;</span>this.</p>
+<h1 id="web-framework">Web Framework</h1>
+<p>This is why a web framework is helpful. They’re <em>designed</em> to be resilient (at
+least the <em>good</em> ones) are designed to be this<span class="widont">&nbsp;</span>way.</p>
+<p>Each framework is different. I’ll just close my eyes hold out my finger and point
+to any ol’ framework. Any. one… Oh, just happens to be Django, one of my
+favorite web<span class="widont">&nbsp;</span>frameworks.</p>
+<p>If you’ve never used Django, head on over to <a href="https://djangoproject.org">https://djangoproject.org</a> and read
+up on the project. If you’ve used other web frameworks before it’s pretty<span class="widont">&nbsp;</span>similar.</p>
+<h2 id="apps">Apps</h2>
+<p>The framwork is divided into apps. Each app can contain the following<span class="widont">&nbsp;</span>components:</p>
+<ul>
+<li>Python module, which contain<ul>
+<li>views, or</li>
+<li>models, or</li>
+<li>both, or</li>
+<li>additional magic</li>
+</ul>
+</li>
+<li>templates</li>
+<li>template tags and<span class="widont">&nbsp;</span>filters</li>
+<li>URLs</li>
+</ul>
+<p>Note, there may be more components, such as utility methods meant to be shared
+with other apps. And also note apps don’t necessarily contain <em>all</em> of<span class="widont">&nbsp;</span>these.</p>
+<p>Apps are designed to be reusable, modular, and<span class="widont">&nbsp;</span>extensible.</p>
+<h2 id="examples-of-django-apps">Examples of Django<span class="widont">&nbsp;</span>apps</h2>
+<p>:<a href="https://djangopackages.org/packages/p/django-polymorphic/">Django-Polymorphic</a>:
+    Provides a seamless way for models to have<span class="widont">&nbsp;</span>inheritance.</p>
+<p>:<a href="https://djangopackages.org/packages/p/django-socketio/">django-socketio</a>:
+    WebSockets for<span class="widont">&nbsp;</span>Django</p>
+<h1 id="an-example">An Example</h1>
+<p>So you’ve seen what’s already in the industry. Let’s get our hands dirty and
+create a project with an app that’s<span class="widont">&nbsp;</span>modular.</p>
+<p>I’ll skip a lot of the nitty-gritty details since I want the focus to be
+very high-level and<span class="widont">&nbsp;</span>framwork-independent.</p>
+<h2 id="initial-project-setup">Initial project setup</h2>
+<p>Nothing to fancy here. We’re just starting with a blank Django<span class="widont">&nbsp;</span>project.</p>
+<h2 id="let-s-add-2-features">Let’s add 2<span class="widont">&nbsp;</span>Features</h2>
+<p>…But implement them<span class="widont">&nbsp;</span>poorly!</p>
+<p>:A Menu:
+    This will be a simple model that will have <em>link text</em> and a <em>url</em> and
+    can be implemented as a template<span class="widont">&nbsp;</span>filter.</p>
+<p>:A Sidebar:
+    Just contains simple sidebar <span class="caps">HTML</span> to be displayed. This will also be
+    implemented as a template<span class="widont">&nbsp;</span>filter.</p>
+<p>These will not be separate apps as listed above, but baked into the application,
+following a <em>monolithic</em><span class="widont">&nbsp;</span>approach.</p>
+<h2 id="menu">Menu</h2>
+<p>We’ll basically have a “Menu” model, with a “Link” model that contains a
+1 → N relationship between Menu and<span class="widont">&nbsp;</span>Link.</p>
+<p>Then to display the menu in the project we’ll just call the menu by<span class="widont">&nbsp;</span>name.</p>
+<h2 id="sidebar">Sidebar</h2>
+<p>We’ll do something similar to Menu here. However, we just have one sidebar
+and no links associated with<span class="widont">&nbsp;</span>it.</p>
+<h2 id="the-result">The Result</h2>
+<p>So far so good. So what’s the<span class="widont">&nbsp;</span>issue?</p>
+<p>Well, there are several issues with<span class="widont">&nbsp;</span>this.</p>
+<h3 id="1-we-can-t-reuse-the-code">1. We Can’t Reuse the<span class="widont">&nbsp;</span>Code</h3>
+<p>At least not very easily. Unless you’re a <span class="caps">HUGE</span> fan of copy and paste. Even if you
+were, if you change the code in one project you’d have to make sure the code was
+updated across <em>all</em> your<span class="widont">&nbsp;</span>projects.</p>
+<h3 id="2-we-can-t-remove-components-easily">2. We Can’t Remove Components<span class="widont">&nbsp;</span>Easily</h3>
+<p>Since the compnents are baked into our application, if we want to remove it (let’s say we
+need to do some<span class="widont">&nbsp;</span>maintenance).</p>
+<h3 id="3-updating-one-component-updates-the-entire-application-">3. Updating one component updates the entire<span class="widont">&nbsp;</span>application.</h3>
+<p>This can raise a whole host of problems, such as miscommunication between developers
+and merge<span class="widont">&nbsp;</span>conflicts.</p>
+<h1 id="let-s-try-refactoring">Let’s Try Refactoring</h1>
+<h2 id="questions-to-ask">Questions To Ask</h2>
+<p>So, obviously I’ve already spilled the beans on this one by saying I’ll have a <em>menu</em>
+and a <em>sidebar</em> component. So I don’t have to do a whole lot of brainstorming to
+figure out how to refactor<span class="widont">&nbsp;</span>this.</p>
+<p>But let’s say I just plunged into building this application without planning to
+make it modular. There are some questions I can ask myself to decide if a component
+or feature is worthy of being bestowed with the powers of<span class="widont">&nbsp;</span>modularity:</p>
+<ul>
+<li>Is this separate from the overall goal of the<span class="widont">&nbsp;</span>application?</li>
+<li>Can this component be reused in another part of the<span class="widont">&nbsp;</span>application?</li>
+<li>Do I find myself copying and pasting code segments a<span class="widont">&nbsp;</span>lot?</li>
+<li>If I took this class/method/whatever out of the code, can I swap in
+something<span class="widont">&nbsp;</span>else?</li>
+</ul>
+<p>Hopefully you get the idea. Just think of your program like a car until the early
+2000’s. They were meant to be repaired. Parts were begging to be swapped out to
+get you on the road<span class="widont">&nbsp;</span>fast.</p>
+<h2 id="refactoring">Refactoring</h2>
+<p>When making these components modular, it helps to think about the program flow.
+So if you’re just starting with a new framework I’d recommend doing it the “wrong”
+way for a bit to get a handle on how things<span class="widont">&nbsp;</span>work.</p>
+<p>But let’s figure out where our components should<span class="widont">&nbsp;</span>appear.</p>
+<h3 id="the-menu">The Menu</h3>
+<p>Within the program flow, the menu uses models and template<span class="widont">&nbsp;</span>tags.</p>
+</section>
+            </article>
+            <div class="hiring-box">
+              <center>
+                <h4>Did you like this article?</h4>
+              </center>
+              <center>
+                <p>Did you know I'm<strong> 
+                    <u>available for hire?</u></strong></p>
+              </center>
+              <p>Send me an email here: <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></p>
+              <p>Or connect with me in Wire:<b> @nswered</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 col-lg-12 content-wrap" id="sidebar">
+          <div class="nav"><a href="/">&laquo; Full blog</a></div>
+          <section class="about"><img src="/images/portrait.png" class="s-circle col-5 p-centered" />
+
+<h1 id="important-links">Important Links</h1>
+<p><a href="portfolio.html" class="btn btn-primary col-12">My Project Portfolio</a></p>
+<p></p>
+<a href="https://src-r-r.github.io/feed.xml" type='application/rss+xml' class="btn col-12" title="Blog">
+<i class="fas fa-rss-square"></i>
+Blog RSS Feed
+</a>
+
+<dl>
+  <dt>Services</dt>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.freelancer.com/u/TheSrcRR">Freelancer</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.upwork.com/freelancers/~0105fc69312e2da97a">UpWork</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://talent.hubstaff.com/profiles/jordan-hewitt">HubStaff</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.fiverr.com/striking_subzer">Fiverr</a></dd>
+  <dt>Social</dt>
+  <dd><i class="fab fa-twitter"></i>
+  <a href="https://mobile.twitter.com/thesrcrr">@TheSrcRr</dd>
+  <dd><i class="fab fa-linkedin"></i>
+  <a href="https://www.linkedin.com/in/jordan-h-a78122163/">LinkedIn</a></dd>
+  <dt>Software</dt>
+  <dd>
+  <i class="fab fa-github"></i>
+    <a href="https://github.com/src-r-r">GitHub</a></dd>
+  <dd>
+  <i class="fab fa-gitlab"></i>
+  <a href="https://gitlab.com/src-r-r">GitLab</a></dd>
+  <dt><i class="fas fa-camera"></i> Photography</dt>
+  <dd><a href="https://writelight.website">https://writelight.website</a></dd>
+</dl>
+
+<h2 id="contact-me">Contact Me</h2>
+<dl>
+  <dt>Email</dt>
+  <dd><i class="far fa-envelope"></i>
+    <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></dd>
+  <dt>Wire</dt>
+  <dd>@nswered</dd>
+</dl>
+
+<h2 id="services-i-provide">Services I Provide</h2>
+<dl class="hourly-rate">
+  <dt>Hourly Rate</dt>
+  <dd><strong>$57/hr</strong> (negotiable)</dd>
+</dl>
+
+<ul>
+<li>Full Stack Application development</li>
+<li>Documentation writing</li>
+<li>IT Support</li>
+<li>Automation</li>
+<li>Database design (Including PostgreSQL, MongoDB)</li>
+<li>Website creation</li>
+</ul>
+<h2 id="things-i-enjoy-that-i-do-not-charge-for-hobbies-">Things I enjoy that I do not charge for (Hobbies)</h2>
+<ul>
+<li>Reading about philsophy</li>
+<li>Reading about metaphysics</li>
+<li><a href="https:/writelight.website">Photography</a></li>
+<li>Reading fiction</li>
+<li>Improv (didn’t know I’d say that, did you?)</li>
+<li>Theater</li>
+<li>Thinking as a hobby</li>
+<li>Hiking</li>
+</ul>
+<small>
+This project is build on Wintersmith by
+<a href="http://johan-nordberg.com">Johan Nordberg</a>
+</small>
+
+          </section>
+          <section class="copy">
+            <p>&copy; 2021 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+          </section>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/init-highlight.js"></script>
+    </div>
+  </body>
+</html>
