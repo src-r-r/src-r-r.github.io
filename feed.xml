@@ -5,9 +5,26 @@
     <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>https://src-r-r.github.io</link>
     <description>Break Barriers | Simplify the Complex | Be Open to Ideas</description>
-    <pubDate>Mon, 03 May 2021 17:00:00 -0700</pubDate>
+    <pubDate>Sun, 09 May 2021 17:00:00 -0700</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Just One Python Minute! - Booleans and Truthiness</title>
+      <link>https://src-r-r.github.io/articles/one-python-minute-1-booleans-and-truthiness/</link>
+      <pubDate>Sun, 09 May 2021 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/one-python-minute-1-booleans-and-truthiness/</guid>
+      <author></author>
+      <description>&lt;iframe width=&quot;640&quot; height=&quot;360&quot; scrolling=&quot;no&quot; frameborder=&quot;0&quot; style=&quot;border: none;&quot; src=&quot;https://www.bitchute.com/embed/lwQ449iIqZeM/&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;A new segment I’m trying out called ONE PYTHON MINUTE!&lt;/p&gt;
+&lt;p&gt;I take a minute (or 2, depending) to talk very briefly about a Python topic.&lt;/p&gt;
+&lt;p&gt;This week it’s Booleans (bool) and truthiness!&lt;/p&gt;
+&lt;p&gt;You probably already know about True and False as boolean values, and you might also know that None can be evaluated as a boolean “False.” This is a concept known as “Truthiness.”&lt;/p&gt;
+&lt;p&gt;But any type can have “Truthiness” to it. Like a list, dict, string, or number.&lt;/p&gt;
+&lt;p&gt;Take some time this week to experiment wit this concept in the Python console.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;As always, please share and subscribe. You can follow &lt;a href=&quot;https://mobile.twitter.com/thesrcrr&quot;&gt;@TheSrcRr at Twitter&lt;/a&gt;.&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>8 Common False Computer Tropes In Hollywood</title>
       <link>https://src-r-r.github.io/articles/it-mistakes-in-hollywood/</link>
