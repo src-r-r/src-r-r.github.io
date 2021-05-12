@@ -5,9 +5,161 @@
     <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>https://src-r-r.github.io</link>
     <description>Break Barriers | Simplify the Complex | Be Open to Ideas</description>
-    <pubDate>Sun, 09 May 2021 17:00:00 -0700</pubDate>
+    <pubDate>Tue, 11 May 2021 17:00:00 -0700</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Essential Tools for Debugging Web Applications</title>
+      <link>https://src-r-r.github.io/articles/tools-for-debugging-fs-apps/</link>
+      <pubDate>Tue, 11 May 2021 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/tools-for-debugging-fs-apps/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/tools-for-debugging-fs-apps/images/cover-image.png&quot; alt=&quot;cover image&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Impress your coworkers or boss with your debugging skills!&lt;/p&gt;
+&lt;p&gt;Finding what’s wrong with desktop or mobile applications is
+(for the most part) a breeze. But full stack is an entirely
+different beast. Each part has a different protocol and
+structure. In this article I list some simple tools that can
+help you debug your application.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;In order for these tools to best server you it helps to provide a &lt;em&gt;minimal&lt;/em&gt; ,
+&lt;em&gt;reduced&lt;/em&gt; input sample.&lt;/p&gt;
+&lt;p&gt;For example, if you are trying to see why a list of users doesn’t display, take out
+the code that displays the users and select only three users. If you can get that little
+example to work, put the code back in the main application.&lt;/p&gt;
+&lt;p&gt;I’ve found it’s also helpful to start on the front-end and work my way back. So that’s
+what I’ve done in this article, too. Let’s start off with some cool front-end tools.&lt;/p&gt;
+&lt;h1 id=&quot;for-the-front-end&quot;&gt;For the Front End&lt;/h1&gt;
+&lt;h2 id=&quot;web-console&quot;&gt;Web Console&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/tools-for-debugging-fs-apps/images/web-js-console.png&quot; alt=&quot;Web JavaScript Console&quot;&gt;&lt;/p&gt;
+&lt;p&gt;There’s nothing fancy to it.&lt;/p&gt;
+&lt;p&gt;You’ll be spending a lot of time checking out the &lt;strong&gt;console messages&lt;/strong&gt;. If any
+front-end JavaScript throws an error it’ll show up here in a beautiful brilliant red.&lt;/p&gt;
+&lt;p&gt;If there’s a templating issue, the &lt;strong&gt;Inspector&lt;/strong&gt; can show you what’s up.&lt;/p&gt;
+&lt;p&gt;If everything looks golden, it can be helpful to check out the &lt;strong&gt;Network&lt;/strong&gt; tab. Sometimes
+a request can be erroring out. Pay careful attention to the status code (rule of thumb: status codes of &lt;strong&gt;200&lt;/strong&gt;‘s - &lt;strong&gt;300&lt;/strong&gt;‘s = &lt;strong&gt;good&lt;/strong&gt;, &lt;strong&gt;400&lt;/strong&gt;‘s and beyond = &lt;strong&gt;bad&lt;/strong&gt;). The URL and path are also important.&lt;/p&gt;
+&lt;p&gt;If this is the case, you can right click on the request to copy it and use an
+&lt;a href=&quot;#api-tester&quot;&gt;API Tester&lt;/a&gt; to massage the request until you get a result you expect.&lt;/p&gt;
+&lt;p&gt;You can also &lt;strong&gt;copy javascript objects&lt;/strong&gt; and inspect them in the console. This way you
+can verify the object looks correct.&lt;/p&gt;
+&lt;h2 id=&quot;selenium&quot;&gt;Selenium&lt;/h2&gt;
+&lt;p&gt;It can be time-consuming to test your application by pointing, clicking and typing.
+Carpel tunnel syndrome is no laughing matter. That’s why I highly recommend immediately
+using selenium when you’re developing the frontend.&lt;/p&gt;
+&lt;p&gt;Selenium is essentially a web browser and takes the actions that a user would take.
+This is great because you can define what you expect your website to look like based
+on a workflow. Just hit run, go for the extra cup of coffee, then come back and see
+the results.&lt;/p&gt;
+&lt;p&gt;You can find out more about selenium &lt;a href=&quot;https://www.selenium.dev/downloads/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;the-shell&quot;&gt;The Shell&lt;/h2&gt;
+&lt;p&gt;I’m not talking about PowerShell or BASH here (though those could be used). For simple
+“why isn’t this working?” scenarios I like to drop into a node shell to experiment.&lt;/p&gt;
+&lt;p&gt;Perhaps you used the node shell early in your development career but have since
+abandoned it. Why not give it a try whenever you get stuck?&lt;/p&gt;
+&lt;h1 id=&quot;for-the-http-layer&quot;&gt;For the HTTP Layer&lt;/h1&gt;
+&lt;h2 id=&quot;api-testers-a-name-api-tester-a-&quot;&gt;API Testers &lt;a name=&quot;api-tester&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;curl&quot;&gt;cUrl&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://static0.makeuseofimages.com/wordpress/wp-content/uploads/2017/07/ubuntu-terminal-network-curl.png&quot; alt=&quot;cUrl&quot;&gt;&lt;/p&gt;
+&lt;p&gt;cURL is the command line option.&lt;/p&gt;
+&lt;p&gt;Your mother probably used this one. It’s the tried and true method
+of testing API calls. It’s the most basic one so there are no fancy
+bells or whistles like saving queries.&lt;/p&gt;
+&lt;p&gt;So sorry, no themeing either.&lt;/p&gt;
+&lt;p&gt;You may have used it for simply fetching some text (a &lt;code&gt;GET&lt;/code&gt; request), but you can also use
+it to test any request, really (&lt;code&gt;POST&lt;/code&gt;, &lt;code&gt;DELETE&lt;/code&gt;, &lt;code&gt;PATCH&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;If you’re on Linux or Mac you already have this installed. If you’re on Windows you’ll
+need a &lt;a href=&quot;https://sourceforge.net/projects/mingw/&quot;&gt;Mingw shell&lt;/a&gt; and install it from there.&lt;/p&gt;
+&lt;h3 id=&quot;postman&quot;&gt;Postman&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.ytimg.com/vi/e0LSRmPw-b0/maxresdefault.jpg&quot; alt=&quot;Postman&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I was first introduced to Postman when I attended an OpenAPI conference. A bunch of
+young hyped up sales people in bright telltale orange t-shirts handing out cool swag
+turned me on to the idea of an API tester application.&lt;/p&gt;
+&lt;p&gt;Initially it can be pretty daunting to use, but play around with it for 5 minutes and
+you’ll get the hang of it.&lt;/p&gt;
+&lt;p&gt;You can install it &lt;a href=&quot;https://www.postman.com/downloads/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;insomnia&quot;&gt;Insomnia&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://d3.alternativeto.net/dist/s/insomnia-rest-client_233515_full.png?format=jpg&amp;width=1200&amp;height=1200&amp;rmode=min&quot; alt=&quot;Insomnia&quot;&gt;&lt;/p&gt;
+&lt;p&gt;For the open source fans among us, there is Insomnia, which is pretty close to Postman
+with a more liberal license.&lt;/p&gt;
+&lt;p&gt;One feature I like is the “Paste as cURL” feature. Basically, if a web request isn’t
+working in Firefox. I use this all the time for any GraphQL queries that don’t
+quite make it.&lt;/p&gt;
+&lt;p&gt;You can install it &lt;a href=&quot;https://insomnia.rest/download&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;backend&quot;&gt;Backend&lt;/h1&gt;
+&lt;p&gt;Finally, there’s the backend.&lt;/p&gt;
+&lt;p&gt;Unfortunately there aren’t a lot of neat-o tools here to help you out. I guess
+because backend developers usually get their tasks, close the door to their cave
+and don’t come out until the year 2027. However, there are a few programs that
+might help.&lt;/p&gt;
+&lt;p&gt;How do you know if an issue is present on the back-end?&lt;/p&gt;
+&lt;p&gt;Well, ideally you’d know immediately with unit testing.&lt;/p&gt;
+&lt;p&gt;However, there are times when you thought you covered 100% of the cases and something
+returns null unexpectedly. Or you might inherit a bit of code that did NOT include
+unit tests.&lt;/p&gt;
+&lt;p&gt;So, what are some telltale signs that the issue is in the back-end?&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;You’re receiving missing values. JavaScript will complain about this.&lt;/li&gt;
+&lt;li&gt;You’re receiving strange values (for example, &lt;code&gt;object {...4&lt;/code&gt; when you expect &lt;code&gt;true&lt;/code&gt;).
+JavaScript will also complain about this.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I’m sure there are others, but most of the cases have these 2 symptoms.&lt;/p&gt;
+&lt;p&gt;In addition there are 2 common areas where back-end issues crop up:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The data in the database is incorrect.&lt;/li&gt;
+&lt;li&gt;There’s an exception in the backend framework.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Let’s first take a look at some database tools.&lt;/p&gt;
+&lt;h2 id=&quot;database-tools&quot;&gt;Database Tools&lt;/h2&gt;
+&lt;h3 id=&quot;pgadmin4-for-postgresql&quot;&gt;pgadmin4 for PostgreSQL&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/thaJeztah/pgadmin4-docker/master/pgadmin-screenshot.png&quot; alt=&quot;Pgadmin4&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Be careful, because if you try to install pgadmin from a repository you’ll
+probably end up with a very outdated version.&lt;/p&gt;
+&lt;p&gt;Make sure to read &lt;a href=&quot;https://www.pgadmin.org/download/&quot;&gt;the docs&lt;/a&gt; for your system
+to make sure you’re downloading the proper verison.&lt;/p&gt;
+&lt;p&gt;I’ll admit the interface is a bit awkward to use. And it can take a while for
+the database tables to come up.&lt;/p&gt;
+&lt;p&gt;But it’s an easy way run queries and see if the structure is what you expect.&lt;/p&gt;
+&lt;p&gt;You can find it &lt;a href=&quot;https://www.pgadmin.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;robo3t-for-mongo&quot;&gt;Robo3T for Mongo&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://d2.alternativeto.net/dist/s/69543700-5346-e311-b64a-002590a05f5f_3_full.png?format=jpg&amp;width=1600&amp;height=1600&amp;mode=min&amp;upscale=false&quot; alt=&quot;Robo3t&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The mongo shell is all fine and dandy, but sometimes you want the fancy syntax
+highlighting and the ability to go to a specific character.&lt;/p&gt;
+&lt;p&gt;I found Robo3T to be pretty decent. They do get a little annoying with “hey,
+try these extra features!” but I understand the need to earn a profit.&lt;/p&gt;
+&lt;p&gt;You can find it &lt;a href=&quot;https://robomongo.org/download&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;for-everything-else-there-s-mysql-workbench-sqlyog-datagrip-&quot;&gt;For everything else there’s MySQL Workbench, SQLyog, DataGrip…&lt;/h3&gt;
+&lt;p&gt;There are too many to list here, but countless articles have been written about
+other database GUI applications that can aide in debugging full stack applications.
+Feel free to do your own research.&lt;/p&gt;
+&lt;p&gt;I do have experience with MySQL workbench as a catch-all GUI. My take is that
+it’s…decent…if you absolutely have to use it. I usually shy away from the Eclipse-based applications: they tend to
+be very feature-rich with inadequate basic functionality. Like a cake made
+mostly of frosting.&lt;/p&gt;
+&lt;h2 id=&quot;framework-tools&quot;&gt;Framework Tools&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://www.etutorialspoint.com/images/nodejs/runnodeonshell.png&quot; alt=&quot;The Shell&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I’d really just look into the shell for this one. I say “the shell” because while
+the front-end is most likely node, the backend can be node, Python (my favorite),
+Java, Ruby, or something else.&lt;/p&gt;
+&lt;p&gt;If your minimal example is way to long to fit into the console I’d suggest setting
+up a very minimal project and just experimenting. For example, rendering a
+microservice response might not be working. I usually remove all of the fluff and
+reduce the problem to just the response not rendering. This is where some of
+the other tools mentioned above might come in handy.&lt;/p&gt;
+&lt;h1 id=&quot;-and-also-&quot;&gt;(…and also…)&lt;/h1&gt;
+&lt;p&gt;Another tool that I should throw in there is &lt;code&gt;ngrok&lt;/code&gt;. I didn’t place it in a category
+because it’s useful in a variety of different scenarios.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ngrok&lt;/code&gt; is a tunnel that allows a web app to be available from anywhere. This is useful
+for anything from testing endpoints to showing a colleague something cool.&lt;/p&gt;
+&lt;p&gt;It can be downloaded &lt;a href=&quot;https://ngrok.com/download&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;now-go-forth-&quot;&gt;Now, go forth!&lt;/h1&gt;
+&lt;p&gt;So now the next time you feel stuck on a problem, you’ll have the tools and the
+know how to get un-stuck.&lt;/p&gt;
+&lt;p&gt;And, believe me: I also feel sweaty-palmed and overwhelmed when I see that large
+stack of syntax errors. So you’re not alone in trying to tackle the mountain.
+But over the years I’ve found these tools are indespensible and I hope you find
+them helpful as well.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Just One Python Minute! - Booleans and Truthiness</title>
       <link>https://src-r-r.github.io/articles/one-python-minute-1-booleans-and-truthiness/</link>

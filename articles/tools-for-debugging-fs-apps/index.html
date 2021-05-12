@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Jordan Hewitt, Senior Software Developer, specializing in Full Stack Software Development and programming. Driven, passionate for helping others, and creative-problem solver.">
+    <title>Essential Tools for Debugging Web Applications - Jordan Hewitt - Software Developer
+    </title>
+    <link rel="stylesheet" href="/fonts/abel_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bolditalic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bold_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_italic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/searstower_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <script defer src="/fontawesome/js/all.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  </head>
+  <body class="article-detail" onLoad=";">
+    <div class="container">
+      <div class="columns">
+        <div class="col-9 col-lg-12">
+          <h1>Essential Tools for Debugging Web Applications</h1>
+          <p class="author">Written by <span class="author">Jordan H.</span>
+          </p>
+          <div class="container">
+            <article class="article">
+              <section class="content"><p><img src="/articles/tools-for-debugging-fs-apps/images/cover-image.png" alt="cover image"></p>
+<p>Impress your coworkers or boss with your debugging<span class="widont">&nbsp;</span>skills!</p>
+<p>Finding what’s wrong with desktop or mobile applications is
+(for the most part) a breeze. But full stack is an entirely
+different beast. Each part has a different protocol and
+structure. In this article I list some simple tools that can
+help you debug your<span class="widont">&nbsp;</span>application.</p>
+<hr>
+<p>In order for these tools to best server you it helps to provide a <em>minimal</em> ,
+<em>reduced</em> input<span class="widont">&nbsp;</span>sample.</p>
+<p>For example, if you are trying to see why a list of users doesn’t display, take out
+the code that displays the users and select only three users. If you can get that little
+example to work, put the code back in the main<span class="widont">&nbsp;</span>application.</p>
+<p>I’ve found it’s also helpful to start on the front-end and work my way back. So that’s
+what I’ve done in this article, too. Let’s start off with some cool front-end<span class="widont">&nbsp;</span>tools.</p>
+<h1 id="for-the-front-end">For the Front<span class="widont">&nbsp;</span>End</h1>
+<h2 id="web-console">Web Console</h2>
+<p><img src="/articles/tools-for-debugging-fs-apps/images/web-js-console.png" alt="Web JavaScript Console"></p>
+<p>There’s nothing fancy to<span class="widont">&nbsp;</span>it.</p>
+<p>You’ll be spending a lot of time checking out the <strong>console messages</strong>. If any
+front-end JavaScript throws an error it’ll show up here in a beautiful brilliant<span class="widont">&nbsp;</span>red.</p>
+<p>If there’s a templating issue, the <strong>Inspector</strong> can show you what’s<span class="widont">&nbsp;</span>up.</p>
+<p>If everything looks golden, it can be helpful to check out the <strong>Network</strong> tab. Sometimes
+a request can be erroring out. Pay careful attention to the status code (rule of thumb: status codes of <strong>200</strong>‘s - <strong>300</strong>‘s = <strong>good</strong>, <strong>400</strong>‘s and beyond = <strong>bad</strong>). The <span class="caps">URL</span> and path are also<span class="widont">&nbsp;</span>important.</p>
+<p>If this is the case, you can right click on the request to copy it and use an
+<a href="#api-tester"><span class="caps">API</span> Tester</a> to massage the request until you get a result you<span class="widont">&nbsp;</span>expect.</p>
+<p>You can also <strong>copy javascript objects</strong> and inspect them in the console. This way you
+can verify the object looks<span class="widont">&nbsp;</span>correct.</p>
+<h2 id="selenium">Selenium</h2>
+<p>It can be time-consuming to test your application by pointing, clicking and typing.
+Carpel tunnel syndrome is no laughing matter. That’s why I highly recommend immediately
+using selenium when you’re developing the<span class="widont">&nbsp;</span>frontend.</p>
+<p>Selenium is essentially a web browser and takes the actions that a user would take.
+This is great because you can define what you expect your website to look like based
+on a workflow. Just hit run, go for the extra cup of coffee, then come back and see
+the<span class="widont">&nbsp;</span>results.</p>
+<p>You can find out more about selenium <a href="https://www.selenium.dev/downloads/">here</a>.</p>
+<h2 id="the-shell">The Shell</h2>
+<p>I’m not talking about PowerShell or <span class="caps">BASH</span> here (though those could be used). For simple
+“why isn’t this working?” scenarios I like to drop into a node shell to<span class="widont">&nbsp;</span>experiment.</p>
+<p>Perhaps you used the node shell early in your development career but have since
+abandoned it. Why not give it a try whenever you get<span class="widont">&nbsp;</span>stuck?</p>
+<h1 id="for-the-http-layer">For the <span class="caps">HTTP</span><span class="widont">&nbsp;</span>Layer</h1>
+<h2 id="api-testers-a-name-api-tester-a-"><span class="caps">API</span> Testers <a name="api-tester"></a></h2>
+<h3 id="curl">cUrl</h3>
+<p><img src="https://static0.makeuseofimages.com/wordpress/wp-content/uploads/2017/07/ubuntu-terminal-network-curl.png" alt="cUrl"></p>
+<p>cURL is the command line<span class="widont">&nbsp;</span>option.</p>
+<p>Your mother probably used this one. It’s the tried and true method
+of testing <span class="caps">API</span> calls. It’s the most basic one so there are no fancy
+bells or whistles like saving<span class="widont">&nbsp;</span>queries.</p>
+<p>So sorry, no themeing<span class="widont">&nbsp;</span>either.</p>
+<p>You may have used it for simply fetching some text (a <code>GET</code> request), but you can also use
+it to test any request, really (<code>POST</code>, <code>DELETE</code>, <code>PATCH</code>).</p>
+<p>If you’re on Linux or Mac you already have this installed. If you’re on Windows you’ll
+need a <a href="https://sourceforge.net/projects/mingw/">Mingw shell</a> and install it from<span class="widont">&nbsp;</span>there.</p>
+<h3 id="postman">Postman</h3>
+<p><img src="https://i.ytimg.com/vi/e0LSRmPw-b0/maxresdefault.jpg" alt="Postman"></p>
+<p>I was first introduced to Postman when I attended an OpenAPI conference. A bunch of
+young hyped up sales people in bright telltale orange t-shirts handing out cool swag
+turned me on to the idea of an <span class="caps">API</span> tester<span class="widont">&nbsp;</span>application.</p>
+<p>Initially it can be pretty daunting to use, but play around with it for 5 minutes and
+you’ll get the hang of<span class="widont">&nbsp;</span>it.</p>
+<p>You can install it <a href="https://www.postman.com/downloads/">here</a>.</p>
+<h3 id="insomnia">Insomnia</h3>
+<p><img src="https://d3.alternativeto.net/dist/s/insomnia-rest-client_233515_full.png?format=jpg&width=1200&height=1200&rmode=min" alt="Insomnia"></p>
+<p>For the open source fans among us, there is Insomnia, which is pretty close to Postman
+with a more liberal<span class="widont">&nbsp;</span>license.</p>
+<p>One feature I like is the “Paste as cURL” feature. Basically, if a web request isn’t
+working in Firefox. I use this all the time for any GraphQL queries that don’t
+quite make<span class="widont">&nbsp;</span>it.</p>
+<p>You can install it <a href="https://insomnia.rest/download">here</a>.</p>
+<h1 id="backend">Backend</h1>
+<p>Finally, there’s the<span class="widont">&nbsp;</span>backend.</p>
+<p>Unfortunately there aren’t a lot of neat-o tools here to help you out. I guess
+because backend developers usually get their tasks, close the door to their cave
+and don’t come out until the year 2027. However, there are a few programs that
+might<span class="widont">&nbsp;</span>help.</p>
+<p>How do you know if an issue is present on the<span class="widont">&nbsp;</span>back-end?</p>
+<p>Well, ideally you’d know immediately with unit<span class="widont">&nbsp;</span>testing.</p>
+<p>However, there are times when you thought you covered 100% of the cases and something
+returns null unexpectedly. Or you might inherit a bit of code that did <span class="caps">NOT</span> include
+unit<span class="widont">&nbsp;</span>tests.</p>
+<p>So, what are some telltale signs that the issue is in the<span class="widont">&nbsp;</span>back-end?</p>
+<ol>
+<li>You’re receiving missing values. JavaScript will complain about<span class="widont">&nbsp;</span>this.</li>
+<li>You’re receiving strange values (for example, <code>object {...4</code> when you expect <code>true</code>).
+JavaScript will also complain about<span class="widont">&nbsp;</span>this.</li>
+</ol>
+<p>I’m sure there are others, but most of the cases have these 2<span class="widont">&nbsp;</span>symptoms.</p>
+<p>In addition there are 2 common areas where back-end issues crop<span class="widont">&nbsp;</span>up:</p>
+<ol>
+<li>The data in the database is<span class="widont">&nbsp;</span>incorrect.</li>
+<li>There’s an exception in the backend<span class="widont">&nbsp;</span>framework.</li>
+</ol>
+<p>Let’s first take a look at some database<span class="widont">&nbsp;</span>tools.</p>
+<h2 id="database-tools">Database Tools</h2>
+<h3 id="pgadmin4-for-postgresql">pgadmin4 for PostgreSQL</h3>
+<p><img src="https://raw.githubusercontent.com/thaJeztah/pgadmin4-docker/master/pgadmin-screenshot.png" alt="Pgadmin4"></p>
+<p>Be careful, because if you try to install pgadmin from a repository you’ll
+probably end up with a very outdated<span class="widont">&nbsp;</span>version.</p>
+<p>Make sure to read <a href="https://www.pgadmin.org/download/">the docs</a> for your system
+to make sure you’re downloading the proper<span class="widont">&nbsp;</span>verison.</p>
+<p>I’ll admit the interface is a bit awkward to use. And it can take a while for
+the database tables to come<span class="widont">&nbsp;</span>up.</p>
+<p>But it’s an easy way run queries and see if the structure is what you<span class="widont">&nbsp;</span>expect.</p>
+<p>You can find it <a href="https://www.pgadmin.org/download/">here</a>.</p>
+<h3 id="robo3t-for-mongo">Robo3T for Mongo</h3>
+<p><img src="https://d2.alternativeto.net/dist/s/69543700-5346-e311-b64a-002590a05f5f_3_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false" alt="Robo3t"></p>
+<p>The mongo shell is all fine and dandy, but sometimes you want the fancy syntax
+highlighting and the ability to go to a specific<span class="widont">&nbsp;</span>character.</p>
+<p>I found Robo3T to be pretty decent. They do get a little annoying with “hey,
+try these extra features!” but I understand the need to earn a<span class="widont">&nbsp;</span>profit.</p>
+<p>You can find it <a href="https://robomongo.org/download">here</a>.</p>
+<h3 id="for-everything-else-there-s-mysql-workbench-sqlyog-datagrip-">For everything else there’s MySQL Workbench, SQLyog,<span class="widont">&nbsp;</span>DataGrip…</h3>
+<p>There are too many to list here, but countless articles have been written about
+other database <span class="caps">GUI</span> applications that can aide in debugging full stack applications.
+Feel free to do your own<span class="widont">&nbsp;</span>research.</p>
+<p>I do have experience with MySQL workbench as a catch-all <span class="caps">GUI</span>. My take is that
+it’s…decent…if you absolutely have to use it. I usually shy away from the Eclipse-based applications: they tend to
+be very feature-rich with inadequate basic functionality. Like a cake made
+mostly of<span class="widont">&nbsp;</span>frosting.</p>
+<h2 id="framework-tools">Framework Tools</h2>
+<p><img src="https://www.etutorialspoint.com/images/nodejs/runnodeonshell.png" alt="The Shell"></p>
+<p>I’d really just look into the shell for this one. I say “the shell” because while
+the front-end is most likely node, the backend can be node, Python (my favorite),
+Java, Ruby, or something<span class="widont">&nbsp;</span>else.</p>
+<p>If your minimal example is way to long to fit into the console I’d suggest setting
+up a very minimal project and just experimenting. For example, rendering a
+microservice response might not be working. I usually remove all of the fluff and
+reduce the problem to just the response not rendering. This is where some of
+the other tools mentioned above might come in<span class="widont">&nbsp;</span>handy.</p>
+<h1 id="-and-also-">(…and also…)</h1>
+<p>Another tool that I should throw in there is <code>ngrok</code>. I didn’t place it in a category
+because it’s useful in a variety of different<span class="widont">&nbsp;</span>scenarios.</p>
+<p><code>ngrok</code> is a tunnel that allows a web app to be available from anywhere. This is useful
+for anything from testing endpoints to showing a colleague something<span class="widont">&nbsp;</span>cool.</p>
+<p>It can be downloaded <a href="https://ngrok.com/download">here</a>.</p>
+<h1 id="now-go-forth-">Now, go forth!</h1>
+<p>So now the next time you feel stuck on a problem, you’ll have the tools and the
+know how to get<span class="widont">&nbsp;</span>un-stuck.</p>
+<p>And, believe me: I also feel sweaty-palmed and overwhelmed when I see that large
+stack of syntax errors. So you’re not alone in trying to tackle the mountain.
+But over the years I’ve found these tools are indespensible and I hope you find
+them helpful as<span class="widont">&nbsp;</span>well.</p>
+</section>
+            </article>
+            <div class="hiring-box">
+              <center>
+                <h4>Did you like this article?</h4>
+              </center>
+              <center>
+                <p>Did you know I'm<strong> 
+                    <u>available for hire?</u></strong></p>
+              </center>
+              <p>Send me an email here: <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></p>
+              <p>Or connect with me in Wire:<b> @nswered</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 col-lg-12 content-wrap" id="sidebar">
+          <div class="nav"><a href="/">&laquo; Full blog</a></div>
+          <section class="about"><img src="/images/portrait.png" class="s-circle col-5 p-centered" />
+
+<h1 id="important-links">Important Links</h1>
+<p><a href="portfolio.html" class="btn btn-primary col-12">My Project Portfolio</a></p>
+<p></p>
+<a href="https://src-r-r.github.io/feed.xml" type='application/rss+xml' class="btn col-12" title="Blog">
+<i class="fas fa-rss-square"></i>
+Blog RSS Feed
+</a>
+
+<dl>
+  <dt>Services</dt>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.freelancer.com/u/TheSrcRR">Freelancer</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.upwork.com/freelancers/~0105fc69312e2da97a">UpWork</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://talent.hubstaff.com/profiles/jordan-hewitt">HubStaff</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.fiverr.com/striking_subzer">Fiverr</a></dd>
+  <dt>Social</dt>
+  <dd><i class="fab fa-twitter"></i>
+  <a href="https://mobile.twitter.com/thesrcrr">@TheSrcRr</dd>
+  <dd><i class="fab fa-linkedin"></i>
+  <a href="https://www.linkedin.com/in/jordan-h-a78122163/">LinkedIn</a></dd>
+  <dt>Software</dt>
+  <dd>
+  <i class="fab fa-github"></i>
+    <a href="https://github.com/src-r-r">GitHub</a></dd>
+  <dd>
+  <i class="fab fa-gitlab"></i>
+  <a href="https://gitlab.com/src-r-r">GitLab</a></dd>
+  <dt><i class="fas fa-camera"></i> Photography</dt>
+  <dd><a href="https://writelight.website">https://writelight.website</a></dd>
+</dl>
+
+<h2 id="contact-me">Contact Me</h2>
+<dl>
+  <dt>Email</dt>
+  <dd><i class="far fa-envelope"></i>
+    <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></dd>
+  <dt>Wire</dt>
+  <dd>@nswered</dd>
+</dl>
+
+<h2 id="services-i-provide">Services I Provide</h2>
+<dl class="hourly-rate">
+  <dt>Hourly Rate</dt>
+  <dd><strong>$57/hr</strong> (negotiable)</dd>
+</dl>
+
+<ul>
+<li>Full Stack Application development</li>
+<li>Documentation writing</li>
+<li>IT Support</li>
+<li>Automation</li>
+<li>Database design (Including PostgreSQL, MongoDB)</li>
+<li>Website creation</li>
+</ul>
+<h2 id="things-i-enjoy-that-i-do-not-charge-for-hobbies-">Things I enjoy that I do not charge for (Hobbies)</h2>
+<ul>
+<li>Reading about philsophy</li>
+<li>Reading about metaphysics</li>
+<li><a href="https:/writelight.website">Photography</a></li>
+<li>Reading fiction</li>
+<li>Improv (didn’t know I’d say that, did you?)</li>
+<li>Theater</li>
+<li>Thinking as a hobby</li>
+<li>Hiking</li>
+</ul>
+<small>
+This project is build on Wintersmith by
+<a href="http://johan-nordberg.com">Johan Nordberg</a>
+</small>
+
+          </section>
+          <section class="copy">
+            <p>&copy; 2021 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+          </section>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/init-highlight.js"></script>
+    </div>
+  </body>
+</html>
