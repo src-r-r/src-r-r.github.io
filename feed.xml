@@ -5,9 +5,310 @@
     <atom:link href="https://src-r-r.github.io/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>https://src-r-r.github.io</link>
     <description>Break Barriers | Simplify the Complex | Be Open to Ideas</description>
-    <pubDate>Tue, 11 May 2021 17:00:00 -0700</pubDate>
+    <pubDate>Mon, 17 May 2021 17:00:00 -0700</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Using Python + GraphQL + MongoDB to Find Promising Open Source Projects on GitHub</title>
+      <link>https://src-r-r.github.io/articles/finding-promising-github-repos-with-graphql/</link>
+      <pubDate>Mon, 17 May 2021 17:00:00 -0700</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/finding-promising-github-repos-with-graphql/</guid>
+      <author></author>
+      <description>&lt;p&gt;This week I’m launching a segment called “Freedom Friday,” where
+I showcase a promising GitHub project that I think deserves
+recogntition but might have fallen underdeath your radar.&lt;/p&gt;
+&lt;p&gt;But I’m a programmer. I’m going to go about this the way a
+programmer would: scour StackOverflow.com to figure out why my
+GraphQL query won’t work.&lt;/p&gt;
+&lt;p&gt;But before and after I did that I desgined and developed a
+Python application to “guess” at what the promising projects were.
+In this blog I describe how I went about this and what I learned.&lt;/p&gt;
+&lt;p&gt;Reshare or comment on this article and get a shout-out in the first
+“Freedom Friday” video!&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;the-project&quot;&gt;The Project&lt;/h1&gt;
+&lt;p&gt;There are 5 steps to this project, as shown in the diagram below&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/finding-promising-github-repos-with-graphql/images/overview-diagram.png&quot; alt=&quot;Overview&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Steps 1 and 2 are handled by one Python script, and steps 3-5 are
+handled by another.&lt;/p&gt;
+&lt;h2 id=&quot;1-query-projects-form-graphql&quot;&gt;1. Query Projects form GraphQL&lt;/h2&gt;
+&lt;p&gt;Here is the query used for the project:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-gql&quot;&gt;query ($searchQuery : String! $first : Int!, $after : String) {
+  search(query: $searchQuery, type: REPOSITORY, first: $first, after: $after) {
+    repositoryCount
+    pageInfo {
+      endCursor
+      startCursor
+    }
+    edges {
+      node {
+        ... on Repository {
+          id
+          name
+          url
+          description
+          stargazerCount
+          closedIssues: issues(states: CLOSED) {
+            totalCount
+          }
+          totalIssues: issues {
+            totalCount
+          }
+          repositoryTopics (first: 10) {
+            edges {
+              node {
+                ... on RepositoryTopic {
+                  topic {
+                    name
+                  }
+                }
+              }
+            }
+          }
+          releases {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here are the GraphQL variables:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+    &lt;span class=&quot;attr&quot;&gt;&quot;searchQuery&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;s:public pushed:&amp;gt;={pushed_date} stars:{min_stars}..{max_stars} sort:interactions-desc topics:&amp;gt;={n_topics} created:&amp;gt;={created_date} NOT module NOT plugin NOT wrapper NOT \&quot;for the\&quot;&quot;&lt;/span&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For now I don’t use the &lt;code&gt;first&lt;/code&gt; variable (maybe later). I’m just interested in the top searches.&lt;/p&gt;
+&lt;p&gt;You might be freaking out by the curly braces. Basically what it means is that I’m using this
+search query as a python variable.&lt;/p&gt;
+&lt;h3 id=&quot;search-query-paramters&quot;&gt;Search Query paramters&lt;/h3&gt;
+&lt;p&gt;Here’s a rundown of what each term means in the query:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;tt&gt;is:public&lt;/tt&gt;&lt;/dt&gt;
+&lt;dd&gt;By itself this will grab all the public repositories in the default order order&lt;/dd&gt;
+&lt;dt&gt;&lt;tt&gt;pushed:&gt;={pushed_date}&lt;/tt&gt;&lt;/dt&gt;
+&lt;dd&gt;Include only repositories pushed to github beyond the date &lt;tt&gt;YYY-MM-DD&lt;/tt&gt;
+&lt;dt&gt;&lt;tt&gt;stars:{min_stars}..{max_stars}&lt;/tt&gt;&lt;/dt&gt;
+&lt;dd&gt;Include only repos that have more than &lt;tt&gt;{min_stars}&lt;/tt&gt; but fewer than &lt;tt&gt;{max_stars}&lt;/tt&gt;&lt;/dd&gt;
+&lt;dt&gt;&lt;tt&gt;sort:interactions-desc&lt;/tt&gt;&lt;/dt&gt;
+&lt;dd&gt;Sort by number of interactions (more interactions to fewer)&lt;/dd&gt;
+&lt;dt&gt;&lt;tt&gt;topics:&gt;={n_topics}&lt;/tt&gt;&lt;/dt&gt;
+&lt;dd&gt;Include only repos that have more than &lt;tt&gt;{n_topics}&lt;/tt&gt; topics.&lt;/dd&gt;
+&lt;dt&gt;&lt;tt&gt;NOT module&lt;/tt&gt;&lt;/dt&gt;
+&lt;dd&gt;Don't include anything that mentions &quot;module&quot; in the title or description&lt;/dd&gt;
+&lt;dt&gt;&lt;tt&gt;NOT wrapper&lt;/tt&gt;&lt;/dt&gt;
+&lt;dd&gt;Don't include anything that mentions &quot;wrapper&quot; in the title or description&lt;/dd&gt;
+&lt;dt&gt;&lt;tt&gt;NOT &quot;for the&quot;&lt;/tt&gt;&lt;/dt&gt;
+&lt;dd&gt;Don't include anything that mentions &quot;for the&quot; in the title or description, which
+I found was an indicator of a module&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;You can see all the possible search query parameters &lt;a href=&quot;https://docs.github.com/en/github/searching-for-information-on-github/understanding-the-search-syntax&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Try out some of the search parameters yourself in GitHub to see what you get.&lt;/p&gt;
+&lt;h3 id=&quot;graphql-response&quot;&gt;GraphQL Response&lt;/h3&gt;
+&lt;p&gt;The response looks something like this.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+  &lt;span class=&quot;attr&quot;&gt;&quot;data&quot;&lt;/span&gt;: {
+    &lt;span class=&quot;attr&quot;&gt;&quot;search&quot;&lt;/span&gt;: {
+      &lt;span class=&quot;attr&quot;&gt;&quot;repositoryCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1435&lt;/span&gt;,
+      &lt;span class=&quot;attr&quot;&gt;&quot;pageInfo&quot;&lt;/span&gt;: {
+        &lt;span class=&quot;attr&quot;&gt;&quot;endCursor&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Y3Vyc29yOjQ=&quot;&lt;/span&gt;,
+        &lt;span class=&quot;attr&quot;&gt;&quot;startCursor&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Y3Vyc29yOjE=&quot;&lt;/span&gt;
+      },
+      &lt;span class=&quot;attr&quot;&gt;&quot;edges&quot;&lt;/span&gt;: [
+        {
+          &lt;span class=&quot;attr&quot;&gt;&quot;node&quot;&lt;/span&gt;: {
+            &lt;span class=&quot;attr&quot;&gt;&quot;updatedAt&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;2021-05-01T13:15:01Z&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;id&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;MDEwOlJlcG9zaXRvcnkxNDM3NzQ1MjU=&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;TLC591x&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;url&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;https://github.com/Andy4495/TLC591x&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;description&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Library for Texas Instruments TLC5916 and TLC5917 constant current LED sink driver for Arduino and Energia. &quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;watchers&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;forkCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;mentionableUsers&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;closedIssues&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;totalIssues&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;repositoryTopics&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;edges&quot;&lt;/span&gt;: [
+                {
+                  &lt;span class=&quot;attr&quot;&gt;&quot;node&quot;&lt;/span&gt;: {
+                    &lt;span class=&quot;attr&quot;&gt;&quot;topic&quot;&lt;/span&gt;: {
+                      &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;arduino&quot;&lt;/span&gt;
+                    }
+                  }
+                },
+                {
+                  &lt;span class=&quot;attr&quot;&gt;&quot;node&quot;&lt;/span&gt;: {
+                    &lt;span class=&quot;attr&quot;&gt;&quot;topic&quot;&lt;/span&gt;: {
+                      &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;energia&quot;&lt;/span&gt;
+                    }
+                  }
+                },
+            &lt;span class=&quot;comment&quot;&gt;/// .... You get the idea ....&lt;/span&gt;
+            },
+        },
+        &lt;span class=&quot;comment&quot;&gt;/// .... You get the idea ....&lt;/span&gt;
+        {
+          &lt;span class=&quot;attr&quot;&gt;&quot;node&quot;&lt;/span&gt;: {
+            &lt;span class=&quot;attr&quot;&gt;&quot;updatedAt&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;2021-05-01T15:24:42Z&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;id&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;MDEwOlJlcG9zaXRvcnkzMjQwODE3Njk=&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;name&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;raihaninfo&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;url&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;https://github.com/raihaninfo/raihaninfo&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;description&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Md Abu Raihan portfolio&quot;&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;watchers&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;forkCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+            &lt;span class=&quot;attr&quot;&gt;&quot;mentionableUsers&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;closedIssues&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;totalIssues&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;repositoryTopics&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;edges&quot;&lt;/span&gt;: []
+            },
+            &lt;span class=&quot;attr&quot;&gt;&quot;releases&quot;&lt;/span&gt;: {
+              &lt;span class=&quot;attr&quot;&gt;&quot;totalCount&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;
+            }
+          }
+        }
+      ]
+    }
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;translating-from-graphql-to-mongodb&quot;&gt;Translating from GraphQL to MongoDB&lt;/h2&gt;
+&lt;p&gt;It looks like a lot of weird data. I don’t need to know all about the edges and nodes
+to just get the data. So let’s strip out the heirarchical structure to just store what
+we need. That’s what Python is here for! Python can translate
+the discombobulated GraphQL Query to MongoDB.&lt;/p&gt;
+&lt;p&gt;Here’s the relevant portion from the Python code. Whenever I write a conversion function, I
+like to make it a &lt;code&gt;@classmethod&lt;/code&gt; of the type I’m trying to import &lt;em&gt;to&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;from mongoengine import Document
+# ...
+class Repository(Document)
+    # ...
+    @classmethod
+    def from_graphql(cls, edge: T.Dict, autosave=True):
+        node = edge[&amp;quot;node&amp;quot;]
+        id = node[&amp;quot;id&amp;quot;]
+        name = node[&amp;quot;name&amp;quot;]
+        url = node[&amp;quot;url&amp;quot;]
+        last_updated = datetime.strptime(node[&amp;quot;updatedAt&amp;quot;], TIMESTAMP_FORMAT)
+        description = node[&amp;quot;description&amp;quot;]
+        watchers = node[&amp;quot;watchers&amp;quot;][&amp;quot;totalCount&amp;quot;]
+        forks = node[&amp;quot;forkCount&amp;quot;]
+        mentionable_users = node[&amp;quot;mentionableUsers&amp;quot;][&amp;quot;totalCount&amp;quot;]
+        closed_issues = node[&amp;quot;closedIssues&amp;quot;][&amp;quot;totalCount&amp;quot;]
+        total_issues = node[&amp;quot;totalIssues&amp;quot;][&amp;quot;totalCount&amp;quot;]
+        topics = [t[&amp;quot;node&amp;quot;][&amp;quot;topic&amp;quot;][&amp;quot;name&amp;quot;] for t in node[&amp;quot;repositoryTopics&amp;quot;][&amp;quot;edges&amp;quot;]]
+        releases = node[&amp;quot;releases&amp;quot;][&amp;quot;totalCount&amp;quot;]
+        stargazers = node[&amp;quot;stargazerCount&amp;quot;]
+
+        stats = RepositoryStats(
+            watchers=watchers,
+            forks=forks,
+            mentionable_users=mentionable_users,
+            closed_issues=closed_issues,
+            total_issues=total_issues,
+            releases=releases,
+            last_updated=last_updated,
+            stargazers=stargazers,
+        )
+        repo = cls(
+            _id=id,
+            name=name,
+            url=url,
+            description=description,
+            stats=stats,
+            topics=topics,
+        )
+
+        if autosave:
+            repo.save()
+        return repo&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;calculating-the-score&quot;&gt;Calculating the Score&lt;/h3&gt;
+&lt;p&gt;I wanted a way to calculate a sort of “popularity score.” I included this as 
+property in the &lt;code&gt;RepositoryStats&lt;/code&gt; model to act kind of like a field:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;RepositoryStats&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(EmbeddedDocument, FFMixin)&lt;/span&gt;:&lt;/span&gt;
+
+    watchers = IntField(required=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+    stargazers = IntField(required=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+    forks = IntField(required=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+    mentionable_users = IntField(required=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+    total_issues = IntField(required=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+    closed_issues = IntField(required=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+    releases = IntField(required=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+    last_updated = DateTimeField(required=&lt;span class=&quot;literal&quot;&gt;True&lt;/span&gt;)
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;closure&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt; -&amp;gt; float:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; float(self.closed_issues + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;) / float(self.total_issues + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;activity&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt; -&amp;gt; float:&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; float(
+            (self.mentionable_users * &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+            * (self.forks * &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+            * (self.releases * &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+            * (self.watchers * &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+            * (self.stargazers * &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+        )
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;age_in_days&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt; -&amp;gt; float:&lt;/span&gt;
+        &lt;span class=&quot;comment&quot;&gt;# Because of timezone discrepancies I'm just fudging the&lt;/span&gt;
+        &lt;span class=&quot;comment&quot;&gt;# math a bit by adding a day by default.&lt;/span&gt;
+        &lt;span class=&quot;comment&quot;&gt;# Otherwise you'll get repositories that are created 3 hours&lt;/span&gt;
+        &lt;span class=&quot;comment&quot;&gt;# from now!&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (datetime.today() - self.last_updated).days + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;meta&quot;&gt;    @property&lt;/span&gt;
+    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;score&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(self)&lt;/span&gt; -&amp;gt; float:&lt;/span&gt;
+        factor = self.activity / (self.closure)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; self.age_in_days &amp;gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;:
+            &lt;span class=&quot;comment&quot;&gt;# This will be a divide-by-zero error if self.age_in_days is&lt;/span&gt;
+            &lt;span class=&quot;comment&quot;&gt;# less than or equal to 0.&lt;/span&gt;
+            factor = (factor / self.age_in_days / AGE_FACTOR)
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;not&lt;/span&gt; (self.releases &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; factor):
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; self.releases &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; factor
+        &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;:
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; math.log(factor * self.releases)
+        &lt;span class=&quot;keyword&quot;&gt;except&lt;/span&gt; ValueError &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; err:
+            &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; ipdb
+
+            ipdb.set_trace()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The ipdb there is only for debugging in case I run into a math error.
+Basically it should’t ever get to that point.&lt;/p&gt;
+&lt;h3 id=&quot;getting-the-data&quot;&gt;Getting the data&lt;/h3&gt;
+&lt;p&gt;Then in order to fetch the data I simply run:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# I like to use poetry&lt;/span&gt;
+poetry run python -m fffeed.fetch 2021-02-01 2019-05-15 -s 1 -S 500 -T 3
+&lt;span class=&quot;comment&quot;&gt;# This might hang for a bit&lt;/span&gt;
+poetry run python -m fffeed.report &amp;gt; report.csv&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And the following table is written to report.csv.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://src-r-r.github.io/articles/finding-promising-github-repos-with-graphql/images/example-report-2.png&quot; alt=&quot;sample&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Looks like it works! Take a look at the 2nd top project &lt;code&gt;cl-hackathon-app&lt;/code&gt;. Even
+though it has a lower closure rate than &lt;code&gt;docs&lt;/code&gt;, that’s only because it’s not as
+active…plus &lt;code&gt;cl-hackathon-app&lt;/code&gt; has more issues, which indicates more users
+are filing issues.&lt;/p&gt;
+&lt;h1 id=&quot;try-it-out-&quot;&gt;Try it out!&lt;/h1&gt;
+&lt;p&gt;The project is open source at &lt;a href=&quot;https://gitlab.com/srcrr/freedom-friday-feed&quot;&gt;https://gitlab.com/srcrr/freedom-friday-feed&lt;/a&gt;. Clone
+the repo and try it out yourself!&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;And don’t forget to share this article with your colleagues on LinkedIn or twitter.
+If you do you’ll get a shout-out in my next &lt;strong&gt;Freedom Friday&lt;/strong&gt; video!&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Essential Tools for Debugging Web Applications</title>
       <link>https://src-r-r.github.io/articles/tools-for-debugging-fs-apps/</link>
@@ -3505,42 +3806,6 @@ the post office analogy.&lt;/p&gt;
 </description>
     </item>
     <item>
-      <title>My Latest Project - LinkList Firefox Extension</title>
-      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
-      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
-      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
-      <author></author>
-      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
-&lt;p&gt;We are a species whose brains like limited information.
-[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
-after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
-proven that when given a lot of information our brains are overwhelmed. This
-has driven content designers of websites to display selected bits of
-information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
-every user profile on Reddit while reading an article, but they do provide
-links to user profiles who have commented on the article.&lt;/p&gt;
-&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
-for.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
-yet), cover links with other elements. If you use a JavaScript blocker (which I
-recommend to everyone, for both security and privacy), you know what I’m
-talking about.&lt;/p&gt;
-&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
-&lt;p&gt;My solution is a Firefox extension called
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
-For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
-provides a text field to allow you to search for a given link.&lt;/p&gt;
-&lt;p&gt;I created this because of my frustration with searching for a job. At a local
-company page I’d look for the “Careers” or “Jobs” page which may or may not be
-at the footer. Instead of wasting 3 seconds scrolling to the bottom and
-another 3 seconds scanning the footer links I can simply look in the sidebar
-and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
-&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>JavaScript Programming for Non-JavaScript Programmers</title>
       <link>https://src-r-r.github.io/articles/javascript-programming-for-non-javascript-programmers/</link>
       <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
@@ -3660,6 +3925,42 @@ appeared as an afterthought it has become the backbone of the web. So, for
 programmers who are used to Java or C++ or some other framework, you, like me,
 might be a little confused as to what goes on under the hood. But, hopefully,
 I was able to explain what goes on in a more visual way.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>My Latest Project - LinkList Firefox Extension</title>
+      <link>https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</link>
+      <pubDate>Fri, 10 Nov 2017 16:00:00 -0800</pubDate>
+      <guid isPermaLink="true">https://src-r-r.github.io/articles/my_latest_project_linklist_firefox_extension/</guid>
+      <author></author>
+      <description>&lt;h2 id=&quot;the-problem-with-our-brains-and-the-web-&quot;&gt;The Problem With Our Brains (and the Web)&lt;/h2&gt;
+&lt;p&gt;We are a species whose brains like limited information.
+[Study] (&lt;a href=&quot;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&quot;&gt;https://www.theguardian.com/lifeandstyle/2012/nov/02/change-you-life-information-overload&lt;/a&gt;)
+after &lt;a href=&quot;http://www.economist.com/node/17723028/&quot;&gt;study&lt;/a&gt; has
+proven that when given a lot of information our brains are overwhelmed. This
+has driven content designers of websites to display selected bits of
+information on pages without showing &lt;em&gt;everything&lt;/em&gt;. You wouldn’t have a link to
+every user profile on Reddit while reading an article, but they do provide
+links to user profiles who have commented on the article.&lt;/p&gt;
+&lt;p&gt;And if you truly want all the links displayed? Well, that’s what site maps are
+for.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Many times, though, UX designers simply hide links through menus, or (worse
+yet), cover links with other elements. If you use a JavaScript blocker (which I
+recommend to everyone, for both security and privacy), you know what I’m
+talking about.&lt;/p&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;My solution is a Firefox extension called
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;LinkList&lt;/a&gt;.
+For the currently active page it displays &lt;em&gt;all&lt;/em&gt; links on the page, and even
+provides a text field to allow you to search for a given link.&lt;/p&gt;
+&lt;p&gt;I created this because of my frustration with searching for a job. At a local
+company page I’d look for the “Careers” or “Jobs” page which may or may not be
+at the footer. Instead of wasting 3 seconds scrolling to the bottom and
+another 3 seconds scanning the footer links I can simply look in the sidebar
+and look for “Careers.” If it exists, great! If not, look elsewhere.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;ListLink can be downloaded from the Firefox Add-On page
+&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/linklistsidebar/&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 </description>
     </item>
     <item>
