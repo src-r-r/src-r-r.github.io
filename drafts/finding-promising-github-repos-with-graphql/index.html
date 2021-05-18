@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Jordan Hewitt, Senior Software Developer, specializing in Full Stack Software Development and programming. Driven, passionate for helping others, and creative-problem solver.">
+    <title>Using Python + GraphQL + MongoDB to Find Promising Open Source Projects on GitHub - Jordan Hewitt - Software Developer
+    </title>
+    <link rel="stylesheet" href="/fonts/abel_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bolditalic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_bold_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_italic_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/camingocode_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fonts/searstower_regular_macroman/stylesheet.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <script defer src="/fontawesome/js/all.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  </head>
+  <body class="article-detail" onLoad=";">
+    <div class="container">
+      <div class="columns">
+        <div class="col-9 col-lg-12">
+          <h1>Using Python + GraphQL + MongoDB to Find Promising Open Source Projects on GitHub</h1>
+          <p class="author">Written by <span class="author">Jordan H.</span>
+          </p>
+          <div class="container">
+            <article class="article">
+              <section class="content"><p>This week I’m launching a segment called “Freedom Friday,” where
+I showcase a promising GitHub project that I think deserves
+recogntition but might have fallen underdeath your<span class="widont">&nbsp;</span>radar.</p>
+<p>But I’m a programmer. I’m going to go about this the way a
+programmer would: scour StackOverflow.com to figure out why my
+GraphQL query won’t<span class="widont">&nbsp;</span>work.</p>
+<p>But before and after I did that I desgined and developed a
+Python application to “guess” at what the promising projects were.
+In this blog I describe how I went about this and what I<span class="widont">&nbsp;</span>learned.</p>
+<p>Reshare or comment on this article and get a shout-out in the first
+“Freedom Friday”<span class="widont">&nbsp;</span>video!</p>
+<hr>
+<h1 id="the-project">The Project</h1>
+<p>There are 5 steps to this project, as shown in the diagram<span class="widont">&nbsp;</span>below</p>
+<p><img src="/drafts/finding-promising-github-repos-with-graphql/images/overview-diagram.png" alt="Overview"></p>
+<p>Steps 1 and 2 are handled by one Python script, and steps 3-5 are
+handled by<span class="widont">&nbsp;</span>another.</p>
+<h2 id="1-query-projects-form-graphql">1. Query Projects form<span class="widont">&nbsp;</span>GraphQL</h2>
+<p>Here is the query used for the<span class="widont">&nbsp;</span>project:</p>
+<pre><code class="language-gql">query ($searchQuery : String! $first : Int!, $after : String) {
+  search(query: $searchQuery, type: REPOSITORY, first: $first, after: $after) {
+    repositoryCount
+    pageInfo {
+      endCursor
+      startCursor
+    }
+    edges {
+      node {
+        ... on Repository {
+          id
+          name
+          url
+          description
+          stargazerCount
+          closedIssues: issues(states: CLOSED) {
+            totalCount
+          }
+          totalIssues: issues {
+            totalCount
+          }
+          repositoryTopics (first: 10) {
+            edges {
+              node {
+                ... on RepositoryTopic {
+                  topic {
+                    name
+                  }
+                }
+              }
+            }
+          }
+          releases {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>Here are the GraphQL<span class="widont">&nbsp;</span>variables:</p>
+<pre><code class="language-json">{
+    <span class="attr">"searchQuery"</span>: <span class="string">"s:public pushed:&gt;={pushed_date} stars:{min_stars}..{max_stars} sort:interactions-desc topics:&gt;={n_topics} created:&gt;={created_date} <span class="caps">NOT</span> module <span class="caps">NOT</span> plugin <span class="caps">NOT</span> wrapper <span class="caps">NOT</span> \"for the\""</span>
+}</code></pre>
+<p>For now I don’t use the <code>first</code> variable (maybe later). I’m just interested in the top<span class="widont">&nbsp;</span>searches.</p>
+<p>You might be freaking out by the curly braces. Basically what it means is that I’m using this
+search query as a python<span class="widont">&nbsp;</span>variable.</p>
+<h3 id="search-query-paramters">Search Query paramters</h3>
+<p>Here’s a rundown of what each term means in the<span class="widont">&nbsp;</span>query:</p>
+<dl>
+<dt><tt>is:public</tt></dt>
+<dd>By itself this will grab all the public repositories in the default order<span class="widont">&nbsp;</span>order</dd>
+<dt><tt>pushed:>={pushed_date}</tt></dt>
+<dd>Include only repositories pushed to github beyond the date <tt><span class="caps">YYY</span>-<span class="caps">MM</span>-<span class="caps">DD</span></tt>
+<dt><tt>stars:{min_stars}..{max_stars}</tt></dt>
+<dd>Include only repos that have more than <tt>{min_stars}</tt> but fewer than <tt>{max_stars}</tt></dd>
+<dt><tt>sort:interactions-desc</tt></dt>
+<dd>Sort by number of interactions (more interactions to<span class="widont">&nbsp;</span>fewer)</dd>
+<dt><tt>topics:>={n_topics}</tt></dt>
+<dd>Include only repos that have more than <tt>{n_topics}</tt> topics.</dd>
+<dt><tt><span class="caps">NOT</span> module</tt></dt>
+<dd>Don&#8217;t include anything that mentions &#8220;module&#8221; in the title or<span class="widont">&nbsp;</span>description</dd>
+<dt><tt><span class="caps">NOT</span> wrapper</tt></dt>
+<dd>Don&#8217;t include anything that mentions &#8220;wrapper&#8221; in the title or<span class="widont">&nbsp;</span>description</dd>
+<dt><tt><span class="caps">NOT</span> &#8220;for the&#8221;</tt></dt>
+<dd>Don&#8217;t include anything that mentions &#8220;for the&#8221; in the title or description, which
+I found was an indicator of a<span class="widont">&nbsp;</span>module</dd>
+</dl>
+
+<p>You can see all the possible search query parameters <a href="https://docs.github.com/en/github/searching-for-information-on-github/understanding-the-search-syntax">here</a>.</p>
+<p>Try out some of the search parameters yourself in GitHub to see what you<span class="widont">&nbsp;</span>get.</p>
+<h3 id="graphql-response">GraphQL Response</h3>
+<p>The response looks something like<span class="widont">&nbsp;</span>this.</p>
+<pre><code class="language-json">{
+  <span class="attr">"data"</span>: {
+    <span class="attr">"search"</span>: {
+      <span class="attr">"repositoryCount"</span>: <span class="number">1435</span>,
+      <span class="attr">"pageInfo"</span>: {
+        <span class="attr">"endCursor"</span>: <span class="string">"Y3Vyc29yOjQ="</span>,
+        <span class="attr">"startCursor"</span>: <span class="string">"Y3Vyc29yOjE="</span>
+      },
+      <span class="attr">"edges"</span>: [
+        {
+          <span class="attr">"node"</span>: {
+            <span class="attr">"updatedAt"</span>: <span class="string">"2021-05-01T13:15:01Z"</span>,
+            <span class="attr">"id"</span>: <span class="string">"MDEwOlJlcG9zaXRvcnkxNDM3NzQ1MjU="</span>,
+            <span class="attr">"name"</span>: <span class="string">"TLC591x"</span>,
+            <span class="attr">"url"</span>: <span class="string">"https://github.com/Andy4495/TLC591x"</span>,
+            <span class="attr">"description"</span>: <span class="string">"Library for Texas Instruments <span class="caps">TLC5916</span> and <span class="caps">TLC5917</span> constant current <span class="caps">LED</span> sink driver for Arduino and Energia. "</span>,
+            <span class="attr">"watchers"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">4</span>
+            },
+            <span class="attr">"forkCount"</span>: <span class="number">0</span>,
+            <span class="attr">"mentionableUsers"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">1</span>
+            },
+            <span class="attr">"closedIssues"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">2</span>
+            },
+            <span class="attr">"totalIssues"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">3</span>
+            },
+            <span class="attr">"repositoryTopics"</span>: {
+              <span class="attr">"edges"</span>: [
+                {
+                  <span class="attr">"node"</span>: {
+                    <span class="attr">"topic"</span>: {
+                      <span class="attr">"name"</span>: <span class="string">"arduino"</span>
+                    }
+                  }
+                },
+                {
+                  <span class="attr">"node"</span>: {
+                    <span class="attr">"topic"</span>: {
+                      <span class="attr">"name"</span>: <span class="string">"energia"</span>
+                    }
+                  }
+                },
+            <span class="comment">/// .... You get the idea ....</span>
+            },
+        },
+        <span class="comment">/// .... You get the idea ....</span>
+        {
+          <span class="attr">"node"</span>: {
+            <span class="attr">"updatedAt"</span>: <span class="string">"2021-05-01T15:24:42Z"</span>,
+            <span class="attr">"id"</span>: <span class="string">"MDEwOlJlcG9zaXRvcnkzMjQwODE3Njk="</span>,
+            <span class="attr">"name"</span>: <span class="string">"raihaninfo"</span>,
+            <span class="attr">"url"</span>: <span class="string">"https://github.com/raihaninfo/raihaninfo"</span>,
+            <span class="attr">"description"</span>: <span class="string">"Md Abu Raihan portfolio"</span>,
+            <span class="attr">"watchers"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">1</span>
+            },
+            <span class="attr">"forkCount"</span>: <span class="number">1</span>,
+            <span class="attr">"mentionableUsers"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">1</span>
+            },
+            <span class="attr">"closedIssues"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">0</span>
+            },
+            <span class="attr">"totalIssues"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">0</span>
+            },
+            <span class="attr">"repositoryTopics"</span>: {
+              <span class="attr">"edges"</span>: []
+            },
+            <span class="attr">"releases"</span>: {
+              <span class="attr">"totalCount"</span>: <span class="number">0</span>
+            }
+          }
+        }
+      ]
+    }
+  }
+}</code></pre>
+<h2 id="translating-from-graphql-to-mongodb">Translating from GraphQL to<span class="widont">&nbsp;</span>MongoDB</h2>
+<p>It looks like a lot of weird data. I don’t need to know all about the edges and nodes
+to just get the data. So let’s strip out the heirarchical structure to just store what
+we need. That’s what Python is here for! Python can translate
+the discombobulated GraphQL Query to<span class="widont">&nbsp;</span>MongoDB.</p>
+<p>Here’s the relevant portion from the Python code. Whenever I write a conversion function, I
+like to make it a <code>@classmethod</code> of the type I’m trying to import <em>to</em>:</p>
+<pre><code class="language-python">from mongoengine import Document
+# ...
+class Repository(Document)
+    # ...
+    @classmethod
+    def from_graphql(cls, edge: T.Dict, autosave=True):
+        node = edge[&quot;node&quot;]
+        id = node[&quot;id&quot;]
+        name = node[&quot;name&quot;]
+        url = node[&quot;url&quot;]
+        last_updated = datetime.strptime(node[&quot;updatedAt&quot;], TIMESTAMP_FORMAT)
+        description = node[&quot;description&quot;]
+        watchers = node[&quot;watchers&quot;][&quot;totalCount&quot;]
+        forks = node[&quot;forkCount&quot;]
+        mentionable_users = node[&quot;mentionableUsers&quot;][&quot;totalCount&quot;]
+        closed_issues = node[&quot;closedIssues&quot;][&quot;totalCount&quot;]
+        total_issues = node[&quot;totalIssues&quot;][&quot;totalCount&quot;]
+        topics = [t[&quot;node&quot;][&quot;topic&quot;][&quot;name&quot;] for t in node[&quot;repositoryTopics&quot;][&quot;edges&quot;]]
+        releases = node[&quot;releases&quot;][&quot;totalCount&quot;]
+        stargazers = node[&quot;stargazerCount&quot;]
+
+        stats = RepositoryStats(
+            watchers=watchers,
+            forks=forks,
+            mentionable_users=mentionable_users,
+            closed_issues=closed_issues,
+            total_issues=total_issues,
+            releases=releases,
+            last_updated=last_updated,
+            stargazers=stargazers,
+        )
+        repo = cls(
+            _id=id,
+            name=name,
+            url=url,
+            description=description,
+            stats=stats,
+            topics=topics,
+        )
+
+        if autosave:
+            repo.save()
+        return repo</code></pre>
+<h3 id="calculating-the-score">Calculating the Score</h3>
+<p>I wanted a way to calculate a sort of “popularity score.” I included this as 
+property in the <code>RepositoryStats</code> model to act kind of like a<span class="widont">&nbsp;</span>field:</p>
+<pre><code class="language-python"><span class="class"><span class="keyword">class</span> <span class="title">RepositoryStats</span><span class="params">(EmbeddedDocument, FFMixin)</span>:</span>
+
+    watchers = IntField(required=<span class="literal">True</span>)
+    stargazers = IntField(required=<span class="literal">True</span>)
+    forks = IntField(required=<span class="literal">True</span>)
+    mentionable_users = IntField(required=<span class="literal">True</span>)
+    total_issues = IntField(required=<span class="literal">True</span>)
+    closed_issues = IntField(required=<span class="literal">True</span>)
+    releases = IntField(required=<span class="literal">True</span>)
+    last_updated = DateTimeField(required=<span class="literal">True</span>)
+
+<span class="meta">    @property</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">closure</span><span class="params">(self)</span> -&gt; float:</span>
+        <span class="keyword">return</span> float(self.closed_issues + <span class="number">1</span>) / float(self.total_issues + <span class="number">1</span>)
+
+<span class="meta">    @property</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">activity</span><span class="params">(self)</span> -&gt; float:</span>
+        <span class="keyword">return</span> float(
+            (self.mentionable_users * <span class="number">1</span>)
+            * (self.forks * <span class="number">1</span>)
+            * (self.releases * <span class="number">1</span>)
+            * (self.watchers * <span class="number">1</span>)
+            * (self.stargazers * <span class="number">1</span>)
+        )
+
+<span class="meta">    @property</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">age_in_days</span><span class="params">(self)</span> -&gt; float:</span>
+        <span class="comment"># Because of timezone discrepancies I'm just fudging the</span>
+        <span class="comment"># math a bit by adding a day by default.</span>
+        <span class="comment"># Otherwise you'll get repositories that are created 3 hours</span>
+        <span class="comment"># from now!</span>
+        <span class="keyword">return</span> (datetime.today() - self.last_updated).days + <span class="number">1</span>
+
+<span class="meta">    @property</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">score</span><span class="params">(self)</span> -&gt; float:</span>
+        factor = self.activity / (self.closure)
+        <span class="keyword">if</span> self.age_in_days &gt; <span class="number">0</span>:
+            <span class="comment"># This will be a divide-by-zero error if self.age_in_days is</span>
+            <span class="comment"># less than or equal to 0.</span>
+            factor = (factor / self.age_in_days / AGE_FACTOR)
+        <span class="keyword">if</span> <span class="keyword">not</span> (self.releases <span class="keyword">and</span> factor):
+            <span class="keyword">return</span> self.releases <span class="keyword">or</span> factor
+        <span class="keyword">try</span>:
+            <span class="keyword">return</span> math.log(factor * self.releases)
+        <span class="keyword">except</span> ValueError <span class="keyword">as</span> err:
+            <span class="keyword">import</span> ipdb
+
+            ipdb.set_trace()</code></pre>
+<p>The ipdb there is only for debugging in case I run into a math error.
+Basically it should’t ever get to that<span class="widont">&nbsp;</span>point.</p>
+<h3 id="getting-the-data">Getting the data</h3>
+<p>Then in order to fetch the data I simply<span class="widont">&nbsp;</span>run:</p>
+<pre><code class="language-bash"><span class="comment"># I like to use poetry</span>
+poetry run python -m fffeed.fetch 2021-02-01 2019-05-15 -s 1 -S 500 -T 3
+<span class="comment"># This might hang for a bit</span>
+poetry run python -m fffeed.report &gt; report.csv</code></pre>
+<p>And the following table is written to<span class="widont">&nbsp;</span>report.csv.</p>
+<p><img src="/drafts/finding-promising-github-repos-with-graphql/images/example-report-2.png" alt="sample"></p>
+<p>Looks like it works! Take a look at the 2<span class="ord">nd</span> top project <code>cl-hackathon-app</code>. Even
+though it has a lower closure rate than <code>docs</code>, that’s only because it’s not as
+active…plus <code>cl-hackathon-app</code> has more issues, which indicates more users
+are filing<span class="widont">&nbsp;</span>issues.</p>
+<h1 id="try-it-out-">Try it out!</h1>
+<p>The project is open source at <a href="https://gitlab.com/srcrr/freedom-friday-feed">https://gitlab.com/srcrr/freedom-friday-feed</a>. Clone
+the repo and try it out<span class="widont">&nbsp;</span>yourself!</p>
+<p><em>And don’t forget to share this article with your colleagues on LinkedIn or twitter.
+If you do you’ll get a shout-out in my next <strong>Freedom Friday</strong><span class="widont">&nbsp;</span>video!</em></p>
+</section>
+            </article>
+            <div class="hiring-box">
+              <center>
+                <h4>Did you like this article?</h4>
+              </center>
+              <center>
+                <p>Did you know I'm<strong> 
+                    <u>available for hire?</u></strong></p>
+              </center>
+              <p>Send me an email here: <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></p>
+              <p>Or connect with me in Wire:<b> @nswered</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 col-lg-12 content-wrap" id="sidebar">
+          <div class="nav"><a href="/">&laquo; Full blog</a></div>
+          <section class="about"><img src="/images/portrait.png" class="s-circle col-5 p-centered" />
+
+<h1 id="important-links">Important Links</h1>
+<p><a href="https://src-r-r.github.io/portfolio.html" class="btn btn-primary col-12">My Project Portfolio</a></p>
+<p></p>
+<a href="https://src-r-r.github.io/feed.xml" type='application/rss+xml' class="btn col-12" title="Blog">
+<i class="fas fa-rss-square"></i>
+Blog RSS Feed
+</a>
+
+<dl>
+  <dt>Services</dt>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.freelancer.com/u/TheSrcRR">Freelancer</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.upwork.com/freelancers/~0105fc69312e2da97a">UpWork</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://talent.hubstaff.com/profiles/jordan-hewitt">HubStaff</a></dd>
+  <dd><i class="fas fa-globe-americas"></i>
+  <a href="https://www.fiverr.com/striking_subzer">Fiverr</a></dd>
+  <dt>Social</dt>
+  <dd><i class="fab fa-twitter"></i>
+  <a href="https://mobile.twitter.com/thesrcrr">@TheSrcRr</dd>
+  <dd><i class="fab fa-linkedin"></i>
+  <a href="https://www.linkedin.com/in/jordan-h-a78122163/">LinkedIn</a></dd>
+  <dt>Software</dt>
+  <dd>
+  <i class="fab fa-github"></i>
+    <a href="https://github.com/src-r-r">GitHub</a></dd>
+  <dd>
+  <i class="fab fa-gitlab"></i>
+  <a href="https://gitlab.com/src-r-r">GitLab</a></dd>
+  <dt><i class="fas fa-camera"></i> Photography</dt>
+  <dd><a href="https://writelight.website">https://writelight.website</a></dd>
+</dl>
+
+<h2 id="contact-me">Contact Me</h2>
+<dl>
+  <dt>Email</dt>
+  <dd><i class="far fa-envelope"></i>
+    <a href="mailto:hireme@jordanhewitt.pro">hireme@jordanhewitt.pro</a></dd>
+  <dt>Wire</dt>
+  <dd>@nswered</dd>
+</dl>
+
+<h2 id="services-i-provide">Services I Provide</h2>
+<dl class="hourly-rate">
+  <dt>Hourly Rate</dt>
+  <dd><strong>$57/hr</strong> (negotiable)</dd>
+</dl>
+
+<ul>
+<li>Full Stack Application development</li>
+<li>Documentation writing</li>
+<li>IT Support</li>
+<li>Automation</li>
+<li>Database design (Including PostgreSQL, MongoDB)</li>
+<li>Website creation</li>
+</ul>
+<h2 id="things-i-enjoy-that-i-do-not-charge-for-hobbies-">Things I enjoy that I do not charge for (Hobbies)</h2>
+<ul>
+<li>Reading about philsophy</li>
+<li>Reading about metaphysics</li>
+<li><a href="https:/writelight.website">Photography</a></li>
+<li>Reading fiction</li>
+<li>Improv (didn’t know I’d say that, did you?)</li>
+<li>Theater</li>
+<li>Thinking as a hobby</li>
+<li>Hiking</li>
+</ul>
+<small>
+This project is build on Wintersmith by
+<a href="http://johan-nordberg.com">Johan Nordberg</a>
+</small>
+
+          </section>
+          <section class="copy">
+            <p>&copy; 2021 Jordan Hewitt &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+          </section>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/init-highlight.js"></script>
+    </div>
+  </body>
+</html>
