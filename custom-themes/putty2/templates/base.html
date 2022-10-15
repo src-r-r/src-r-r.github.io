@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head %}
+    <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+    <meta charset="utf-8" />
+    <link
+      href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="{{ SITEURL }}/theme/static/css/style.css" rel="stylesheet" />
+    <link href="{{ SITEURL }}/theme/static/css/putty.css" rel="stylesheet" />
+    <script src="{{ SITEURL }}/theme/static/extlib/lodash-4.17.15.js"></script>
+    <script src="https://unpkg.com/browse/hull.js@1.0.2/dist/hull.js"></script>
+    <script src="https://unpkg.com/jquery@3.6.1/dist/jquery.js"></script>
+    <script src="https://unpkg.com/pencil.js"></script>
+    <script src="{{ SITEURL }}/theme/static/js/penrose.js"></script>
+    {% if FAVICON %}
+    <link
+      rel="shortcut icon"
+      href="{{ SITEURL }}/{{ FAVICON }}"
+      type="image/x-icon"
+    />
+    {% endif %}
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    {% include "inc/feeds.html" %} {% endblock head %}
+  </head>
+
+  <body id="index" class="archive">
+    <header>{% include "inc/penrose-header.html" %}</header>
+    <div class="container">
+      {% block content %} {% endblock %}
+      <footer id="contentinfo" class="footer">
+        <nav class="pull-right bottom-nav">
+          <a href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}">RSS</a>
+        </nav>
+        <address id="about" class="vcard body">
+          &copy; <a href="{{SITEURL}}">{{SITENAME}}</a> Proudly powered by
+          <a href="http://getpelican.com/">Pelican</a>
+        </address>
+        <!-- /#about -->
+      </footer>
+      <!-- /#contentinfo -->
+    </div>
+    <!-- container -->
+    {% include 'piwik.html' %}
+  </body>
+</html>

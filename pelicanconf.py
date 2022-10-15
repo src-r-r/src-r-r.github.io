@@ -1,3 +1,10 @@
+from pathlib import Path
+import random
+
+HERE = Path(__file__).parent.resolve()
+PELICAN_THEMES = HERE / "pelican-themes"
+CUSTOM_THEMES = HERE / "custom-themes"
+
 AUTHOR = 'Jordan Hewitt'
 SITENAME = 'Jordan Hewitt - Damn Good Products'
 SITEURL = ''
@@ -7,6 +14,14 @@ PATH = 'content'
 TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'en'
+
+_ALL_THEMES = [td for td in PELICAN_THEMES.glob("*") if td.is_dir()]
+chosen = random.choice(_ALL_THEMES)
+# print(f"Using theme '{chosen}'")
+# THEME = PELICAN_THEMES / chosen
+
+THEME = CUSTOM_THEMES / "putty2"
+print(f"Theme is {THEME}")
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -28,4 +43,4 @@ SOCIAL = (('You can add links in your config file', '#'),
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+RELATIVE_URLS = True
