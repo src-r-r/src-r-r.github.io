@@ -1,0 +1,9 @@
+{
+    "verbose": true,
+    "ignore": [
+        "node_modules"
+    ],
+    "execMap": {
+        "js": "npm run hardclr && npm run test:run"
+    }
+}

@@ -4,14 +4,39 @@
   "description": "JS library for the putty theme for fanciness",
   "main": "tilelib.js",
   "scripts": {
-    "test": "mocha"
+    "hardclr": "printf \"\\033c\"",
+    "test:run": "mocha *.spec.js",
+    "test:watch": "nodemon"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@stdlib/math-base-special-acos": "^0.0.7",
     "chai": "^4.3.6",
+    "colorutil": "^4.1.2",
+    "convex-hull": "^1.0.3",
+    "hull.js": "^1.0.2",
+    "install": "^0.13.0",
     "jquery": "^3.6.1",
     "lodash": "^4.17.21",
-    "mocha": "^10.0.0"
+    "midpoint": "^0.0.2",
+    "mocha": "^10.0.0",
+    "npm": "^8.19.2",
+    "paper": "^0.12.15",
+    "polygon-centroid": "^1.1.0",
+    "tinycolor2": "^1.4.2"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "nodemon": "^2.0.20"
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "ignore": [
+      "node_modules"
+    ],
+    "execMap": {
+      "js": "npm run hardclr && npm run test:run"
+    }
   }
 }
