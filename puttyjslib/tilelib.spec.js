@@ -9,6 +9,10 @@ const {
   sideCardinality,
   Direction,
   normalizePoly,
+  isNorthOf,
+  isEastOf,
+  isWestOf,
+  isSouthOf,
 } = require("./tilelib");
 describe("tile library tests", function () {
   it("Get a random convex polygon", function () {
@@ -63,34 +67,45 @@ describe("tile library tests", function () {
   it("Unordered set of polygon points are ordered", function () {
     const diamond = [
       [4, 1], // top
-      [4, 2], // right
+      [6, 2], // right
       [4, 4], // bottom
       [1, 2], // left
-      [4, 1],
     ];
     const ordered = [
+      [6, 2], // right
       [4, 4], // bottom
       [1, 2], // left
       [4, 1], // top
-      [4, 2], // right
+      [6, 2], // right
     ];
     const result = normalizePoly(diamond);
     console.log(`expected: ${JSON.stringify(ordered)}`);
     console.log(`result: ${JSON.stringify(result)}`);
-    expect().to.deep.equal(ordered);
+    expect(result).to.deep.equal(ordered);
+  });
+
+  it("Cardinality util functions work", function () {
+    expect(isNorthOf([4, 4], [4, 3])).to.equal(true);
+    expect(isNorthOf([4, 4], [4, 5])).to.equal(false);
+    expect(isEastOf([4, 4], [5, 4])).to.equal(true);
+    expect(isEastOf([4, 4], [3, 5])).to.equal(false);
+    expect(isSouthOf([4, 4], [4, 5])).to.equal(true);
+    expect(isSouthOf([4, 4], [4, 3])).to.equal(false);
+    expect(isWestOf([4, 4], [3, 4])).to.equal(true);
+    expect(isWestOf([4, 4], [5, 4])).to.equal(false);
   });
 
   it("Cardinality can be determined from a side along a polygon.", function () {
     const diamond = [
+      [4, 1], // top
+      [6, 2], // right
       [4, 4], // bottom
       [1, 2], // left
-      [4, 1], // top
-      [4, 2], // right
     ];
     const sides = getSides(normalizePoly(diamond));
-    expect(sideCardinality(sides[0], diamond)).to.equal(Direction.SW);
-    expect(sideCardinality(sides[1], diamond)).to.equal(Direction.NW);
-    expect(sideCardinality(sides[2], diamond)).to.equal(Direction.NE);
-    expect(sideCardinality(sides[3], diamond)).to.equal(Direction.SE);
+    expect(sideCardinality(sides[0], diamond)).to.equal(Direction.SE);
+    expect(sideCardinality(sides[1], diamond)).to.equal(Direction.SW);
+    expect(sideCardinality(sides[2], diamond)).to.equal(Direction.NW);
+    expect(sideCardinality(sides[3], diamond)).to.equal(Direction.NE);
   });
 });

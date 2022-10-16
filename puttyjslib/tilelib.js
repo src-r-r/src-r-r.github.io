@@ -201,9 +201,17 @@ function isWestOf(p0, p1) {
 }
 
 function dist(p1, p2) {
-  return Math.sqrt(
-    Math.pow(getX(p2) - getX(p1), 2) / Math.pow(getY(p2) - getY(p2), 2)
-  );
+  const top = Math.pow(getX(p2) - getX(p1), 2);
+  const bottom = Math.pow(getY(p2) - getY(p2), 2);
+  console.log(`distance between ${p1} and ${p2} = ${top} / ${bottom}`);
+  return Math.sqrt(top + bottom);
+}
+
+function myCentroid(points) {
+  const [cX, cY] = points.reduce((prev, curr) => {
+    return [getX(prev) + getX(curr), getY(prev) + getY(curr)];
+  });
+  return [cX / points.length, cY / points.length];
 }
 
 function calcAngle(p1, hyp, p2) {
@@ -211,16 +219,25 @@ function calcAngle(p1, hyp, p2) {
   const b = dist(hyp, p1);
   const c = dist(hyp, p2);
   const a = dist(p1, p2);
-  return acos(Math.pow(b, 2) + Math.pow(c, 2) - Math.pow(a, 2)) / (2 * b * c);
+  const b2 = Math.pow(b, 2);
+  const c2 = Math.pow(c, 2);
+  const a2 = Math.pow(a, 2);
+  const angl = acos((b2 + c2 - a2) / (2 * b * c));
+
+  console.log(
+    `angle = acos((${b2} + ${c2} - ${a2}) / (2 * ${b} * ${c})) = ${angl}`
+  );
+
+  return isWestOf(p1, p2) ? angl + 90 : angl;
 }
 
 /**
  * Normalizes the polygon so that we have an ordered set of sides.
  */
-function normalizePoly(polygon) {
+function BadnormalizePoly(polygon) {
   // Use nmp as reference
   const nmp = northMost(...polygon);
-  const center = centroid(objPts(polygon));
+  const center = myCentroid(polygon);
   console.log(
     `center of ${JSON.stringify(polygon)} is ${JSON.stringify(center)}`
   );
@@ -235,42 +252,24 @@ function normalizePoly(polygon) {
   return _.sortBy(angles, "angle").map((x) => x.point);
 }
 
+function normalizePoly(polygon) {
+  return hull(polygon);
+}
+
 function sideCardinality(side, polygon) {
   const poly = normalizePoly(polygon);
-  const center = centroid(poly);
+  const center = myCentroid(poly);
 
-  const emp = eastMost(...side);
-  const wmp = westMost(...side);
-  const nmp = northMost(...side);
-  // const smp = southMost(...side);
+  const mp = midpoint(side);
 
-  const m = slope(wmp, emp);
-  const mppoints = objPairs(side);
-  const mp = midpoint(mppoints);
-  console.log(`slope of ${JSON.stringify(side)} is ${m}`);
-  console.log(`midpoint = ${mp}`);
-
-  if (m === 0) {
-    return isNorthOf(center, mp) ? Direction.N : Direction.S;
+  if (isNorthOf(center, mp)) {
+    if (isEastOf(center, mp)) return Direction.NE;
+    if (isWestOf(center, mp)) return Direction.NW;
+    return Direction.N;
   }
-
-  if (m === Infinity || m === NaN) {
-    return isEastOf(center, mp) ? Direction.E : Direction.W;
-  }
-
-  // the reference point is top-left,
-  // (as opposed to cartesian coordinates)
-  // so we have to think of the slope in reverse.
-
-  if (m > 0) {
-    // looks like "\"
-    // either NE or SW
-    return isSouthOf(center, mp) ? Direction.NE : Direction.SW;
-  }
-
-  // looks like "/"
-  // Either NW or SE
-  return isSouthOf(center, mp) ? Direction.NW : Direction.SE;
+  if (isEastOf(center, mp)) return Direction.SE;
+  if (isWestOf(center, mp)) return Direction.SW;
+  return Direction.S;
 }
 
 /**
@@ -338,6 +337,10 @@ module.exports = {
   pointsAfter,
   getX,
   getY,
+  isNorthOf,
+  isEastOf,
+  isSouthOf,
+  isWestOf,
   getSides,
   northMost,
   sideCardinality,
