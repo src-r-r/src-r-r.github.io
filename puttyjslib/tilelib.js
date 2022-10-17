@@ -1,5 +1,5 @@
 import nurbs from "nurbs";
-import * as $ from "jquery";
+import $ from "jquery";
 import * as paper from "paper";
 
 export const name = "puttytilelib";
@@ -22,7 +22,14 @@ class DirectedPointCloud {
    * @param {number} length Length of the directed cloud.
    * @param {number} nParticles Number of particles
    */
-  constructor(upperNurbs, lowerNurbs, length = 4, nParticles = 1000) {
+  constructor(
+    paperScope,
+    upperNurbs,
+    lowerNurbs,
+    length = 4,
+    nParticles = 1000
+  ) {
+    this.paperScope = paperScope;
     this.upperNurbs = upperNurbs;
     this.lowerNurbs = lowerNurbs;
     this.length = length;
@@ -46,24 +53,33 @@ class DirectedPointCloud {
 
   /**
    *
-   * @param {paper.PaperScope} paperScope Scope of the current canvas.
    * @param {number []} pt Where to draw the point.
    */
-  drawCircle(paperScope, pt) {
-    const circle = paperScope.Path.Circle(pt, 5);
+  drawCircle(pt) {
+    const circle = this.paperScope.Path.Circle(pt, 5);
     circle.strokeColor = "blue";
     return circle;
   }
 
   /**
    *
-   * @param {paper.PaperScope} paperScope The scope of the current canvas
    * @param {(paper.PaperScope, number[]) => any} drawFunc Function to use for drawing. Default will draw a circle.
    */
-  render(paperScope, drawFunc = this.drawCircle) {
-    return this.particles.map((particlePoint) =>
-      drawFunc(paperScope, particlePoint)
-    );
+  render(drawFunc = this.drawCircle) {
+    return this.particles.map((particlePoint) => drawFunc(particlePoint));
+  }
+
+  previewBounds() {
+    const upperArc = this.paperScope.Path.Arc();
+    const lowerArc = this.paperScope.Path.Arc();
+    upperArc.strokeWidth = 3;
+    lowerArc.strokeWidth = 3;
+    const upperPoints = this.upperNurbs.points;
+    const lowerPoints = this.lowerNurbs.points;
+    console.log(`upper points: ${upperPoints}`);
+    console.log(`lower points: ${lowerPoints}`);
+    upperArc.add(...upperPoints);
+    lowerArc.add(...lowerPoints);
   }
 }
 class DelaunayCloud extends DirectedPointCloud {
@@ -77,4 +93,6 @@ class DelaunayCloud extends DirectedPointCloud {
 globalThis.DirectedPointCloud = DirectedPointCloud;
 globalThis.nurbs = nurbs;
 globalThis.$ = $;
-globalThis.paper = paper;
+globalThis.paper = paper.paper;
+globalThis.getX = getX;
+globalThis.getY = getY;
