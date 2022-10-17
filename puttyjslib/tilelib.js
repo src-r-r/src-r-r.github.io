@@ -1,5 +1,5 @@
 import nurbs from "nurbs";
-import $ from "jquery";
+import * as $ from "jquery";
 import * as paper from "paper";
 
 export const name = "puttytilelib";
