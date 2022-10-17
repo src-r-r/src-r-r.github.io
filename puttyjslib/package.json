@@ -6,7 +6,8 @@
   "scripts": {
     "hardclr": "printf \"\\033c\"",
     "test:run": "mocha *.spec.js",
-    "test:watch": "nodemon"
+    "test:watch": "nodemon",
+    "build": "mkdir -p dist && browserify -d -r paper -r jquery -r tinycolor2 tilelib.js -o dist/tilelib.js"
   },
   "author": "",
   "license": "MIT",
