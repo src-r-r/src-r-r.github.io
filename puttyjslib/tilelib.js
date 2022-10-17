@@ -1,352 +1,80 @@
-const hull = require("hull.js");
-const $ = require("jquery");
-const _ = require("lodash");
-const centroid = require("polygon-centroid");
-const midpoint = require("midpoint");
-const convexHull = require("convex-hull");
-const acos = require("@stdlib/math-base-special-acos");
+import nurbs from "nurbs";
+import $ from "jquery";
+import * as paper from "paper";
 
-class Direction {
-  static N = "N";
-  static NE = "NE";
-  static E = "E";
-  static SE = "SE";
-  static S = "S";
-  static SW = "SW";
-  static W = "W";
-  static NW = "NW";
-  static _DIRECTIONS = [
-    Direction.N,
-    Direction.NE,
-    Direction.E,
-    Direction.SE,
-    Direction.S,
-    Direction.SW,
-    Direction.W,
-    Direction.NW,
-  ];
+export const name = "puttytilelib";
 
-  static isValid(val) {
-    return Direction._DIRECTIONS.includes(val);
+const getX = (pt) => (pt.x ? pt.x : pt[0]);
+const getY = (pt) => (pt.y ? pt.y : pt[0]);
+
+const randInt = (...range) =>
+  Math.round(
+    range.length == 1
+      ? Math.random() * range[0]
+      : Math.random() * (range[1] - range[0]) + range[0]
+  );
+
+class DirectedPointCloud {
+  /**
+   *
+   * @param {nurbs.Curve} Upper boundary for the directed cloud
+   * @param {nurbs.Curve} Lower boundary for the directed cloud
+   * @param {number} length Length of the directed cloud.
+   * @param {number} nParticles Number of particles
+   */
+  constructor(upperNurbs, lowerNurbs, length = 4, nParticles = 1000) {
+    this.upperNurbs = upperNurbs;
+    this.lowerNurbs = lowerNurbs;
+    this.length = length;
+    this.nParticles = nParticles;
+    this.particlePoints = new Array(nParticles).fill();
+  }
+
+  randomPoint() {
+    const [xMin, yMin] = lowerNurbs.evaluate([], Math.random() * length);
+    const [xMax, yMax] = upperNurbs.evaluate([], Math.random() * length);
+    return [randInt(xMin, xMax), randInt(yMin, yMax)];
+  }
+
+  generateParticles() {
+    this.particlePoints = this.particlePoints.map(() => {
+      const pt = this.randomPoint();
+      console.debug(`picked random point ${pt}`);
+      return pt;
+    });
   }
 
   /**
    *
-   * @param {Direction} dir Cardinal Direction
-   * @returns List of adjacent cardinal directions (including `dir`)
+   * @param {paper.PaperScope} paperScope Scope of the current canvas.
+   * @param {number []} pt Where to draw the point.
    */
-  static adjacent(dir) {
-    const i = Direction._DIRECTIONS.indexOf(i);
-    const prevI = i === 0 ? Direction._DIRECTIONS.length : i;
-    const nextI = i === Direction._DIRECTIONS.length ? 0 : i;
-    return [Direction._DIRECTIONS[prevI], dir, Direction._DIRECTIONS[nextI]];
+  drawCircle(paperScope, pt) {
+    const circle = paperScope.Path.Circle(pt, 5);
+    circle.strokeColor = "blue";
+    return circle;
   }
-}
 
-function randInt(a, b) {
-  return Math.round(Math.random() * (b - a) + a);
-}
-
-function randomRgba(r = -1, g = -1, b = -1, a = -1) {
-  return new Pencil.Color(
-    r < 0 ? Math.random() : r,
-    g < 0 ? Math.random() : g,
-    b < 0 ? Math.random() : b,
-    a < 0 ? Math.random() : a
-  );
-}
-
-function randomPoint(xmin = 0, ymin = 0, xmax = 200, ymax = 200) {
-  return [randInt(xmin, xmax), randInt(ymin, ymax)];
-}
-
-function randomConvexPolygon(nPoints, viewSize) {
-  const points = new Array(nPoints).fill().map(() => {
-    return randomPoint(0, 0, viewSize.width, viewSize.height);
-  });
-  return hull(points, Infinity);
-}
-
-// Utility method to normalize "Pointy" objects or x,y pairs.
-const getX = (obj) => (_.isArray(obj) ? obj[0] : obj.x || obj["x"]);
-const getY = (obj) => (_.isArray(obj) ? obj[1] : obj.y || obj["y"]);
-// converts a pair to an x/y object.
-const objPt = (x, y) => {
-  return { x, y };
-};
-// covnerts an array of pairs to x/y objects.
-const objPts = (...points) => {
-  return points.map((p) => objPt(...p));
-};
-const objPair = (xy) => {
-  return _.isArray ? xy : [xy.x, xy.y];
-};
-const objPairs = (arr) => {
-  return arr.map(objPair);
-};
-
-/**
- * Get any points on a polygon relative to the point {x, y}
- * @param {Array<Array<number>>} Pairs of points (e.g. from a polygon)
- * @param {x, y} reference x coordinate and reference y coordinate
- * @returns
- */
-function pointsAfter(points, { x, y } = { x: null, y: null }, lessThan = true) {
-  // Comparison for the quadrant
-  const comp = lessThan ? (a, b) => a < b : (a, b) => a > b;
-
-  return points.filter((point) => {
-    if (x !== null && y !== null) {
-      return comp(getX(point), x) && comp(getY(point), y);
-    } else if (x != null) {
-      return comp(getX(point), x);
-    }
-    return comp(getY(point), x);
-  });
-}
-
-/**
- *
- * @param {Array<Array<number>> | Array<{x: number, y: number}>} polygon Polygon whose sides we're directionifying.
- * @return {Array<Array<Array<number>>> | Array<Array<{x : number, y: Number}>>} all the sides of a polygon.
- */
-function getSides(polygon) {
-  return polygon.map((point, i) => {
-    return [point, polygon[i == polygon.length - 1 ? 0 : i + 1]];
-  });
-}
-
-function slope(p0, p1) {
-  return (getX(p1) - getX(p0)) / (getY(p1) - getY(p0));
-}
-
-function northMost(...points) {
-  const y0 = getY(points[0]);
-  return (
-    points.find((pt) => {
-      const y1 = getY(pt);
-      return y1 < y0 ? pt : null;
-    }) || points[0]
-  );
-}
-
-function southMost(...points) {
-  const y0 = getY(points[0]);
-  return (
-    points.find((pt) => {
-      const y1 = getY(pt);
-      return y1 > y0 ? pt : null;
-    }) || points[0]
-  );
-}
-
-function westMost(...points) {
-  const x0 = getX(points[0]);
-  return (
-    points.find((pt) => {
-      const x1 = getX(pt);
-      return x1 < x0 ? pt : null;
-    }) || points[0]
-  );
-}
-
-function eastMost(...points) {
-  const x0 = getX(points[0]);
-  return (
-    points.find((pt) => {
-      const x1 = getX(pt);
-      return x1 > x0 ? pt : null;
-    }) || points[0]
-  );
-}
-
-/**
- *
- * @param {*} p0
- * @param {*} p1
- * @returns true if p1 is north of p0
- */
-function isNorthOf(p0, p1) {
-  return getY(p1) < getY(p0);
-}
-
-/**
- *
- * @param {*} p0
- * @param {*} p1
- * @returns true if p1 is south of p0
- */
-function isSouthOf(p0, p1) {
-  return getY(p1) > getY(p0);
-}
-
-/**
- *
- * @param {*} p0
- * @param {*} p1
- * @returns true if p1 is east of p0
- */
-function isEastOf(p0, p1) {
-  return getX(p1) > getX(p0);
-}
-
-/**
- *
- * @param {*} p0
- * @param {*} p1
- * @returns true if p1 is west of p0
- */
-function isWestOf(p0, p1) {
-  return getX(p1) < getX(p0);
-}
-
-function dist(p1, p2) {
-  const top = Math.pow(getX(p2) - getX(p1), 2);
-  const bottom = Math.pow(getY(p2) - getY(p2), 2);
-  console.log(`distance between ${p1} and ${p2} = ${top} / ${bottom}`);
-  return Math.sqrt(top + bottom);
-}
-
-function myCentroid(points) {
-  const [cX, cY] = points.reduce((prev, curr) => {
-    return [getX(prev) + getX(curr), getY(prev) + getY(curr)];
-  });
-  return [cX / points.length, cY / points.length];
-}
-
-function calcAngle(p1, hyp, p2) {
-  // Thanks https://www.omnicalculator.com/math/triangle-angle#how-to-find-the-angle-of-a-triangle
-  const b = dist(hyp, p1);
-  const c = dist(hyp, p2);
-  const a = dist(p1, p2);
-  const b2 = Math.pow(b, 2);
-  const c2 = Math.pow(c, 2);
-  const a2 = Math.pow(a, 2);
-  const angl = acos((b2 + c2 - a2) / (2 * b * c));
-
-  console.log(
-    `angle = acos((${b2} + ${c2} - ${a2}) / (2 * ${b} * ${c})) = ${angl}`
-  );
-
-  return isWestOf(p1, p2) ? angl + 90 : angl;
-}
-
-/**
- * Normalizes the polygon so that we have an ordered set of sides.
- */
-function BadnormalizePoly(polygon) {
-  // Use nmp as reference
-  const nmp = northMost(...polygon);
-  const center = myCentroid(polygon);
-  console.log(
-    `center of ${JSON.stringify(polygon)} is ${JSON.stringify(center)}`
-  );
-  // Calculate the other angles.
-  const angles = polygon.map((point) => {
-    const angle = calcAngle(nmp, center, point);
-    console.log(
-      `angle from ${nmp} -> ${JSON.stringify(center)} -> ${point} = ${angle}`
+  /**
+   *
+   * @param {paper.PaperScope} paperScope The scope of the current canvas
+   * @param {(paper.PaperScope, number[]) => any} drawFunc Function to use for drawing. Default will draw a circle.
+   */
+  render(paperScope, drawFunc = this.drawCircle) {
+    return this.particles.map((particlePoint) =>
+      drawFunc(paperScope, particlePoint)
     );
-    return { point, angle };
-  });
-  return _.sortBy(angles, "angle").map((x) => x.point);
-}
-
-function normalizePoly(polygon) {
-  return hull(polygon);
-}
-
-function sideCardinality(side, polygon) {
-  const poly = normalizePoly(polygon);
-  const center = myCentroid(poly);
-
-  const mp = midpoint(side);
-
-  if (isNorthOf(center, mp)) {
-    if (isEastOf(center, mp)) return Direction.NE;
-    if (isWestOf(center, mp)) return Direction.NW;
-    return Direction.N;
   }
-  if (isEastOf(center, mp)) return Direction.SE;
-  if (isWestOf(center, mp)) return Direction.SW;
-  return Direction.S;
+}
+class DelaunayCloud extends DirectedPointCloud {
+  delaunay = null;
+
+  generate() {
+    this.delaunay = Delaunay.from();
+  }
 }
 
-/**
- *
- * @param {Array<Array<number>> || Array<{x: number, y: number}>} polygon Polygon whose sides we're directionifying.
- */
-function cardinalizeSides(polygon) {
-  const sides = getSides(polygon);
-  return _.groupBy(sides, (side) => {
-    sideCardinality(side, polygon);
-  });
-}
-
-/**
- * Get the side at the specific cardinality or adjacent cardinality
- *
- * @param {Array<Array<number>> || Array<{x: number, y: number}>} polygon Polygon whose sides we're directionifying.
- * @param {"N" | "E" | "S" | "W" | "NE" | "NW" | "SE" | "SW"} direction
- *
- */
-function pickSide(polygon, direction) {
-  const sides = cardinalizeSides(polygon);
-  const dirs = _.keys(card);
-  return (
-    sides[direction] ||
-    dirs.map((dir) => {
-      sides[dir];
-    })
-  );
-}
-
-function pointBeyond(pt, dir, maxDist) {
-  const x1 = getX(pt);
-  const y1 = getY(pt);
-  const posX = String(dir).includes("S");
-  const posY = String(dir).includes("E");
-  const xDist = _.random(0, maxDist);
-  const yDist = _.random(0, maxDist);
-  const x2 = posX ? x1 + xDist : x1 - xDist;
-  const y2 = posY ? y1 + yDist : y1 - yDist;
-  return [x2, y2];
-}
-
-/**
- *
- * @param {Array<Array<number>> | Array<{x: number, y: number}>} otherPolygon
- * @param {"N" | "E" | "S" | "W" | "NE" | "NW" | "SE" | "SW"} direction
- */
-function randomConvexHullFrom(otherPolygon, direction, nPoints = null) {
-  const startSide = pickSide(otherPolygon, direction);
-  nPoints = nPoints !== null ? nPoints : otherPolygon.length;
-  const points = [
-    ...startSide,
-    Array(nPoints)
-      .fill()
-      .map((el) => {
-        return pointBeyond(startSide[0]);
-      }),
-  ];
-}
-
-module.exports = {
-  Direction,
-  randomConvexPolygon,
-  pointsAfter,
-  getX,
-  getY,
-  isNorthOf,
-  isEastOf,
-  isSouthOf,
-  isWestOf,
-  getSides,
-  northMost,
-  sideCardinality,
-  cardinalizeSides,
-  pickSide,
-  pointBeyond,
-  randomConvexHullFrom,
-  normalizePoly,
-};
+globalThis.DirectedPointCloud = DirectedPointCloud;
+globalThis.nurbs = nurbs;
+globalThis.$ = $;
+globalThis.paper = paper;
