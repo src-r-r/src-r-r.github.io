@@ -10,6 +10,7 @@ const BUNDLE = path.resolve(DIST, "tilelib.js");
 fs.mkdirSync(DIST, { recursive: true });
 
 module.exports = {
+  watch: true,
   entry: INFILE,
   mode: "development",
   output: {

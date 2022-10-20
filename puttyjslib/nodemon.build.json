@@ -5,6 +5,6 @@
         "dist"
     ],
     "execMap": {
-        "js": "npm run hardclr && npm run test:run"
+        "js": "npm run build"
     }
 }
