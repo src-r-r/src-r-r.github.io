@@ -1,3 +1,5 @@
+import { Popper } from "./tilelib";
+
 function dup(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
@@ -87,22 +89,24 @@ $(window).on("load", function () {
   dpc.render(preRenderCell);
   dpc.previewBounds(layer);
 
+  window.renderI = 0;
+
+  const poppers = new Popper();
+
   paper.view.onFrame = (event) => {
     try {
       typeof window.cellFrames === "undefined";
       typeof window.frameI === "undefined";
     } catch {
+      return true;
+    }
+    console.log(event);
+    if (!toRender) {
       return;
     }
-    const cellFrames = window.cellFrames;
-    const toRender = cellFrames.filter((c) => event.count > c.frame);
-    // remove them from the cells to render.
-    window.cellFrames = cellFrames.filter((c) => event.count > c.frame);
-    if (!toRender.cell) {
-      return;
-    }
-    console.log(`rendering ${toRender.cell}`);
-    renderCell(paper, toRender.cell);
+    // renderCell(paper, toRender.cell);
+
+    window.renderI += 1;
   };
 
   // for (let i = b1; i <= b2; i += 0.1) {

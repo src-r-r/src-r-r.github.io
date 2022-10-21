@@ -185,6 +185,17 @@ class DelaunayCloud extends DirectedPointCloud {
     }
   }
 
+  getVoronoiPolygons() {
+    const delaunay = Delaunay.from([...this.particlePoints]);
+    const voronoi = delaunay.voronoi([
+      this.xmin,
+      this.ymin,
+      this.xmax,
+      this.ymax,
+    ]);
+    return [...voronoi.cellPolygons()];
+  }
+
   render(drawFunc = null) {
     const delaunay = Delaunay.from([...this.particlePoints]);
     const voronoi = delaunay.voronoi([
@@ -211,6 +222,84 @@ class DelaunayCloud extends DirectedPointCloud {
   }
 }
 
+class KeyFrame {
+  /**
+   * 
+   * @param {number} time Keyframe time for the action to occur
+   * @param {function} action Do something on the action.
+   * @param {any []} action_args Arguments passed into the action.
+   */
+  constructor(time, action, action_args = []) {
+    this.time = time
+    this.action = action;
+    this.action_args = action_args
+  }
+
+  /**
+   * 
+   * @param {{delta: number, time: number, count: number}} event 
+   */
+  onFrame(event) {
+    if (!event.time == this.time) return;
+    this.action(...this.action_args);
+  }
+}
+
+class Popper {
+  /**
+   * 
+   * @param {number [] []} poly Polygon we're rendering.
+   * @param {paper.Color} color Color of the polygon.
+   * @param {number} initialScale Initial scale of the polygon
+   */
+  constructor(poly, color, initialScale = .001) {
+    this.poly = poly;
+    this.start = null;
+    this.color = color;
+    this.initialScale = initialScale;
+    this.onX = this.poly.map((pt) => {return getX(pt)}).reduce((prev, curr, currI) => {
+      return curr < prev ? curr : prev;
+    });
+    this.shape = null;
+    this.keyframe = 0;
+  }
+
+  /**
+   * Draw the initial frame.
+   * @param {paper.PaperScope} ps The current paper object
+   */
+  draw(ps) {
+    this.shape = new ps.Path();
+    this.shape.fillColor = this.color;
+
+    for (let cellPoint of voronoiCell) {
+      console.log(cellPoint);
+      this.shape.add(new ps.Point(...cellPoint));
+    }
+    this.shape.strokeWidth = 2;
+    // shape.closed = true;
+    this.shape.scale(this.initialScale);
+  }
+
+  /**
+   * 
+   * @param {paper.PaperScope} ps Paper Scope
+   * @param {number} x The x location we're scanning.
+   * @param {{delta: number, time: number, count: number}} event 
+   */
+  onFrame(ps, x, event) {
+    if (this.onX >= x && this.keyframe === 0) {
+      this.start = event.time;
+      this.keyframe += 1;
+    } else if (event.time >= this.start + 0.05 && this.keyframe === 1) {
+      this.shape.scale(150);
+      this.keyframe += 1;
+    } else if (event.time >= this.start + 0.10 && this.keyframe === 2) {
+      this.shape.scale(.75);
+    }
+  }
+}
+
 if (globalThis) {
   // external packages
   globalThis.paper = paper.paper;
@@ -223,7 +312,8 @@ if (globalThis) {
   globalThis.getY = getY;
   globalThis.randInt = randInt;
   globalThis.domainTr = domainTr;
+  globalThis.Popper = Popper;
 } else {
 }
 
-export { domainTr, isWithinBounds };
+export { domainTr, isWithinBounds, Popper };
