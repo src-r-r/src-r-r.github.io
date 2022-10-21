@@ -3,6 +3,7 @@ import $ from "jquery";
 import * as paper from "paper";
 import { Delaunay } from "d3-delaunay";
 import inside from "point-inside-polygon";
+import tinycolor from "tinycolor2";
 
 export const name = "puttytilelib";
 
@@ -10,7 +11,7 @@ const getX = (pt) => {
   return pt.x ? pt.x : pt[0];
 };
 const getY = (pt) => {
-  return pt.y ? pt.y : pt[0];
+  return pt.y ? pt.y : pt[1];
 };
 
 const randNum = (...range) =>
@@ -32,15 +33,35 @@ const randInt = (...range) =>
  */
 function domainTr(pt, curve) {
   const [d1, d2] = curve.domain[0];
-  console.log(`curve domain: ${[d1, d2]}`);
-  console.log(`pt: ${pt}`);
+  // console.log(`curve domain: ${[d1, d2]}`);
+  // console.log(`pt: ${pt}`);
   const minPt = curve.points[0];
   const maxPt = curve.points[curve.points.length - 1];
-  console.log(`minPt = ${minPt}, maxPt=${maxPt}`);
-  const loc = getX(pt) / getX(maxPt);
-  console.log(`loc=${loc}`);
-  console.log(`-> ${d2} * ${loc}`);
-  return d2 * loc;
+  // console.log(`minPt = ${minPt}, maxPt=${maxPt}`);
+  const ptX = getX(pt);
+  const maxPtX = getX(maxPt);
+  const minPtX = getX(minPt);
+  const loc = (ptX - minPtX) / (maxPtX - minPtX);
+  // console.log(`loc= (${ptX} - ${minPtX}) / (${maxPtX} - ${minPtX}) => ${loc}`);
+  // console.log(`-> ${d2} * ${loc}`);
+  return (d2 - d1) * loc + d1;
+}
+
+/**
+ * Translate points to the curve domain.
+ * @param {number[] | {x: number, y : number}} pt
+ * @param {nurbs} upperNurbs
+ * @param {nurbs} lowerNurbs
+ */
+function isWithinBounds(pt, upperNurbs, lowerNurbs) {
+  const upper = upperNurbs.evaluator(0)([], domainTr(pt, upperNurbs));
+  const lower = lowerNurbs.evaluator(0)([], domainTr(pt, lowerNurbs));
+  // console.log(`evaluating ${pt} between ${upper}, ${lower}`);
+  const upperY = getY(upper);
+  const lowerY = getY(lower);
+  const y = getY(pt);
+  // return true;
+  return y >= upperY && y <= lowerY;
 }
 
 class DirectedPointCloud {
@@ -75,22 +96,6 @@ class DirectedPointCloud {
   randomPoint() {
     const { width, height } = this.paperScope.view.viewSize;
     return [randInt(width), randInt(height)];
-  }
-
-  isWithinBounds(pt) {
-    const upper = this.upperNurbs.evaluator(0)(
-      [],
-      domainTr(pt, this.upperNurbs)
-    );
-    const lower = this.lowerNurbs.evaluator(0)(
-      [],
-      domainTr(pt, this.lowerNurbs)
-    );
-    const upperY = getY(upper);
-    const lowerY = getY(lower);
-    const y = getY(pt);
-    return true;
-    // return y < upperY && y > lowerY;
   }
 
   generateParticles() {
@@ -164,13 +169,15 @@ class DelaunayCloud extends DirectedPointCloud {
     const invalidColor = new paperScope.Color(0.7, 0, 0);
     for (let poly of voronoi.cellPolygons()) {
       poly.map((pt) => {
-        const color = this.isWithinBounds(pt) ? validColor : invalidColor;
+        const color = isWithinBounds(pt, this.upperNurbs, this.lowerNurbs)
+          ? validColor
+          : invalidColor;
         const circle = new paperScope.Path.Circle(pt, 2);
         const ppt = new paperScope.Point(pt);
         const text = new paperScope.PointText(ppt);
         text.content = `(${Math.round(getX(pt))}, ${Math.round(getY(pt))})`;
         text.strokeColor = color;
-        text.fontSize = 4;
+        text.fontSize = 8;
         circle.strokeWidth = 1;
         circle.strokeColor = color;
         return [circle, text];
@@ -195,7 +202,7 @@ class DelaunayCloud extends DirectedPointCloud {
       ++i;
       if (
         poly.filter((point) => {
-          return this.isWithinBounds(point);
+          return isWithinBounds(point, this.upperNurbs, this.lowerNurbs);
         }).length != poly.length
       )
         continue;
@@ -204,12 +211,19 @@ class DelaunayCloud extends DirectedPointCloud {
   }
 }
 
-globalThis.DirectedPointCloud = DirectedPointCloud;
-globalThis.DelaunayCloud = DelaunayCloud;
-globalThis.nurbs = nurbs;
-globalThis.$ = $;
-globalThis.paper = paper.paper;
-globalThis.getX = getX;
-globalThis.getY = getY;
-globalThis.randInt = randInt;
-globalThis.domainTr = domainTr;
+if (globalThis) {
+  // external packages
+  globalThis.paper = paper.paper;
+  globalThis.nurbs = nurbs;
+  globalThis.$ = $;
+  globalThis.tinycolor = tinycolor;
+  globalThis.DirectedPointCloud = DirectedPointCloud;
+  globalThis.DelaunayCloud = DelaunayCloud;
+  globalThis.getX = getX;
+  globalThis.getY = getY;
+  globalThis.randInt = randInt;
+  globalThis.domainTr = domainTr;
+} else {
+}
+
+export { domainTr, isWithinBounds };
