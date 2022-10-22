@@ -366,7 +366,7 @@ class Popper {
         this.shape.rotate(-7);
         this.hasJumped = true;
       } else if (event.count > this.start) {
-        this.shape.scale(0.9);
+        this.shape.scale(0.92);
         this.shape.rotate(7);
         this.hasJumped = false;
       }

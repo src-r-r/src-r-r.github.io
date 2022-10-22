@@ -27,7 +27,7 @@ module.exports = {
     filename: "tiling.js",
     library: {
       name: "tilelib",
-      type: "window",
+      type: "global",
     },
   },
 };

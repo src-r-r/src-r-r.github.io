@@ -6,10 +6,13 @@ PELICAN_THEMES = HERE / "pelican-themes"
 CUSTOM_THEMES = HERE / "custom-themes"
 
 AUTHOR = 'Jordan Hewitt'
-SITENAME = 'Jordan Hewitt - Damn Good Products'
+AUTHOR_ROLE = 'Professional Creation Leader'
+SITENAME = 'Damn Good Products'
 SITEURL = ''
 
 PATH = 'content'
+
+PAGE_PATHS = ["pages",]
 
 TIMEZONE = 'America/Los_Angeles'
 
@@ -37,8 +40,8 @@ LINKS = (('Pelican', 'https://getpelican.com/'),
          ('You can modify those links in your config file', '#'),)
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('Twitter', 'https://twitter.com/DamnGoodTek'),
+          ('LinkedIn', 'https://www.linkedin.com/in/jordan-h-a78122163/'),)
 
 DEFAULT_PAGINATION = 10
 

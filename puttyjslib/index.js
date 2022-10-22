@@ -4,27 +4,49 @@ function dup(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
+console.log(paper);
+
 function getSeasonalColor(paper, when = new Date()) {
   const thisYear = new Date(when.getFullYear(), 0).valueOf();
   const nextYear = new Date(when.getFullYear() + 1, 0).valueOf();
   const totSec = nextYear - thisYear;
   const now = when.valueOf();
   const b = (now - thisYear) / totSec;
-  const g = (b * 2) / totSec;
-  const r = (g * 4) / totSec;
-  console.log(`new color (${nextYear} - ${thisYear}): ${r}, ${g}, ${b}`);
+  const g = Math.pow(b, 2);
+  const r = Math.pow(g, 2);
+  console.log(`new color: ${r}, ${g}, ${b}`);
   const color = new paper.Color(r, g, b);
-  // Scale the color so it's at least 75%
-  if (color.lightness < 0.75) color.lightness = 0.85;
+  // Scale the color so it's at least 65%
+  if (color.brightness < 0.5) color.brightness = 0.5;
+  // But not greater than 70
+  if (color.brightness > 0.7) color.brightness = 0.7;
   return color;
 }
 
-$(window).on("load", function () {
-  const ppr = new paper.PaperScope();
-  ppr.install(window.document);
-  const canvas = $("#myCanvas")[0];
-  const layer = ppr.setup(canvas);
-  console.log(layer.view.viewSize);
+const randColor = (ps) =>
+  new ps.Color(Math.random(), Math.random(), Math.random());
+
+/**
+ *
+ * @param {paper.PaperScope} _paper Paper Scope we're installing to.
+ */
+export function installPuttyCanvas(window, _paper) {
+  const ppr = _paper;
+
+  // Set up global window properties
+
+  window.cellFrames = [];
+  window.frameI = 0;
+
+  window.currPath = null;
+  window.prevPaths = [];
+
+  window.renderI = 0;
+
+  window.sweepX = 0;
+
+  const layer = new ppr.Layer();
+  layer.activate();
 
   const sz = layer.view.viewSize;
 
@@ -56,20 +78,14 @@ $(window).on("load", function () {
     boundary: "clamped",
   });
 
-  const randColor = (ps) =>
-    new ps.Color(Math.random(), Math.random(), Math.random());
-
-  const black = new ppr.Color(0, 0, 0);
-  const blue = new ppr.Color(0.3, 0.2, 0.6);
-  let seasColor = getSeasonalColor(ppr);
+  const black = new paper.Color(0, 0, 0);
+  const blue = new paper.Color(0.3, 0.2, 0.6);
+  let seasColor = getSeasonalColor(paper);
 
   const r = Math.round;
   const [b1, b2] = lowerNurbs.domain[0];
 
   let factor = 0.03;
-
-  window.cellFrames = [];
-  window.frameI = 0;
 
   function preRenderCell(ps, voronoiCell) {
     console.log(`adding ${JSON.stringify(voronoiCell)}`);
@@ -82,30 +98,18 @@ $(window).on("load", function () {
 
   const dpc = new DelaunayCloud(layer, upperNurbs, lowerNurbs, 4, 500);
   dpc.generateParticles();
-  // dpc.debugPoints();
   dpc.render(preRenderCell);
-  // dpc.previewBounds(layer);
-
-  window.renderI = 0;
-
   window.poppers = dpc.getVoronoiPolygons().map((poly) => {
-    const col = new ppr.Color(seasColor);
+    const col = new paper.Color(seasColor);
     col.brightness += randNum(-0.1, 0.5);
     return new Popper(poly, col);
   });
 
-  window.sweepX = 0;
-
-  window.sweepXPreview = ppr.Path.Line([10, 0], [10, height]);
-  // window.sweepXPreview.strokeColor = new ppr.Color(0, 0, 0);
-  // window.sweepXPreview.strokeWidth = 3;
+  window.sweepXPreview = paper.Path.Line([10, 0], [10, height]);
 
   const sweepOffset = 10;
 
-  window.currPath = null;
-  window.prevPaths = [];
-
-  ppr.view.onFrame = (event) => {
+  layer.onFrame = (event) => {
     try {
       typeof window.cellFrames === "undefined";
       typeof window.frameI === "undefined";
@@ -129,30 +133,21 @@ $(window).on("load", function () {
 
     window.renderI += 1;
   };
-
-  // for (let i = b1; i <= b2; i += 0.1) {
-  //   const [x, y] = lowerNurbs.evaluator(0)([], i);
-  //   const ppt = new ppr.Point(x, y);
-  //   const txt = new ppr.PointText(ppt.add([30, -10]));
-  //   const ptTest = domainTr([x, y], lowerNurbs);
-  //   const ii = Math.round(i * 10) / 10;
-  //   txt.content = `(${ii} - ${ptTest})`;
-  //   const circle = new ppr.Path.Circle(ppt, 10);
-  //   circle.strokeColor = blue;
-  // }
   console.log(upperNurbs);
   console.log(lowerNurbs);
 
   ppr.view.onMouseDown = function (event) {
-    window.currPath = new ppr.Path();
-    window.currPath.strokeColor = randColor(ppr);
+    console.log(`creating new path`);
+    window.currPath = new paper.Path();
+    window.currPath.strokeColor = randColor(paper);
     window.currPath.strokeWidth = 3;
     window.currPath.add(event.point);
   };
 
-  ppr.view.onClick = function (event) {};
-
   ppr.view.onMouseUp = function (event) {
+    if (!window.currPath) {
+      return;
+    }
     window.currPath.add(event.point);
     window.currPath.simplify(1.5);
     window.currPath.smooth("asymetric");
@@ -168,14 +163,21 @@ $(window).on("load", function () {
   };
 
   ppr.view.onMouseDrag = function (event) {
+    if (!window.currPath) {
+      return;
+    }
     window.currPath.add(event.point);
     if (event.timeStamp % 10 === 0) {
       window.currPath.simplify(1.5);
       window.currPath.smooth();
     }
   };
-});
+}
 
 function onFrame(event) {
   console.log(`frame (out)`);
+}
+
+if (window) {
+  window.installPuttyCanvas = installPuttyCanvas;
 }
