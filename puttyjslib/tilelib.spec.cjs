@@ -2,14 +2,21 @@ const { expect } = require("chai");
 const nurbs = require("nurbs");
 
 async function test() {
-  const { domainTr, isWithinBounds } = await import("./tilelib.js");
+  const { minOf, maxOf, curveMaxX, curveMinX, domainTr, isWithinBounds } =
+    await import("./tilelib.js");
+
+  // min and max gets the min and max
+
+  expect(minOf([100, 400, -8, 85])).to.equal(-8);
+  expect(maxOf([100, 400, -8, 85])).to.equal(400);
+
   const curve = {
     points: [
       [100, 10],
       [200, 0],
       [300, 10],
     ],
-    domain: [[1, 10]],
+    domain: [[0, 10]],
   };
   expect(domainTr([200, 0], curve)).to.equal(5);
 
@@ -40,7 +47,8 @@ async function test() {
     false
   );
   console.log(`------ should be true ------------`);
-  expect(isWithinBounds(validPt, upperCurve, lowerCurve)).to.equal(true);
+  let expected = isWithinBounds(validPt, upperCurve, lowerCurve);
+  expect(expected).to.equal(true);
 }
 
 test();

@@ -26,6 +26,34 @@ const randInt = (...range) =>
       : Math.random() * (range[1] - range[0]) + range[0]
   );
 
+function minOf(numbers) {
+  return numbers.reduce((prev, curr) => {
+    return curr < prev ? curr : prev;
+  });
+}
+
+function maxOf(numbers) {
+  return numbers.reduce((prev, curr) => {
+    return curr > prev ? curr : prev;
+  });
+}
+
+function curveMinX(curve) {
+  return minOf(
+    curve.points.map((pt) => {
+      return getX(pt);
+    })
+  );
+}
+
+function curveMaxX(curve) {
+  return maxOf(
+    curve.points.map((pt) => {
+      return getX(pt);
+    })
+  );
+}
+
 /**
  * Translate points to the curve domain.
  * @param {number[] | {x: number, y : number}} pt
@@ -54,12 +82,21 @@ function domainTr(pt, curve) {
  * @param {nurbs} lowerNurbs
  */
 function isWithinBounds(pt, upperNurbs, lowerNurbs) {
+  const y = getY(pt);
+  const x = getX(pt);
+  const minX = minOf([curveMinX(upperNurbs), curveMinX(lowerNurbs)]);
+  const maxX = maxOf([curveMaxX(upperNurbs), curveMaxX(lowerNurbs)]);
+
+  if (x <= minX || x >= maxX) {
+    return false;
+  }
+
   const upper = upperNurbs.evaluator(0)([], domainTr(pt, upperNurbs));
   const lower = lowerNurbs.evaluator(0)([], domainTr(pt, lowerNurbs));
   // console.log(`evaluating ${pt} between ${upper}, ${lower}`);
+
   const upperY = getY(upper);
   const lowerY = getY(lower);
-  const y = getY(pt);
   // return true;
   return y >= upperY && y <= lowerY;
 }
@@ -185,7 +222,7 @@ class DelaunayCloud extends DirectedPointCloud {
     }
   }
 
-  getVoronoiPolygons() {
+  getVoronoiPolygons(withinBoundsOnly = true) {
     const delaunay = Delaunay.from([...this.particlePoints]);
     const voronoi = delaunay.voronoi([
       this.xmin,
@@ -193,7 +230,14 @@ class DelaunayCloud extends DirectedPointCloud {
       this.xmax,
       this.ymax,
     ]);
-    return [...voronoi.cellPolygons()];
+    return [...voronoi.cellPolygons()].filter((poly) => {
+      return (
+        !withinBoundsOnly ||
+        poly.filter((point) => {
+          return !isWithinBounds(point, this.upperNurbs, this.lowerNurbs);
+        }).length != poly.length
+      );
+    });
   }
 
   render(drawFunc = null) {
@@ -224,20 +268,20 @@ class DelaunayCloud extends DirectedPointCloud {
 
 class KeyFrame {
   /**
-   * 
+   *
    * @param {number} time Keyframe time for the action to occur
    * @param {function} action Do something on the action.
    * @param {any []} action_args Arguments passed into the action.
    */
   constructor(time, action, action_args = []) {
-    this.time = time
+    this.time = time;
     this.action = action;
-    this.action_args = action_args
+    this.action_args = action_args;
   }
 
   /**
-   * 
-   * @param {{delta: number, time: number, count: number}} event 
+   *
+   * @param {{delta: number, time: number, count: number}} event
    */
   onFrame(event) {
     if (!event.time == this.time) return;
@@ -247,21 +291,26 @@ class KeyFrame {
 
 class Popper {
   /**
-   * 
+   *
    * @param {number [] []} poly Polygon we're rendering.
    * @param {paper.Color} color Color of the polygon.
    * @param {number} initialScale Initial scale of the polygon
    */
-  constructor(poly, color, initialScale = .001) {
+  constructor(poly, color, initialScale = 0.001) {
     this.poly = poly;
     this.start = null;
     this.color = color;
     this.initialScale = initialScale;
-    this.onX = this.poly.map((pt) => {return getX(pt)}).reduce((prev, curr, currI) => {
-      return curr < prev ? curr : prev;
-    });
+    this.onX = this.poly
+      .map((pt) => {
+        return getX(pt);
+      })
+      .reduce((prev, curr, currI) => {
+        return curr < prev ? curr : prev;
+      });
     this.shape = null;
     this.keyframe = 0;
+    this.hasJumped = false;
   }
 
   /**
@@ -271,9 +320,9 @@ class Popper {
   draw(ps) {
     this.shape = new ps.Path();
     this.shape.fillColor = this.color;
+    this.shape.fillColor.alpha = 0;
 
-    for (let cellPoint of voronoiCell) {
-      console.log(cellPoint);
+    for (let cellPoint of this.poly) {
       this.shape.add(new ps.Point(...cellPoint));
     }
     this.shape.strokeWidth = 2;
@@ -282,20 +331,45 @@ class Popper {
   }
 
   /**
-   * 
+   *
    * @param {paper.PaperScope} ps Paper Scope
    * @param {number} x The x location we're scanning.
-   * @param {{delta: number, time: number, count: number}} event 
+   * @param {{delta: number, time: number, count: number}} event
    */
   onFrame(ps, x, event) {
-    if (this.onX >= x && this.keyframe === 0) {
-      this.start = event.time;
-      this.keyframe += 1;
-    } else if (event.time >= this.start + 0.05 && this.keyframe === 1) {
-      this.shape.scale(150);
-      this.keyframe += 1;
-    } else if (event.time >= this.start + 0.10 && this.keyframe === 2) {
-      this.shape.scale(.75);
+    const kf1 = 20;
+    const kf2 = 25;
+    const kf3 = 30;
+    const kf4 = 50;
+    const scale1 = 1.44;
+    const scale2 = 0.95;
+    const scale3 = 1.03;
+    if (x < this.onX) return;
+    if (!this.start) {
+      this.start = event.count;
+      this.draw(ps);
+    } else if (event.count < this.start + kf1) {
+      this.shape.scale(scale1);
+    } else if (event.count < this.start + kf2) {
+      this.shape.scale(scale2);
+      this.shape.rotate(-6);
+    } else if (event.count < this.start + kf3) {
+      this.shape.scale(scale3);
+      this.shape.rotate(6);
+    }
+    if (this.shape.fillColor && event.count < this.start + kf4) {
+      this.shape.fillColor.alpha += 0.02;
+    }
+    if (Math.random() < 0.001) {
+      if (event.count > this.start + kf4 && !this.hasJumped) {
+        this.shape.scale(1.1);
+        this.shape.rotate(-7);
+        this.hasJumped = true;
+      } else if (event.count > this.start) {
+        this.shape.scale(0.9);
+        this.shape.rotate(7);
+        this.hasJumped = false;
+      }
     }
   }
 }
@@ -310,10 +384,44 @@ if (globalThis) {
   globalThis.DelaunayCloud = DelaunayCloud;
   globalThis.getX = getX;
   globalThis.getY = getY;
+  globalThis.randNum = randNum;
   globalThis.randInt = randInt;
   globalThis.domainTr = domainTr;
   globalThis.Popper = Popper;
-} else {
+} else if (window) {
+  // external packages
+  window.paper = paper.paper;
+  window.nurbs = nurbs;
+  window.$ = $;
+  window.tinycolor = tinycolor;
+  // local variables
+  window.DirectedPointCloud = DirectedPointCloud;
+  window.DelaunayCloud = DelaunayCloud;
+  window.getX = getX;
+  window.getY = getY;
+  window.randNum = randNum;
+  window.randInt = randInt;
+  window.domainTr = domainTr;
+  window.Popper = Popper;
+  x;
 }
 
-export { domainTr, isWithinBounds, Popper };
+export {
+  paper,
+  nurbs,
+  $,
+  tinycolor,
+  DirectedPointCloud,
+  DelaunayCloud,
+  getX,
+  getY,
+  randNum,
+  randInt,
+  minOf,
+  maxOf,
+  curveMaxX,
+  curveMinX,
+  domainTr,
+  isWithinBounds,
+  Popper,
+};

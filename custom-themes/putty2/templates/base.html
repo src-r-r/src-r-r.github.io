@@ -10,18 +10,9 @@
     />
     <link href="{{ SITEURL }}/theme/static/css/style.css" rel="stylesheet" />
     <link href="{{ SITEURL }}/theme/static/css/putty.css" rel="stylesheet" />
-    <script src="{{ SITEURL }}/theme/static/extlib/lodash-4.17.15.js"></script>
-    <script src="https://unpkg.com/jquery@3.6.1/dist/jquery.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/paper@0.12.15/dist/paper-full.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/hull.js@1.0.2/src/hull.min.js"
-      type="text/javascript"
-      module
-    ></script>
     <script
       src="{{ SITEURL }}/theme/static/js/tiling.js"
-      type="text/paperscript"
-      canvas="tileCanvas"
+      type="module"
     ></script>
     {% if FAVICON %}
     <link
