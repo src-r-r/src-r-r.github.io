@@ -1,2 +1,2 @@
 Title: Physical Products
-path: /store/physical
+path: physical-products.html

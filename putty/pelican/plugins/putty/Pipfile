@@ -4,10 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-invoke = "*"
-pelican = {extras = ["markdown"], version = "*"}
-livereload = "*"
-ipdb = "*"
+requests = "*"
 
 [dev-packages]
 

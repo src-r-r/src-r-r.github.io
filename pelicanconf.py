@@ -1,4 +1,5 @@
 from pathlib import Path
+from putty.pelican.plugins import putty
 import random
 
 HERE = Path(__file__).parent.resolve()
@@ -6,11 +7,11 @@ PELICAN_THEMES = HERE / "pelican-themes"
 CUSTOM_THEMES = HERE / "custom-themes"
 
 AUTHOR = 'Jordan Hewitt'
-AUTHOR_ROLE = 'Professional Creation Leader'
+AUTHOR_ROLE = 'Professional Creation Leader, Senior Full Stack Lead'
 SITENAME = 'Damn Good Products'
 SITEURL = ''
 
-PATH = 'content'
+PATH = str(HERE / 'content')
 
 PAGE_PATHS = ["pages",]
 
@@ -44,6 +45,20 @@ SOCIAL = (('Twitter', 'https://twitter.com/DamnGoodTek'),
           ('LinkedIn', 'https://www.linkedin.com/in/jordan-h-a78122163/'),)
 
 DEFAULT_PAGINATION = 10
+
+PLUGINS = [putty,]
+
+M = putty.NavMenu
+I = putty.NavItem
+
+MENU = M("",
+    I("Home", "/"),
+    I("Software Services", "pages/services.html"),
+    I("Articles", "https://medium.com/@DamnGoodTech"),
+    I("Free Software Resources", "pages/free-software-resources.html"),
+    I("Photography", "pages/photography.html"),
+    I("Physical Products", "page/physical-products.html"),
+)
 
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True

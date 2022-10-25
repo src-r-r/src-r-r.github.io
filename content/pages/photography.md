@@ -1,4 +1,4 @@
 Title: Photography
-URL: /photography
+slug: photography
 
 This is my site

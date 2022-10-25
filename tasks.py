@@ -106,6 +106,7 @@ def livereload(c):
     watched_globs = [
         CONFIG['settings_base'],
         '{}/templates/**/*.html'.format(theme_path),
+        'putty',
     ]
 
     content_file_extensions = ['.md', '.rst']
