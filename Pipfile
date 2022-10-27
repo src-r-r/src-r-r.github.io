@@ -8,6 +8,7 @@ invoke = "*"
 pelican = {extras = ["markdown"], version = "*"}
 livereload = "*"
 ipdb = "*"
+rss-parser = "*"
 
 [dev-packages]
 

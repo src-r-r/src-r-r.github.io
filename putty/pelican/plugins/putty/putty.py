@@ -3,6 +3,8 @@ from pelican import (signals, PagesGenerator)
 from pelican.contents import Page
 import logging
 from pathlib import Path
+from requests import get
+from rss_parser import Parser
 import abc
 log = logging.getLogger(__name__)
 
@@ -58,9 +60,17 @@ class NavMenu(Navable):
 
 
 class ExternalFeedWidget:
+    """ Adds a widget of latest entries to the page.
+    """
 
     def __init__(self, feed_url : T.AnyStr):
         self.feed_url = feed_url
+        self.freed = None
+        
+    def fetch_feeds(self):
+        xml = get(self.feed_url)
+        parser = Parser(xml=xml.content)
+        feed = parser.parse()
 
 def has_prefixes(prefixes : T.Iterable[T.AnyStr], path : Path):
     return any([
@@ -75,5 +85,9 @@ def construct_nav(pgen : PagesGenerator, *args, **kwargs):
     log.info("Checking valid urls %s", valid_urls)
     MENU.check(valid_urls)
 
+def get_feeds(*args, **kwargs):
+    pass
+
 def register():
     signals.page_generator_finalized.connect(construct_nav)
+    signals.page_generator_init.connect(get_feeds)
