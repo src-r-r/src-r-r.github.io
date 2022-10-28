@@ -83,7 +83,7 @@ def construct_nav(pgen : PagesGenerator, *args, **kwargs):
     if not MENU:
         return
     log.info("Checking valid urls %s", valid_urls)
-    MENU.check(valid_urls)
+    # MENU.check(valid_urls)
 
 def get_feeds(*args, **kwargs):
     pass

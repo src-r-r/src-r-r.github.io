@@ -41,7 +41,7 @@
         {% if AUTHOR_ROLE %}<h3 class="display-3 text-center">{{ AUTHOR_ROLE }}</h3>{% endif %}
         {% include "inc/page-menu.html" %}
       </section>
-      <main class="container">{% block content %} {% endblock %}</main>
+      <main>{% block content %} {% endblock %}</main>
       <footer id="contentinfo" class="footer">
         <nav class="container">
           {% for name, link in SOCIAL %}

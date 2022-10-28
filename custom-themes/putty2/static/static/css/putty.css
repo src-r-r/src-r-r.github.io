@@ -5,6 +5,8 @@ canvas {
   left: 0;
   margin: 0;
   padding: 0;
+  bottom: 0pt;
+  cursor: url("../images/pencil.svg"), pointer;
 }
 
 #page-menu ul li{
@@ -17,4 +19,21 @@ canvas {
   top: 0;
   left: 0;
   margin-top: 25%;
+}
+
+.foreground {
+  margin: 30% 8% 0% 8%;
+}
+
+.foreground nav {
+  margin: 0% -8%;
+}
+
+.foreground footer {
+  margin: 5% -8%;
+  padding: 4% 10%;
+}
+
+.page-content {
+  background-color: rgba(255, 255, 255, 0.5);
 }

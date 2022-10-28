@@ -53,11 +53,15 @@ I = putty.NavItem
 
 MENU = M("",
     I("Home", "/"),
-    I("Software Services", "pages/services.html"),
-    I("Articles", "https://medium.com/@DamnGoodTech"),
-    I("Free Software Resources", "pages/free-software-resources.html"),
-    I("Photography", "pages/photography.html"),
-    I("Physical Products", "page/physical-products.html"),
+    I("Software Services", "pages/software-services.html"),
+    I("Tech Blog", "https://medium.com/@damngoodtech"),
+    I("GitHub", "https://github.com/src-r-r"),
+    I("GitLab", "https://gitlab.com/srcrr"),
+    I("Schedule a Consultation", "/schedule"),
+    # I("Articles", "https://medium.com/@DamnGoodTech"),
+    # I("Free Software Resources", "pages/free-software-resources.html"),
+    # I("Photography", "pages/photography.html"),
+    # I("Physical Products", "page/physical-products.html"),
 )
 
 # Uncomment following line if you want document-relative URLs when developing
