@@ -57,20 +57,18 @@ class NavMenu(Navable):
     def check(self, valid_urls):
         for i in self.items:
             i.check(valid_urls)
-
-
-class ExternalFeedWidget:
+class ExternalFeed:
     """ Adds a widget of latest entries to the page.
     """
 
     def __init__(self, feed_url : T.AnyStr):
         self.feed_url = feed_url
-        self.freed = None
+        self.feed = None
         
-    def fetch_feeds(self):
+    def fetch(self):
         xml = get(self.feed_url)
         parser = Parser(xml=xml.content)
-        feed = parser.parse()
+        self.feed = parser.parse()
 
 def has_prefixes(prefixes : T.Iterable[T.AnyStr], path : Path):
     return any([
@@ -85,9 +83,23 @@ def construct_nav(pgen : PagesGenerator, *args, **kwargs):
     log.info("Checking valid urls %s", valid_urls)
     # MENU.check(valid_urls)
 
-def get_feeds(*args, **kwargs):
-    pass
+def get_feeds(pgen : PagesGenerator):
+    FEEDS = pgen.settings.get("FEEDS")
+    if not FEEDS:
+        return
+    feeds = {}
+    for (label, url) in FEEDS.items():
+        feed = ExternalFeed(url)
+        feed.fetch()
+        feeds[label] = feed
+    pgen.context["FEEDS"] = feeds
+
+def inject_feeds(*Args, **Kwargs):
+    import ipdb; ipdb.set_trace()
+    get_feeds(gen)
+    FEEDS = pgen.context.get("FEEDS")
 
 def register():
     signals.page_generator_finalized.connect(construct_nav)
-    signals.page_generator_init.connect(get_feeds)
+    signals.generator_init.connect(get_feeds)
+    # signals.page_generator_write_page.connect(inject_feeds)
