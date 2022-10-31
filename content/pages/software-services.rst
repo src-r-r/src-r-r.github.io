@@ -1,7 +1,11 @@
-Title: Software Development Services
-Slug: software-services
+Software Development Services
+=============================
 
-# Business Solutions for Multi-System Architecture
+:title: Software Development Services
+:slug: software-services
+
+Business Solutions for Multi-System Architecture
+================================================
 
 Get a website or service deployed and attract customers to your
 business.
@@ -14,12 +18,14 @@ I specialize with highly complex systems with lots of moving parts.
 Complex business problems that need solving. Systems that need to
 work well and need to scale effortlessly.
 
-# Expert on Current Trends
+Expert on Current Trends
+========================
 
 Over a decade (that's big 'ol 10 years!) in development, I've been
 the go-to expert for most of the current technologies:
 
-## Database Architecture
+Database Architecture
+---------------------
 
 Whether you're on Microsoft SQL, Google Cloud Services, Amazon Web Services,
 or an independently-run PostgreSQL server, I will set up your database to
@@ -27,7 +33,8 @@ ensure proper connection to front-end services. I set myself apart by ensuring
 database consistency between hosts, meaning you can move from one database to
 another without worrying about data loss.
 
-## Website Development
+Website Development
+-------------------
 
 I've deployed projects and products with the most popular web frameworks
 including React, Django, Angular, Vue, Express, and plain ol'
@@ -37,7 +44,8 @@ documentation up-to-date, ensuring the project is under version control,
 and incorporating any additional services needed like Stripe payments or
 Mailgun integration. Let me make your vision a reality!
 
-# Let's Get Started On Your Mission!
+Let's Get Started On Your Mission!
+==================================
 
 You'll get far with me joining your team's mission. Schedule a call today
 so I can help you grow!

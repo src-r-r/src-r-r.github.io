@@ -51,13 +51,32 @@ PLUGINS = [putty,]
 M = putty.NavMenu
 I = putty.NavItem
 
+FEEDS = {
+    "DGT_MEDIUM": "https://medium.com/feed/@damngoodtech",
+}
+
 MENU = M("",
     I("Home", "/"),
-    I("Software Services", "pages/software-services.html"),
-    I("Tech Blog", "https://medium.com/@damngoodtech"),
-    I("GitHub", "https://github.com/src-r-r"),
-    I("GitLab", "https://gitlab.com/srcrr"),
-    I("Schedule a Consultation", "/schedule"),
+    M("Tech Services &amp; Products",
+        I("How I Help You", "pages/software-services.html"),
+        I("Schedule a Consultation", "https://damngood.tech/schedule"),
+        I("GumRoad", "https://damngood.gumroad.com/"),
+        I("Complete User Interface Guide", "https://damngood.gumroad.com/l/tscup"),
+    ),
+    M("Free Tech Resources", 
+        I("Tech Blog", "https://medium.com/@damngoodtech"),
+        I("GitHub", "https://github.com/src-r-r"),
+        I("GitLab", "https://gitlab.com/srcrr"),
+    ),
+    M("Creative Products &amp; Services",
+        I("Cuples - Holiday", "pages/cuples.html"),
+        I("Photography", "photography.html"),
+        I("Short Fiction", "https://write.as/silent-gift"),
+        I("Inherited Kingship", "https://InheritedKingship.write.as"),
+        I("Photography", "pages/photography.html"),
+        I("Rewrite Your Past", "pages/rewrite-your-past.html"),
+        I("Write Your Future", "pages/write-your-future.html"),
+    ),
     # I("Articles", "https://medium.com/@DamnGoodTech"),
     # I("Free Software Resources", "pages/free-software-resources.html"),
     # I("Photography", "pages/photography.html"),

@@ -1,7 +1,10 @@
 import typing as T
 from pelican import (signals, PagesGenerator)
 from pelican.contents import Page
+from pelican.settings import get_jinja_environment
 import logging
+from jinja2 import (Environment as JinjaEnv)
+from jinja2.exceptions import TemplateNotFound
 from pathlib import Path
 from requests import get
 from rss_parser import Parser
@@ -88,16 +91,33 @@ def get_feeds(pgen : PagesGenerator):
     if not FEEDS:
         return
     feeds = {}
-    for (label, url) in FEEDS.items():
-        feed = ExternalFeed(url)
-        feed.fetch()
-        feeds[label] = feed
-    pgen.context["FEEDS"] = feeds
+    default_name = "external_feed.html"
+    env : JinjaEnv = get_jinja_environment(pgen.settings)
+    # for (label, url) in FEEDS.items():
+    #     feed = ExternalFeed(url)
+    #     feed.fetch()
+    #     feeds[label] = feed
 
-def inject_feeds(*Args, **Kwargs):
-    import ipdb; ipdb.set_trace()
-    get_feeds(gen)
-    FEEDS = pgen.context.get("FEEDS")
+    #     special_name = f"external_feed_{label}.html"
+
+    #     default_tpl = None
+    #     special_tpl = None
+    #     delayed = None
+
+    #     try:
+    #         default_tpl = env.get_template(default_name)
+    #         special_tpl = env.get_template(special_name)
+    #     except TemplateNotFound as e:
+    #         delayed = e
+        
+    #     tpl = default_tpl or special_tpl
+    #     if not tpl:
+    #         raise TemplateNotFound(f"{default_name} or {special_name}")
+        
+    #     tpl.render(
+    #         feed=feed
+    #     )
+
 
 def register():
     signals.page_generator_finalized.connect(construct_nav)
