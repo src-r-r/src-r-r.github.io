@@ -31,7 +31,10 @@ class NullGenerator(Generator):
 class NullWriter(Writer):
     pass
 
+up=".."
 HERE = Path(__file__).parent.resolve()
+CUSTOM_THEMES = (HERE / up / up / up / up / "custom-themes").resolve()
+THEME = CUSTOM_THEMES / "putty2"
 TEST_CONTENT = HERE / "test-content"
 TEST_OUTPUT = HERE / "test-output"
 TEST_FEED_CONTENT = HERE / "test-feed-content"
@@ -73,22 +76,28 @@ class TestRssFeed(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.ext_feed_dir = TEST_FEED_CONTENT / "external_feeds"
         settings = {
             "PATH": str(TEST_FEED_CONTENT),
+            "THEME": str(THEME),
+            "theme": str(THEME),
             "PLUGINS": [
                 putty,
             ],
             "FEEDS": {
                 "DJANGO_PROJECT": "https://www.djangoproject.com/rss/weblog/",
             },
+            "FEEDS_OUTPUT_DIR" : "external_feeds"
         }
-        putty.register()
+        if not THEME.exists():
+            raise RuntimeError(f"{THEME} does not exist")
         cls.settings = get_settings(**settings)
         cls.generators = [PagesGenerator(
-            get_context(settings), cls.settings, TEST_FEED_CONTENT, '', '',),]
+            get_context(settings), cls.settings, TEST_FEED_CONTENT, THEME, '',),]
         cls.writers = [
             NullWriter(TEST_FEED_OUTPUT, cls.settings)
         ]
+        putty.register()
     
     def setUp(self):
         gen = self.generators[0]
@@ -98,14 +107,12 @@ class TestRssFeed(unittest.TestCase):
     
     def tearDown(self):
         rmtree(str(TEST_FEED_OUTPUT.resolve()), ignore_errors=True)
+        rmtree(str(self.ext_feed_dir))
     
     def test_rss_feed_filled(self):
         ctx = self.generators[0].context
-        assert ctx.get("FEEDS")
-        feed : putty.ExternalFeed = ctx["FEEDS"].get("DJANGO_PROJECT")
-        assert feed
-        assert feed.feed.title == "The Django weblog"
-        assert len(feed.feed.feed) > 5
+        assert (Path(self.ext_feed_dir) / "django_project.html").exists()
+        
 
 if __name__ == '__main__':
     unittest.main()

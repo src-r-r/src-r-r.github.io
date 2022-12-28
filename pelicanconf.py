@@ -55,6 +55,8 @@ FEEDS = {
     "DGT_MEDIUM": "https://medium.com/feed/@damngoodtech",
 }
 
+FEED_OUTPUT_DIR = "external_feeds"
+
 MENU = M("",
     I("Home", "/"),
     M("Tech Services &amp; Products",
@@ -77,6 +79,12 @@ MENU = M("",
         I("Rewrite Your Past", "pages/rewrite-your-past.html"),
         I("Write Your Future", "pages/write-your-future.html"),
     ),
+    M("Hire Me",
+        I("On UpWork", "https://www.upwork.com/freelancers/~0105fc69312e2da97a"),
+        I("On Perfectlancer", "https://www.perfectlancer.com/freelancer/profile/594m8o9e6o08"),
+        I("On Guru", "https://www.guru.com/freelancers/jordan-hewitt"),
+        I("Directly", "mailto:jordan@damngood.tech"),
+    )
     # I("Articles", "https://medium.com/@DamnGoodTech"),
     # I("Free Software Resources", "pages/free-software-resources.html"),
     # I("Photography", "pages/photography.html"),

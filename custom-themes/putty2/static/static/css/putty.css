@@ -61,3 +61,20 @@ img.product-image {
 .product .btn {
   margin: 10pt;
 }
+
+.feed-item {
+  border: 1px solid lightgray;
+  padding: 10pt;
+  margin: 5pt;
+  border-radius: 5pt;
+}
+
+.item-title {
+  font-size: 100%;
+}
+
+.item-date {
+  font-size: 80%;
+  color: gray;
+  font-style: italic;
+}

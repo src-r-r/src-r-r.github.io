@@ -1,0 +1,16 @@
+{% for item in feed.feed.feed %}
+<div class="feed-item">
+  <div class="item-header">
+    <h3 class="item-title">{{ item.title }}</h3>
+    <p class="item-date">{{ item.date }}{{ item.publish_date }}</p>
+  </div>
+  {% if item.description %}
+  <div class="item-content">
+    <article>{{ item.description }}</article>
+  </div>
+  {% endif %}
+  <div class="item-link">
+    <a class="btn btn-primary" href="{{ item.link }}">Read</a>
+  </div>
+</div>
+{% endfor %}

@@ -2,6 +2,7 @@ import typing as T
 from pelican import (signals, PagesGenerator)
 from pelican.contents import Page
 from pelican.settings import get_jinja_environment
+from pelican.generators import PelicanTemplateNotFound
 import logging
 from jinja2 import (Environment as JinjaEnv)
 from jinja2.exceptions import TemplateNotFound
@@ -88,38 +89,53 @@ def construct_nav(pgen : PagesGenerator, *args, **kwargs):
 
 def get_feeds(pgen : PagesGenerator):
     FEEDS = pgen.settings.get("FEEDS")
+    OUTDIR = pgen.settings.get("OUTDIR", "external_feeds")
+
+    OUTPATH_BASE = Path(pgen.settings["PATH"]) / OUTDIR
+
+    OUTPATH_BASE.mkdir(parents=True, exist_ok=True)
+
     if not FEEDS:
         return
     feeds = {}
-    default_name = "external_feed.html"
-    env : JinjaEnv = get_jinja_environment(pgen.settings)
-    # for (label, url) in FEEDS.items():
-    #     feed = ExternalFeed(url)
-    #     feed.fetch()
-    #     feeds[label] = feed
+    default_name = "external_feeds"
+    for (label, url) in FEEDS.items():
+        feed = ExternalFeed(url)
+        feed.fetch()
+        feeds[label] = feed
 
-    #     special_name = f"external_feed_{label}.html"
+        special_name = f"external_feed_{label.lower()}.html"
 
-    #     default_tpl = None
-    #     special_tpl = None
-    #     delayed = None
+        default_tpl = None
+        special_tpl = None
+        delayed = None
 
-    #     try:
-    #         default_tpl = env.get_template(default_name)
-    #         special_tpl = env.get_template(special_name)
-    #     except TemplateNotFound as e:
-    #         delayed = e
+        try:
+            default_tpl = pgen.get_template(default_name)
+            special_tpl = pgen.get_template(special_name)
+        except PelicanTemplateNotFound as e:
+            delayed = e
         
-    #     tpl = default_tpl or special_tpl
-    #     if not tpl:
-    #         raise TemplateNotFound(f"{default_name} or {special_name}")
+        tpl = default_tpl or special_tpl
+
+        if not pgen.theme:
+            log.warn("Theme is not set for %s", pgen)
+            continue
+
+        if not tpl:
+            themedir = pgen.settings["THEME"]
+            raise TemplateNotFound(f"{default_name} or {special_name} for {themedir}")
         
-    #     tpl.render(
-    #         feed=feed
-    #     )
+        outpath = OUTPATH_BASE / (label.lower() + ".html")
+
+        print("Example %s feed item : %s", label, str([i for i in feed.feed.feed][0]))
+
+        outpath.write_text(tpl.render(
+            feed=feed
+        ))
 
 
 def register():
     signals.page_generator_finalized.connect(construct_nav)
-    signals.generator_init.connect(get_feeds)
     # signals.page_generator_write_page.connect(inject_feeds)
+    signals.generator_init.connect(get_feeds)

@@ -4,12 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-invoke = "*"
-pelican = {extras = ["markdown"], version = "*"}
-livereload = "*"
-ipdb = "*"
-rss-parser = "*"
-ghp-import = "*"
 
 [dev-packages]
 

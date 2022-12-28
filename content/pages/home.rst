@@ -17,19 +17,29 @@ In fact, I incorporate technology into many facets of my business and products.
 
 Let me lead your team, your business, or you (personally) into a season of growth and abundance.
 
-Among the Binary …
---------------------
 
-I work with organizations and teams that have highly-complex business
-needs. I help create a development workflow to lessen the demand for
+🛡️ Top-Rated Full Stack Developer on UpWork
+-------------------------------------------
+
+I provide technical expertise to ambitious businesses that want to do something
+big. I bring a decade + experience in order to 
+
+I help create a development workflow to lessen the demand for
 repetitive, manual tasks while also creating the actual software product
 your customers are looking for.
 
+In short, I'm here for your success.
+
 Find out more about my services under `Software Services </pages/software-services.html>`_
 
-… Is a World of Creation
---------------------------
+Once you're ready to schedule a call, send me an email at jordan@damngood.tech
+or `hire me on UpWork <https://www.upwork.com/freelancers/~0105fc69312e2da97a>`_
 
-I also offer products and services on the creative side.
 
-Photography, tech writing, fiction writing, and more.
+Latest Tech Articles
+--------------------
+
+**GUEST ARTICLE** on `Go Solo <https://gosolo.subkit.com/>`_: https://gosolo.subkit.com/jordan-hewitt/
+
+.. raw:: html
+    :file: ../external_feeds/dgt_medium.html
