@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pelican-putty"
+name = "putty"
 version = "0.0.1"
 description = "Menus and other things for the putty themee."
 authors = ["Jordan Hewitt <jordan@damngood.tech>"]

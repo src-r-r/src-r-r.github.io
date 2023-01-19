@@ -1,4 +1,4 @@
-Title: Play
+title: Play
 
 # Open Your Imagination and Your World
 

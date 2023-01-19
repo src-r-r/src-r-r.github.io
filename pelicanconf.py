@@ -1,8 +1,11 @@
 from pathlib import Path
+HERE = Path(__file__).parent.resolve()
+import sys
+sys.path.append(str(HERE))
 from putty.pelican.plugins import putty
+sys.path.pop()
 import random
 
-HERE = Path(__file__).parent.resolve()
 PELICAN_THEMES = HERE / "pelican-themes"
 CUSTOM_THEMES = HERE / "custom-themes"
 
@@ -55,13 +58,18 @@ FEEDS = {
     "DGT_MEDIUM": "https://medium.com/feed/@damngoodtech",
 }
 
+# Ignores html files.
+READERS = {
+    "html": None,
+}
+
 FEED_OUTPUT_DIR = "external_feeds"
 
 MENU = M("",
     I("Home", "/"),
     M("Tech Services &amp; Products",
         I("How I Help You", "pages/software-services.html"),
-        I("Schedule a Consultation", "https://damngood.tech/schedule"),
+        I("Schedule a Consultation", "mailto:jordan@damngood.tech"),
         I("GumRoad", "https://damngood.gumroad.com/"),
         I("Complete User Interface Guide", "https://damngood.gumroad.com/l/tscup"),
     ),
@@ -72,10 +80,9 @@ MENU = M("",
     ),
     M("Creative Products &amp; Services",
         I("Cuples - Holiday", "pages/cuples.html"),
-        I("Photography", "photography.html"),
+        I("Photography", "https://loox1.onrender.com"),
         I("Short Fiction", "https://write.as/silent-gift"),
         I("Inherited Kingship", "https://InheritedKingship.write.as"),
-        I("Photography", "pages/photography.html"),
         I("Rewrite Your Past", "pages/rewrite-your-past.html"),
         I("Write Your Future", "pages/write-your-future.html"),
     ),

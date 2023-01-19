@@ -31,7 +31,7 @@ CONFIG = {
     'ssh_port': '22',
     'ssh_path': '/var/www',
     # Github Pages configuration
-    'github_pages_branch': 'main',
+    'github_pages_branch': 'gh-pages',
     'commit_message': "'Publish site on {}'".format(datetime.date.today().isoformat()),
     # Host and port for `serve`
     'host': 'localhost',

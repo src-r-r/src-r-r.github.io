@@ -1,11 +1,8 @@
-Software Development Services
-=============================
-
-:title: Software Development Services
-:slug: software-services
+Title: Software Development Services
+Slug: software-services
 
 Business Solutions for Multi-System Architecture
-================================================
+------------------------------------------------
 
 Get a website or service deployed and attract customers to your
 business.
@@ -19,7 +16,7 @@ Complex business problems that need solving. Systems that need to
 work well and need to scale effortlessly.
 
 Expert on Current Trends
-========================
+------------------------
 
 Over a decade (that's big 'ol 10 years!) in development, I've been
 the go-to expert for most of the current technologies:
@@ -45,7 +42,7 @@ and incorporating any additional services needed like Stripe payments or
 Mailgun integration. Let me make your vision a reality!
 
 Let's Get Started On Your Mission!
-==================================
+----------------------------------
 
 You'll get far with me joining your team's mission. Schedule a call today
 so I can help you grow!
