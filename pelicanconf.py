@@ -12,9 +12,12 @@ CUSTOM_THEMES = HERE / "custom-themes"
 AUTHOR = 'Jordan Hewitt'
 AUTHOR_ROLE = 'Professional Creation Leader, Senior Full Stack Lead'
 SITENAME = 'Damn Good Products'
-SITEURL = ''
+SITEURL = 'https://damngood.tech'
 
 PATH = str(HERE / 'content')
+
+STATIC_PATHS = ["extra"]
+EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'}, }
 
 PAGE_PATHS = ["pages",]
 

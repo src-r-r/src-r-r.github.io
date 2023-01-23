@@ -48,7 +48,7 @@ You'll get far with me joining your team's mission. Schedule a call today
 so I can help you grow!
 
 <center>
-    <a href="/schedule" class="btn btn-primary btn-large">
+    <a href="mailto:jordan@damngood.tech" class="btn btn-primary btn-large">
     Schedule A Call
     </a>
 </center>
