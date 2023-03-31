@@ -16,7 +16,7 @@ SITEURL = 'https://damngood.tech'
 
 PATH = str(HERE / 'content')
 
-STATIC_PATHS = ["extra"]
+STATIC_PATHS = ["extra", "images"]
 EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'}, }
 
 PAGE_PATHS = ["pages",]

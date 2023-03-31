@@ -11,6 +11,7 @@ ipdb = "*"
 rss-parser = "*"
 ghp-import = "*"
 markdown = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 

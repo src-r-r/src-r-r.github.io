@@ -8,6 +8,7 @@ from jinja2 import Environment as JinjaEnv
 from jinja2.exceptions import TemplateNotFound
 from pathlib import Path
 from requests import get
+from bs4 import BeautifulSoup
 from rss_parser import Parser
 import abc
 
@@ -138,6 +139,8 @@ def get_feeds(pgen: PagesGenerator):
         outpath = OUTPATH_BASE / (label.lower() + ".html")
 
         print("Example %s feed item : %s", label, str([i for i in feed.feed.feed][0]))
+
+
 
         outpath.write_text(tpl.render(feed=feed))
 

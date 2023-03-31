@@ -22,7 +22,8 @@ Let me lead your team, your business, or you (personally) into a season of growt
 -------------------------------------------
 
 I provide technical expertise to ambitious businesses that want to do something
-big. I bring a decade + experience in order to 
+big. I bring more than a decade of experience to the table to empower your
+business to not only succed, but thrive.
 
 I help create a development workflow to lessen the demand for
 repetitive, manual tasks while also creating the actual software product
@@ -35,11 +36,19 @@ Find out more about my services under `Software Services </pages/software-servic
 Once you're ready to schedule a call, send me an email at jordan@damngood.tech
 or `hire me on UpWork <https://www.upwork.com/freelancers/~0105fc69312e2da97a>`_
 
+⚡ Ready to Take Your Business to the Next Level?
+-------------------------------------------------
+
+Here's what to expect when working with me:
+
+.. image:: ./images/dgt-steps.png
+
 
 Latest Tech Articles
 --------------------
 
-**GUEST ARTICLE** on `Go Solo <https://gosolo.subkit.com/>`_: https://gosolo.subkit.com/jordan-hewitt/
+.. raw:: html
+    :file: ./guest_articles.html
 
 .. raw:: html
     :file: ../external_feeds/dgt_medium.html

@@ -1,15 +1,15 @@
 {% for item in feed.feed.feed %}
-<div class="feed-item">
-  <div class="item-header">
-    <h3 class="item-title">{{ item.title }}</h3>
-    <p class="item-date">{{ item.date }}{{ item.publish_date }}</p>
+<div class="card">
+  <div class="card-header">
+    {{ item.date }}{{ item.publish_date }}
   </div>
-  {% if item.description %}
-  <div class="item-content">
-    <article>{{ item.description }}</article>
-  </div>
-  {% endif %}
-  <div class="item-link">
+  <div class="card-body">
+    <h5 class="card-title">{{ item.title }}</h5>
+    {% if item.description %}
+    <p class='card-text'>{{ item.description }}</p>
+    {% elif item.content_encoded %}
+    <p class='card-text'>{{ item.content_encoded }}</p>
+    {% endif %}
     <a class="btn btn-primary" href="{{ item.link }}">Read</a>
   </div>
 </div>
