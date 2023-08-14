@@ -1,29 +1,36 @@
 from pathlib import Path
+
 HERE = Path(__file__).parent.resolve()
 import sys
+
 sys.path.append(str(HERE))
 from putty.pelican.plugins import putty
+
 sys.path.pop()
 import random
 
 PELICAN_THEMES = HERE / "pelican-themes"
 CUSTOM_THEMES = HERE / "custom-themes"
 
-AUTHOR = 'Jordan Hewitt'
-AUTHOR_ROLE = 'Professional Creation Leader, Senior Full Stack Lead'
-SITENAME = 'Damn Good Products'
-SITEURL = 'https://damngood.tech'
+AUTHOR = "Jordan Hewitt"
+AUTHOR_ROLE = "Portland-Based Professional Web Developer"
+SITENAME = "Damn Good Products"
+SITEURL = "https://damngood.tech"
 
-PATH = str(HERE / 'content')
+PATH = str(HERE / "content")
 
 STATIC_PATHS = ["extra", "images"]
-EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'}, }
+EXTRA_PATH_METADATA = {
+    "extra/CNAME": {"path": "CNAME"},
+}
 
-PAGE_PATHS = ["pages",]
+PAGE_PATHS = [
+    "pages",
+]
 
-TIMEZONE = 'America/Los_Angeles'
+TIMEZONE = "America/Los_Angeles"
 
-DEFAULT_LANG = 'en'
+DEFAULT_LANG = "en"
 
 _ALL_THEMES = [td for td in PELICAN_THEMES.glob("*") if td.is_dir()]
 chosen = random.choice(_ALL_THEMES)
@@ -41,18 +48,27 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('Pelican', 'https://getpelican.com/'),
-         ('Python.org', 'https://www.python.org/'),
-         ('Jinja2', 'https://palletsprojects.com/p/jinja/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (
+    ("Pelican", "https://getpelican.com/"),
+    ("Python.org", "https://www.python.org/"),
+    ("Jinja2", "https://palletsprojects.com/p/jinja/"),
+    ("You can modify those links in your config file", "#"),
+)
 
 # Social widget
-SOCIAL = (('Twitter', 'https://twitter.com/DamnGoodTek'),
-          ('LinkedIn', 'https://www.linkedin.com/in/jordan-h-a78122163/'),)
+SOCIAL = (
+    ("Twitter", "https://twitter.com/DamnGoodTek"),
+    ("LinkedIn", "https://www.linkedin.com/in/jordan-h-a78122163/"),
+    ("Mastodon", "https://mastodon.social/@damngoodtech"),
+    ("GitLab", "https://gitlab.com/srcrr/"),
+    ("GitHub", "https://github.com/src-r-r"),
+)
 
 DEFAULT_PAGINATION = 10
 
-PLUGINS = [putty,]
+PLUGINS = [
+    putty,
+]
 
 M = putty.NavMenu
 I = putty.NavItem
@@ -68,20 +84,26 @@ READERS = {
 
 FEED_OUTPUT_DIR = "external_feeds"
 
-MENU = M("",
+MENU = M(
+    "",
     I("Home", "/"),
-    M("Tech Services &amp; Products",
+    I("FREE Consultation", "/pages/schedule.html"),
+    M(
+        "Tech Services &amp; Products",
+        I("Testimonials", "pages/testimonials.html"),
         I("How I Help You", "pages/software-services.html"),
         I("Schedule a Consultation", "mailto:jordan@damngood.tech"),
         I("GumRoad", "https://damngood.gumroad.com/"),
         I("Complete User Interface Guide", "https://damngood.gumroad.com/l/tscup"),
     ),
-    M("Free Tech Resources", 
+    M(
+        "Free Tech Resources",
         I("Tech Blog", "https://medium.com/@damngoodtech"),
         I("GitHub", "https://github.com/src-r-r"),
         I("GitLab", "https://gitlab.com/srcrr"),
     ),
-    M("Creative Products &amp; Services",
+    M(
+        "Creative Products &amp; Services",
         I("Cuples - Holiday", "pages/cuples.html"),
         I("Photography", "https://loox1.onrender.com"),
         I("Short Fiction", "https://write.as/silent-gift"),
@@ -89,9 +111,13 @@ MENU = M("",
         I("Rewrite Your Past", "pages/rewrite-your-past.html"),
         I("Write Your Future", "pages/write-your-future.html"),
     ),
-    M("Hire Me",
+    M(
+        "Hire Me",
         I("On UpWork", "https://www.upwork.com/freelancers/~0105fc69312e2da97a"),
-        I("On Perfectlancer", "https://www.perfectlancer.com/freelancer/profile/594m8o9e6o08"),
+        I(
+            "On Perfectlancer",
+            "https://www.perfectlancer.com/freelancer/profile/594m8o9e6o08",
+        ),
         I("On Guru", "https://www.guru.com/freelancers/jordan-hewitt"),
         I("Directly", "mailto:jordan@damngood.tech"),
     )

@@ -1,0 +1,357 @@
+<main class="p-2">
+    <form class="block" method="POST" class="">
+        <div class="field p-2">
+            <label class="label has-text-weight-bold">* Why would you like to meet?</label>
+            <div class="select">
+                <select id="input-reason">
+                    <option value=""></option>
+                    <option value="FREE 60-minute consultation">FREE 60-minute consultation</option>
+                    <option value="Quick 15-minute check-in">Quick 15-minute check-in</option>
+                    <option value="Longer 45-minute check-in">Longer 45-minute check-in</option>
+                </select>
+            </div>
+        </div>
+        <div class="p-2">
+            <label class="label has-text-weight-bold">* Timezone</label>
+            <div class="dropdown" id="timezone-dropdown">
+                <select id="timezone-input" type="text" class="control">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="p-2">
+            <label class="label has-text-weight-bold">* Please select days and times you're available.</label>
+            <div class="control" id="flexibility">
+                <div class="flexibility-row columns">
+                    <select name="flexibility_day" class="input-availability-days input primary column m-4">
+                        <option value=""></option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                    <select name="flexibility_time" class="input-availability-times input primary column m-4">
+                        <option value=""></option>
+                        <option value="6 AM">6 AM</option>
+                        <option value="7 AM">7 AM</option>
+                        <option value="8 AM">8 AM</option>
+                        <option value="9 AM">9 AM</option>
+                        <option value="10 AM">10 AM</option>
+                        <option value="11 AM">11 AM</option>
+                        <option value="12 PM">12 PM</option>
+                        <option value="1 PM">1 PM</option>
+                        <option value="2 PM">2 PM</option>
+                        <option value="3 PM">3 PM</option>
+                        <option value="4 PM">4 PM</option>
+                        <option value="5 PM">5 PM</option>
+                        <option value="6 PM">6 PM</option>
+                        <option value="7 PM">7 PM</option>
+                        <option value="8 PM">8 PM</option>
+                    </select>
+                </div>
+                <button class="button btn-primary column" id="add-flexibility-row">+ Add Availability</button>
+            </div>
+        </div>
+        <div class="p-2">
+            <label class="label has-text-weight-bold">* How soon would you like to chat?</label>
+            <div class="dropdown" id="timezone-dropdown" class="control">
+                <select name="urgency" id="urgency" class="input">
+                    <option value=""></option>
+                    <option value="They're flexible">I'm Flexible</option>
+                    <option value="As soon as possible">As Soon as Possible!</option>
+                    <option value="Within the Next Week or 2">Within the next month or 2</option>
+                    <option value="Within the next month or 2">Within the next month or 2</option>
+                </select>
+            </div>
+        </div>
+        <div class="p-2">
+            <label class="label has-text-weight-bold">* Please enter your email:</label>
+            <div class="control">
+                <input type="email" name="email" class="input" id="input-email" />
+            </div>
+        </div>
+        <div class="p-2">
+            <label class="label has-text-weight-normal">Optionaly, please provide your name:</label>
+            <div class="control">
+                <input type="email" name="email" class="input" id="input-name" />
+            </div>
+        </div>
+        <div class="p-2">
+            <label class="label has-text-weight-bold">* What would you like to discuss?</label>
+            <div class="control">
+                <textarea name="email" class="textarea" id="input-topic"></textarea>
+            </div>
+        </div>
+        <div class="has-background-grey-lighter m-4 p-4">
+            <h2 class="heading is-size-5">Thank you! I look forward to talking with you!</h2>
+            <p>
+                Once you hit <strong>Schedule!</strong> an email will be sent to me. I'll choose a time when I'm free based on the times
+                you suggested.
+            </p>
+            <p>
+                If none of the times work I'll confer with you on an appropariate time.
+            </p>
+            <p>
+                You should receive an email from <a href="mailto:jordan@damngood.tech">jordan@damngood.tech</a> If
+                you do not, then please check your spam folder. If it's been longer than 1 business day, please feel
+                free to reach out directly.
+            </p>
+        </div>
+        <div class="columns">
+            <div class="p-4 column has-text-centered" id="error-tooltip" class="has-tooltip-arrow has-tooltip-danger">
+                <input type="submit" class="button is-primary is-large is-centered" value="Schedule!" id="submit" />
+            </div>
+        </div>
+    </form>
+</main>
+<div class="modal" id="modal-success">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="columns p-4">
+            <div class="p-4 m-4 column has-background-white has-foreground-black">
+                <h2 class="is-size-4">Thank You!</h2>
+                <p>The email has been sent and I'll be in touch with your shortly!
+                </p>
+            </div>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div>
+<div class="modal" id="modal-error">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="columns p-4">
+            <div class="p-4 m-4 column has-background-white has-foreground-black">
+                <h2 class="is-size-4">Oh nose!</h2>
+                <p>
+                    Apologies, but there seems to be an error.
+                    It's probably on my end.
+                    In this case, please send an email to
+                    <strong>jordan@damngood.tech</strong>.
+                </p>
+                <p>
+                    And go ahead and mention this error. I won't mind.
+                </p>
+            </div>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-utils.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-tooltip@1.2.0/dist/bulma-tooltip.min.css">
+<script type="text/javascript">
+
+    const TZURL = "https://gist.github.com/hedcler/062e435d872c17c597423908f8776e27/raw/4e0c37785947eb9afe228c4ae65c4def34098d4e/timezone.json";
+
+    const SCHEDULE_HOST = 'https://dgtscheduler.onrender.com';
+    const SCHEDULE_URL = `${SCHEDULE_HOST}/api/mail`;
+
+
+    $(document).ready(async () => {
+        const now = moment.now();
+        Object.values(moment.tz.names()).forEach(tzname => {
+            tz = moment.tz.zone(tzname)
+            const option = document.createElement("option");
+            const abbrs = (tz.abbrs ? tz.abbrs.filter(($el, i, arr) => arr.indexOf($el) == i).join("/") : "");
+            const offset = tz.utcOffset(now);
+            const offsetH = offset / 60;
+            const offsetM = offset % 60;
+            const pad = offsetM < 10 ? "0" : "";
+            const offsetSign = offset >= 0 ? "+" : ""
+            const value = `(${offsetSign}${offsetH}:${pad}${offsetM}) ${tz.name}`;
+            $(option).val(value);
+            $(option).text(value);
+            $(option).appendTo("#timezone-input");
+            $("#timezone-input")
+        });
+        $("#timezone-input").select2();
+    });
+
+    $("#add-flexibility-row").bind("click", ($e) => {
+        $e.preventDefault();
+        const flexRow = $(".flexibility-row").toArray()[0];
+        const dupRow = flexRow.cloneNode(true);
+        console.log(dupRow);
+        $(dupRow).insertBefore("#add-flexibility-row");
+    });
+
+    function getError() {
+        console.log("getting error");
+        const availDays = $(".input-availability-days").toArray().map(i => $(i).val()).filter(v => v.length > 0);
+        const availTimes = $(".input-availability-times").toArray().map(i => $(i).val()).filter(v => v.length > 0);
+        if (!$("#input-reason").val()) {
+            return "Please specify a reason for the chat.";
+        }
+        if (!$("#timezone-input").val()) {
+            return "Please specify a timezone.";
+        }
+        if ((availDays.length != availTimes.length) || availDays.length == 0) {
+            return "Please ensure the days and times are filled out properly.";
+        }
+        if (!$("#urgency").val()) {
+            return 'Please specify an urgency';
+        }
+        if(!$("#input-email").val()) {
+            return "Please provide an email.";
+        }
+        if (!$("#input-topic").val()) {
+            return "Please provide the topic you'd like to discuss";
+        }
+        return null;
+    }
+
+    $("#submit").on("mouseover", ($e) => {
+        const err = getError();
+        $($e.target).removeAttr("disabled");
+        $("#error-tooltip").removeAttr("data-tooltip");
+        $("#error-tooltip").attr("data-tooltip", err);
+        if (err) $($e.target).attr("disabled", 1);
+    })
+
+    $("#submit").bind("click", async ($e) => {
+        $e.preventDefault();
+        const meeting_type = $("#input-reason").val();
+        const timezone = $("#timezone-input").val();
+        const availDays = $(".input-availability-days").toArray().map(i => $(i).val());
+        const availTimes = $(".input-availability-times").toArray().map(i => $(i).val());
+        const urgency = $("#urgency").val();
+        const availability = availDays.map((ad, i) => [ad, availTimes[i]]);
+        const email = $("#input-email").val();
+        const name = $("#input-name").val();
+        const topic = $("#input-topic").val();
+        const body = {
+            meeting_type,
+            timezone,
+            availability,
+            urgency,
+            email,
+            name,
+            topic,
+        };
+        console.debug("Sending %x", body);
+        $($e.target).attr("disabled", 1);
+        $($e.target).val("Please wait...");
+        const resp = await fetch(SCHEDULE_URL, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify(body),
+        });
+        if ((resp.status) == 200) {
+            $("#modal-success").addClass("is-active");
+        } else {
+            $("#modal-error").addClass("is-active");
+        }
+        $($e.target).removeAttr("disabled");
+        $($e.target).val("Schedule!");
+    });
+
+    
+
+    // ======== BULMA MODAL =============
+    $(document).ready(function() {
+        // Functions to open and close a modal
+        function openModal($el) {
+            $el.addClass('is-active');
+        }
+
+        function closeModal($el) {
+            $el.removeClass('is-active');
+        }
+
+        function closeAllModals() {
+            $('.modal').each(function() {
+            closeModal($(this));
+            });
+        }
+
+        // Add a click event on buttons to open a specific modal
+        $('.js-modal-trigger').each(function() {
+            const modal = $(this).data('target');
+            const $target = $('#' + modal);
+
+            $(this).on('click', function() {
+            openModal($target);
+            });
+        });
+
+        // Add a click event on various child elements to close the parent modal
+        $('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button').each(function() {
+            const $close = $(this);
+            const $target = $close.closest('.modal');
+
+            $close.on('click', function() {
+            closeModal($target);
+            });
+        });
+
+        // Add a keyboard event to close all modals
+        $(document).on('keydown', function(event) {
+            const e = event || window.event;
+
+            if (e.keyCode === 27) { // Escape key
+            closeAllModals();
+            }
+        });
+        });$(document).ready(function() {
+        // Functions to open and close a modal
+        function openModal($el) {
+            $el.addClass('is-active');
+        }
+
+        function closeModal($el) {
+            $el.removeClass('is-active');
+        }
+
+        function closeAllModals() {
+            $('.modal').each(function() {
+            closeModal($(this));
+            });
+        }
+
+        // Add a click event on buttons to open a specific modal
+        $('.js-modal-trigger').each(function() {
+            const modal = $(this).data('target');
+            const $target = $('#' + modal);
+
+            $(this).on('click', function() {
+            openModal($target);
+            });
+        });
+
+        // Add a click event on various child elements to close the parent modal
+        $('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button').each(function() {
+            const $close = $(this);
+            const $target = $close.closest('.modal');
+
+            $close.on('click', function() {
+            closeModal($target);
+            });
+        });
+
+        // Add a keyboard event to close all modals
+        $(document).on('keydown', function(event) {
+            const e = event || window.event;
+
+            if (e.keyCode === 27) { // Escape key
+            closeAllModals();
+            }
+        });
+        });
+
+    
+</script>
+
+</html>
