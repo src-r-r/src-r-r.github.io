@@ -13,7 +13,7 @@ PELICAN_THEMES = HERE / "pelican-themes"
 CUSTOM_THEMES = HERE / "custom-themes"
 
 AUTHOR = "Jordan Hewitt"
-AUTHOR_ROLE = "Portland-Based Professional Web Developer"
+AUTHOR_ROLE = "Portland-Based Professional Software, Web, and Tech Expert"
 SITENAME = "Damn Good Products"
 SITEURL = "https://damngood.tech"
 
@@ -66,8 +66,11 @@ SOCIAL = (
 
 DEFAULT_PAGINATION = 10
 
+from pelican.plugins import seo
+
 PLUGINS = [
     putty,
+    seo,
 ]
 
 M = putty.NavMenu
@@ -129,3 +132,13 @@ MENU = M(
 
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
+
+
+############################3
+#
+# SEO Configuration
+#
+SEO_REPORT = True  # To enable this feature
+SEO_ENHANCER = False  # To disable this feature
+SEO_ENHANCER_OPEN_GRAPH = False # The default value for this feature
+SEO_ENHANCER_TWITTER_CARDS = False # The default value for this feature

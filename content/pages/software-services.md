@@ -1,5 +1,6 @@
-Title: Software Development Services
+Title: Jordan Hewitt's Software Development Services / Damn Good Tech
 Slug: software-services
+Description: My services, which include full stack application development, Database (SQL, Mongo, and more) design, Python, JavaScript, Golang, Linux, and more! Let Damn Good Tech provide solid technical expertise to your business.
 
 Business Solutions for Multi-System Architecture
 ------------------------------------------------

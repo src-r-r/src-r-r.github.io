@@ -1,6 +1,7 @@
-Cuples
-######
+The Hillarious Holiday Cuples
+#############################
 
+:description: A fun cup collection to have at the holidays, get-togethers, or parties.
 :subtitle: The Cups that Belong Together
 
 

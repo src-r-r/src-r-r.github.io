@@ -9,7 +9,7 @@ from jinja2.exceptions import TemplateNotFound
 from pathlib import Path
 from requests import get
 from bs4 import BeautifulSoup
-from rss_parser import Parser
+from .feed import Feed, MediumCleaner
 import abc
 
 log = logging.getLogger(__name__)
@@ -79,9 +79,9 @@ class ExternalFeed:
         self.feed = None
 
     def fetch(self):
-        xml = get(self.feed_url)
-        parser = Parser(xml=xml.content)
-        self.feed = parser.parse()
+        resp = get(self.feed_url)
+        resp.raise_for_status()
+        self.feed = Parser.parse(resp.text)
 
 
 def has_prefixes(prefixes: T.Iterable[T.AnyStr], path: Path):
@@ -110,15 +110,17 @@ def get_feeds(pgen: PagesGenerator):
     feeds = {}
     default_name = "external_feeds"
     for (label, url) in FEEDS.items():
-        feed = ExternalFeed(url)
-        feed.fetch()
-        feeds[label] = feed
+        cleaner = MediumCleaner() if "medium.com" in url else None
+        feed = Feed.from_url(url, True)
+        if cleaner:
+            feed.clean(cleaner)
 
         special_name = f"external_feed_{label.lower()}.html"
 
         default_tpl = None
         special_tpl = None
         delayed = None
+        
 
         try:
             default_tpl = pgen.get_template(default_name)
@@ -126,7 +128,7 @@ def get_feeds(pgen: PagesGenerator):
         except PelicanTemplateNotFound as e:
             delayed = e
 
-        tpl = default_tpl or special_tpl
+        tpl = special_tpl or default_tpl
 
         if not pgen.theme:
             log.warn("Theme is not set for %s", pgen)
@@ -137,10 +139,6 @@ def get_feeds(pgen: PagesGenerator):
             raise TemplateNotFound(f"{default_name} or {special_name} for {themedir}")
 
         outpath = OUTPATH_BASE / (label.lower() + ".html")
-
-        print("Example %s feed item : %s", label, str([i for i in feed.feed.feed][0]))
-
-
 
         outpath.write_text(tpl.render(feed=feed))
 

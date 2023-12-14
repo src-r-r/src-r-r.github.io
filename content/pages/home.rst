@@ -1,8 +1,9 @@
-More than a Software Developer
-==============================
+Jordan Hewitt with Damn Good Tech - More than a Software Developer
+==================================================================
 
 :url: /
 :save_as: index.html
+:description: Protland-Based Tech Expert, 10 years experience, specializing in full stack development, automation, and AI. Schedule a consultation with Jordan today!
 
 My name's Jordan. I'm a relationship-driven software developer who strives to create
 joy, fun, and freedom in peoples' lives.

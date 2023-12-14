@@ -157,3 +157,13 @@ a.btn-primary:hover {
   text-align: center;
   margin: 20% 50pt;
 } */
+
+.putty-card {
+  height: 100%;
+}
+
+.putty-card .btn {
+  width: 100%;
+  border-color: gray;
+  color: #222222;
+}

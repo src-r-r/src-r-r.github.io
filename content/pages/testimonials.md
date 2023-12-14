@@ -1,8 +1,9 @@
-Title: Testimonials
+Title: Read what others have said about Jordan Hewitt and Damn Good Tech
 Slug: testimonials
+Description: Read what CEO's, data scientists, other teach leads, and programmers have said about Portland's Jordan Hewitt and Damn Good Technology. Why others hire me.
 
-What Others Have Said About Me
-------------------------------
+Why Hire me? Read Testimonials about Jordan Hewitt and Damn Good Tech
+---------------------------------------------------------------------
 
 On LinkedIn
 ===========
@@ -58,5 +59,5 @@ Why Wait any Longer?
 ====================
 
 <center>
-    <a href="/pages/schedule.html" class="btn btn-primary">Schedule a Consultation Today</a>
+    <a href="{filename}/pages/schedule.html" class="btn btn-primary">Schedule a Consultation Today</a>
 </center>

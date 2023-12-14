@@ -139,3 +139,5 @@ cython_debug/
 output
 cache
 /home/jordan/Templates/gitignore/Node.gitignore
+*.sqlite
+seo_report.html

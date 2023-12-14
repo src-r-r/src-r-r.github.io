@@ -12,6 +12,10 @@ rss-parser = "*"
 ghp-import = "*"
 markdown = "*"
 beautifulsoup4 = "*"
+pelican-seo = "*"
+bs4 = "*"
+jupyter = "*"
+requests-cache = "*"
 
 [dev-packages]
 
