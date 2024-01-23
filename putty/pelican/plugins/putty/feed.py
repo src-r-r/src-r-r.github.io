@@ -6,10 +6,14 @@ import xml
 import typing as T
 import xml.etree.ElementTree as ET
 from datetime import datetime
-try:
-    import requests_cache as requests
-except ImportError as err:
-    import requests
+# try:
+#     import requests_cache as requests
+# except ImportError as err:
+#     import requests
+import logging
+log = logging.getLogger(__name__)
+
+import requests
 
 HERE = Path(".").resolve()
 
@@ -20,6 +24,8 @@ def textif(tree : ET, xpath : T.AnyStr):
 
 def parse_item_date(text : T.AnyStr, dtformat="%a, %d %b %Y %H:%M:%S %Z"):
     return datetime.strptime(text, dtformat)
+
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
 class Cleaner:
     
@@ -104,7 +110,7 @@ class Feed:
         else:
             session = requests.Session()
         
-        resp = session.get(url)
+        resp = requests.get(url, headers=HEADERS)
         resp.raise_for_status()
         
         return cls.from_text(resp.text)

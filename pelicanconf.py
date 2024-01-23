@@ -3,11 +3,19 @@ from pathlib import Path
 HERE = Path(__file__).parent.resolve()
 import sys
 
+
 sys.path.append(str(HERE))
 from putty.pelican.plugins import putty
 
 sys.path.pop()
 import random
+
+from pelican.plugins import seo
+PLUGINS = [
+    # seo,
+    putty,
+]
+
 
 PELICAN_THEMES = HERE / "pelican-themes"
 CUSTOM_THEMES = HERE / "custom-themes"
@@ -15,7 +23,7 @@ CUSTOM_THEMES = HERE / "custom-themes"
 AUTHOR = "Jordan Hewitt"
 AUTHOR_ROLE = "Portland-Based Professional Software, Web, and Tech Expert"
 SITENAME = "Damn Good Products"
-SITEURL = "https://damngood.tech"
+SITEURL = "http://src-r-r.github.io"
 
 PATH = str(HERE / "content")
 
@@ -66,12 +74,6 @@ SOCIAL = (
 
 DEFAULT_PAGINATION = 10
 
-from pelican.plugins import seo
-
-PLUGINS = [
-    putty,
-    seo,
-]
 
 M = putty.NavMenu
 I = putty.NavItem
@@ -131,7 +133,7 @@ MENU = M(
 )
 
 # Uncomment following line if you want document-relative URLs when developing
-RELATIVE_URLS = True
+# RELATIVE_URLS = True
 
 
 ############################3
@@ -142,3 +144,5 @@ SEO_REPORT = True  # To enable this feature
 SEO_ENHANCER = False  # To disable this feature
 SEO_ENHANCER_OPEN_GRAPH = False # The default value for this feature
 SEO_ENHANCER_TWITTER_CARDS = False # The default value for this feature
+
+SITEURL = "damngood.tech"
