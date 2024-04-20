@@ -8,7 +8,7 @@ OUTPUTDIR=$(BASEDIR)/output
 CONFFILE=$(BASEDIR)/pelicanconf.py
 PUBLISHCONF=$(BASEDIR)/publishconf.py
 
-SSH_HOST=damngood.tech
+SSH_HOST=src-r-r.github.io
 SSH_PORT=22
 SSH_USER=admin
 SSH_TARGET_DIR=/var/www
