@@ -118,6 +118,7 @@ MENU = M(
     ),
     M(
         "Hire Me",
+        I("FAQs", "/pages/faqs.html"),
         I("On UpWork", "https://www.upwork.com/freelancers/~0105fc69312e2da97a"),
         I(
             "On Perfectlancer",
