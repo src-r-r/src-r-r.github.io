@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "ts-node ./scripts/compose.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "liquidjs": "^10.13.1"
+    "@types/sass-loader": "^8.0.8",
+    "bulma": "^1.0.1",
+    "glob": "^10.4.1",
+    "liquidjs": "^10.13.1",
+    "sass": "^1.77.4",
+    "sass-loader": "^14.2.1",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"
