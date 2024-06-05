@@ -51,11 +51,10 @@ class StaticTag extends Tag {
 
 function main() {
 
-    rmSync(OUTPUT, { recursive: true });
-
     const engine = new Liquid({
         layouts: DGTSTATIC_TEMPLATES,
         cache: true,
+        dynamicPartials: true,
     });
 
     engine.registerTag("static", StaticTag);
