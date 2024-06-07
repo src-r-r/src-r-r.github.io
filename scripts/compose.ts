@@ -15,38 +15,6 @@ const STATIC = join(PROJECT, "static");
 
 const PAGES_PATTERN = join(PAGES, "**/*.liquid");
 
-class StaticTag extends Tag {
-    private inPath: string | null = null;
-    private outPath: string | null = null;
-    private refPath: string | null = null;
-
-    constructor(tagToken: TagToken, remainTokens: TopLevelToken[], liquid: Liquid) {
-        super(tagToken, remainTokens, liquid);
-        const inPath = this.token.args.replace(/['"]/g, '');
-        this.inPath = join(STATIC, inPath);
-        this.refPath = join("/static", inPath);
-        this.outPath = join(OUTPUT, "static", inPath);
-        console.log("Compiling %s", inPath);
-        console.log("  -> outPath: %s", this.outPath);
-        console.log("  -> refPath: %s", this.refPath);
-    }
-
-    compileSass() {
-        this.outPath = (this.outPath as string).replace(/.sass$/, ".css");
-        sass.compileAsync(this.inPath as string).then((value) => {
-            mkdirSync(dirname(this.outPath as string), { recursive: true, });
-            writeFileSync(this.outPath as string, value.css);
-        }).catch((err) => {
-            console.error(err);
-        });
-        return this.refPath?.replace(/.sass$/, ".css");
-    }
-
-    * render(ctx: Context, emitter: Emitter) {
-        if ((this.inPath?.match(/\.sass$/g))) return this.compileSass();
-        return this.refPath;
-    }
-}
 
 
 function main() {

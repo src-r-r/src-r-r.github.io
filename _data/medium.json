@@ -1,0 +1,560 @@
+[
+    {
+        "date": "2024-05-21T07:00:00.000Z",
+        "title": "Why You Should Still Learn C in 2024 and 2025",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*-n6V3ynmVjoUMnftHUzuCQ.png",
+        "url": "https://medium.com/@damngoodtech/why-you-should-still-learn-c-in-2024-and-2025-acf1b6ae93e8",
+        "subtitle": "C (a language that has been around since the 70&#39;s) has changed very little since the early 00’s. Compare that to languages like Python and JavaScript that change faster than developers that keep up with them, and it’s easy to overlook C as archaic. However, C (and it’s derived language, C++) is a vital language very much in use today. In this article, I’ll discuss why it’s important to learn (and know) C and C++ in 2024 and 2025.",
+        "teaser": "C (a language that has been around since the 70&#39;s) has changed very little since the early 00’s. Compare that to languages like Python and JavaScr…"
+    },
+    {
+        "date": "2024-02-20T08:00:00.000Z",
+        "title": "Big Idea: Solid Architecture to Overcome The Glaringly Bad AI Privacy Issues",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*S8QAzxCj9XDMwEyIH3RKpw.png",
+        "url": "https://medium.com/@damngoodtech/big-idea-solid-architecture-to-overcome-the-glaringly-bad-ai-privacy-issues-a6a46581f5fe",
+        "subtitle": "While we fight about whether AI is helping workers or destroying jobs, not many of us consider a major hurdle AI has yet to overcome: privacy. This article dives into what the issue is, and what we can do about it.",
+        "teaser": "While we fight about whether AI is helping workers or destroying jobs, not many of us consider a major hurdle AI has yet to overcome: privacy. This ar…"
+    },
+    {
+        "date": "2024-01-15T08:00:00.000Z",
+        "title": "A Straightforward Guide to Back-End JavaScript",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*mC9IF0Tn4zKSzFMWSnJHNg.png",
+        "url": "https://medium.com/@damngoodtech/a-straightforward-guide-to-back-end-javascript-23b5c588ad21",
+        "subtitle": "This is how you get data to a user.",
+        "teaser": "This is how you get data to a user."
+    },
+    {
+        "date": "2024-01-08T08:00:00.000Z",
+        "title": "Want the DOM Explained Like You’re 5? Then This Article is for You",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*dEi9pj8-DnwnyKOYQYxv6w.png",
+        "url": "https://medium.com/@damngoodtech/want-the-dom-explained-like-youre-5-then-this-article-is-for-you-26dd83e41d48",
+        "subtitle": "It has nothing to do with fast cars or saying “family” in a gravely voice, but has everything to do with how your browser understands cat videos, capybara pictures, and your mother’s political Facebook rant. By the end of this, you’ll not only be able to explain the DOM like you’re five, but you’ll be able to explain the DOM like you’ve been working at Google for a decade!",
+        "teaser": "It has nothing to do with fast cars or saying “family” in a gravely voice, but has everything to do with how your browser understands cat videos, capy…"
+    },
+    {
+        "date": "2023-12-27T08:00:00.000Z",
+        "title": "This is What your Tech Team NEEDS to do in 2024 to Stay Ahead",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*iIGz4EaoCOm7JpDN-9lnHQ.png",
+        "url": "https://medium.com/@damngoodtech/this-is-what-your-tech-team-needs-to-do-in-2024-to-stay-ahead-4b9f742a9806",
+        "subtitle": "Don’t fall behind. Set the curve. Let others follow in your footsteps.",
+        "teaser": "Don’t fall behind. Set the curve. Let others follow in your footsteps."
+    },
+    {
+        "date": "2023-12-13T08:00:00.000Z",
+        "title": "The Unseen Deployment Puzzle: Why Heroku Won’t Deploy When Config Variables Are Involved",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*FqZ0b6kMPjeASpBbDX8bLA.png",
+        "url": "https://medium.com/@damngoodtech/ration-the-unseen-deployment-puzzle-why-heroku-wont-deploy-when-config-variables-are-involved-8da548cd5045",
+        "subtitle": "Have you ever encountered a situation where Heroku won’t deploy your application, even though everything seems to be in place? If yes, then this article is for you. I’ll unravel the mystery behind this deployment conundrum and provide a simple solution that works like a charm. ✨",
+        "teaser": "Have you ever encountered a situation where Heroku won’t deploy your application, even though everything seems to be in place? If yes, then this artic…"
+    },
+    {
+        "date": "2023-12-07T08:00:00.000Z",
+        "title": "AI Weather Prediction Pipeline: From User Message to Accurate Forecast",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*DqB3Jitc2mk5rb2vrLwzTA.png",
+        "url": "https://medium.com/@damngoodtech/ai-weather-prediction-pipeline-from-user-message-to-accurate-forecast-abd7d861e9e0",
+        "subtitle": "Today we’re going to unleash the power of AI to predict weather forecasts! In this article I’ll walk through how to build a robust pipeline that takes user messages and turns them into accurate weather predictions. But keep in mind — this isn’t just about bots; it’s about harnessing the collective intelligence of different models to accomplish a task!",
+        "teaser": "Today we’re going to unleash the power of AI to predict weather forecasts! In this article I’ll walk through how to build a robust pipeline that takes…"
+    },
+    {
+        "date": "2023-12-04T08:00:00.000Z",
+        "title": "How to be a Django Form Mixologist",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*ngPjUo3X1z_uUjBKW9crFQ.png",
+        "url": "https://medium.com/@damngoodtech/how-to-be-a-django-form-mixologist-5d70b6beba37",
+        "subtitle": "You’ve undoubtedly come across the Mixin pattern in Python: it allows for easy inheritance and a DRY method for code. However, the clean method makes things a bit tricky, especially when dealing with cleaning fields that depend on each other. This guide will show you how to properly implement a Django form with mixin classes.",
+        "teaser": "You’ve undoubtedly come across the Mixin pattern in Python: it allows for easy inheritance and a DRY method for code. However, the clean method makes …"
+    },
+    {
+        "date": "2023-11-27T08:00:00.000Z",
+        "title": "How to Use AI Intelligently in Your Organization",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*EAasfFjbJPlbxTeN2vF0KQ.png",
+        "url": "https://medium.com/@damngoodtech/how-to-use-ai-intelligently-in-your-organization-6713d828c97b",
+        "subtitle": "Avoid shiny object syndrome ✨ while still setting the curve 📈. Your team and customers will thank you. 🙏",
+        "teaser": "Avoid shiny object syndrome ✨ while still setting the curve 📈. Your team and customers will thank you. 🙏"
+    },
+    {
+        "date": "2023-11-14T08:00:00.000Z",
+        "title": "How to Hire a Tech Lead To Handle Your Next (or Current) Software Project",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*kH7nmpbFbdTv0t02Zyf62g.png",
+        "url": "https://medium.com/@damngoodtech/how-to-hire-a-tech-lead-to-handle-your-next-or-current-software-project-d016d6966472",
+        "subtitle": "No matter your technical background, it’s easy to hire a qualified tech lead for your project. Whether it’s an app that you want to create or a website maintained, coming prepared for your initial consultation is important for your teams’ success. Here are some things to consider to make the most of your teams’ time.",
+        "teaser": "No matter your technical background, it’s easy to hire a qualified tech lead for your project. Whether it’s an app that you want to create or a websit…"
+    },
+    {
+        "date": "2023-11-02T07:00:00.000Z",
+        "title": "Want to Maximize your Profits on Open Source Products? Gain Insight with 🍕 OpenSauced",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*fRPLG87x4E3rpfMX",
+        "url": "https://medium.com/@damngoodtech/want-to-maximize-your-profits-on-open-source-products-gain-insight-with-opensauced-a539008d99a4",
+        "subtitle": "I did come across a project someone just dropped 🫳🏻🎤 on the LeadDeveloper’s Slack the other week that I think would be beneficial for organizations that have an open source project. In this article, I took the product for a little spin.",
+        "teaser": "I did come across a project someone just dropped 🫳🏻🎤 on the LeadDeveloper’s Slack the other week that I think would be beneficial for organizations…"
+    },
+    {
+        "date": "2023-10-05T07:00:00.000Z",
+        "title": "Creating 3D Stereo Images From 2D Images using InvokeAI",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*YRPrNBYYZRGEhRgv47M35w.png",
+        "url": "https://medium.com/@damngoodtech/creating-3d-stereo-images-from-2d-images-using-invokeai-4245902abef5",
+        "subtitle": "This is more a technical description of how to create a 3D image from a 2D image. Why? Because the feature didn’t exist and I wanted to create it. If you want to understand depth maps, numpy, and the importance of inpainting, read on.",
+        "teaser": "This is more a technical description of how to create a 3D image from a 2D image. Why? Because the feature didn’t exist and I wanted to create it. If …"
+    },
+    {
+        "date": "2023-09-27T07:00:00.000Z",
+        "title": "Long-Overdue Update and Exciting Announcement for Tech Teams!",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*i96JmrSItxp8X-sJ",
+        "url": "https://medium.com/@damngoodtech/long-overdue-update-and-exciting-announcement-for-tech-teams-673271fdca50",
+        "teaser": ""
+    },
+    {
+        "date": "2023-07-25T07:00:00.000Z",
+        "title": "Want a Better Software Product? Read Fiction",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*FU68ttmbRevdrZ8rSsiUHw.png",
+        "url": "https://medium.com/@damngoodtech/want-a-better-software-product-read-fiction-75fcaaeff0a6",
+        "subtitle": "After reading this article, you’ll want to shelve all your business books for a while to pick up a novel. The best part: your customers will thank you!",
+        "teaser": "After reading this article, you’ll want to shelve all your business books for a while to pick up a novel. The best part: your customers will thank you…"
+    },
+    {
+        "date": "2023-07-19T07:00:00.000Z",
+        "title": "Why Open Sourcing your Stack Means More Customers and Better Software",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*g-4h4_KeHRMw7nmAZfeRCw.png",
+        "url": "https://medium.com/@damngoodtech/why-open-sourcing-your-stack-means-more-customers-and-better-software-28a47e0b22f4",
+        "subtitle": "While many make the case that open source is an ethical obligation, there is also a financial incentive to open your source code. But how can you take the step onto the waters?",
+        "teaser": "While many make the case that open source is an ethical obligation, there is also a financial incentive to open your source code. But how can you take…"
+    },
+    {
+        "date": "2023-07-07T07:00:00.000Z",
+        "title": "How to Easily Restore a PostgreSQL Database in a Docker Container",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*Jmg7lGo-YVCFi-Fq",
+        "url": "https://medium.com/@damngoodtech/how-to-easily-restore-a-postgresql-database-in-a-docker-container-23ccfaa3d60b",
+        "subtitle": "By now you’re aware docker containers are here to stay. They ensure a consistent development environment between different hosts. But how do you restore a PostgreSQL (psql for short) database within a docker container? In this article, I share how.",
+        "teaser": "By now you’re aware docker containers are here to stay. They ensure a consistent development environment between different hosts. But how do you resto…"
+    },
+    {
+        "date": "2023-07-06T07:00:00.000Z",
+        "title": "How to Solve Pipenv Dependency Errors",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*XDtnwa6EO3UTTqrk",
+        "url": "https://medium.com/@damngoodtech/how-to-solve-pipenv-dependency-errors-75b409d4dfe",
+        "subtitle": "While Pipenv’s dependency management is (IMO) slightly better than poetry (feel free to fight me in the comments), there are still scenarios where pipenv fails. In this article I detail how to debug failed dependencies.",
+        "teaser": "While Pipenv’s dependency management is (IMO) slightly better than poetry (feel free to fight me in the comments), there are still scenarios where pip…"
+    },
+    {
+        "date": "2023-06-14T07:00:00.000Z",
+        "title": "4 Steps to Setting the 𝓒𝓾𝓻𝓿𝓮 | ② Converse",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*NwmRX6NegEHiNMgJLLD5Fw.png",
+        "url": "https://medium.com/@damngoodtech/4-steps-to-setting-the-%E2%91%A1-converse-5063036d4ee0",
+        "subtitle": "Is your business behind the curve, ahead of the curve, or setting the curve? Businesses that set the curve no only earn a profit, but set their team up to succeed. How do you do achieve this? Follow this 4-part series to find out!",
+        "teaser": "Is your business behind the curve, ahead of the curve, or setting the curve? Businesses that set the curve no only earn a profit, but set their team u…"
+    },
+    {
+        "date": "2023-06-07T07:00:00.000Z",
+        "title": "4 Steps to Setting the 𝓒𝓾𝓻𝓿𝓮 | ① Receive",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*NlNKgnxstj4aypHAHLxJeQ.png",
+        "url": "https://medium.com/@damngoodtech/4-steps-to-setting-the-%E2%91%A0-receive-11bd61cf7c36",
+        "subtitle": "Is your business behind the curve, ahead of the curve, or setting the curve? Businesses that set the curve no only earn a profit, but set their team up to succeed. How do you do achieve this? Follow this 4-part series to find out!",
+        "teaser": "Is your business behind the curve, ahead of the curve, or setting the curve? Businesses that set the curve no only earn a profit, but set their team u…"
+    },
+    {
+        "date": "2023-05-31T07:00:00.000Z",
+        "title": "What’s Portland’s InfoSec (RainSec) Like? Great! You Should Go!",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*bViw-ynqVPTqejWI",
+        "url": "https://medium.com/@damngoodtech/whats-infosec-pdx-like-great-you-should-go-1d5e3d4a358d",
+        "subtitle": "Meeting at a bar in Portland, InfoSec (information security) enthusiasts and dabblers meet to talk about all things security. I even managed to start a developer’s union! 😆 If you’re in technology, or interested in InfoSec and are in the Portland area, you should check it out.",
+        "teaser": "Meeting at a bar in Portland, InfoSec (information security) enthusiasts and dabblers meet to talk about all things security. I even managed to start …"
+    },
+    {
+        "date": "2023-05-30T07:00:00.000Z",
+        "title": "Make More Money 🤑🤑 with Your Product: Other Areas of Profit You Might Not Have Thought Of",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*KEp626iplpXwncd2",
+        "url": "https://medium.com/@damngoodtech/make-more-money-with-your-product-other-areas-of-profit-you-might-not-have-thought-of-f18ec80b7676",
+        "subtitle": "Give your SaaS product or app an edge in the market by capitalizing on new untapped opportunities for profit.",
+        "teaser": "Give your SaaS product or app an edge in the market by capitalizing on new untapped opportunities for profit."
+    },
+    {
+        "date": "2023-05-26T07:00:00.000Z",
+        "title": "Nearly all Tech Companies Fail to Ask Candidates this Vital Interview Question",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*T5sTEYu3BESFowNI",
+        "url": "https://medium.com/@damngoodtech/nearly-all-tech-companies-fail-to-ask-candidates-this-vital-interview-question-bc28e98eebcb",
+        "subtitle": "Even big dogs like Google and Amazon fail to ask this question, but it can eliminate at least 10 other questions, improve your business, and potentially make you money even before you hire on a developer. Are you in the 1%?",
+        "teaser": "Even big dogs like Google and Amazon fail to ask this question, but it can eliminate at least 10 other questions, improve your business, and potential…"
+    },
+    {
+        "date": "2023-05-23T07:00:00.000Z",
+        "title": "Vital GPT and LLM Understanding For Your Business",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*IFrXlQ_PFhnzUQe51QNMdQ.png",
+        "url": "https://medium.com/@damngoodtech/vital-gpt-and-llm-understanding-for-your-business-9948b4384d73",
+        "subtitle": "While ClosedAI (sorry, OpenAI) has provided valuable tools for developers, employees, and companies alike, there are risks associated with using the service and services like it. In this article I’ll break down the LLM ecosystem, things to consider, and ways your company can mitigate risk.",
+        "teaser": "While ClosedAI (sorry, OpenAI) has provided valuable tools for developers, employees, and companies alike, there are risks associated with using the s…"
+    },
+    {
+        "date": "2023-05-17T07:00:00.000Z",
+        "title": "The Junior Dev Just Deleted Production Database! Here’s How to Fire Their A#@!",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*qTPxM-Sb0oP1qtlJ",
+        "url": "https://medium.com/@damngoodtech/the-junior-dev-just-deleted-production-database-heres-how-to-fire-their-a-f7dba9ad4f14",
+        "subtitle": "Better yet, here are reasons not to, and a better way forward.",
+        "teaser": "Better yet, here are reasons not to, and a better way forward."
+    },
+    {
+        "date": "2023-05-08T07:00:00.000Z",
+        "title": "How to Solve: django.db.migrations.exceptions.InconsistentMigrationHistory When Running migrate",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*WPo5OR69-CefqMNuzJInAg.png",
+        "url": "https://medium.com/@damngoodtech/how-to-solve-django-db-migrations-exceptions-inconsistentmigrationhistory-when-running-migrate-6e8f4e60fbbe",
+        "subtitle": "In this article, I walk through how to solve the InconsistentMigrationHistory error when running a migration. While wiping your database is a solution, it isn’t ideal, especially if you’re working in a non-dev environment. Here’s how to do it safely.",
+        "teaser": "In this article, I walk through how to solve the InconsistentMigrationHistory error when running a migration. While wiping your database is a solution…"
+    },
+    {
+        "date": "2023-05-02T07:00:00.000Z",
+        "title": "How I Learned to be a Better Tech Salesperson by Watching Police Interrogation Videos",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*i01zJuM10MsAaS4E",
+        "url": "https://medium.com/@damngoodtech/how-i-learned-to-be-a-better-tech-salesperson-by-watching-police-interrogation-videos-bc1891c1f2d8",
+        "subtitle": "For my international readers, it’s common knowledge (but not common enough) that if you’re ever called into question by police, you have a right to obtain legal counsel, meaning police are legally obligated to end an interrogation. But that doesn’t stop some suspects from thinking they’ll outsmart the police and waive that right, almost ensuring they’ll be locked up, and providing fodder for edutainment on YouTube. While the intention of the interrogation is antagonistic (whereas sales should be collaborative — working toward the same goal) many of the concepts are similar for obtaining said goal.",
+        "teaser": "For my international readers, it’s common knowledge (but not common enough) that if you’re ever called into question by police, you have a right to ob…"
+    },
+    {
+        "date": "2023-04-27T07:00:00.000Z",
+        "title": "AI / ChatGPT: Privacy Solutions For Your Business",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*7PxUuqb7RILOooU3va7v_g.png",
+        "url": "https://medium.com/@damngoodtech/ai-chatgpt-privacy-solutions-for-your-business-f4b8533c1cc7",
+        "teaser": ""
+    },
+    {
+        "date": "2023-04-24T07:00:00.000Z",
+        "title": "Code or No-Code? Here’s How to Decide",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*s8YE4avVSyhhLc3Mo3duwg.png",
+        "url": "https://medium.com/@damngoodtech/code-or-no-code-heres-how-to-decide-b0c7de1c7526",
+        "subtitle": "The promise of no-code platforms seems beguiling. Even with 0 coding experience, in a matter of hours have a fully-working application up in no time! Although a powerful tool, the no-code platforms (even the AI-driven ones) aren’t the panacea that the companies claim. Here’s how to decide when to use a no-code platform and when to hire a developer.",
+        "teaser": "The promise of no-code platforms seems beguiling. Even with 0 coding experience, in a matter of hours have a fully-working application up in no time! …"
+    },
+    {
+        "date": "2023-04-13T07:00:00.000Z",
+        "title": "How to Set Up an AWS EC2 Instance For GPU Work",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*NdhKxIZqKV44pKHq_ohzDg.png",
+        "url": "https://medium.com/@damngoodtech/how-to-set-up-an-aws-ec2-instance-for-gpu-work-ff7ff0c799ca",
+        "subtitle": "No, this is not a guide on how to set one up for mining (I would be very surprised if Amazon doesn’t shut you down if they hint your mining crypto). But there are definitely many more uses for a GPU — such as NLP, AI Art, and benchmarking. In this guide I’ll walk through how to set up an EC-2 Instance to run an NVIDIA GPU. I’d recommend your read through this guide before getting started, as you’ll have to reach out to AWS at some point.",
+        "teaser": "No, this is not a guide on how to set one up for mining (I would be very surprised if Amazon doesn’t shut you down if they hint your mining crypto). B…"
+    },
+    {
+        "date": "2023-04-11T07:00:00.000Z",
+        "title": "Can We Stop Deepfakes?",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*ecu9Ob6lv8ym7KurQrR4aw.png",
+        "url": "https://medium.com/@damngoodtech/can-we-stop-deepfakes-63d587abfc69",
+        "subtitle": "While a lot of self-purported tech experts are claiming that Chat-GPT3 will rename itself to Skynet and start annihilating humanity, a problem much closer to home is plaguing humanity: Deepfakes. It seems that — once again — humanity’s biggest threat is itself. In this article, I’ll dive into what the problem is, and what (if anything) can be done about it.",
+        "teaser": "While a lot of self-purported tech experts are claiming that Chat-GPT3 will rename itself to Skynet and start annihilating humanity, a problem much cl…"
+    },
+    {
+        "date": "2023-04-06T07:00:00.000Z",
+        "title": "Why Hasn’t Self-Sovereign Identity Caught on Yet?",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*5S-kI8T01ewta06N.jpg",
+        "url": "https://medium.com/@damngoodtech/why-hasnt-self-sovereign-identity-caught-on-yet-2f7adda92e16",
+        "subtitle": "You have an appointment with a new doctor. Like Nala striding past the hyenas in Lion King, You pass stressed-out patients with their phone in one hand, pen in the other, trying to remember where they lived in 2004. You tell the desk attendant “careful-harvest-thoughtful,” a token you generated for your SSI account. A moment later, you get a notification on your phone, asking to retrieve your first name, last name, address, and other details. You approve it. In seconds, you’re all set for your appointment. That’s one of the applications of Self-Sovereign Identity, or SSI.",
+        "teaser": "You have an appointment with a new doctor. Like Nala striding past the hyenas in Lion King, You pass stressed-out patients with their phone in one han…"
+    },
+    {
+        "date": "2023-04-03T07:00:00.000Z",
+        "title": "Everything you Wanted to Know About Software Versioning, but were Too Afraid to Ask",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*bQWBMs3WMwvlY08j",
+        "url": "https://medium.com/@damngoodtech/everything-you-wanted-to-know-about-software-versioning-but-were-too-afraid-to-ask-700a634cfc55",
+        "subtitle": "They include more dots than paper underneath a leaky ballpoint pen. They include a bunch of numbers that seem random. And what’s up with the -alpha, and -beta tags?",
+        "teaser": "They include more dots than paper underneath a leaky ballpoint pen. They include a bunch of numbers that seem random. And what’s up with the -alpha, a…"
+    },
+    {
+        "date": "2023-03-27T07:00:00.000Z",
+        "title": "How to Install and Run runpodctl to control a runpod.io pod",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*274JqnzFFIff_Ap18-_CMw.png",
+        "url": "https://medium.com/@damngoodtech/how-to-install-and-run-runpodctl-to-control-a-runpod-io-pod-c6688da31637",
+        "subtitle": "If you’ve checked out runpod.io lately for AI or GPU work, then you may have run into mention of runpodctl. Here is a “quickstart” guide to help get you set up.",
+        "teaser": "If you’ve checked out runpod.io lately for AI or GPU work, then you may have run into mention of runpodctl. Here is a “quickstart” guide to help get y…"
+    },
+    {
+        "date": "2023-03-27T07:00:00.000Z",
+        "title": "How Innovative is YOUR Organization?…Join Other Teams At Innovation Adventure on April 15th To Find Out",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*nNpCXHQXxk14R3dUZNISJw.png",
+        "url": "https://medium.com/@damngoodtech/how-innovative-is-your-organization-8c66319745e0",
+        "subtitle": "Join amazing speakers virtually on Saturday morning (PST time) to learn how to empower and inspire your team to think outside the box and serve the community around you. Then, kickstart the experience with a 30-day competition.",
+        "teaser": "Join amazing speakers virtually on Saturday morning (PST time) to learn how to empower and inspire your team to think outside the box and serve the co…"
+    },
+    {
+        "date": "2023-03-15T07:00:00.000Z",
+        "title": "How to Network Effectively (In-Person) as an HSP",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*A3SVVbvbVx3KcXlKSob49A.png",
+        "url": "https://medium.com/@damngoodtech/how-to-network-effectively-in-person-as-an-hsp-80ab8edc5ef0",
+        "subtitle": "There’s being an introvert, and then there’s being an HSP, or Highly Sensitive Person. As an HSP myself, I very much know how room full of people is complete chaos, but I’ve found ways to not only cope, but to thrive. In this article, I’d like to share ways that I can get through networking events without collapsing into bed when I get home.",
+        "teaser": "There’s being an introvert, and then there’s being an HSP, or Highly Sensitive Person. As an HSP myself, I very much know how room full of people is c…"
+    },
+    {
+        "date": "2023-02-28T08:00:00.000Z",
+        "title": "How To Call Any Query Builder in Go’s Squirrel Library",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*avWA-GGyv078wxPs",
+        "url": "https://medium.com/@damngoodtech/how-to-call-any-query-builder-in-gos-squirrel-library-efa7aeefc42b",
+        "subtitle": "If you came here looking to find a way to pass a generic Squirrel query builder to an sql driver you came to the right place.",
+        "teaser": "If you came here looking to find a way to pass a generic Squirrel query builder to an sql driver you came to the right place."
+    },
+    {
+        "date": "2023-02-21T08:00:00.000Z",
+        "title": "I Got My First Mac — Apple Treated Me Like a Pariah",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*fxFVbdR-bygLrotG",
+        "url": "https://medium.com/@damngoodtech/i-got-my-first-mac-apple-treated-me-like-a-pariah-c7109dcf4f3c",
+        "subtitle": "Apparently you need to already be in the Mac club to join.",
+        "teaser": "Apparently you need to already be in the Mac club to join."
+    },
+    {
+        "date": "2023-02-07T08:00:00.000Z",
+        "title": "AMD, ROCM, PyTorch, and AI on Ubuntu: The Rules of the Jungle",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*0eJm054Au0ja_p_LZvggdA.png",
+        "url": "https://medium.com/@damngoodtech/amd-rocm-pytorch-and-ai-on-ubuntu-the-rules-of-the-jungle-24a7ab280b17",
+        "subtitle": "Are you the awkward lanky kid trying to join the other cool athletes on the field? Or perhaps you went out to buy an NVIDIA video card, only to realize the 2GB VRAM won’t get you very far? And better yet “upgraded” to an AMD? And then when you got it home and then started hacking away on spacy and Stable Diffusion you realize that it’s a nightmare?",
+        "teaser": "Are you the awkward lanky kid trying to join the other cool athletes on the field? Or perhaps you went out to buy an NVIDIA video card, only to realiz…"
+    },
+    {
+        "date": "2023-01-31T08:00:00.000Z",
+        "title": "Different Ways of Formatting a String in Python, and When to Use Them",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*NQUkVZQ3LK9k7-dxZ8PtOw.png",
+        "url": "https://medium.com/@damngoodtech/different-ways-of-formatting-a-string-in-python-and-when-to-use-them-e2c826cc8bda",
+        "teaser": ""
+    },
+    {
+        "date": "2023-01-24T08:00:00.000Z",
+        "title": "Is Jamsync the Git-Killer? 🍇 Taking Jamsync for a 🔄 Spin",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*uokUrkTc0P70x8IJ-FMMgQ.png",
+        "url": "https://medium.com/@damngoodtech/is-jamsync-the-git-killer-taking-jamsync-for-a-spin-ce35a8b8fd87",
+        "subtitle": "First it was SVN (with CVS doing a sideshow). Then it was Git (with Mercurial saying “Look at me! Look at me!”), and git now seems to be The Golden Standard. But could this rsync-based project upend all that? I checked it out this weekend to decide.",
+        "teaser": "First it was SVN (with CVS doing a sideshow). Then it was Git (with Mercurial saying “Look at me! Look at me!”), and git now seems to be The Golden St…"
+    },
+    {
+        "date": "2023-01-19T08:00:00.000Z",
+        "title": "How to Radically Change an Industry Without Losing Your Head (Or Career)",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*3u_REA0pAZ7t1SI9duov9w.png",
+        "url": "https://medium.com/@damngoodtech/how-to-radically-change-an-industry-without-losing-your-head-or-career-1f9c9936b553",
+        "subtitle": "In the face of an industry seeded with corruption, it can be daunting to know where you stand and — more importantly — how to stand. It can be so overwhelming that often we just smile and pretend we’re okay with these things happening. But, still, we can take positive action in order to enact real change on an industry. Here’s how.",
+        "teaser": "In the face of an industry seeded with corruption, it can be daunting to know where you stand and — more importantly — how to stand. It can be so over…"
+    },
+    {
+        "date": "2022-12-20T08:00:00.000Z",
+        "title": "A Love Letter to Those Unemployed",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*qhVRdvMirDDhpG7s",
+        "url": "https://medium.com/@damngoodtech/a-love-letter-to-those-unemployed-144e2f4b9cf7",
+        "subtitle": "We’re coming upon the Christmas season and looking upon a new year in 2023. To some, it’s magical and fun. To others it’s frantic and stressful. Still, for others, it’s a time to feel excluded, ignored, and abandoned. The purpose of this letter is to provide you with hope and to help you feel that you’re not forgotten.",
+        "teaser": "We’re coming upon the Christmas season and looking upon a new year in 2023. To some, it’s magical and fun. To others it’s frantic and stressful. Still…"
+    },
+    {
+        "date": "2022-12-06T08:00:00.000Z",
+        "title": "This is How Email Calendar Event Invites Work",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*43BeVsSTW5BahT0q",
+        "url": "https://medium.com/@damngoodtech/this-is-how-email-calendar-event-invites-work-38a843cc79e",
+        "subtitle": "Ever curious how calendly, cal.com, and Meetup send you an email that integrates seamlessly with your email? Wonder no more! I break it down for you in this article.",
+        "teaser": "Ever curious how calendly, cal.com, and Meetup send you an email that integrates seamlessly with your email? Wonder no more! I break it down for you i…"
+    },
+    {
+        "date": "2022-11-29T08:00:00.000Z",
+        "title": "Does golang Make a Good Web Development Framework? Here Are Some Things to Consider",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*4qsOIbJPdeL1mNHO",
+        "url": "https://medium.com/@damngoodtech/does-golang-make-a-good-web-development-framework-here-are-some-things-to-consider-ca5adbebfe1e",
+        "teaser": ""
+    },
+    {
+        "date": "2022-11-21T08:00:00.000Z",
+        "title": "Things You Don’t Need to Incorporate In a Docker Container",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*fd30tV_1f-k7kNIW",
+        "url": "https://medium.com/@damngoodtech/things-you-dont-need-to-incorporate-in-a-docker-container-98cdd550476c",
+        "subtitle": "Save yourself development time and headaches with microservice architecture",
+        "teaser": "Save yourself development time and headaches with microservice architecture"
+    },
+    {
+        "date": "2022-11-15T08:00:00.000Z",
+        "title": "Finding A Survival Job with a Processing Disorder",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*5bPpbhYJ4P3d_KDA",
+        "url": "https://medium.com/@damngoodtech/finding-a-survival-job-with-a-processing-disorder-3cdd17123103",
+        "teaser": ""
+    },
+    {
+        "date": "2022-11-08T08:00:00.000Z",
+        "title": "What is Keeping You from Playing? Here are 3 Reasons",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*ZgrNUNgJhrM_atBB",
+        "url": "https://medium.com/@damngoodtech/what-is-keeping-you-from-playing-here-are-3-reasons-87952e78388e",
+        "teaser": ""
+    },
+    {
+        "date": "2022-10-18T07:00:00.000Z",
+        "title": "The Scary Era 😬 of Embracing My Identity as a Multipotentialite",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*K0m7UZbPbc5dAqOw",
+        "url": "https://medium.com/@damngoodtech/the-scary-era-of-embracing-my-identity-as-a-multipotentialite-d2ab59ae96f2",
+        "teaser": ""
+    },
+    {
+        "date": "2022-10-11T07:00:00.000Z",
+        "title": "Don’t Read from File Paths; Do This Instead",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*d205egZ5i2r597BG",
+        "url": "https://medium.com/@damngoodtech/dont-read-from-file-paths-do-this-instead-8c5f01a6eebd",
+        "teaser": ""
+    },
+    {
+        "date": "2022-10-04T07:00:00.000Z",
+        "title": "How To Automatically Build, Compile, and Test CMake/ C++ Unit Tests on File Save",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*ju-OM7Joinj60zx6guBoyg.gif",
+        "url": "https://medium.com/@damngoodtech/how-to-automatically-build-compile-and-test-cmake-c-unit-tests-on-file-save-9e7fe259e7ae",
+        "teaser": ""
+    },
+    {
+        "date": "2022-09-28T07:00:00.000Z",
+        "title": "A Password Manager Would Have Prevented the Uber Leak",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*hdfdO3cjWdOdwybp",
+        "url": "https://medium.com/@damngoodtech/a-password-manager-would-have-prevented-the-uber-leak-4c3bc2498760",
+        "teaser": ""
+    },
+    {
+        "date": "2022-09-06T07:00:00.000Z",
+        "title": "How to Recognize Tech Gatekeeping, and How to Ignore it (or Stop It)",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*nZjb9rOrCj535FxP",
+        "url": "https://medium.com/@damngoodtech/how-to-recognize-tech-gatekeeping-and-how-to-ignore-it-or-stop-it-b1c72493f391",
+        "teaser": ""
+    },
+    {
+        "date": "2022-09-02T07:00:00.000Z",
+        "title": "Before Starting a Full Stack Project, Consider this About Your Database",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*_BAxF3uIeHfFsvT9",
+        "url": "https://medium.com/@damngoodtech/before-starting-a-full-stack-project-consider-this-about-your-database-f85aaa503a80",
+        "teaser": ""
+    },
+    {
+        "date": "2022-08-24T07:00:00.000Z",
+        "title": "The Great Python Package Management War",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*-RIRR7mQJ4AgafKqyPFfbw.png",
+        "url": "https://medium.com/@damngoodtech/the-great-python-package-management-war-49f25df33d26",
+        "teaser": ""
+    },
+    {
+        "date": "2022-08-16T07:00:00.000Z",
+        "title": "Where to Store your Passwords for a Project",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*oVACw3gymyJHbja6",
+        "url": "https://medium.com/@damngoodtech/where-to-store-your-passwords-for-a-project-9b1d82aeba69",
+        "teaser": ""
+    },
+    {
+        "date": "2022-08-10T07:00:00.000Z",
+        "title": "You Don’t Want to Scrape a Website",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*6aBg6iueCUmv9z-x",
+        "url": "https://medium.com/@damngoodtech/you-dont-want-to-scrape-a-website-cf84ae2e2226",
+        "teaser": ""
+    },
+    {
+        "date": "2022-08-03T07:00:00.000Z",
+        "title": "Why Do I Need Technology for My Business?",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*hBvrOC1ayc17OaHF",
+        "url": "https://medium.com/@damngoodtech/why-do-i-need-technology-for-my-business-8d64aea5a880",
+        "teaser": ""
+    },
+    {
+        "date": "2022-07-25T07:00:00.000Z",
+        "title": "What to Look for When Hiring a Developer",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*YKIfHZ01QLArXvQn",
+        "url": "https://medium.com/@damngoodtech/what-to-look-for-when-hiring-a-developer-4f9b74526803",
+        "teaser": ""
+    },
+    {
+        "date": "2022-07-21T07:00:00.000Z",
+        "title": "Top 5 Ways to Use Comments",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*ou5qDC_3PNKjLpmH",
+        "url": "https://medium.com/@damngoodtech/top-5-ways-to-use-comments-19b1e5b33589",
+        "teaser": ""
+    },
+    {
+        "date": "2022-07-14T07:00:00.000Z",
+        "title": "Is It Possible to Pay People to Look for Work? Let’s Find Out…",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*-sESWZ4j1BFqNBW3",
+        "url": "https://medium.com/@damngoodtech/is-it-possible-to-pay-people-to-look-for-work-lets-find-out-f8a54d03876c",
+        "teaser": ""
+    },
+    {
+        "date": "2022-07-13T07:00:00.000Z",
+        "title": "Call A Potential Client Without Giving Out Your Phone Number (Quick Tip)",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*WqluvhxtXkFwCJKs",
+        "url": "https://medium.com/@damngoodtech/call-a-potential-client-without-giving-out-your-phone-number-quick-tip-66384f45bfcc",
+        "teaser": ""
+    },
+    {
+        "date": "2022-07-12T07:00:00.000Z",
+        "title": "Why I Now Encourage Nepotism",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*-l_SDQINiqPq3lnc",
+        "url": "https://medium.com/@damngoodtech/why-i-now-encourage-nepotism-7bc9631fea58",
+        "teaser": ""
+    },
+    {
+        "date": "2022-06-30T07:00:00.000Z",
+        "title": "Sysadmins Hate Her! This One Weird Trick to Remember Everything You Did",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*EUon-7eopowJXldB",
+        "url": "https://medium.com/@damngoodtech/sysadmins-hate-her-this-one-weird-trick-to-remember-everything-you-did-7a7c48901422",
+        "teaser": ""
+    },
+    {
+        "date": "2022-06-28T07:00:00.000Z",
+        "title": "7 Resources To Solve Programming Problems",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*9rcIHeju4u4ID1--lDr7Uw.png",
+        "url": "https://medium.com/@damngoodtech/7-resources-to-solve-programming-problems-182632197f47",
+        "teaser": ""
+    },
+    {
+        "date": "2022-06-27T07:00:00.000Z",
+        "title": "How to “Downgrade” a Project to a Specific Version/Revision from GitHub",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*CkJOZzd_e2e6SPEr",
+        "url": "https://medium.com/@damngoodtech/how-to-downgrade-a-project-to-a-specific-version-revision-from-github-c85885bae9b7",
+        "teaser": ""
+    },
+    {
+        "date": "2022-06-21T07:00:00.000Z",
+        "title": "5 Tech Tools That Respect Your Privacy",
+        "url": "https://medium.com/@damngoodtech/5-tech-tools-that-respect-your-privacy-f0be12b146c7",
+        "teaser": ""
+    },
+    {
+        "date": "2022-06-13T07:00:00.000Z",
+        "title": "If You Read this Word in a Job Posting — RUN!",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*qhhXtasILNQgU9H1diIwbg.png",
+        "url": "https://medium.com/@damngoodtech/if-you-read-this-word-in-a-job-posting-run-68c0ba7f42c9",
+        "teaser": ""
+    },
+    {
+        "date": "2022-06-02T07:00:00.000Z",
+        "title": "Be Collaborative With Your Regular Expressions",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*aoHJuKG_oUEEMsi99p4-HA.png",
+        "url": "https://medium.com/@damngoodtech/be-collaborative-with-your-regular-expressions-b3f70855fb27",
+        "teaser": ""
+    },
+    {
+        "date": "2022-05-10T07:00:00.000Z",
+        "title": "Using NanoSQL + IndexedDB for Fast Vue Mockups",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*MddWgjRzNuKTLzMTg9z9Sg.png",
+        "url": "https://medium.com/@damngoodtech/using-nanosql-indexeddb-for-fast-vue-mockups-f8a9b601cdb0",
+        "teaser": ""
+    },
+    {
+        "date": "2022-04-13T07:00:00.000Z",
+        "title": "Why I Don’t do Coding Challenges (It Might Not Be for the Reasons You Think)",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*RZqC8lx6fWsER8ki",
+        "url": "https://medium.com/@damngoodtech/why-i-dont-do-coding-challenges-it-might-not-be-for-the-reasons-you-think-854e4cca37d4",
+        "teaser": ""
+    },
+    {
+        "date": "2022-04-05T07:00:00.000Z",
+        "title": "Who Can Stop Tech Employee Burnout? You!",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*uVWRwDP5UOVINnxa",
+        "url": "https://medium.com/@damngoodtech/who-can-stop-tech-employee-burnout-you-457c0c4d3389",
+        "teaser": ""
+    },
+    {
+        "date": "2022-03-29T07:00:00.000Z",
+        "title": "Privacy Must Be a New Discipline Like Law, Biology, or Philosophy",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*xcZLH_eWrH3Zzzeh",
+        "url": "https://medium.com/@damngoodtech/privacy-must-be-a-new-discipline-like-law-biology-or-philosophy-ed97a3e65a60",
+        "teaser": ""
+    },
+    {
+        "date": "2022-03-18T07:00:00.000Z",
+        "title": "A Developer Spills His Secrets: 4 Tech Stacks for (Almost) All Tech Product Use Cases",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/0*QJsPDgDV1NJYxS6f",
+        "url": "https://medium.com/@damngoodtech/a-developer-spills-his-secrets-4-tech-stacks-for-almost-all-tech-product-use-cases-dd590882c1f2",
+        "teaser": ""
+    },
+    {
+        "date": "2022-03-17T07:00:00.000Z",
+        "title": "Why’d You Refactor the Code that Way? That’s crazy! (Hint: the Database)",
+        "thumbnail": "https://cdn-images-1.medium.com/max/800/1*xFU7JmNpiliUFnSxnWFWzA.png",
+        "url": "https://medium.com/@damngoodtech/whyd-you-refactor-the-code-that-way-that-s-crazy-hint-the-database-6241af4d694c",
+        "teaser": ""
+    }
+]

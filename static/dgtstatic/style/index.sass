@@ -1,1 +1,68 @@
 @import "../../../node_modules/bulma/bulma.scss"
+@import "../../../node_modules/bulma/sass/utilities/derived-variables.scss"
+@import "../../../node_modules/bulma/sass/utilities/initial-variables.scss"
+
+.button.full-width
+    width: 100%
+
+.medium-thumbnail
+    height: 100px
+
+$large-border-radius: 20pt
+$hireme-button-width: 275pt
+$hireme-button-height: 200pt
+$hireme-text-margin: 7pt
+
+$hireme-left-bgcolor: desaturate(darken($red, 20), 40)
+$hireme-right-bgcolor: desaturate(darken($purple, 20), 40)
+
+.fixed-height-100
+    height: 100px
+
+.static-card
+    padding: 4pt
+    margin: 4pt
+    height: 350pt
+    box-shadow: 0.3em 0.3em 1em $shadow-color
+    .card-image
+        height: 150pt
+        overflow: hidden
+    .static-card-content
+        height: 150pt
+        padding: 5pt
+    .static-card-action
+        border-top: 1px solid gray
+        padding-top: 10pt
+
+.hireme-button
+    display: flex
+    .left, .right
+        width: $hireme-button-width
+    .left
+        text-align: right
+        padding: $hireme-text-margin
+        background-color: $hireme-left-bgcolor
+        border-radius: $large-border-radius 0 0 $large-border-radius
+    .right
+        background-color: $hireme-right-bgcolor
+        padding: $hireme-text-margin
+        border-radius: 0 $large-border-radius $large-border-radius 0
+
+$step-size: 30pt
+$hazy-blue: desaturate(darken($blue, 10), 40)
+
+ol.process
+    li
+        display: flex
+        div:
+            display: inline
+        .number
+            width: $step-size
+            height: $step-size
+            background-color: $hazy-blue
+            border-radius: $step-size
+            font-size: 200%
+            text-align: center
+            color: $white
+        .description, .number
+            margin: 20pt

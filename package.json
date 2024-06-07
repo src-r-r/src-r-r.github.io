@@ -4,19 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "ts-node ./scripts/compose.ts"
+    "build": "node_modules/.bin/eleventy build",
+    "serve": "node_modules/.bin/eleventy --serve",
+    "watch:sass": "node_modules/.bin/sass --watch ./static:./output/static"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jquery": "^3.5.30",
     "@types/sass-loader": "^8.0.8",
     "bulma": "^1.0.1",
     "glob": "^10.4.1",
+    "jquery": "^3.7.1",
     "liquidjs": "^10.13.1",
+    "node-html-parser": "^6.1.13",
     "sass": "^1.77.4",
     "sass-loader": "^14.2.1",
-    "ts-node": "^10.9.2"
+    "truncate": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "vite": "^5.2.12"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"
