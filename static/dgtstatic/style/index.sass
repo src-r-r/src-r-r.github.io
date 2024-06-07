@@ -9,7 +9,7 @@
     height: 100px
 
 $large-border-radius: 20pt
-$hireme-button-width: 275pt
+$hireme-button-width: 50%
 $hireme-button-height: 200pt
 $hireme-text-margin: 7pt
 
@@ -36,8 +36,9 @@ $hireme-right-bgcolor: desaturate(darken($purple, 20), 40)
 
 .hireme-button
     display: flex
+    padding: 5% 20%
     .left, .right
-        width: $hireme-button-width
+        width: 50%
     .left
         text-align: right
         padding: $hireme-text-margin
@@ -48,14 +49,28 @@ $hireme-right-bgcolor: desaturate(darken($purple, 20), 40)
         padding: $hireme-text-margin
         border-radius: 0 $large-border-radius $large-border-radius 0
 
-$step-size: 30pt
+$step-size: 50pt
 $hazy-blue: desaturate(darken($blue, 10), 40)
 
-ol.process
-    li
+div.process
+    display: table
+    .step
+        display: table-row
+        .track
+            position: relative
+            border-left: 3px solid gray
+        .track::after
+            content: ""
+            background-color: lightgray
+            position: absolute
+            width: 5px
+            left: 33px
+            top: 0
+            bottom: 10px
+            z-index: -1
         display: flex
         div:
-            display: inline
+            display: table-cell
         .number
             width: $step-size
             height: $step-size
@@ -63,6 +78,14 @@ ol.process
             border-radius: $step-size
             font-size: 200%
             text-align: center
+            vertical-align: middle
+            padding-top: 10pt
             color: $white
         .description, .number
             margin: 20pt
+        .description h3
+            font-weight: bold
+            font-size: 150%
+        .description p
+            color: $grey
+            font-size: 100%

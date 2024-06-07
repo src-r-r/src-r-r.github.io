@@ -26,6 +26,8 @@ module.exports = function(eleventyConfig) {
             data: rumbleData,
         }
     }
+
+    eleventyConfig.addWatchTarget(join(OUTPUT, "static", "**/*.css"));
     
     eleventyConfig.addGlobalData("content", content);
 
