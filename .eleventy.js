@@ -1,4 +1,6 @@
-const { dirname, join } = require("path");
+const { readFileSync } = require("fs");
+const { glob } = require("glob");
+const { dirname, join, resolve } = require("path");
 
 const MAX_ARTICLES = 10;
 
@@ -8,6 +10,7 @@ const DGTSTATIC_TEMPLATES = join(TEMPLATES, "dgtstatic");
 const PAGES = join(PROJECT, "pages");
 const OUTPUT = join(PROJECT, "output");
 const STATIC = join(PROJECT, "static");
+const TABLER = join(PROJECT, "node_modules", "@tabler", "icons", "icons")
 
 const PAGES_PATTERN = join(PAGES, "**/*.liquid");
 const LIQUID_REGEX = /\.(liquid)$/
@@ -30,6 +33,17 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addWatchTarget(join(OUTPUT, "static", "**/*.css"));
     
     eleventyConfig.addGlobalData("content", content);
+
+    eleventyConfig.addShortcode("icon", function(name, style = null) {
+        try {
+            if (!style) {
+                return readFileSync(glob.globSync(join(TABLER, "**", `${name}.svg`))[0]);
+            }
+            return readFileSync(resolve(TABLER, style, `${name}.svg`));
+        } catch (err) {
+            console.error(err)
+        }
+    });
 
     return {
         dir: {

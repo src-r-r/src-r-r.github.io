@@ -11,13 +11,15 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item">
-        Home
+      <a class="navbar-item" href="/">
+        <span class="icon p-4">{% icon "home" %}</span>
+        <span>Home
       </a>
 
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
-          Hire Me
+          <span class="icon p-4">{% icon "user-plus" %}</span>
+          <span>Hire Me</span>
         </a>
 
         <div class="navbar-dropdown">
@@ -36,9 +38,16 @@
           </a> {% endcomment %}
         </div>
       </div>
-      
+
+
       <a class="navbar-item" href="/software-skills">
-        My Skills
+        <span class="icon p-4">{% icon "bolt" "outline" %}</span>
+        <span>My Skills</span>
+      </a>
+
+      <a class="navbar-item" href="/testimonials">
+        <span class="icon p-4">{% icon "heart" "outline" %}</span>
+        <span>Testimonials</span>
       </a>
 
     {% comment %} <div class="navbar-end">

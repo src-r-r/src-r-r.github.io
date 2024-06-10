@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tabler/icons": "^3.5.0",
     "@types/jquery": "^3.5.30",
     "@types/sass-loader": "^8.0.8",
     "bulma": "^1.0.1",

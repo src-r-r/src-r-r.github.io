@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@tabler/icons':
+    specifier: ^3.5.0
+    version: 3.5.0
   '@types/jquery':
     specifier: ^3.5.30
     version: 3.5.30
@@ -580,6 +583,10 @@ packages:
       escape-string-regexp: 2.0.0
       lodash.deburr: 4.1.0
     dev: true
+
+  /@tabler/icons@3.5.0:
+    resolution: {integrity: sha512-I53dC3ZSHQ2MZFGvDYJelfXm91L2bTTixS4w5jTAulLhHbCZso5Bih4Rk/NYZxlngLQMKHvEYwZQ+6w/WluKiA==}
+    dev: false
 
   /@tsconfig/node10@1.0.11:
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}

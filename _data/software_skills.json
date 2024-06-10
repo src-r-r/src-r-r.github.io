@@ -1,0 +1,36 @@
+{
+    "sections" : [
+        {
+            "title": "General Tools &amp; Practices",
+            "skills": [
+                {
+                    "label": "Git Version Control",
+                    "icon": {
+                        "name": "brand-git",
+                        "style": "outline"
+                    }
+                },
+                {
+                    "label": "Cypress Unit Testing",
+                    "icon": {
+                        "name": "brand-cypress",
+                        "style": "outline"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "3rd Party APIs",
+            "skills": [
+                {
+                    "label": "Stripe",
+                    "icon": {
+                        "name": "brand-stripe"
+                    }
+                },
+                {
+                }
+            ]
+        }
+    ]
+}
