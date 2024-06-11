@@ -43,6 +43,8 @@ cd ${PROJECT} && ${PNPM} run build:sass
 
 NOW=$(date +"%Y/%m/%d")
 
+echo "damngood.tech" >> "${OUTPUT}/CNAME"
+
 cd ${OUTPUT}
 echo "> " cd ${OUTPUT} && git remote add pages ${REPO} ||:
 cd ${OUTPUT} && git remote add pages ${REPO} ||:
