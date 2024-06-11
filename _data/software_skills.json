@@ -3,33 +3,50 @@
         {
             "title": "General Tools &amp; Practices",
             "skills": [
-                {
-                    "label": "Git Version Control",
-                    "icon": {
-                        "name": "brand-git",
-                        "style": "outline"
-                    }
-                },
-                {
-                    "label": "Cypress Unit Testing",
-                    "icon": {
-                        "name": "brand-cypress",
-                        "style": "outline"
-                    }
-                }
+                ["high-creativity", "High Creativity"],
+                ["teamwork", "Teamwork"],
+                ["git-version-control", "Git Version Control"],
+                ["jira", "Jira"],
+                ["issue-tracking", "Issue Tracking"],
+                ["unit-testing", "Unit Testing"],
+                ["llms", "Lage Language Models"],
+                ["jupyter", "Jupyter Notebooks"]
+            ]
+        },
+        {
+            "title": "Frameworks &amp; Libraries",
+            "skills": [
+                ["django", "Django"],
+                ["react", "React"],
+                ["react", "React Native"],
+                ["vue", "Vue"],
+                ["wordpress", "WordPress"],
+                ["pandas", "Pandas / Scipy"]
+            ]
+        },
+        {
+            "title": "Languages",
+            "skills": [
+                ["python", "Python"],
+                ["typescript", "TypeScript"],
+                ["javascript", "JavaScript"],
+                ["c-cpp", "C/C++"],
+                ["java", "Java"],
+                ["php", "PHP"],
+                ["html", "HTML"],
+                ["css", "CSS"],
+                ["bash", "BASH"],
+                ["powershell", "PowerShell"]
             ]
         },
         {
             "title": "3rd Party APIs",
             "skills": [
-                {
-                    "label": "Stripe",
-                    "icon": {
-                        "name": "brand-stripe"
-                    }
-                },
-                {
-                }
+                ["stripe", "Stripe"],
+                ["bigcommerce", "BigCommerce"],
+                ["magento", "Magento"],
+                ["github", "GitHub"],
+                ["github", "Jira"]
             ]
         }
     ]

@@ -30,6 +30,9 @@ module.exports = function(eleventyConfig) {
         }
     }
 
+    const skills = require("./_data/software_skills.json");
+    eleventyConfig.addGlobalData("skills", skills);
+
     eleventyConfig.addWatchTarget(join(OUTPUT, "static", "**/*.css"));
     
     eleventyConfig.addGlobalData("content", content);

@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/eleventy build",
+    "build": "node_modules/.bin/eleventy --output=output",
     "serve": "node_modules/.bin/eleventy --serve",
-    "watch:sass": "node_modules/.bin/sass --watch ./static:./output/static"
+    "watch:sass": "node_modules/.bin/sass --watch ./static:./output/static",
+    "build:sass": "node_modules/.bin/sass ./static:./output/static"
   },
   "keywords": [],
   "author": "",
@@ -24,9 +25,11 @@
     "sass-loader": "^14.2.1",
     "truncate": "^3.0.0",
     "ts-node": "^10.9.2",
-    "vite": "^5.2.12"
+    "vite": "^5.2.12",
+    "yoastseo": "2.0.0-alpha.0"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1"
+    "@11ty/eleventy": "^2.0.1",
+    "linkinator": "^6.0.5"
   }
 }

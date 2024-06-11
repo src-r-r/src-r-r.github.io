@@ -1,34 +1,22 @@
 {% layout "dgtstatic/base.liquid" %}
+
+{% block page_title %}Software Skills - {% endblock %}
+
 {% block main_content %}
 
 <article>
-<h1 class="title">My Skills &amp; Experience</h1>
+<h1 class="title py-4">My Skills &amp; Experience</h1>
 
-<section>
-    <h2 class="title">
-        <span class="icon">
-            {% icon "player-play" %}
-        </span>
-        <span>General Tools</span>
-    </h2>
-    <div class="tags">
-        <span class="tag">
-            <span class="icon">{% icon "brand-git" "outline" %}</span>
-            <span>Git Version Control</span>
-        </span>
+{% for section in skills.sections %}
+    <section>
+    <h2 class="subtitle is-size-4">{{section.title}}</h2>
+    <div class="skill-cloud py-4">
+        {% for skill in section.skills %}
+            <span class="tag" id="skill-{{ skill.0 }}">{{ skill.1 }}</span>
+        {% endfor %}
     </div>
-</section>
-
-<section>
-    <h2 class="title">
-        <span class="icon">
-            {% icon "script" "outline" %}
-        </span>
-        <span>
-        Scripts
-        </span>
-    </h2>
-</section>
+    </section>
+{% endfor %}
 
 
 </article>
