@@ -44,13 +44,13 @@ cd ${PROJECT} && ${PNPM} run build:sass
 NOW=$(date +"%Y/%m/%d")
 
 cd ${OUTPUT}
-echo "> " git remote add pages ${REPO} ||:
-git remote add pages ${REPO} ||:
-echo "> " git checkout -b ${THIS_BRANCH} ||:
-git checkout -b ${THIS_BRANCH} ||:
-echo "> " git checkout ${THIS_BRANCH} ||:
-git checkout ${THIS_BRANCH} ||:
-echo "> " git commit -am "Revision ${NOW}"
-git commit -am "Revision ${NOW}"
+echo "> " cd ${OUTPUT} && git remote add pages ${REPO} ||:
+cd ${OUTPUT} && git remote add pages ${REPO} ||:
+echo "> " cd ${OUTPUT} && git checkout -b ${THIS_BRANCH} ||:
+cd ${OUTPUT} && git checkout -b ${THIS_BRANCH} ||:
+echo "> " cd ${OUTPUT} && git checkout ${THIS_BRANCH} ||:
+cd ${OUTPUT} && git checkout ${THIS_BRANCH} ||:
+echo "> " cd ${OUTPUT} && git commit -am "Revision ${NOW}"
+cd ${OUTPUT} && git commit -am "Revision ${NOW}"
 echo "> " git push -u pages ${PUBLISH_BRANCH} -f
-git push -u pages ${PUBLISH_BRANCH} -f
+cd ${OUTPUT} && git push -u pages ${PUBLISH_BRANCH} -f
