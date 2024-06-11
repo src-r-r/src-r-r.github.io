@@ -41,7 +41,7 @@ done
 echo "# Building Sass"
 cd ${PROJECT} && ${PNPM} run build:sass
 
-NOW=$(date +"%Y/%m/%d")
+NOW=$(date +"%Y-%m-%d")
 
 echo "damngood.tech" >> "${OUTPUT}/CNAME"
 
