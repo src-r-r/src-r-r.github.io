@@ -22,7 +22,15 @@ PUBLISH_BRANCH="gh-pages"
 
 
 echo "# Building 11ty site"
-cd ${PROJECT} && echo ${PNPM} run build
+cd ${PROJECT}
+${PNPM} build
+
+echo "# Building Sass"
+${PNPM} run build:sass
+
+NOW=$(date +"%Y-%m-%d")
+
+echo "damngood.tech" >> "${OUTPUT}/CNAME"
 
 echo "# Copying JavaScript"
 
@@ -38,21 +46,13 @@ for js in $(find ${STATIC} -iname '*.js'); do
     echo " >" cp -R $js ${ABSPATH}
 done
 
-echo "# Building Sass"
-cd ${PROJECT} && ${PNPM} run build:sass
-
-NOW=$(date +"%Y-%m-%d")
-
-echo "damngood.tech" >> "${OUTPUT}/CNAME"
 
 cd ${OUTPUT}
-echo "> " "cd ${OUTPUT} && git remote add pages ${REPO} ||:"
-cd ${OUTPUT} && git remote add pages ${REPO} ||:
-echo "> " "cd ${OUTPUT} && git checkout -b ${THIS_BRANCH} ||:"
-cd ${OUTPUT} && git checkout -b ${THIS_BRANCH} ||:
-echo "> " "cd ${OUTPUT} && git checkout ${THIS_BRANCH} ||:"
-cd ${OUTPUT} && git checkout ${THIS_BRANCH} ||:
-echo "> " "cd ${OUTPUT} && git commit -am" "Revision ${NOW}"
-cd ${OUTPUT} && git commit -am "Revision ${NOW}"
-echo "> " "git push -u pages ${PUBLISH_BRANCH} -f"
-cd ${OUTPUT} && git push -u pages ${PUBLISH_BRANCH} -f
+git init . ||:
+git add .
+git remote add pages ${REPO} || git checkout -b ${THIS_BRANCH} ||:
+git checkout ${THIS_BRANCH} ||:
+git commit -am "Revision ${NOW}"
+git checkout -b gh-pages || git checkout ${PUBLISH_BRANCH} ||:
+git merge ${THIS_BRANCH}
+git push -u pages ${PUBLISH_BRANCH} -f
