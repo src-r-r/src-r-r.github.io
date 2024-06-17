@@ -7,7 +7,8 @@
     "build": "node_modules/.bin/eleventy --output=output",
     "serve": "node_modules/.bin/eleventy --serve",
     "watch:sass": "node_modules/.bin/sass --watch ./static:./output/static",
-    "build:sass": "node_modules/.bin/sass ./static:./output/static"
+    "build:sass": "node_modules/.bin/sass ./static:./output/static",
+    "watch:seo": "find pages/ scripts/ static/ templates | entr -s 'pnpm build && node_modules/.bin/ts-node ./scripts/seo.ts'"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,8 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
-    "linkinator": "^6.0.5"
+    "@types/jsdom": "^21.1.7",
+    "linkinator": "^6.0.5",
+    "seo-analyzer": "^3.1.1"
   }
 }

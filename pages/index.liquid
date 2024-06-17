@@ -33,7 +33,7 @@
 
         </article>
         <div class="buttons is-justify-content-center my-6">
-            <a href="/hire-me-as-employee" class="button is-dark">More Info</a>
+            <a href="/hire-me-as-employee" class="button is-dark"  rel="canonical">More Info</a>
         </div>
     </div>
     <div class="col right container has-text-light p-4" style="background-color: #ad343e;">
@@ -59,7 +59,7 @@
             </p>
         </article>
         <div class="buttons is-justify-content-center my-6">
-            <a href="/hire-me-as-a-freelancer" class="button is-light">More Info</a>
+            <a href="/hire-me-as-a-freelancer" class="button is-light" rel="canonical">More Info</a>
         </div>
     </div>
 </div>
@@ -78,7 +78,7 @@
         {% for entry in content.rumble.data %}
             <div class="static-card">
                 <div class="card-image">
-                    <img class="" src="{{ entry.thumbnail }}" />
+                    <img class="" src="{{ entry.thumbnail }}" alt="Rumble thumbnail for {{ entry.title }}" />
                 </div>
                 <div class="static-card-content">
                     <h2 class="static-cardtitle">{{ entry.title }}</h2>
@@ -86,7 +86,7 @@
                     <p class="static-card-teaser has-text-grey fixed-height-100">{{ entry.description| truncate: 200 }}</p>
                 </div>
                 <div class="static-card-action">
-                    <a class="button full-width" href="{{ entry.url }}">
+                    <a class="button full-width" href="{{ entry.url }}" rel="external">
                         <span class="icon">{% icon "video" "outline" %}</span>
                         <span>Watch</span>
                     </a>
@@ -100,7 +100,7 @@
     {% for entry in content.medium.data %}
         <div class="static-card">
             <div class="card-image">
-                <img class="" src="{{ entry.thumbnail }}" />
+                <img class="" src="{{ entry.thumbnail }}"  alt="Medium thumbnail for {{ entry.title }}" />
             </div>
             <div class="static-card-content">
                 <h2 class="static-cardtitle">{{ entry.title }}</h2>
@@ -108,7 +108,7 @@
                 <p class="static-card-teaser has-text-grey fixed-height-100">{{ entry.teaser }}</p>
             </div>
             <div class="static-card-action">
-                <a class="button full-width" href="{{ entry.url }}">
+                <a class="button full-width" href="{{ entry.url }}" rel="external">
                     <span class="icon">{% icon "book" %}</span>
                     <span>Read</span>
                 </a>
