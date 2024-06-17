@@ -23321,7 +23321,7 @@ a {
   text-decoration: underline;
 }
 
-a.button {
+a.button, a.navbar-item {
   text-decoration: none;
 }
 
