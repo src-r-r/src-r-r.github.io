@@ -19,6 +19,7 @@ module.exports = function(eleventyConfig) {
 
     const mediumData = require("./_data/medium.json").filter((_, i) => i < MAX_ARTICLES);
     const rumbleData = require("./_data/rumble.json").filter((_, i) => i < MAX_ARTICLES);
+    const projects = require("./_data/projects.json");
     const content = {
         medium: {
             title: "Medium Articles",
@@ -27,7 +28,7 @@ module.exports = function(eleventyConfig) {
         rumble: {
             title: "Videos",
             data: rumbleData,
-        }
+        },
     }
 
     const skills = require("./_data/software_skills.json");
@@ -36,6 +37,7 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addWatchTarget(join(OUTPUT, "static", "**/*.css"));
     
     eleventyConfig.addGlobalData("content", content);
+    eleventyConfig.addGlobalData("projects", projects);
 
     eleventyConfig.addShortcode("icon", function(name, style = null) {
         try {

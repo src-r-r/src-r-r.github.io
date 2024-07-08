@@ -1,0 +1,80 @@
+[
+    {
+        "title": "PliWould",
+        "description": "Indended for Habitat for Humanity employees, helps determine the cost of partial sheet products",
+        "image": "https://gittea.dev/srcrr/PliWould/media/branch/develop/assets/images/pli-would-512.png",
+        "url": "https://gittea.dev/srcrr/PliWould",
+        "tech": [
+            "react-native",
+            "node.js",
+            "typescript",
+            "jest"
+        ]
+    },
+    {
+        "title": "Make3D - InvokeAI stereo plugin",
+        "description": "A set of plug-ins to generate a 3D image form a 2D image",
+        "image": "https://gitlab.com/srcrr/shift3d/-/raw/main/example-1.png",
+        "url": "https://gittea.dev/srcrr/PliWould",
+        "tech": [
+            "python",
+            "diffusers",
+            "gradio"
+        ]
+    },
+    {
+        "title": "Historical collection",
+        "description": "Easily keep track of changes to Mongo document changes with a collection.",
+        "url": "https://gitlab.com/srcrr/historical_collection",
+        "tech": [
+            "python",
+            "mongo",
+            "docker",
+            "pytest"
+        ]
+    },
+    {
+        "title": "Django WordPlease",
+        "description": "Import WordPress models into Django (please)",
+        "url": "https://gitlab.com/damn-good1/django_wordplease",
+        "tech": [
+            "python",
+            "pytest",
+            "docker"
+        ]
+    },
+    {
+        "title": "Ink-In-Time",
+        "description": "Easily keep track of changes to Mongo document changes with a collection.",
+        "url": "https://github.com/src-r-r/ink-in-time",
+        "tech": [
+            "python",
+            "flask",
+            "docker",
+            "HTML",
+            "CSS"
+        ]
+    },
+    {
+        "title": "Stanza",
+        "description": "Convert an already-existing setup.py project to a Poetry project",
+        "url": "https://github.com/src-r-r/python-stanza",
+        "tech": [
+            "python",
+            "poetry",
+            "pytest"
+        ]
+    },
+    {
+        "title": "WhatPort",
+        "description": "Easily look up default port numbers for services",
+        "url": "https://gitlab.com/damn-good1/what-port",
+        "tech": [
+            "typescript",
+            "node.js",
+            "vue",
+            "bulma",
+            "cypress"
+        ]
+    }
+]

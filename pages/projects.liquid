@@ -1,0 +1,35 @@
+{% layout "dgtstatic/base.liquid" %}
+
+{% block "main_content" %}
+
+<section class="title p-4 has-text-centered">
+    <h1 class="title">Projects</h1>
+    <h2 class="subtitle">How I'm serving businesses and the community</h2>
+</section>
+
+<div class="grid is-col-min-11 p-4">
+    {% for project in projects %}
+        <div class="cell card p-4">
+            <div class="cart-header p-2">
+                <h3 class="title">{{ project.title }}</h3>
+            </div>
+            <div class="card-body">
+                <section class="description p-2" style="height: 100px">
+                    <p class="description">{{ project.description }}</p>
+                </section>
+                <div class="tech tags p-2">
+                    {% for tech in project.tech %}
+                        <span class="tag">
+                            {{ tech }}
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer p-2 is-flex">
+                <a href="{{ project.url }}" class="button full-width" rel="external">Go To Project</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
