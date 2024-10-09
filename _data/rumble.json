@@ -1,5 +1,19 @@
 [
     {
+        "date": "2024-10-3T11:01:00.000Z",
+        "title": "Programming for Non-Programmers | 1 - Introduction to Programming",
+        "thumbnail": "https://i.vimeocdn.com/video/1933907122-bbc56934a119e684787fdb93d0dbe3006bb816bc66e0d8d20589d56798b03e74-d_640x360",
+        "description": "Want to learn how to write a computer program but don't know where to start? Then this video series is for you! I'm Jordan with Damn Good Technology. This video is for people new to programming who want to know how to write computer programs. Whether you just want to know how to write apps for fun, or you want a way to advance in your career, then I'd love to have you along on this journey as I show you how to go from not knowing how to program to being a programming whiz! In this first video I won't be doing any programming. Instead, I'll be setting expectations. I recommend watching this video but not putting too much emotional energy into digesting it. Perhaps save it for later and watch it again when you're feeling down about your abilities. You got this! I'll be with you every step of the way in your journey. If you'd like to connect with me (or if your team is looking for a tech lead), I'd love to connect! You can connect with me on X, Mastodon, LinkedIn, or any other social media platform you choose at",
+        "url": "https://vimeo.com/1015798460"
+    },
+    {
+        "date": "2024-9-25T16:46:00.000Z",
+        "title": "Senior Software / Tech Lead Developer - Live Coding with NO FILTER OR EDITS",
+        "thumbnail": "https://i.vimeocdn.com/video/1930894177-15051b9c01b577ef9c90dd10c85b908b677d0e6e77fe6850fc00b728386772e8-d_640x360",
+        "description": "As you're learning programming, it may feel daunting to look up to experienced developers and think they got it all together. Really, we don't! In this video, I walk through a live example of how I program. We're smack dab in the middle of a Firefox extension I'm developing, and I show you how I find the root cause of programs, how I take various rabbit trails, and what parts of the code I leave on the cutting room floor. If your team is needing a tech lead with over 12 years of experience, and a generous ambitious spirit, I'd love to chat! Please visit damngood.tech so I can have the pleasure of working with your awesome team on your cool project! For the curious, the tech stack is a webextension using the vite build system with a Vue frontend. I'm using dexie for the frontend database with light pinia usage (not entirely shown in the video). At the time of recording I hadn't pushed anything to the repo, but I may soon. No matter what experience level -- junior, mid, or senior, I hope you get value from this video. If you found it useful, please like and share with a colleague that you think would find it valuable.",
+        "url": "https://vimeo.com/1012972687"
+    },
+    {
         "date": "2024-07-14T09:41:01.000Z",
         "title": "No more Salesforce! - 4 Alternative CRMs and How To Choose",
         "description": "Salesforce has become one of the leading Customer Relationship Management platforms for decades. However, companies are finding the platform is often unwieldy or downright wonky. In today's video I'll walk through 4 alternative CRMs you can try in order to help your team decrease technical debt and focus on you and your customers. If you found this video helpful, be sure to share with a colleague. Comment below if I forgot a CRM! Please like and subscribe to damngoodtech on Rumble! --- If you or your team is looking for a quality tech lead, send me an email to jordan@damngood.tech",
