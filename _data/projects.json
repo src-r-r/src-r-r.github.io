@@ -15,7 +15,7 @@
         "title": "Make3D - InvokeAI stereo plugin",
         "description": "A set of plug-ins to generate a 3D image form a 2D image",
         "image": "https://gitlab.com/srcrr/shift3d/-/raw/main/example-1.png",
-        "url": "https://gittea.dev/srcrr/PliWould",
+        "url": "https://gitlab.com/srcrr/shift3d/",
         "tech": [
             "python",
             "diffusers",
