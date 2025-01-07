@@ -23463,7 +23463,8 @@ div.process .step .description p {
 
 .faqs {
   margin: 1em;
-  width: 60em;
+  max-width: 60em;
+  padding: 1em;
 }
 .faqs h4 {
   font-size: 120%;
