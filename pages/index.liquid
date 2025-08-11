@@ -27,6 +27,31 @@
 
 <h1 class="section-title is-size-3 m-4">Videos</h1>
 
+<h1 class="section-title is-size-4 m-4">YouTube</h1>
+
+<div class="grid is-col-min-12">
+    {% for entry in content.youtube.data %}
+        <div class="static-card">
+            <div class="card-image">
+                <img class="" src="{{ entry.thumbnail }}" alt="YouTube thumbnail for {{ entry.title }}" />
+            </div>
+            <div class="static-card-content">
+                <h2 class="static-cardtitle">{{ entry.title }}</h2>
+                <p class="static-card-date">{{ entry.date|date:"%B %d, %Y" }}</p>
+                <p class="static-card-teaser has-text-grey fixed-height-100">{{ entry.description| truncate: 200 }}</p>
+            </div>
+            <div class="static-card-action">
+                <a class="button full-width" href="{{ entry.url }}" rel="external">
+                    <span class="icon">{% icon "video" "outline" %}</span>
+                    <span>Watch</span>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<h1 class="section-title is-size-4 m-4">Rumble</h1>
+
 <div class="grid is-col-min-12">
         {% for entry in content.rumble.data %}
             <div class="static-card">

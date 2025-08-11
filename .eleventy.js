@@ -19,6 +19,7 @@ module.exports = function(eleventyConfig) {
 
     const mediumData = require("./_data/medium.json").filter((_, i) => i < MAX_ARTICLES);
     const rumbleData = require("./_data/rumble.json").filter((_, i) => i < MAX_ARTICLES);
+    const youtubeData = require("./_data/youtube.json").filter((_, i) => i < MAX_ARTICLES);
     const projects = require("./_data/projects.json");
     const content = {
         medium: {
@@ -28,6 +29,10 @@ module.exports = function(eleventyConfig) {
         rumble: {
             title: "Videos",
             data: rumbleData,
+        },
+        youtube: {
+            title: "YouTube Videos",
+            data: youtubeData,
         },
     }
 
