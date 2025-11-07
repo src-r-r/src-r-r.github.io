@@ -9,7 +9,7 @@
     "watch:sass": "node_modules/.bin/sass --watch ./static:./output/static",
     "build:sass": "node_modules/.bin/sass ./static:./output/static",
     "watch:seo": "find pages/ scripts/ static/ templates | entr -s 'pnpm build && node_modules/.bin/ts-node ./scripts/seo.ts'",
-    "feed:youtube": "node_mobules/.bin/ts-node ./scripts/youtuberss.ts"
+    "feed:youtube": "node_modules/.bin/ts-node ./scripts/youtuberss.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
     "@types/jquery": "^3.5.30",
     "@types/sass-loader": "^8.0.8",
     "bulma": "^1.0.1",
+    "bulma-list": "^3.0.0",
     "fast-xml-parser": "^5.2.5",
     "glob": "^10.4.1",
     "jquery": "^3.7.1",
@@ -34,7 +35,10 @@
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
     "@types/jsdom": "^21.1.7",
+    "cspell": "^9.2.2",
+    "husky": "^9.1.7",
     "linkinator": "^6.0.5",
+    "lint-staged": "^16.2.6",
     "seo-analyzer": "^3.1.1"
   }
 }

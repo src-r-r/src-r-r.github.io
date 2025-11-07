@@ -1,5 +1,26 @@
 [
   {
+    "date": "2025-09-03T20:57:52.000Z",
+    "title": "Hire for GENEROSITY over JAVA! #technology #business #ai",
+    "thumbnail": "https://i1.ytimg.com/vi/dT_LfijTTww/hqdefault.jpg",
+    "url": "https://www.youtube.com/shorts/dT_LfijTTww",
+    "description": ""
+  },
+  {
+    "date": "2025-09-01T23:49:34.000Z",
+    "title": "1. Python & Django Crash Course FOR EXPERIENCED PROGRAMMERS",
+    "thumbnail": "https://i3.ytimg.com/vi/rnCxMhtsv3Q/hqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=rnCxMhtsv3Q",
+    "description": "Ready to make the jump into Python and Django? Now's the best time to learn about these exciting tech stacks!\n\nIf you need technical expertise on your team, I'm open to work full time or part time. Check out my profile for details or head to damngood dot tech.\n\nThis course is designed for people who are already familiar with programming. If you're coming from JavaScript, Java, Ruby, Golang, or something else, this tutorial is designed to provide you with the essentials so you can get cracking with your Python or Django application!\n\nTimestamps\n\n1:00 - installing python\n2:00 - Editor setup\n3:05 - Python Expectations\n4:07 - Python shell\n4:30 - First (blank) program\n5:24 - First (number) program\n5:50 - First (proper) program\n10:00 - Python stack trace\n11:15 - Why we need a functions and a main guard\n18:12 - Function arguments\n20:18 - String formatting\n22:15 - typing hints\n25:19 - optional arguments\n26:25 - args and kwargs\n35:40 - next time\n36:50 - Outro\n\nI first start off showing how to install Python on your system. Your package manager may make this easy.\n\nI'll then start of easy, showing you in Python you can run a blank program (yes, really) and even a program with the number `4` in it (yes, really), but obviously you want to do more than that, so I bring out something more substantial: writing actual Python code.\n\nSince you'll undoubtedly encounter an error at some point, I do show you what a stack trace looks like and how to read it, before moving on to building out more of an \"official\" python program.\n\nJust like other scripting languages, we start off with functions, and I mention how to provide an \"if-main\" guard and why it's important. As with other languages, Python does allow for function arguments. As a natural side-quest I also show how to format strings in Python.\n\nFrom there I appease those coming from strongly-typed language backgrounds to mention Python's type hinting system.\n\nAfter ensuring all anxieties have been decreased, I show how to add optional arguments (and args and kwargs) to function arguments, as they will heavily be used in Django development.\n\nStay tuned for next time, when I'll be showing you about classes and inheritance, and (possibly) virtual environments and package management (but those might be in video 3)."
+  },
+  {
+    "date": "2025-08-27T17:06:39.000Z",
+    "title": "Too Many Vibe Coders? Here are 4 Reasons Why",
+    "thumbnail": "https://i3.ytimg.com/vi/BEHOnjHxwTY/hqdefault.jpg",
+    "url": "https://www.youtube.com/shorts/BEHOnjHxwTY",
+    "description": "I walk through 4 reasons why your team may have too many vibe coders on it. What do you think? Does your team suffer from one of these issues? Have you been on teams that suffer from them? Comment your thoughts!"
+  },
+  {
     "date": "2025-07-24T14:02:21.000Z",
     "title": "How to properly refactor #code #technology #fullstack #programming",
     "thumbnail": "https://i1.ytimg.com/vi/PecxEp28Eyw/hqdefault.jpg",

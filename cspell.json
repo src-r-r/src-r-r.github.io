@@ -1,0 +1,8 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "dictionaries": ["content"],
+  "dictionaryDefinitions": [
+    { "name": "content", "path": "./_config/dictionaries/content.txt" }
+  ]
+}

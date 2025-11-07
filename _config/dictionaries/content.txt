@@ -1,0 +1,9 @@
+hellip
+dgtstatic
+tabler
+linecap
+linejoin
+allowfullscreen
+cardtitle
+endfor
+Upwork
