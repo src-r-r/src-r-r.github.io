@@ -2,13 +2,8 @@
   "name": "dgtstatic",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "build": "eleventy --formats=scss --output=output",
-    "serve": "eleventy --serve",
-    "watch:sass": "sass --watch ./static:./output/static",
-    "build:sass": "sass ./static:./output/static",
-    "dev": "eleventy",
+    "dev": "eleventy --watch --serve --port 8082",
     "feed:youtube": "ts-node ./scripts/youtuberss.ts"
   },
   "keywords": [],
@@ -20,6 +15,7 @@
     "@types/sass-loader": "^8.0.8",
     "bulma": "^1.0.1",
     "bulma-list": "^3.0.0",
+    "eleventy==3.1.2": "link:@11ty/eleventy==3.1.2",
     "fast-xml-parser": "^5.2.5",
     "glob": "^10.4.1",
     "jquery": "^3.7.1",
@@ -32,7 +28,7 @@
     "yoastseo": "2.0.0-alpha.0"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy": "^3.1.2",
     "@types/jsdom": "^21.1.7",
     "autoprefixer": "^10.4.22",
     "concurrently": "^9.2.1",
@@ -45,6 +41,5 @@
     "sass": "^1.77.4",
     "seo-analyzer": "^3.1.1",
     "tailwindcss": "^4.1.17"
-  },
-  "type": "module"
+  }
 }
