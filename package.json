@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/eleventy --output=output",
-    "serve": "node_modules/.bin/eleventy --serve",
-    "watch:sass": "node_modules/.bin/sass --watch ./static:./output/static",
-    "build:sass": "node_modules/.bin/sass ./static:./output/static",
-    "watch:seo": "find pages/ scripts/ static/ templates | entr -s 'pnpm build && node_modules/.bin/ts-node ./scripts/seo.ts'",
-    "feed:youtube": "node_modules/.bin/ts-node ./scripts/youtuberss.ts"
+    "build": "eleventy --formats=scss --output=output",
+    "serve": "eleventy --serve",
+    "watch:sass": "sass --watch ./static:./output/static",
+    "build:sass": "sass ./static:./output/static",
+    "dev": "eleventy",
+    "feed:youtube": "ts-node ./scripts/youtuberss.ts"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +25,6 @@
     "jquery": "^3.7.1",
     "liquidjs": "^10.13.1",
     "node-html-parser": "^6.1.13",
-    "sass": "^1.77.4",
     "sass-loader": "^14.2.1",
     "truncate": "^3.0.0",
     "ts-node": "^10.9.2",
@@ -35,10 +34,17 @@
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
     "@types/jsdom": "^21.1.7",
+    "autoprefixer": "^10.4.22",
+    "concurrently": "^9.2.1",
     "cspell": "^9.2.2",
     "husky": "^9.1.7",
     "linkinator": "^6.0.5",
     "lint-staged": "^16.2.6",
-    "seo-analyzer": "^3.1.1"
-  }
+    "nodemon": "^3.1.11",
+    "postcss": "^8.5.6",
+    "sass": "^1.77.4",
+    "seo-analyzer": "^3.1.1",
+    "tailwindcss": "^4.1.17"
+  },
+  "type": "module"
 }
