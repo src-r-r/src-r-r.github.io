@@ -1,3 +1,4 @@
+import "tsx/esm";
 import path from "node:path";
 import fs from 'fs';
 import * as sass from "sass";
@@ -6,6 +7,7 @@ import postcss from 'postcss';
 import tailwindcss from '@tailwindcss/postcss';
 import pluginIcons from 'eleventy-plugin-icons';
 import eleventy from "11ty.ts"
+import { renderToStaticMarkup } from "react-dom/server";
 
 export default eleventy(eleventyConfig => {
 
@@ -19,6 +21,16 @@ export default eleventy(eleventyConfig => {
 	eleventyConfig.addWatchTarget("./_site/assets/");
 
 	eleventyConfig.addPlugin(pluginIcons, {});
+
+	eleventyConfig.addExtension(["11ty.jsx", "11ty.ts", "11ty.tsx"], {
+		key: "11ty.js",
+		compile: function () {
+			return async function (data) {
+				let content = await this.defaultRenderer(data);
+				return renderToStaticMarkup(content);
+			};
+		},
+	});
 
 	// tailwind
 	//compile tailwind before eleventy processes the files

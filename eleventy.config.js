@@ -1,3 +1,5 @@
+/** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
+import "tsx/esm";
 import path from "node:path";
 import fs from 'fs';
 import * as sass from "sass";
@@ -5,19 +7,33 @@ import cssnano from 'cssnano';
 import postcss from 'postcss';
 import tailwindcss from '@tailwindcss/postcss';
 import pluginIcons from 'eleventy-plugin-icons';
+import eleventy from "11ty.ts"
+import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
+import rollupPlugin from "eleventy-plugin-rollup"
+import typescript from '@rollup/plugin-typescript';
+import {globSync} from "glob"
 
-export default function(eleventyConfig) {
+export default eleventy(eleventyConfig => {
 
 	eleventyConfig.setInputDirectory("./src");
 	eleventyConfig.setIncludesDirectory("./_includes");
 	eleventyConfig.setLayoutsDirectory("./_layouts");
 	eleventyConfig.addPassthroughCopy("./src/styles")
-	eleventyConfig.addPassthroughCopy("./node_modules/dayjs")
 	eleventyConfig.setDataDirectory("./_data")
+
 	eleventyConfig.addWatchTarget("./src/assets/");
 	eleventyConfig.addWatchTarget("./_site/assets/");
 
 	eleventyConfig.addPlugin(pluginIcons, {});
+	eleventyConfig.addPlugin(EleventyVitePlugin, {
+		resolve: {
+			aliases: {
+				"~": path.resolve(".", "node_modules"),
+			}
+		}
+	});
+
+	// eleventyConfig.addTemplateFormats("ts")
 
 	// tailwind
 	//compile tailwind before eleventy processes the files
@@ -42,6 +58,28 @@ export default function(eleventyConfig) {
 
 		fs.writeFileSync(tailwindOutputPath, result.css);
 	});
+
+	eleventyConfig.addExtension("ts")
+	// eleventyConfig.addTemplateFormats("ts")
+	eleventyConfig.addPlugin(rollupPlugin, {
+		rollupOptions: {
+			output: {
+				format: "module",
+				dir: "_site/assets"
+			},
+			plugins: [typescript({
+				include: [
+					path.resolve("node_modules"),
+					path.resolve("src/"),
+				]
+			})],
+		},
+		resolveName: (name) => {
+			const resolved = path.resolve("src", name);
+			console.log(">> RESOLVING %s -> %s", name, resolved);
+			return resolved;
+		}
+	})
 
 	const processor = postcss([
 		//compile tailwind
@@ -84,4 +122,4 @@ export default function(eleventyConfig) {
 			};
 		},
 	});
-}
+});
