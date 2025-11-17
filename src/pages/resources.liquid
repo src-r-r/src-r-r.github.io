@@ -1,0 +1,16 @@
+{% layout "_layouts/dgtstatic/base.liquid" %}
+{% block title %}Resources{% endblock %}
+{% block main %}
+<h1 class="resource-title">Videos</h1>
+<div class="flex flex-wrap">
+{% for item in youtube %}
+    {% include "_includes/thumbnail_link.liquid" %}
+{% endfor %}
+</div>
+<h1 class="resource-title">Articles</h1>
+<div class="flex flex-wrap">
+{% for item in medium %}
+    {% include "_includes/thumbnail_link.liquid" %}
+{% endfor %}
+</div>
+{% endblock %}

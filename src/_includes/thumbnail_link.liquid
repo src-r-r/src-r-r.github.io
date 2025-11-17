@@ -1,0 +1,10 @@
+<div class="card">
+    <div class="card-header">
+        <a href="{{item.url}}">
+            <img src="{{ item.thumbnail }}" class="thumbnail" />
+        </a>
+        <h1 class="card-title">{{ item.title }}</h1>
+        {{ item.date }}
+        {{ item.description | truncatewords }}
+    </div>
+</div>
