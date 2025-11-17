@@ -1,0 +1,1 @@
+import { EleventyConfig } from "11ty.ts";
