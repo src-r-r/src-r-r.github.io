@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+.splash {
+    height: 25em;
+}
+.btn {
+    @apply px-4 py-2 text-white bg-gray-700 hover:bg-gray-800 uppercase;
+}
+.btn-primary {
+    @apply text-white bg-orange-500 hover:bg-orange-600;
+}
+.btn-secondary {
+    @apply text-white bg-red-500 hover:bg-red-600;
+}
+.btn-large {
+    @apply px-6 py-3 text-lg;
+}
+
+.navbar {
+    @apply flex items-center bg-orange-700 text-white uppercase;
+}
+.nav-link {
+    @apply px-4 py-4;
+    border-bottom: 5px solid var(--color-orange-700);
+}
+.nav-link:hover {
+    border-bottom: 5px solid white;
+}
+
+.thumbnail {
+    width: 10em;
+}
+
+div.card {
+    @apply p-4;
+    width: 20em;
+}
+
+div.card h1 {
+    @apply font-bold;
+}
+
+h1.resource-title {
+    @apply text-center text-4xl p-4
+}
