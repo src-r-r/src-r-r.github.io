@@ -25,7 +25,7 @@ function main() {
         dynamicPartials: true,
     });
 
-    engine.registerTag("static", StaticTag);
+    // engine.registerTag("static", StaticTag);
 
     const gl = new Glob(PAGES_PATTERN, { withFileTypes: true });
     gl.stream().on("data", (inFile) => {

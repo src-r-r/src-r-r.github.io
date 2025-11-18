@@ -9,9 +9,6 @@ import tailwindcss from '@tailwindcss/postcss';
 import pluginIcons from 'eleventy-plugin-icons';
 import eleventy from "11ty.ts"
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
-import rollupPlugin from "eleventy-plugin-rollup"
-import typescript from '@rollup/plugin-typescript';
-import {globSync} from "glob"
 
 export default eleventy(eleventyConfig => {
 
@@ -32,9 +29,7 @@ export default eleventy(eleventyConfig => {
 			}
 		}
 	});
-
-	// eleventyConfig.addTemplateFormats("ts")
-
+	
 	// tailwind
 	//compile tailwind before eleventy processes the files
 	eleventyConfig.on('eleventy.before', async () => {
@@ -58,28 +53,6 @@ export default eleventy(eleventyConfig => {
 
 		fs.writeFileSync(tailwindOutputPath, result.css);
 	});
-
-	eleventyConfig.addExtension("ts")
-	// eleventyConfig.addTemplateFormats("ts")
-	eleventyConfig.addPlugin(rollupPlugin, {
-		rollupOptions: {
-			output: {
-				format: "module",
-				dir: "_site/assets"
-			},
-			plugins: [typescript({
-				include: [
-					path.resolve("node_modules"),
-					path.resolve("src/"),
-				]
-			})],
-		},
-		resolveName: (name) => {
-			const resolved = path.resolve("src", name);
-			console.log(">> RESOLVING %s -> %s", name, resolved);
-			return resolved;
-		}
-	})
 
 	const processor = postcss([
 		//compile tailwind

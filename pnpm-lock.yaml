@@ -56,6 +56,9 @@ dependencies:
   node-html-parser:
     specifier: ^6.1.13
     version: 6.1.13
+  postcss-sass:
+    specifier: ^0.5.0
+    version: 0.5.0
   sass-loader:
     specifier: ^14.2.1
     version: 14.2.1(sass@1.77.4)
@@ -3347,6 +3350,14 @@ packages:
       ini: 4.1.1
     dev: true
 
+  /gonzales-pe@4.3.0:
+    resolution: {integrity: sha512-otgSPpUmdWJ43VXyiNgEYE4luzHCL2pz4wQ0OnDluC6Eg4Ko3Vexy/SrSynglw/eR+OhkzmqFCZa/OFa/RgAOQ==}
+    engines: {node: '>=0.6.0'}
+    hasBin: true
+    dependencies:
+      minimist: 1.2.8
+    dev: false
+
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -4266,7 +4277,6 @@ packages:
 
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
-    dev: true
 
   /minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
@@ -4772,6 +4782,14 @@ packages:
     dependencies:
       postcss: 8.5.6
       postcss-value-parser: 4.2.0
+    dev: false
+
+  /postcss-sass@0.5.0:
+    resolution: {integrity: sha512-qtu8awh1NMF3o9j/x9j3EZnd+BlF66X6NZYl12BdKoG2Z4hmydOt/dZj2Nq+g0kfk2pQy3jeYFBmvG9DBwynGQ==}
+    engines: {node: ^10 || ^12 || >=14}
+    dependencies:
+      gonzales-pe: 4.3.0
+      postcss: 8.5.6
     dev: false
 
   /postcss-selector-parser@7.1.0:

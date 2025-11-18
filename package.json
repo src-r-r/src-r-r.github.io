@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "./node_modules/.bin/eleventy --watch --serve --port 8082",
+    "dev": "./node_modules/.bin/concurrently \"pnpm run dev:clientjs\" \"pnpm run dev:eleventy\"",
+    "dev:eleventy": "./node_modules/.bin/eleventy --watch --serve --port 8082",
+    "dev:clientjs": "rollup -c --watch",
     "feed:youtube": "ts-node ./scripts/youtuberss.ts"
   },
   "keywords": [],
@@ -27,6 +29,7 @@
     "jsdom": "^27.2.0",
     "liquidjs": "^10.13.1",
     "node-html-parser": "^6.1.13",
+    "postcss-sass": "^0.5.0",
     "sass-loader": "^14.2.1",
     "truncate": "^3.0.0",
     "ts-node": "^10.9.2",
