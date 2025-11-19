@@ -10,9 +10,8 @@ import pluginIcons from 'eleventy-plugin-icons';
 import eleventy from "11ty.ts"
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import SeoAnalyzer from "seo-analyzer";
-import { globSync } from "node:fs";
 
-export default eleventy(async eleventyConfig => {
+export default eleventy(eleventyConfig => {
 
 	eleventyConfig.setInputDirectory("./src");
 	eleventyConfig.setIncludesDirectory("./_includes");
@@ -65,6 +64,54 @@ export default eleventy(async eleventyConfig => {
 			preset: 'default',
 		}),
 	]);
+
+	const analyzer = new SeoAnalyzer();
+
+	eleventyConfig.on("eleventy.after", async ({ directories, results, runMode, outputMode }) => {
+
+		// console.log("results: %o", results)
+		console.log("runMode: %o", runMode)
+		console.log("outputMode: %o", outputMode)
+
+		const result = await new Promise((resolve, reject) => {
+			analyzer
+			.inputFolders([directories.output])
+			.addRule("imgTagWithAltAttributeRule")
+			.addRule('metaBaseRule', { list: ['description', 'viewport'] })
+			.addRule('aTagWithRelAttributeRule')
+			.addRule('titleLengthRule', { min: 10, max: 50 })
+			.addRule('canonicalLinkRule')
+			.addRule('metaSocialRule', {
+				properties: [
+					'og:url',
+					'og:type',
+					'og:site_name',
+					'og:title',
+					'og:description',
+					'og:image',
+					'og:image:width',
+					'og:image:height',
+					'twitter:card',
+					'twitter:text:title',
+					'twitter:description',
+					'twitter:image:src',
+					'twitter:url'
+				],
+			})
+			.outputObject((j) => resolve(j))
+			.run()
+		});
+		if (result.length) {
+			for (let i = 0; i < result.length; ++i) {
+				console.log(result[i].source)
+				for (let j = 0; j < result[i].report.length; ++j) {
+					console.error("  %s", result[i].report[j])
+				}
+			}
+			throw new Error("Did not pass SEO.")
+		}
+	})
+
 
 	// SCSS
 	eleventyConfig.addTemplateFormats("scss")

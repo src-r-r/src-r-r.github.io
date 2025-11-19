@@ -4,8 +4,9 @@
   "description": "",
   "scripts": {
     "dev": "./node_modules/.bin/concurrently \"pnpm run dev:clientjs\" \"pnpm run dev:eleventy\"",
-    "dev:eleventy": "./node_modules/.bin/eleventy --watch --serve --port 8082",
+    "dev:eleventy": "./node_modules/.bin/eleventy --incremental --serve --port 8082",
     "dev:clientjs": "rollup -c --watch",
+    "lint:seo": "printf \"\\033c\" && find _site -name \"*.html\" | entr -c -r ./node_modules/.bin/ts-node ./scripts/seo.ts",
     "feed:youtube": "ts-node ./scripts/youtuberss.ts",
     "lint:spell": "cspell src/**/*.liquid"
   },

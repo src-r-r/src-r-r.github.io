@@ -1,5 +1,8 @@
 import SeoAnalyzer from "seo-analyzer";
 import {JSDOM} from "jsdom";
+import { globSync } from "fs";
+
+process.stdout.write('\x33c')
 
 // This is just an example of input/output
 function customRule(dom : JSDOM) {
@@ -34,13 +37,30 @@ function metaDescriptionLengthRule(dom : JSDOM, args? : {minLength?: number, max
 }
 
 (async function () {
-    (await new SeoAnalyzer({})
-        .inputFolders(["output"]))
+    (await new SeoAnalyzer({}).inputFiles(globSync("./_site/**/*.html")))
         .addRule('imgTagWithAltAttributeRule')
         .addRule('titleLengthRule', { min: 10, max: 50 })
         .addRule('aTagWithRelAttributeRule')
         .addRule('metaBaseRule', { list: ['description', 'viewport'] })
         .addRule(metaDescriptionLengthRule)
+		.addRule('canonicalLinkRule')
+		.addRule('metaSocialRule', {
+			properties: [
+				'og:url',
+				'og:type',
+				'og:site_name',
+				'og:title',
+				'og:description',
+				'og:image',
+				'og:image:width',
+				'og:image:height',
+				'twitter:card',
+				'twitter:text:title',
+				'twitter:description',
+				'twitter:image:src',
+				'twitter:url'
+			],
+		})
         // @ts-ignore
         .outputConsole().run();
 })();

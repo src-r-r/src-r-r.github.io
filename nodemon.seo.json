@@ -1,0 +1,9 @@
+{
+  "$schema": "https://www.schemastore.org/nodemon.json",
+  "watch": [
+    "_site"
+  ],
+  "execMap": {
+    "html": "./node_modules/.bin/ts-node ./scripts/seo.ts"
+  }
+}

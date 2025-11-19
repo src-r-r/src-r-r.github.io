@@ -1,5 +1,32 @@
 {% layout "_layouts/dgtstatic/skeleton.liquid" %}
 {% block meta_description %}Experienced Odoo and Django Expert in Portland. Supercharge your business with high-quality solutions.{% endblock %}
+
+
+{% block other_meta %}
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://www.yourdomain.com/">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:url" content="https://www.yourdomain.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Damn Good Technology" />
+  <meta property="og:title" content="Damn Good Technology" />
+  <meta property="og:description" content="Experienced Odoo and Django Expert in Portland. Supercharge your business with high-quality solutions." />
+  <meta property="og:image" content="https://www.yourdomain.com/images/your-og-image.png">
+  <meta property="og:image:width" content="1200"> <!-- Add image width -->
+  <meta property="og:image:height" content="630"> <!-- Add image height -->
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="Damn Good Technology" />
+  <meta property="twitter:description" content="Experienced Odoo and Django Expert in Portland. Supercharge your business with high-quality solutions." />
+  <meta property="twitter:image" content="https://www.yourdomain.com/images/your-twitter-image.png">
+  <meta property="twitter:url" content="https://www.yourdomain.com/"> <!-- Add Twitter URL -->
+
+  <!-- Other Meta Tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock other_meta %}
+
 {% block body %}
 
 {% comment %} Navigation header {% endcomment %}
@@ -7,13 +34,6 @@
 {% include "_includes/nav.liquid" %}
 {% endblock navigation %}
 
-{% block othermeta %}
-{% comment %} all meta  information goes in this block {% endcomment %}
-<meta property="og:url" content="https://damngood.tech" />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="Damn Good Technology" />
-
-{% endblock %}
 
 {% block main %}{% endblock %}
 
