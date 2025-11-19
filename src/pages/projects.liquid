@@ -1,17 +1,16 @@
-{% layout "/layouts/dgtstatic/base.liquid" %}
+{% layout "_layouts/dgtstatic/base.liquid" %}
 
-{% block "main_content" %}
+{% block title %}Jordan Hewitt's Projects{% endblock %}
 
-<section class="title p-4 has-text-centered">
-    <h1 class="title">Projects</h1>
-    <h2 class="subtitle">How I'm serving businesses and the community</h2>
-</section>
+{% block "main" %}
 
-<div class="grid is-col-min-11 p-4">
+<h1 class="page-hero-title">Projects</h1>
+
+<div class="flex flex-wrap">
     {% for project in projects %}
-        <div class="cell card p-4">
-            <div class="cart-header p-2">
-                <h3 class="title">{{ project.title }}</h3>
+        <div class="border-1 border-solid border-orange-400 m-4 w-full md:w-7/16">
+            <div class="card-header p-2">
+                <h3 class="font-bold">{{ project.title }}</h3>
             </div>
             <div class="card-body">
                 <section class="description p-2" style="height: 100px">
@@ -19,13 +18,13 @@
                 </section>
                 <div class="tech tags p-2">
                     {% for tech in project.tech %}
-                        <span class="tag">
+                        <span class="bg-gray-300 m-1 py-1 px-2 rounded-4xl text-xs text-center">
                             {{ tech }}
                         </span>
                     {% endfor %}
                 </div>
             </div>
-            <div class="card-footer p-2 is-flex">
+            <div class="border-1 border-solid border-orange-600 text-orange-600 m-4 text-center">
                 <a href="{{ project.url }}" class="button full-width" rel="external">Go To Project</a>
             </div>
         </div>

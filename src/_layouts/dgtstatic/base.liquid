@@ -7,6 +7,14 @@
 {% include "_includes/nav.liquid" %}
 {% endblock navigation %}
 
+{% block othermeta %}
+{% comment %} all meta  information goes in this block {% endcomment %}
+<meta property="og:url" content="https://damngood.tech" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Damn Good Technology" />
+
+{% endblock %}
+
 {% block main %}{% endblock %}
 
 {% endblock %}

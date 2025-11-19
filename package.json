@@ -6,7 +6,8 @@
     "dev": "./node_modules/.bin/concurrently \"pnpm run dev:clientjs\" \"pnpm run dev:eleventy\"",
     "dev:eleventy": "./node_modules/.bin/eleventy --watch --serve --port 8082",
     "dev:clientjs": "rollup -c --watch",
-    "feed:youtube": "ts-node ./scripts/youtuberss.ts"
+    "feed:youtube": "ts-node ./scripts/youtuberss.ts",
+    "lint:spell": "cspell src/**/*.liquid"
   },
   "keywords": [],
   "author": "",

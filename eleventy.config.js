@@ -1,6 +1,6 @@
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 import "tsx/esm";
-import path from "node:path";
+import path, { resolve } from "node:path";
 import fs from 'fs';
 import * as sass from "sass";
 import cssnano from 'cssnano';
@@ -9,6 +9,7 @@ import tailwindcss from '@tailwindcss/postcss';
 import pluginIcons from 'eleventy-plugin-icons';
 import eleventy from "11ty.ts"
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
+import SeoAnalyzer from "seo-analyzer";
 
 export default eleventy(eleventyConfig => {
 
@@ -29,7 +30,7 @@ export default eleventy(eleventyConfig => {
 			}
 		}
 	});
-	
+
 	// tailwind
 	//compile tailwind before eleventy processes the files
 	eleventyConfig.on('eleventy.before', async () => {
@@ -63,6 +64,53 @@ export default eleventy(eleventyConfig => {
 			preset: 'default',
 		}),
 	]);
+
+	const analyzer = new SeoAnalyzer();
+
+	eleventyConfig.on("eleventy.after", async ({ directories, results, runMode, outputMode }) => {
+
+		// console.log("results: %o", results)
+		console.log("runMode: %o", runMode)
+		console.log("outputMode: %o", outputMode)
+
+		const result = await new Promise((resolve, reject) => {
+			analyzer
+			.inputFolders([directories.output])
+			.addRule("imgTagWithAltAttributeRule")
+			.addRule('metaBaseRule', { list: ['description', 'viewport'] })
+			.addRule('aTagWithRelAttributeRule')
+			.addRule('titleLengthRule', { min: 10, max: 50 })
+			.addRule('canonicalLinkRule')
+			.addRule('metaSocialRule', {
+				properties: [
+					'og:url',
+					'og:type',
+					'og:site_name',
+					'og:title',
+					'og:description',
+					'og:image',
+					'og:image:width',
+					'og:image:height',
+					'twitter:card',
+					'twitter:text:title',
+					'twitter:description',
+					'twitter:image:src',
+					'twitter:url'
+				],
+			})
+			.outputObject((j) => resolve(j))
+			.run()
+		});
+		if (result.length) {
+			for (let i = 0; i < result.length; ++i) {
+				console.log(result[i].source)
+				for (let j = 0; j < result[i].report.length; ++j) {
+					console.error("  %s", result[i].report[j])
+				}
+			}
+			throw new Error("Did not pass SEO.")
+		}
+	})
 
 
 	// SCSS

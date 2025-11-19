@@ -43,3 +43,32 @@ div.card h1 {
 h1.resource-title {
     @apply text-center text-4xl p-4
 }
+
+.page-hero-title {
+    @apply text-center text-5xl text-gray-800 font-thin p-4
+}
+
+blockquote {
+    @apply rounded-lg bg-gray-200 p-5;
+}
+
+blockquote .quote {
+    @apply italic
+}
+
+blockquote .author {
+    margin-right: 10%;
+    @apply text-right
+}
+
+.upwork-testimonials {
+    @apply flex flex-wrap
+}
+
+.upwork-testimonials img {
+    @apply w-1/2 p-4
+}
+
+.container .p-4 {
+    @apply text-center text-3xl font-extralight
+}

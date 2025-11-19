@@ -7,3 +7,6 @@ allowfullscreen
 cardtitle
 endfor
 Upwork
+humandate
+truncatewords
+Rathberg
