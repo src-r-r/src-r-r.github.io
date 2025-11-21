@@ -7,8 +7,28 @@ of an SEO (search engine optomization checker). Note that it's possible
 the code you need to fix is not the code referenced in the SEO
 checker.
 
-In this instance, the files referenced as part of the SEO output are `html`
+For an 11ty site, the files referenced as part of the SEO output are `html`
 files, while the code that needs to be modified is in `liquid` templates.
+
+Here is what output might look like for the SEO checker (again this is only an example):
+
+```
+Source: _site/pages/resources/index.html
+There are 1 <img> tags without a src attribute
+There are 84 <img> tags without an alt attribute
+There are 88 <a> tags without a rel attribute
+This HTML is missing a <meta property="twitter:card"> tag
+This HTML is missing a <meta property="twitter:image:src"> tag
+```
+
+So then (giving the above example) you, the SEO-fixer, should take this to mean:
+1. Add a src attribute to the img tag.
+2. Find the img tags without the alt attribute, add an appropriate alt image
+   description.
+3. Find the a tags without the rel attribute, and add an appropriate rel attribute.
+4. Add the "twitter:card" meta property.
+5. Add the "twitter:img:src" meta property.
+
 
 Your goal is to modify the site to score higher on search engines.
 In order to fix the site, do the following:
