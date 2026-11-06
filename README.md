@@ -25,7 +25,10 @@ pnpm ship
 ```
 
 That's it. One command. (It's "ship", not "deploy" — `pnpm deploy` is taken
-by pnpm itself.) It:
+by pnpm itself.) Want a preview first? `pnpm ship -- --dry-run` does
+everything except the final push.
+
+It:
 
 1. builds the site (`eleventy` + `rollup`) into `_site/`
 2. copies the result (including the `CNAME` for damngood.tech) into a
@@ -43,8 +46,10 @@ curl -s https://damngood.tech | grep '<title>'
 - **Never** edit files on `gh-pages` directly.
 - **Never** push HTML to `main`. `main` holds source code only.
 - `_site/` is build output — it's gitignored, don't commit it.
-- `CNAME` lives in the repo root and is copied into the build automatically
-  (see `eleventy.config.js`). If you change the domain, edit that file.
+- `CNAME` lives in the repo root and is the source of truth for the
+  damngood.tech domain. `scripts/deploy.mjs` injects it into the deploy
+  itself (the vite build step wipes `_site/`, so it can't be trusted to
+  carry it). If you change the domain, edit that file.
 
 ## If something is broken
 

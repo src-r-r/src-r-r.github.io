@@ -6,7 +6,7 @@
     "dev": "./node_modules/.bin/concurrently \"pnpm run dev:clientjs\" \"pnpm run dev:eleventy\"",
     "dev:eleventy": "./node_modules/.bin/eleventy --incremental --serve --port 8082",
     "dev:clientjs": "rollup -c --watch",
-    "build": "pnpm run build:eleventy && pnpm run build:js",
+    "build": "pnpm run build:js && pnpm run build:eleventy",
     "build:eleventy": "eleventy",
     "build:js": "rollup -c",
     "ship": "pnpm run build && node scripts/deploy.mjs",

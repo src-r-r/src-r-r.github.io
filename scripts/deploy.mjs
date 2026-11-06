@@ -16,6 +16,9 @@
  *   3. commits + pushes to origin/gh-pages
  *   4. cleans up
  *
+ * Add `--dry-run` (e.g. `pnpm ship -- --dry-run`) to do everything
+ * except the final push.
+ *
  * Never edit gh-pages by hand — it is always rebuilt from _site/.
  */
 import { execFileSync } from "node:child_process";
@@ -29,6 +32,7 @@ const WORKTREE_DIR = path.join(root, ".gh-pages-deploy");
 const REMOTE = "origin";
 const BRANCH = "gh-pages";
 const SITE_URL = "https://damngood.tech";
+const DRY_RUN = process.argv.includes("--dry-run");
 
 function git(args, cwd = root) {
 	try {
@@ -49,15 +53,22 @@ function log(msg) {
 
 // --- 1. sanity checks -------------------------------------------------------
 const indexHtml = path.join(OUT_DIR, "index.html");
-const cname = path.join(OUT_DIR, "CNAME");
+const rootCname = path.join(root, "CNAME");
 
 if (!fs.existsSync(indexHtml)) {
 	log("✖ _site/index.html not found. Run `pnpm build` first (or just `pnpm ship`, which builds for you).");
 	process.exit(1);
 }
-if (!fs.existsSync(cname)) {
-	log("✖ _site/CNAME not found — deploying without it would break the damngood.tech domain!");
-	log("  (It should be copied there automatically by eleventy.config.js — check it wasn't deleted.)");
+
+// The repo-root CNAME is the source of truth for the custom domain.
+// eleventy.config.js also passthrough-copies it into _site/, but the vite
+// plugin's build step empties _site/ (vite emptyOutDir) and drops it, so
+// we don't trust _site/CNAME — the copy injected below is what ships.
+const cnameContent = fs.existsSync(rootCname)
+	? fs.readFileSync(rootCname, "utf8").trim()
+	: "";
+if (!cnameContent) {
+	log("✖ CNAME not found in the repo root (or empty) — deploying without it would break the damngood.tech domain!");
 	process.exit(1);
 }
 
@@ -98,6 +109,10 @@ try {
 	// Copy the fresh build in
 	fs.cpSync(OUT_DIR, WORKTREE_DIR, { recursive: true, dereference: true });
 
+	// Guarantee the custom domain ships with the site (see sanity check above
+	// for why we can't rely on the build output having it).
+	fs.writeFileSync(path.join(WORKTREE_DIR, "CNAME"), cnameContent + "\n");
+
 	git(["add", "-A"], WORKTREE_DIR);
 	const changes = git(["status", "--porcelain"], WORKTREE_DIR);
 
@@ -106,10 +121,15 @@ try {
 	} else {
 		const msg = `deploy: ${new Date().toISOString()} (source ${sourceSha})`;
 		git(["commit", "-m", msg], WORKTREE_DIR);
-		git(["push", REMOTE, `HEAD:${BRANCH}`], WORKTREE_DIR);
-		log(`🚀 Deployed ${SITE_URL}`);
-		log("   GitHub Pages usually takes ~30-60 seconds to go live.");
-		log(`   (Verify: curl -s ${SITE_URL} | grep '<title>')`);
+		if (DRY_RUN) {
+			const sha = git(["rev-parse", "--short", "HEAD"], WORKTREE_DIR);
+			log(`✔ --dry-run: committed ${sha} in the throw-away worktree — NOT pushed.`);
+		} else {
+			git(["push", REMOTE, `HEAD:${BRANCH}`], WORKTREE_DIR);
+			log(`🚀 Deployed ${SITE_URL}`);
+			log("   GitHub Pages usually takes ~30-60 seconds to go live.");
+			log(`   (Verify: curl -s ${SITE_URL} | grep '<title>')`);
+		}
 	}
 } finally {
 	git(["worktree", "remove", "--force", WORKTREE_DIR]);
