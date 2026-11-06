@@ -20,6 +20,9 @@ export default eleventy(async eleventyConfig => {
 	eleventyConfig.addPassthroughCopy("./src/styles")
 	eleventyConfig.setDataDirectory("./_data")
 
+	// custom domain for GitHub Pages (deployed with the site by scripts/deploy.mjs)
+	eleventyConfig.addPassthroughCopy("./CNAME")
+
 	eleventyConfig.addWatchTarget("./src/assets/");
 	eleventyConfig.addWatchTarget("./_site/assets/");
 
