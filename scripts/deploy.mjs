@@ -6,7 +6,9 @@
  *   - `main` branch        = the code (this repo, what you edit)
  *   - `gh-pages` branch    = the final HTML (what visitors see, generated)
  *
- * Run with:  pnpm deploy
+ * Run with:  pnpm ship
+ * (named "ship" because `pnpm deploy` collides with pnpm's built-in
+ *  workspace-deploy command)
  *
  * What this does:
  *   1. checks the build output (_site/) is complete
@@ -50,7 +52,7 @@ const indexHtml = path.join(OUT_DIR, "index.html");
 const cname = path.join(OUT_DIR, "CNAME");
 
 if (!fs.existsSync(indexHtml)) {
-	log("✖ _site/index.html not found. Run `pnpm build` first (or just `pnpm deploy`, which builds for you).");
+	log("✖ _site/index.html not found. Run `pnpm build` first (or just `pnpm ship`, which builds for you).");
 	process.exit(1);
 }
 if (!fs.existsSync(cname)) {

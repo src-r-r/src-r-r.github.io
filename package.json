@@ -9,7 +9,7 @@
     "build": "pnpm run build:eleventy && pnpm run build:js",
     "build:eleventy": "eleventy",
     "build:js": "rollup -c",
-    "deploy": "pnpm run build && node scripts/deploy.mjs",
+    "ship": "pnpm run build && node scripts/deploy.mjs",
     "lint:seo": "printf \"\\033c\" && find _site -name \"*.html\" | entr -c -r ./node_modules/.bin/ts-node ./scripts/seo.ts",
     "feed:youtube": "ts-node ./scripts/youtuberss.ts",
     "lint:spell": "cspell src/**/*.liquid"

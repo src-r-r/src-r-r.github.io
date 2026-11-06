@@ -21,10 +21,11 @@ pnpm dev       # local dev server on http://localhost:8082 (hot reload)
 ## Deploying
 
 ```bash
-pnpm deploy
+pnpm ship
 ```
 
-That's it. One command. It:
+That's it. One command. (It's "ship", not "deploy" — `pnpm deploy` is taken
+by pnpm itself.) It:
 
 1. builds the site (`eleventy` + `rollup`) into `_site/`
 2. copies the result (including the `CNAME` for damngood.tech) into a
@@ -50,5 +51,5 @@ curl -s https://damngood.tech | grep '<title>'
 ```bash
 pnpm install   # restore node_modules
 pnpm build     # build only, no deploy — inspect _site/
-pnpm deploy    # build + deploy
+pnpm ship      # build + deploy
 ```
