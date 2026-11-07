@@ -1,4 +1,5 @@
 {
   "restructuredtext.preview.name": "docutils",
-    "cSpell.enabled": true
+    "cSpell.enabled": true,
+    "nuxt.isNuxtApp": false
 }

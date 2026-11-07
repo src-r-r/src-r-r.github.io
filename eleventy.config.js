@@ -32,6 +32,13 @@ export default eleventy(async eleventyConfig => {
 			aliases: {
 				"~": path.resolve(".", "node_modules"),
 			}
+		},
+		// Static media Vite ships verbatim (hero video, poster). Copied into
+		// the site root by the vite production build, served by the vite dev
+		// server in dev mode. The plugin also passthrough-copies it for
+		// Eleventy itself.
+		viteOptions: {
+			publicDir: path.resolve(".", "src/public"),
 		}
 	});
 
