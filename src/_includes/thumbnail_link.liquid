@@ -1,10 +1,10 @@
-<div class="card">
+<div class="card" data-url="{{ item.url | escape }}" data-date="{{ item.date }}">
     <div class="card-header">
         <a href="{{item.url}}">
             <img src="{{ item.thumbnail }}" class="thumbnail" />
         </a>
         <h1 class="card-title">{{ item.title }}</h1>
-        <p class="item-date">{{ item.date }}</p>
-        {{ item.description | truncatewords }}
+        <p class="item-date">{{ item.date | date: "%b %-d, %Y" }}</p>
+        <p class="card-description">{{ item.description | default: item.subtitle | default: item.teaser | truncatewords }}</p>
     </div>
 </div>

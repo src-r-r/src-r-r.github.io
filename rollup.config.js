@@ -1,26 +1,17 @@
 import typescript from '@rollup/plugin-typescript';
-import { fileURLToPath } from 'node:url';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default {
-  input: 'src/assets/scripts/dgtstatic/humandate.ts',
-  output: {
-    file: '_site/assets/scripts/dgtstatic/humandate.js',
-    format: 'es',
-    name: 'HumanDate',
+  input: {
+    resources: 'src/assets/scripts/dgtstatic/resources.ts',
   },
-  external: [
-    "dayjs",
-    /node_modules/,
-    fileURLToPath
-      (
-        new URL
-          (
-            './node_modules/dayjs/index.js',
-            import.meta.url
-          )
-      ),
-  ],
+  output: {
+    dir: '_site/assets/scripts/dgtstatic',
+    entryFileNames: '[name].js',
+    format: 'es',
+  },
   plugins: [
+    nodeResolve(),
     typescript()
   ]
 };

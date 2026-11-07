@@ -73,6 +73,14 @@ h1.resource-title {
     @apply text-center text-4xl p-4
 }
 
+/* live-feed status line on the resources page; hidden when empty */
+.feed-status:empty {
+    display: none;
+}
+.feed-status {
+    @apply text-center text-sm text-gray-500 p-2;
+}
+
 .page-hero-title {
     @apply text-center text-5xl text-gray-800 font-thin p-4
 }

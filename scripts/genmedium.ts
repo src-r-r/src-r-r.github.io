@@ -36,7 +36,12 @@ async function main (){
         const root = parse(html);
         const thumbnail = root.querySelector("img")?.attributes["src"];
         const title = root.querySelector(".graf--title")?.innerText;
-        const subtitle = root.querySelector(".graf--subtitle")?.innerText;
+        // Older exports have no subtitle element; fall back to the first
+        // substantial body paragraph so the cards still carry a blurb.
+        const firstParagraph = Array.from(root.querySelectorAll("p"))
+            .map((p) => (p.innerText ?? "").trim())
+            .find((t) => t.length >= 60);
+        const subtitle = root.querySelector(".graf--subtitle")?.innerText || firstParagraph;
         const teaser = truncate(subtitle || "", TEASER_LENGTH);
         const url = root.querySelector(".p-canonical")?.attributes["href"];
         if (!title) return null;
