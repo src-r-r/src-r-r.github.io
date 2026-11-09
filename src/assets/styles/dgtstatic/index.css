@@ -65,11 +65,11 @@ div.card {
     width: 20em;
 }
 
-div.card h1 {
+div.card h3 {
     @apply font-bold;
 }
 
-h1.resource-title {
+.resource-title {
     @apply text-center text-4xl p-4
 }
 
@@ -108,4 +108,50 @@ blockquote .author {
 
 .container .p-4 {
     @apply text-center text-3xl font-extralight
+}
+
+/* "Artificial" with a pen-like strikethrough, "Extended" written above it */
+.strike-word {
+    position: relative;
+    display: inline-block;
+    font-size: 0.75em;
+}
+.strike-word::after {
+    content: "";
+    position: absolute;
+    left: -5%;
+    right: -5%;
+    top: 52%;
+    height: 0.12em;
+    background: currentColor;
+    border-radius: 9999px;
+    transform: rotate(-2.5deg);
+}
+.strike-replace {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -1.2em;
+    font-size: 1.3em;
+    white-space: nowrap;
+    font-family: cursive;
+}
+
+/* pricing callout inside the service sections */
+.pricing-box {
+    @apply mt-6 inline-block rounded-lg border-2 border-yellow-600 px-8 py-4;
+}
+
+/* left/right split layout (e.g. the "Trusted Expert" section) */
+.cols {
+    @apply flex items-center justify-between gap-10;
+}
+.col {
+    @apply flex-1;
+}
+.col.left {
+    @apply text-left;
+}
+.col.right {
+    @apply text-right;
 }

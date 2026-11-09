@@ -165,12 +165,14 @@ function renderCard(item: Item): HTMLElement {
         a.href = item.url;
         const img = document.createElement("img");
         img.src = item.thumbnail;
+        img.alt = item.title;
         img.className = "thumbnail";
+        img.loading = "lazy";
         a.append(img);
         header.append(a);
     }
 
-    const title = document.createElement("h1");
+    const title = document.createElement("h3");
     title.className = "card-title";
     title.textContent = item.title;
     header.append(title);

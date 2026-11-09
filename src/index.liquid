@@ -1,41 +1,101 @@
-{% layout "_layouts/dgtstatic/base.liquid" %}
-{% block title %}Jordan Hewitt | Odoo and Django Developer{% endblock %}
+{% layout '_layouts/dgtstatic/base.liquid' %}
+{% block title %}Jordan Hewitt | Get More Done with Automation &amp; AI{% endblock %}
+{% assign social_title = "Jordan Hewitt | Get More Done with Automation & AI" %}
+{% assign social_description = "Jordan Hewitt (Damn Good Technology) is a Portland-based AI & Automation Expert. Ready to superCHARGE your business. Practice kindness. Innovate radically." %}
 {% comment %} MAIN BODY {% endcomment %}
 {% block main %}
-
-<div class="splash content-center text-center uppercase" style="height: 450pt;">
-    <video class="splash-video" autoplay muted loop playsinline preload="auto"
-           poster="/media/bike-hero-poster.jpg"
-           src="/media/bike-hero.mp4"
-           aria-hidden="true"></video>
+  <div class="splash content-center text-center uppercase" style="height: 450pt;">
+    <video
+      class="splash-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="/media/bike-hero-poster.jpg"
+      src="/media/bike-hero.mp4"
+      aria-hidden="true"
+    ></video>
     <div class="p-10 bg-black/50">
-        <h1 class="text-5xl font-bold"><font class="text-yellow-600 italic">Supercharge</font> <font class="font-extralight text-gray-300">your team</font></h1>
-        <h1 class="text-5xl font-extralight text-gray-300">with</h1>
-        <h1 class="text-5xl">
-            <font class="extrabold text-white">AI</font>
-            <font class="text-gray-300 font-extralight">&amp;</font>
-            <font class="bold text-white">Automation</font>
-        </h1>
-    <div class="action-buttons p-7">
-    <a class="m-2 btn btn-primary btn-large" href="mailto:jordan@damngood.tech">
-        Hire Me
-    </a>
-    <a class="m-2 btn btn-secondary btn-large" href="/pages/resources/">
-        Free Resources
-    </a>
+      <h1 class="text-5xl font-bold">
+        <span class="block"
+          ><font class="text-yellow-600 italic">Supercharge</font>
+          <font class="font-extralight text-gray-300">your team</font></span
+        >
+        <span class="block font-extralight text-gray-300">with</span>
+        <span class="block"
+          ><font class="extrabold text-white">AI</font> <font class="text-gray-300 font-extralight">&amp;</font>
+          <font class="bold text-white">Automation</font></span
+        >
+      </h1>
+      <div class="action-buttons p-7">
+        <a class="m-2 btn btn-primary btn-large" href="mailto:jordan@damngood.tech"> Hire Me </a>
+        <a class="m-2 btn btn-secondary btn-large" href="/pages/resources/"> Free Resources </a>
+      </div>
     </div>
+  </div>
+
+  <div class="content-center text-center uppercase">
+    <div class="bg-black text-yellow-600 py-10">
+      <div class="cols">
+        <div class="col left ml-40">
+          <h2 class="text-9xl font-bold">&#10026;</h2>
+        </div>
+        <div class="col right mr-40">
+          <h2 class="text-5xl font-bold">Trusted Expert</h2>
+          <h3 class="text-3xl">Over 15 Years of <font class="font-bold">Excellence</font></h3>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="content-center text-center uppercase">
+    <div class="p-10 bg-gray-900 text-yellow-600">
+      <h2 class="text-5xl font-bold">Eliminate Manual Work</h2>
+      <hr class="my-2 ml-40 mr-40" />
+      <h2 class="text-5xl font-bold">Get More Done</h2>
+      <h3 class="text-3xl font-bold">AI &amp; Workflow Automation</h3>
+      <div class="pricing-box">
+        <div class="text-lg">1 Workflow / 1 AI Agent</div>
+        <div class="text-2xl font-bold">from $999</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-center text-center uppercase">
+    <div class="p-20 bg-gray-800 text-yellow-600">
+      <h2 class="text-5xl font-bold">
+        Serve Your People
+      </h2>
+      <h3 class="text-3xl font-bold">Customer-Facing Website</h3>
+      <div class="pricing-box">
+        <div class="text-lg">1 Website</div>
+        <div class="text-2xl font-bold">from $1,299</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-center text-center uppercase text-shadow-2xs">
+    <div class="p-20 bg-gray-700 text-yellow-600">
+      <h2 class="text-5xl font-bold">
+        Serve Your People
+      </h2>
+      <h3 class="text-3xl font-bold">Customer-Facing Website</h3>
+      <div class="pricing-box">
+        <div class="text-lg">1 Website</div>
+        <div class="text-2xl font-bold">from $1,299</div>
+      </div>
+    </div>
+  </div>
+
+<div class="bg-gray-900 text-white text-center p-2 lowercase">
+    ☝🏻 <font class="font-bold">Note:</font> Splash above animated and rendered by me.
 </div>
 
-<div class="content-center text-center">
-    <div class="p-10">
-        <h1 class="text-5xl font-bold">
-            Automation Workflows
-        </h1>
-        <h2 class="text-3xl font-bold">
-            Eliminate Manual Work, Get More Done
-        </h2>
+  <div class="content-center text-center uppercase bg-black text-white">
+    <h3 class="p-10">Schedule a free 1-hour consultation</h3>
+    <div class="p-4">
+      <a class="p-2 btn btn-primary btn-large" href="mailto:jordan@damngood.tech"> Let's Get Started! </a>
     </div>
-</div>
-
+  </div>
 {% endblock %}

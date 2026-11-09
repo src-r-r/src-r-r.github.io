@@ -1,9 +1,11 @@
 <div class="card" data-url="{{ item.url | escape }}" data-date="{{ item.date }}">
     <div class="card-header">
-        <a href="{{item.url}}">
-            <img src="{{ item.thumbnail }}" class="thumbnail" />
+        <a href="{{item.url}}" rel="noopener noreferrer">
+            {% if item.thumbnail %}
+            <img src="{{ item.thumbnail }}" alt="{{ item.title | escape }}" class="thumbnail" loading="lazy" />
+            {% endif %}
         </a>
-        <h1 class="card-title">{{ item.title }}</h1>
+        <h3 class="card-title">{{ item.title }}</h3>
         <p class="item-date">{{ item.date | date: "%b %-d, %Y" }}</p>
         <p class="card-description">{{ item.description | default: item.subtitle | default: item.teaser | truncatewords }}</p>
     </div>

@@ -1,14 +1,24 @@
 {% layout "_layouts/dgtstatic/base.liquid" %}
 {% block title %}Free Tech Resources{% endblock %}
+{% block meta_description %}Free tech resources from Damn Good Technology — Jordan Hewitt's YouTube videos and Medium articles on AI, automation, and software.{% endblock %}
+{% assign social_title = "Free Tech Resources" %}
+{% assign social_description = "Free tech resources from Damn Good Technology — Jordan Hewitt's YouTube videos and Medium articles on AI, automation, and software." %}
 {% block main %}
-<h1 class="resource-title">Videos</h1>
+<h1 class="text-4xl resource-title">Free Tech Resources</h1>
+<h2 class="text-3xl resource-title">Videos</h2>
+<div class="bg-pink-100 p-4 m-4 text-center">
+    <p>
+        <font class="font-bold">Never Miss a Video!</font>
+        Subscribe to the <a href="https://youtube.com/@DamnGoodtech" rel="noopener noreferrer" class="font-bold underline-offset-2 underline">Damn Good Tech YouTube Channel</a> today!
+    </p>
+    </div>
 <p id="video-status" class="feed-status"></p>
 <div id="video-grid" class="flex flex-wrap">
 {% for item in youtube %}
     {% include "_includes/thumbnail_link.liquid" %}
 {% endfor %}
 </div>
-<h1 class="resource-title">Articles</h1>
+<h2 class="text-3xl resource-title">Articles</h2>
 <p id="article-status" class="feed-status"></p>
 <div id="article-grid" class="flex flex-wrap">
 {% for item in medium %}

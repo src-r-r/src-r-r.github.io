@@ -34,6 +34,17 @@ const BRANCH = "gh-pages";
 const SITE_URL = "https://damngood.tech";
 const DRY_RUN = process.argv.includes("--dry-run");
 
+// Eleventy passthrough copies from src/ that the vite plugin's build step
+// (emptyOutDir) wipes from _site/. The repo's src/ copies are the source of
+// truth; they're re-injected into the deploy worktree below so they always
+// ship with the site. (CNAME is handled separately, from the repo root.)
+const SRC_ASSETS = [
+	"favicon.svg",
+	"sitemap.xml",
+	"robots.txt",
+	"images/og-image.png",
+];
+
 function git(args, cwd = root) {
 	try {
 		return execFileSync("git", args, {
@@ -112,6 +123,20 @@ try {
 	// Guarantee the custom domain ships with the site (see sanity check above
 	// for why we can't rely on the build output having it).
 	fs.writeFileSync(path.join(WORKTREE_DIR, "CNAME"), cnameContent + "\n");
+
+	// Re-inject the eleventy passthrough assets the vite build wipes from
+	// _site/ (see SRC_ASSETS above). Idempotent: if one already made it into
+	// the build, this just overwrites it with the identical src/ copy.
+	for (const asset of SRC_ASSETS) {
+		const from = path.join(root, "src", asset);
+		if (!fs.existsSync(from)) {
+			log(`⚠ src/${asset} not found — it will NOT ship with this deploy.`);
+			continue;
+		}
+		const to = path.join(WORKTREE_DIR, asset);
+		fs.mkdirSync(path.dirname(to), { recursive: true });
+		fs.cpSync(from, to);
+	}
 
 	git(["add", "-A"], WORKTREE_DIR);
 	const changes = git(["status", "--porcelain"], WORKTREE_DIR);

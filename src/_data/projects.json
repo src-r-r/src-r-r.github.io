@@ -1,7 +1,7 @@
 [
     {
         "title": "PliWould",
-        "description": "Indended for Habitat for Humanity employees, helps determine the cost of partial sheet products",
+        "description": "Intended for Habitat for Humanity employees, helps determine the cost of partial sheet products",
         "image": "https://gittea.dev/srcrr/PliWould/media/branch/develop/assets/images/pli-would-512.png",
         "url": "https://gittea.dev/srcrr/PliWould",
         "tech": [
@@ -13,7 +13,7 @@
     },
     {
         "title": "Make3D - InvokeAI stereo plugin",
-        "description": "A set of plug-ins to generate a 3D image form a 2D image",
+        "description": "A set of plug-ins to generate a 3D image from a 2D image",
         "image": "https://gitlab.com/srcrr/shift3d/-/raw/main/example-1.png",
         "url": "https://gitlab.com/srcrr/shift3d/",
         "tech": [
@@ -24,7 +24,7 @@
     },
     {
         "title": "Historical collection",
-        "description": "Easily keep track of changes to Mongo document changes with a collection.",
+        "description": "Easily keep track of changes to Mongo documents with a collection.",
         "url": "https://gitlab.com/srcrr/historical_collection",
         "tech": [
             "python",
@@ -45,7 +45,7 @@
     },
     {
         "title": "Ink-In-Time",
-        "description": "Easily keep track of changes to Mongo document changes with a collection.",
+        "description": "A no-frills, open-source appointment scheduling app — an alternative to Calendly or Cal.com.",
         "url": "https://github.com/src-r-r/ink-in-time",
         "tech": [
             "python",
